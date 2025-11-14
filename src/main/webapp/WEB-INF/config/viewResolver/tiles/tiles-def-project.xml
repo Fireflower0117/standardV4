@@ -2,12 +2,10 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
-	<!-- 관리자 레이아웃 -->
-    <definition name="manage" template="/WEB-INF/config/layout/ma/layout.jsp">
-        <put-attribute name="header" value="/WEB-INF/config/layout/ma/header.jsp"/>
-        <put-attribute name="naviGnb" value="/WEB-INF/config/layout/ma/naviGnb.jsp"/>
-        <put-attribute name="footer" value="/WEB-INF/jsp/common/layout/ma/footer.jsp"/>
-    </definition>
+	<!-- 관리자 레이아웃 -->               
+    <definition name="manage" template="/WEB-INF/jsp/common/layout/ma/layout.jsp">
+        <put-attribute name="header" value="/WEB-INF/jsp/common/layout/ma/header.jsp"/>  
+    </definition>  
 	<definition name=".mLayout:/*" extends="manage">
 		<put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
 	</definition>
@@ -25,18 +23,6 @@
 	</definition>
 	<definition name=".mLayout:/*/*/*/*/*/*" extends="manage">
 		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}.jsp" />
-	</definition>
-	<definition name=".mLayout:/*/*/*/*/*/*/*" extends="manage">
-		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}.jsp" />
-	</definition>
-	<definition name=".mLayout:/*/*/*/*/*/*/*/*" extends="manage">
-		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}.jsp" />
-	</definition>
-	<definition name=".mLayout:/*/*/*/*/*/*/*/*/*" extends="manage">
-		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}.jsp" />
-	</definition>
-	<definition name=".mLayout:/*/*/*/*/*/*/*/*/*/*" extends="manage">
-		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}.jsp" />
 	</definition>
 	
     <!-- 사용자 레이아웃 -->

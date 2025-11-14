@@ -3,10 +3,9 @@
 
 @import 'root.css';
 @import 'reset.css';
-@import url('../fonts/NotoSansKR/NotoSansKR.css');
-@import url('../lib/xeicon/xeicon.min.css');
-
-
+@import url('/external/fonts/NotoSansKR/NotoSansKR.css');
+@import url('/external/xeicon/xeicon.min.css');
+    
 /*** skip ***/
 #skipnavi {overflow: hidden;position: relative;width: 100%;z-index: 2;}
 #skipnavi a {display: block;overflow: hidden;width: 0px;height: 0px;margin: 0 -1px -1px 0;font-size: 0;line-height: 0;text-align: center;}

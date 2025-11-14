@@ -25,5 +25,5 @@
 			</div>
 		</div>
 	</div>
-</header>
-<jsp:include page="/WEB-INF/jsp/common/layout/ma/menuList/${sessionScope.ma_user_info.grpAuthId}.jsp" flush="true"/>
+</header> 
+<jsp:include page="/WEB-INF/jsp/common/layout/ma/menuList/${sessionScope.ma_user_info.grpAuthId}.jsp" flush="true"/> 

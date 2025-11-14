@@ -50,7 +50,7 @@
         <appender-ref ref="ROLLING_LOG_FILE"/>
     </logger>  
      
-    <logger name="kr.or.opennote" level="DEBUG" additive="false" > 
+    <logger name="kr.or.standard" level="DEBUG" additive="false" > 
         <appender-ref ref="ROLLING_LOG_FILE"/>
     </logger>
      

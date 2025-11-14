@@ -11,7 +11,7 @@
 	</select>
 
 	<!-- 관련사이트 목록 조회 -->
-	<select id="selectList" resultType="kr.or.opennote.basic.system.relsite.vo.RelSiteVO$RelSite">
+	<select id="selectList" resultType="kr.or.standard.basic.system.relsite.vo.RelSiteVO$RelSite">
 		/* RelSiteMngMapper.selectList */
 		SELECT REL_SITE_SERNO					relSiteSerno
 			 , REL_SITE_URL_ADDR				relSiteUrlAddr
@@ -33,7 +33,7 @@
 	</update>
 	
 	<!-- 관련사이트 등록 -->
-	<insert id="insertContents" parameterType="kr.or.opennote.basic.system.relsite.vo.RelSiteVO$RelSite">
+	<insert id="insertContents" parameterType="kr.or.standard.basic.system.relsite.vo.RelSiteVO$RelSite">
 		/* RelSiteMngMapper.insertContents */
 		INSERT INTO T_REL_SITE_MNG 
 			 ( REL_SITE_URL_ADDR					
@@ -54,7 +54,7 @@
 	</insert>
 
 	<!-- 관련사이트 수정 -->
-	<update id="updateContents" parameterType="kr.or.opennote.basic.system.relsite.vo.RelSiteVO$RelSite">
+	<update id="updateContents" parameterType="kr.or.standard.basic.system.relsite.vo.RelSiteVO$RelSite">
 		/* RelSiteMngMapper.updateContents */
 		UPDATE T_REL_SITE_MNG
 		   SET REL_SITE_URL_ADDR	= #{relSiteUrlAddr}

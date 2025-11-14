@@ -11,7 +11,7 @@
 
     <tag>
         <name>pagination</name>
-        <tag-class>kr.or.opennote.appinit.pagination.PaginationTag</tag-class>
+        <tag-class>kr.or.standard.appinit.pagination.PaginationTag</tag-class>
 
         <body-content>empty</body-content>
         <description>Pagination Tag</description>

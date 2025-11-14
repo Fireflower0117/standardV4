@@ -471,7 +471,7 @@ $(document).ready(function(){
 							</c:choose>
 							<c:if test="${menuVO.isLeaf ne 1}"> 
 								<a href="javascript:void(0);" id="menu_url_copy">
-									<img alt="clipboard" src="/ma/images/icon/clipboard.svg" class="w26">
+									<img alt="clipboard" src="<c:out value='/internal/standard/ma/images/icon/clipboard.svg'/>" class="w26"> 
 								</a>
 							</c:if>
 						</td>
@@ -564,7 +564,7 @@ $(document).ready(function(){
 							</span>
 							<c:if test="${menuVO.isLeaf ne 1 and not empty menuVO.menuUrlAddr}">
 								<a href="javascript:void(0); return false;" id="menu_url_copy">
-									<img alt="clipboard" src="/ma/images/icon/clipboard.svg" class="w26 mar_l5">
+									<img alt="clipboard" src="<c:out value='/internal/standard/ma/images/icon/clipboard.svg'/>" class="w26 mar_l5">
 								</a>
 							</c:if>
 						</td>

@@ -11,7 +11,7 @@
 
     <typeAliases> 
         <typeAlias alias="HashMap"   type="java.util.HashMap" ></typeAlias>
-        <typeAlias alias="CommonMap" type="kr.or.opennote.basic.common.domain.CommonMap" ></typeAlias>
+        <typeAlias alias="CommonMap" type="kr.or.standard.basic.common.domain.CommonMap" ></typeAlias>
     </typeAliases>
 
 </configuration>

@@ -19,7 +19,7 @@
 	
 	<!-- 메뉴 목록 조회 -->
 	<select id="selectList" parameterType="menuVO" resultType="menuVO">
-		/* MenuMngMapper.selectList */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectList */
 		SELECT 
 			   A.MENU_CL		menuCl
 			 , A.UPR_MENU_CD	uprMenuCd
@@ -43,7 +43,7 @@
 	
 	<!-- 메뉴 Header 목록 조회 -->
 	<select id="selectMenuList" parameterType="menuVO" resultType="menuVO">
-		/* MenuMngMapper.selectMenuList */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectMenuList */
 		SELECT 
 			   A.MENU_CL				menuCl  
 		     , A.UPR_MENU_CD 			uprMenuCd
@@ -94,7 +94,7 @@
 	
 	<!-- 메뉴CL별 접근권한 MenuList 조회 -->
 	<select id="selectRecursiveClMenuList" parameterType="menuVO" resultType="menuVO">
-		/* MenuMngMapper.selectRecursiveClMenuList */ 
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectRecursiveClMenuList */ 
 		WITH RECURSIVE TB_RECUR_MENUS AS (
 			   <![CDATA[ 
 			   SELECT  A.MENU_CL			  
@@ -154,7 +154,7 @@
 	
 	<!-- Role별 접근권한 MenuList 조회 -->
 	<select id="selectRecursiveAuthMenuList" parameterType="menuVO" resultType="menuVO">
-           /* MenuMngMapper.selectRecursiveAuthMenuList */
+           /* com.opennote.standard.mapper.basic.menuMngMapper.selectRecursiveAuthMenuList */
 			WITH RECURSIVE TB_RECUR_MENUS AS (
 				  <![CDATA[ 
 				   SELECT  A.MENU_CL			  
@@ -222,7 +222,7 @@
 	
 	<!-- 메뉴 Header 공통게시판 목록 조회 -->
 	<select id="selectMenuBltnbList" parameterType="menuVO" resultType="menuVO">
-		/* MenuMngMapper.selectMenuBltnbList */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectMenuBltnbList */
 		SELECT 
 			   A.MENU_CL				menuCl  
 		     , A.UPR_MENU_CD 			uprMenuCd
@@ -263,7 +263,7 @@
 	
 	<!-- 메뉴 Excel 목록 조회 -->
 	<select id="selectExcelList" parameterType="menuVO" resultType="menuVO">
-		/* MenuMngMapper.selectExcelList */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectExcelList */
 		SELECT 
 			   IFNULL(B.MENU_NM,'-')										menuCl
 			 , IFNULL(A.UPR_MENU_CD,'-')									uprMenuCd
@@ -313,7 +313,7 @@
 	
 	<!-- 메뉴 상세 조회 -->
 	<select id="selectContents" parameterType="menuVO" resultType="menuVO">
-		/* MenuMngMapper.selectContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectContents */
 		SELECT 
 		       A.MENU_CL			menuCl
 			 , A.UPR_MENU_CD		uprMenuCd
@@ -343,7 +343,7 @@
 	</select>
 	
 	<select id="menuCdDuplCheck" parameterType="menuVO" resultType="menuVO">
-		/* MenuMngMapper.menuCdDuplCheck */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.menuCdDuplCheck */
 		SELECT 
 			   COUNT(1) menuCnt
 		  FROM T_MENU_MNG
@@ -354,7 +354,7 @@
 	
 	<!-- 메뉴 등록자 체크 -->
 	<select id="regrCheck" parameterType="menuVO" resultType="menuVO">
-		/* MenuMngMapper.regrCheck */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.regrCheck */
 		SELECT 
 		      CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
 					ELSE 0
@@ -367,8 +367,8 @@
 	</select>
 	
 	<!-- 메뉴 게시판 유형 조회 -->
-	<select id="inqBltnbCl" parameterType="CommonMap" resultType="bltnbVo">
-		/* basic.MenuMngMapper.inqBltnbCl */
+	<select id="selectBltnbCl" parameterType="CommonMap" resultType="bltnbVo">
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectBltnbCl */
 		SELECT  BLTNB_CL bltnbCl
 		  FROM T_MENU_MNG
 		 <where> 
@@ -379,7 +379,7 @@
 	
 	<!-- 메뉴 명 조회 -->
 	<select id="selectMenuNm" parameterType="menuVO" resultType="menuVO">
-		/*MenuMngMapper.selectMenuNm */
+		/*com.opennote.standard.mapper.basic.menuMngMapper.selectMenuNm */
 		SELECT 
 		       MENU_NM	menuNm
 		  FROM T_MENU_MNG
@@ -391,7 +391,7 @@
 	
 	<!-- 메뉴 등록 -->
 	<insert id="insertContents" parameterType="menuVO">
-		/* MenuMngMapper.insertContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.insertContents */
 		INSERT INTO T_MENU_MNG(
 			   MENU_CL
 			 , UPR_MENU_CD
@@ -430,7 +430,7 @@
 	
 	<!-- 메뉴 수정-->
 	<update id="updateContents" parameterType="menuVO">
-		/* MenuMngMapper.updateContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.updateContents */
 		UPDATE T_MENU_MNG
 		   SET MENU_NM 			= #{menuNm}
 		     , MENU_EXPL		= #{menuExpl}
@@ -457,7 +457,7 @@
 	
 	<!-- 메뉴 삭제 -->
 	<update id="deleteContents" parameterType="menuVO">
-		/* MenuMngMapper.deleteContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.deleteContents */
 		UPDATE T_MENU_MNG
 		   SET USE_YN 	= 'N'
 		<where>
@@ -467,7 +467,7 @@
 	
 	<!-- 메뉴 순서 변경 Up -->
 	<update id="orderUpTargetUpdateContents" parameterType="menuVO">
-		/* MenuMngMapper.orderUpTargetUpdateContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.orderUpTargetUpdateContents */
 		UPDATE T_MENU_MNG
 		   SET MENU_SEQO = MENU_SEQO + 1
 		<where>
@@ -484,7 +484,7 @@
 
 	<!-- 메뉴 순서 변경 Down -->
 	<update id="orderDownTargetUpdateContents" parameterType="menuVO" >
-		/* MenuMngMapper.orderDownTargetUpdateContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.orderDownTargetUpdateContents */
 		UPDATE T_MENU_MNG
 		   SET MENU_SEQO = MENU_SEQO - 1
 		<where>
@@ -501,7 +501,7 @@
 
 	<!-- 메뉴 순서 변경 Up -->
 	<update id="orderUpSelfUpdateContents" parameterType="menuVO">
-		/*  MenuMngMapper.orderUpSelfUpdateContents */
+		/*  com.opennote.standard.mapper.basic.menuMngMapper.orderUpSelfUpdateContents */
 		UPDATE T_MENU_MNG
 		   SET MENU_SEQO = MENU_SEQO - 1
 		 <where>
@@ -513,7 +513,7 @@
 	
 	<!-- 메뉴 순서 변경 Down -->
 	<update id="orderDownSelfUpdateContents" parameterType="menuVO">
-		/*  MenuMngMapper.orderDownSelfUpdateContents */
+		/*  com.opennote.standard.mapper.basic.menuMngMapper.orderDownSelfUpdateContents */
 		UPDATE T_MENU_MNG
 		   SET MENU_SEQO = MENU_SEQO + 1
 		<where>
@@ -537,7 +537,7 @@
 	
 	<!-- 메뉴 삭제시 순서 변경 -->
 	<update id="menuDeleteOrderUpdateContents" parameterType="codeVO">
-		/* MenuMngMapper.menuDeleteOrderUpdateContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.menuDeleteOrderUpdateContents */
 		UPDATE T_MENU_MNG
 		   SET MENU_SEQO = MENU_SEQO - 1
 		<where>
@@ -554,7 +554,7 @@
 	
 	<!-- 메뉴 콘텐츠 내용 조회-->
 	<select id="selectContContents" parameterType="menuVO" resultType="menuVO">
-		/* ContMngMapper.selectContContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectContContents */
 		SELECT 
 		       EDITR_CONT						editrCont
 		  FROM T_CONT_MNG
@@ -566,7 +566,7 @@
 	
 	<!-- 메뉴 콘텐츠 insert -->
 	<insert id="insertContContents" parameterType="menuVO">
-		/* ContMngMapper.insertContContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.insertContContents */
 		INSERT INTO T_CONT_MNG (
 				MENU_CD
 			  , EDITR_CONT
@@ -583,7 +583,7 @@
 	
 	<!-- 메뉴 콘텐츠 update -->
 	<update id="updateContContents" parameterType="menuVO">
-		/* ContMngMapper.updateContContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.updateContContents */
 		UPDATE T_CONT_MNG
 		   SET EDITR_CONT		= #{editrCont}
 			 , UPDR_SERNO		= #{loginSerno}
@@ -595,7 +595,7 @@
 	
 	<!-- 메뉴 콘텐츠 delete -->
 	<update id="deleteContContents" parameterType="menuVO">
-		/* ContMngMapper.deleteContContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.deleteContContents */
 		UPDATE T_CONT_MNG
 		   SET USE_YN 	= 'N'
 		 <where>
@@ -606,7 +606,7 @@
 
 	<!-- 메뉴접속 로그 등록 -->
 	<insert id="insertLogContents" parameterType="acsStatVO">
-		/* MenuMngMapper.insertLogContents */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.insertLogContents */
 		INSERT INTO T_MENU_LOG_MNG(
 					MENU_URL_ADDR
 				  , ACS_IP_ADDR
@@ -623,7 +623,7 @@
 
 	<!-- 메뉴별 접속수 Top5 -->
 	<select id="selectMenuRank" resultType="CommonMap">
-		/* MenuMngMapper.selectMenuRank */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectMenuRank */
 		SELECT B.MENU_CD            menuCd
 			 , B.MENU_NM            menuNm
 			 , COUNT(1)             cnt
@@ -637,7 +637,7 @@
 
 	<!-- 메뉴별 접속수 Top5 상세 -->
 	<select id="selectMenuRankDetail" parameterType="acsStatVO" resultType="CommonMap">
-		/* MenuMngMapper.selectMenuRankDetail */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectMenuRankDetail */
 		SELECT A.MENU_CD            menuCd
 			 , B.MENU_NM            menuNm
 			 , COUNT(1)             cnt
@@ -653,7 +653,7 @@
 
 	<!-- 메뉴별 접속수(현재날짜) -->
 	<select id="selectMenuNow" resultType="CommonMap">
-		/* MenuMngMapper.selectMenuNow */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectMenuNow */
 		SELECT B.MENU_CD            menuCd
 			 , B.MENU_NM            menuNm
 			 , COUNT(1)             cnt
@@ -666,7 +666,7 @@
 
 	<!-- 메뉴별 접속수(현재날짜) 상세 -->
 	<select id="selectMenuNowDetail" resultType="CommonMap">
-		/* MenuMngMapper.selectMenuNowDetail */
+		/* com.opennote.standard.mapper.basic.menuMngMapper.selectMenuNowDetail */
 		SELECT B.MENU_CD            menuCd
 			 , B.MENU_NM            menuNm
 			 , COUNT(1)             cnt

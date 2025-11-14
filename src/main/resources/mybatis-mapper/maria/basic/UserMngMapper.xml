@@ -591,7 +591,7 @@
 	</select>
 
 	<!-- 회원가입 약관동의 등록 -->
-	<insert id="mergeUserTermsContents" parameterType="kr.or.opennote.basic.term.vo.TermsVO$Terms">
+	<insert id="mergeUserTermsContents" parameterType="kr.or.standard.basic.term.vo.TermsVO$Terms">
 		/* UserMngMapper.mergeUserTermsContents */
 		INSERT INTO T_USER_TERMS_MNG (
 									   USER_SERNO

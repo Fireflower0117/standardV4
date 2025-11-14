@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.kps.partners.mapper.RegepsMngMapper">
+<mapper namespace="com.opennote.standard.mapper.basic.RegepsMngMapper">
 
 	<!-- 검색 조건 -->
 	<sql id="Where">
@@ -20,7 +20,7 @@
 
 	<!-- 정규표현식 건수 조회 -->
 	<select id="selectCount" parameterType="regepsVO" resultType="int">
-		/* RegepsMngMapper.selectCount */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.selectCount */
 		SELECT COUNT(1)
 		  FROM T_REGEPS_MNG
 		<where>
@@ -31,7 +31,7 @@
 
 	<!-- 정규표현식 목록 조회 -->
 	<select id="selectList" parameterType="regepsVO" resultType="regepsVO">
-		/* RegepsMngMapper.selectList */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.selectList */
 		SELECT REGEPS_SERNO						regepsSerno
 			 , REGEPS_ID						regepsId
 			 , REGEPS_NM						regepsNm
@@ -52,7 +52,7 @@
 	
 	<!-- 정규표현식 전체 목록 조회 -->
 	<select id="selectAllList" parameterType="regepsVO" resultType="regepsVO">
-		/* RegepsMngMapper.selectAllList */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.selectAllList */
 		SELECT REGEPS_SERNO						regepsSerno
 			 , REGEPS_ID						regepsId
 			 , REGEPS_NM						regepsNm
@@ -70,7 +70,7 @@
 
 	<!-- 정규표현식 상세 조회 -->
 	<select id="selectContents" parameterType="regepsVO" resultType="regepsVO">
-		/* RegepsMngMapper.selectContents */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.selectContents */
 		SELECT REGEPS_SERNO						regepsSerno
 			 , REGEPS_ID						regepsId
 			 , REGEPS_NM						regepsNm
@@ -88,7 +88,7 @@
 	
 	<!-- 정규표현식 상세 id값으로 조회 -->
 	<select id="selectIdContents" parameterType="regepsVO" resultType="regepsVO">
-		/* RegepsMngMapper.selectIdContents */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.selectIdContents */
 		SELECT REGEPS_SERNO						regepsSerno
 			 , REGEPS_ID						regepsId
 			 , REGEPS_NM						regepsNm
@@ -104,7 +104,7 @@
 
 	<!-- 정규표현식 등록 -->
 	<insert id="insertContents" parameterType="regepsVO">
-		/* RegepsMngMapper.insertContents */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.insertContents */
 		INSERT INTO T_REGEPS_MNG
 			 ( REGEPS_ID
 			 , REGEPS_NM
@@ -129,7 +129,7 @@
 
 	<!-- 정규표현식 수정 -->
 	<update id="updateContents" parameterType="regepsVO">
-		/* RegepsMngMapper.updateContents */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.updateContents */
 		UPDATE T_REGEPS_MNG
 		   SET REGEPS_NM 		= #{regepsNm}
 		   	 , REGEPS_TXT 		= #{regepsTxt}
@@ -143,7 +143,7 @@
 
 	<!-- 정규표현식 삭제 -->
 	<update id="deleteContents" parameterType="regepsVO">
-		/* RegepsMngMapper.deleteContents */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.deleteContents */
 		UPDATE T_REGEPS_MNG
 		   SET USE_YN 		= 'N'
 		 WHERE REGEPS_SERNO = #{regepsSerno}
@@ -151,7 +151,7 @@
 	
 	<!-- 정규표현식ID 중복체크 -->
 	<select id="regepsIdCheck" parameterType="regepsVO" resultType="boolean">
-		/* RegepsMngMapper.regepsIdCheck */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.regepsIdCheck */
 		SELECT CASE WHEN COUNT(REGEPS_ID) > 0 THEN 0
 					ELSE 1
 			   END
@@ -161,7 +161,7 @@
 
 	<!-- 정규표현식 본인글 여부 -->
 	<select id="regrCheck" parameterType="regepsVO" resultType="boolean">
-		/* RegepsMngMapper.regrCheck */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.regrCheck */
 		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
 					ELSE 0
 			   END
@@ -171,7 +171,7 @@
 	
 	<!-- 정규표현식 엑셀 목록 조회 -->
 	<select id="selectExcelList" parameterType="regepsVO" resultType="regepsVO">
-		/* RegepsMngMapper.selectExcelList */
+		/* com.opennote.standard.mapper.basic.RegepsMngMapper.selectExcelList */
 		SELECT REGEPS_SERNO						regepsSerno
 			 , REGEPS_ID						regepsId
 			 , REGEPS_NM						regepsNm

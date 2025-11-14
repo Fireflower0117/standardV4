@@ -3,7 +3,7 @@
 <mapper namespace="kr.or.kps.partners.mapper.CdMngMapper">
 
 	<select id="selectList" parameterType="codeVO" resultType="codeVO">
-		/* CdMngMapper.selectList */
+		/* kr.or.kps.partners.mapper.CdMngMapper.selectList */
 		SELECT A.CD_SERNO 																		cdSerno
 		     , A.CD_UPPO_VAL 																	cdUppoVal
 		     , A.CD_VAL 																		cdVal
@@ -72,9 +72,9 @@
 	</delete>
 
 	<!-- 코드 중복 체크 -->
-	<select id="selectOvlpCount" parameterType="codeVO" resultType="int">
+	<select id="selectOvlpCount" parameterType="codeVO" resultType="codeVO">
 		/* CdMngMapper.selectOvlpCount */
-		SELECT COUNT(1)
+		SELECT COUNT(1) rowCnt
 		  FROM T_CD_MNG
 		 WHERE CD_VAL = #{cdVal}
 	</select>

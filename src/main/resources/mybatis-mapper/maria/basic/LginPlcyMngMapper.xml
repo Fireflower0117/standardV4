@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.kps.partners.mapper.LginPlcyMngMapper">
+<mapper namespace="com.opennote.standard.mapper.basic.LginPlcyMngMapper">
 
 	<!-- 로그인정책 건수 조회 -->
-	<select id="selectCount" resultType="int">
-		/* LginPlcyMngMapper.selectCount */
-		SELECT COUNT(1)					 	
+	<select id="selectPlcyCount" resultType="lginPlcyVO">
+		/* com.opennote.standard.mapper.basic.selectCount */
+		SELECT COUNT(1) plcyCount		 			 	
 		  FROM T_LGIN_PLCY_MNG
 		 WHERE USE_YN = 'Y'
 	</select>
 
 	<!-- 로그인정책 단건 조회 -->
-	<select id="selectOne" resultType="lginPlcyVO">
-		/* LginPlcyMngMapper.selectOne */
+	<select id="selectPlcyOne" resultType="lginPlcyVO">
+		/* com.opennote.standard.mapper.basic.selectPlcyOne */
 		SELECT LGIN_PLCY_SERNO						lginPlcySerno		
 			 , PWD_CHG_CYCL_DD						pwdChgCyclDd
 			 , CASE WHEN PWD_CHG_CYCL_USE_YN != NULL THEN PWD_CHG_CYCL_USE_YN
@@ -39,7 +39,7 @@
 
 	<!-- 로그인정책 등록 -->
 	<insert id="insertContents" parameterType="lginPlcyVO">
-		/* LginPlcyMngMapper.insertContents */
+		/* com.opennote.standard.mapper.basic.insertContents */
 		INSERT INTO T_LGIN_PLCY_MNG 
 			 ( PWD_CHG_CYCL_DD
 			 , PWD_CHG_CYCL_USE_YN
@@ -74,7 +74,7 @@
 
 	<!-- 로그인정책 수정 -->
 	<update id="updateContents" parameterType="lginPlcyVO">
-		/* LginPlcyMngMapper.updateContents */
+		/* com.opennote.standard.mapper.basic.updateContents */
 		UPDATE T_LGIN_PLCY_MNG
 		   SET PWD_CHG_CYCL_DD          = #{pwdChgCyclDd}
 			 , PWD_CHG_CYCL_USE_YN      = #{pwdChgCyclUseYn}
