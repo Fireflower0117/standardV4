@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmUserMapper">
+
+
+    <sql id="Where">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (UPPER((A.USER_NM)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR 	UPPER((A.MNGR_SOSOK)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR 	UPPER((A.MNGR_TEL)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%'))
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER((A.USER_NM)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER((A.MNGR_SOSOK)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==3">
+                AND UPPER((A.MNGR_TEL)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+    </sql>
+
+    
+    <!-- 개발담당자 목록 -->
+    <select id="selectDlvpList" parameterType="itsmImpFncVO" resultType="userVO">
+        /* ItsmUserMapper.selectDlvpList */
+        SELECT A.USER_SERNO 		AS userSerno
+            , A.USER_NM 		    AS userNm
+            , A.USER_ID 			AS userId
+            , A.USER_TEL_NO      	AS userTelNo
+            , A.USER_EMAIL_ADDR 	AS userEmailAddr
+        FROM T_USER_MNG A
+        <where>
+            <include refid="Where"/>
+            AND A.USE_YN   = 'Y'
+            AND A.GRP_AUTH_ID = 'developer'
+        </where>
+        ORDER BY A.USER_SERNO DESC
+        LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <select id="selectDlvpCount" parameterType="itsmImpFncVO" resultType="int">
+        /* ItsmUserMapper.selectDlvpCount */
+        SELECT COUNT(1)
+        FROM T_USER_MNG A
+        <where>
+            <include refid="Where"/>
+            AND A.USE_YN   = 'Y'
+            AND A.GRP_AUTH_ID = 'developer'
+        </where>
+    </select>
+
+    <!-- 개발담당자 목록 -->
+    <select id="selectList" parameterType="ItsmCommonDefaultVO" resultType="ItsmSessionVO">
+        /* ItsmUserMapper.selectList */
+        SELECT A.USER_SERNO 		AS userSerno
+        , A.USER_NM 		    AS userNm
+        , A.USER_ID 			AS userId
+        , A.USER_TEL_NO      	AS userTelNo
+        , A.USER_EMAIL_ADDR 	AS userEmailAddr
+        FROM T_USER_MNG A
+        <where>
+            <include refid="Where"/>
+            AND A.USE_YN   = 'Y'
+            <if test="schEtc01 !=null and schEtc01 !=''">
+                AND GRP_AUTH_ID = #{schEtc01}
+            </if>
+        </where>
+        ORDER BY A.USER_SERNO DESC
+        LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <select id="selectCount" parameterType="ItsmCommonDefaultVO" resultType="int">
+        /* ItsmUserMapper.selectCount */
+        SELECT COUNT(1)
+        FROM T_USER_MNG A
+        <where>
+            <include refid="Where"/>
+            AND A.USE_YN   = 'Y'
+            <if test="schEtc01 !=null and schEtc01 !=''">
+                AND GRP_AUTH_ID = #{schEtc01}
+            </if>
+        </where>
+    </select>
+
+
+
+
+
+    <!--  서비스정보 addView 담당자 목록 불러오는 함수-->
+    <sql id="WhereSinfo">
+        AND USER_SERNO IN
+            (
+            SELECT USER_SERNO
+            FROM ITSM_USER_SVC US
+            WHERE US.USE_YN = 'Y'
+            AND   US.SVC_SN = #{svcSn}
+        )
+        AND USE_YN   = 'Y'
+        AND AUTH_AREA_CD = 'MA'
+    </sql>
+
+    <!-- 담당자 정보 목록 -->
+    <select id="selectListSinfo" parameterType="itsmCommonDefaultVO" resultType="itsmSessionVO">
+        /* ItsmUserMapper.selectListSinfo */
+        SELECT
+              USER_SERNO  		    userSerno
+            , USER_NM 		        userNm
+            , USER_ID 			    userId
+            , USER_TEL_NO      	    userTelNo
+            , USER_EMAIL_ADDR 	    userEmailAddr
+        FROM T_USER_MNG A
+        <where>
+            <include refid="WhereSinfo"/>
+        </where>
+        ORDER BY USER_SERNO DESC
+        LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <select id="selectCountSinfo" parameterType="itsmCommonDefaultVO" resultType="int">
+        /* ItsmUserMapper.selectCountSinfo */
+        SELECT COUNT(1)
+        FROM T_USER_MNG
+        <where>
+            <include refid="WhereSinfo"/>
+        </where>
+    </select>
+    <!--끝/ 서비스정보 addView 담당자 목록 불러오는 함수-->
+
+
+    <!-- 서비스정보 담당자배치 에서 담당자 목록 불러오는 함수
+          전체관리자, 개발자는 여러개의 서비스를 매칭할 수 있다
+          그 외의 권한 사용자는 하나의 서비스에만 매칭할 수 있으므로 조건을 추가한다-->
+    <sql id="WherePop">
+        IF(A.GRP_AUTH_ID = 'allAdmin' OR A.GRP_AUTH_ID = 'developer',1 = 1 ,
+            CASE
+                WHEN (
+                    SELECT
+                        COUNT(1)
+                    FROM ITSM_USER_SVC SB
+                    WHERE SB.USER_SERNO = A.USER_SERNO
+                    AND SB.USE_YN = 'Y') > 0
+                THEN 1 = 2
+                ELSE 1=1
+            END)
+        AND USER_SERNO NOT IN (SELECT SA.USER_SERNO FROM ITSM_USER_SVC SA WHERE SA.SVC_SN = #{svcSn} AND SA.USE_YN ='Y')
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (
+                UPPER(USER_NM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR	UPPER(USER_EMAIL_ADDR) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                )
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER(USER_NM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER(USER_EMAIL_ADDR) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+        AND USE_YN   = 'Y'
+        AND AUTH_AREA_CD = 'MA'
+    </sql>
+    <!-- 담당자 목록 -->
+    <select id="selectListUser" parameterType="itsmCommonDefaultVO" resultType="itsmSessionVO">
+        /* ItsmUserMapper.selectListUser */
+        SELECT
+              USER_SERNO  		    userSerno
+            , USER_NM 		        userNm
+            , USER_ID 			    userId
+            , USER_TEL_NO      	    userTelNo
+            , USER_EMAIL_ADDR 	    userEmailAddr
+        FROM T_USER_MNG A
+        <where>
+            <include refid="WherePop"/>
+        </where>
+        ORDER BY USER_SERNO DESC
+        LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <!-- 담당자 건수 -->
+    <select id="selectCountUser" parameterType="itsmCommonDefaultVO" resultType="int">
+        /* ItsmUserMapper.selectCountUser */
+        SELECT COUNT(1)
+        FROM T_USER_MNG A
+        <where>
+            <include refid="WherePop"/>
+        </where>
+    </select>
+    <!--끝/ 서비스정보 담당자배치 에서 담당자 목록 불러오는 함수 -->
+
+
+</mapper>

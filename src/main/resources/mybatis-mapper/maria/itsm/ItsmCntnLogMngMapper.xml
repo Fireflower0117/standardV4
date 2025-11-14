@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmCntnLogMngMapper">
+
+    <sql id="Where">
+        <if test="searchStartDate !=null and searchStartDate !=''">
+            <![CDATA[
+				AND REG_DT >= DATE_FORMAT(#{searchStartDate}, '%Y.%m.%d')
+			]]>
+        </if>
+        <if test="searchEndDate !=null and searchEndDate !=''">
+            <![CDATA[
+				AND REG_DT <= DATE_FORMAT(#{searchEndDate}, '%Y.%m.%d 23:59:59')
+			]]>
+        </if>
+        <!-- 권한영역 -->
+        <if test="schEtc02 !=null and schEtc02 !=''">
+            AND AUTHRT_AREA_CD = #{schEtc02}
+        </if>
+        <if test="schEtc03 !=null and schEtc03 !=''">
+            <if test="schEtc03 ==1">
+                <![CDATA[
+					AND (DATE_FORMAT(REG_DT,'%H') < 7 OR DATE_FORMAT(REG_DT,'%H') >= 18)
+				]]>
+            </if>
+            <if test="schEtc03 ==3">
+                <![CDATA[
+					AND (
+						 ERR_YN = 'Y'
+						 OR LGN_YN = 'Y'
+						)
+				]]>
+            </if>
+        </if>
+        <if test="searchKeyword !=null and searchKeyword !='' and schEtc03 != 3">
+            <if test="schEtc09 ==null or schEtc09 ==''">
+                AND (UPPER(FNC_USER_NM(RGTR_SN)) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                OR  UPPER(ITSM_FNC_USER_ID(RGTR_SN)) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+            </if>
+            <if test="schEtc09 !=null and schEtc09 !='' and schEtc09 ==1">
+                AND UPPER(ITSM_FNC_USER_ID(RGTR_SN)) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+            <if test="schEtc09 !=null and schEtc09 !='' and schEtc09 ==2">
+                AND UPPER(FNC_USER_NM(RGTR_SN)) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+        </if>
+        <!-- 접속지점이상 검색 -->
+        <if test="searchKeyword !=null and searchKeyword !='' and schEtc03 == 3">
+            <if test="schEtc09 ==null or schEtc09 ==''">
+                AND (UPPER(FNC_USER_NM(RGTR_SN)) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                OR  UPPER(ITSM_FNC_USER_ID(RGTR_SN)) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                OR  UPPER(ACS_ID) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                )
+            </if>
+            <if test="schEtc09 !=null and schEtc09 !='' and schEtc09 ==1">
+                AND UPPER(ITSM_FNC_USER_ID(RGTR_SN)) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                OR  UPPER(ACS_ID) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+            <if test="schEtc09 !=null and schEtc09 !='' and schEtc09 ==2">
+                AND UPPER(FNC_USER_NM(RGTR_SN)) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+        </if>
+
+    </sql>
+
+    <sql id="logWhere">
+        <if test="searchStartDate !=null and searchStartDate !=''">
+            <![CDATA[
+				AND MAX(REG_DT) >= DATE_FORMAT(#{searchStartDate}, '%Y.%m.%d')
+			]]>
+        </if>
+        <if test="searchEndDate !=null and searchEndDate !=''">
+            <![CDATA[
+				AND MAX(REG_DT) <= DATE_FORMAT(#{searchEndDate}, '%Y.%m.%d 23:59:59')
+			]]>
+        </if>
+    </sql>
+
+    <select id="selectContent" parameterType="itsmAcsVO" resultType="itsmAcsVO">
+        /* ItsmCntnLogMngMapper.selectContent */
+        SELECT CNTN_LOG_SN logSerno
+             , CNTN_LOG_IP_ADDR logIpAddr
+             , DATE_FORMAT(REG_DT,'%Y.%m.%d') regDt
+             , RGTR_SN regrId
+             , ERR_YN logIpErrYn
+        FROM  ITSM_CNTN_LOG_MNG
+        WHERE CNTN_LOG_SN = #{logSerno}
+    </select>
+
+    <select id="selectList" parameterType="itsmAcsVO" resultType="itsmAcsVO">
+        /* ItsmCntnLogMngMapper.selectList */
+        SELECT CNTN_LOG_SN 			AS logSerno
+        , CNTN_LOG_IP_ADDR 	AS logIpAddr
+        , DATE_FORMAT(REG_DT, '%Y.%m.%d %H:%i')	AS regDt
+        , (SELECT (USER_NM) FROM T_USER_MNG WHERE USER_SERNO = A.RGTR_SN) 		AS name
+        , ITSM_FNC_USER_ID(RGTR_SN) 					AS regrId
+        , ITSM_FNC_CODE_NM(AUTHRT_AREA_CD)			AS authrtAreaNm
+        , ACS_ID				AS acsId
+        , LGN_YN 				AS lgnYn
+        , ERR_YN 				AS logIpErrYn
+        , AUTHRT_AREA_CD		AS authrtAreaCd
+        FROM ITSM_CNTN_LOG_MNG A
+        WHERE 1=1
+        <include refid="Where"/>
+        ORDER BY CNTN_LOG_SN DESC
+        <if test='excelYn != "Y"'>
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+    </select>
+
+    <select id="selectCount" parameterType="itsmAcsVO" resultType="int">
+        /* ItsmCntnLogMngMapper.selectCount */
+        SELECT COUNT(CNTN_LOG_SN) cnt
+        FROM ITSM_CNTN_LOG_MNG
+        WHERE 1=1
+        <include refid="Where"/>
+    </select>
+
+    <insert id="insertContent" parameterType="itsmAcsVO">
+        /* ItsmCntnLogMngMapper.insertContent */
+        INSERT INTO ITSM_CNTN_LOG_MNG(
+                   CNTN_LOG_IP_ADDR
+                 , RGTR_SN
+                 , ERR_YN
+                 , LGN_YN
+                 , ACS_ID
+                 , AUTHRT_AREA_CD
+        ) VALUES (
+                     #{logIpAddr ,jdbcType=VARCHAR}
+                 , #{serno}
+                 , IFNULL(#{logIpErrYn ,jdbcType=VARCHAR},'N')
+                 , IFNULL(#{lgnYn ,jdbcType=VARCHAR},'N')
+                 , #{acsId}
+                 , #{authrtAreaCd}
+                 )
+    </insert>
+
+    <!-- 과다접속자관리 리스트  -->
+    <select id="logSelectList" parameterType="itsmAcsVO" resultType="itsmAcsVO">
+        /* ItsmCntnLogMngMapper.logSelectList */
+        SELECT CNTN_LOG_IP_ADDR 				AS logIpAddr
+        , FNC_USER_NM(RGTR_SN) 				AS name
+        , ITSM_FNC_USER_ID(RGTR_SN)	 			AS regrId
+        , ITSM_FNC_CODE_NM(AUTHRT_AREA_CD)					AS authrtAreaNm
+        , MAX(DATE_FORMAT(REG_DT, '%Y.%m.%d %H:%i:%s'))	AS regDt
+        , COUNT(RGTR_SN) 								AS logCnt
+        , TL.AUTHRT_AREA_CD							AS authrtAreaCd
+        FROM ITSM_CNTN_LOG_MNG TL
+        <!-- 권한영역 -->
+        <if test="schEtc02 !=null and schEtc02 !=''">
+            WHERE TL.AUTHRT_AREA_CD = #{schEtc02}
+        </if>
+        GROUP BY RGTR_SN, CNTN_LOG_IP_ADDR, REG_DT, TL.AUTHRT_AREA_CD
+        HAVING COUNT(RGTR_SN) >= 5
+        <include refid="logWhere"/>
+        ORDER BY REG_DT DESC
+        <if test='excelYn != "Y"'>
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+    </select>
+
+    <!-- 과다접속자관리 카운트  -->
+    <select id="logSelectCount" parameterType="itsmAcsVO" resultType="int">
+        /* ItsmCntnLogMngMapper.logSelectCount */
+        SELECT COUNT(A.logIpAddr) cnt
+        FROM (SELECT CNTN_LOG_IP_ADDR logIpAddr
+        , RGTR_SN regrId
+        , RGTR_SN name
+        , MAX(DATE_FORMAT(REG_DT, '%Y.%m.%d %H:%i:%s')) regDt
+        , COUNT(RGTR_SN) logCnt
+        , TL.AUTHRT_AREA_CD							AS authrtAreaCd
+        FROM  ITSM_CNTN_LOG_MNG TL
+        <!-- 권한영역 -->
+        <if test="schEtc02 !=null and schEtc02 !=''">
+            WHERE TL.AUTHRT_AREA_CD = #{schEtc02}
+        </if>
+        GROUP BY RGTR_SN, CNTN_LOG_IP_ADDR, DATE_FORMAT(REG_DT, '%Y.%m.%d %H:%i:%s'), TL.AUTHRT_AREA_CD
+        HAVING COUNT(RGTR_SN) >= 5
+        <include refid="logWhere"/>
+        ) A
+    </select>
+
+    <!-- 과다접속자관리 리스트  -->
+    <select id="excelLogSelectList" parameterType="itsmAcsVO" resultType="itsmAcsVO">
+        /* ItsmCntnLogMngMapper.excelLogSelectList */
+        SELECT CNTN_LOG_IP_ADDR clientIp
+        , RGTR_SN 			regrId
+        , RGTR_SN 			name
+        , MAX(DATE_FORMAT(REG_DT, '%Y.%m.%d %H:%i:%s')) regDt
+        , COUNT(RGTR_SN) 	logCnt
+        FROM  ITSM_CNTN_LOG_MNG TL
+        GROUP BY RGTR_SN, CNTN_LOG_IP_ADDR, DATE_FORMAT(REG_DT, '%Y.%m.%d %H:%i:%s')
+        HAVING COUNT(RGTR_SN) >= 5
+        <include refid="logWhere"/>
+        ORDER BY REG_DT DESC
+    </select>
+
+    <select id="excelSelectList" parameterType="itsmAcsVO" resultType="itsmAcsVO">
+        /* ItsmCntnLogMngMapper.excelSelectList */
+        SELECT CNTN_LOG_SN 		logSerno
+        , CNTN_LOG_IP_ADDR logIpAddr
+        , REG_DT
+        , RGTR_SN 			regrId
+        , ERR_YN 			logIpErrYn
+        FROM ITSM_CNTN_LOG_MNG
+        WHERE 1=1
+        <include refid="Where"/>
+        ORDER BY CNTN_LOG_SN DESC
+    </select>
+
+
+</mapper>

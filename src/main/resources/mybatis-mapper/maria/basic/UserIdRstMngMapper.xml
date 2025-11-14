@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.kps.partners.mapper.UserIdRstMngMapper">
+
+	<sql id="Where">
+		<if test='searchKeyword !=null and searchKeyword !=""'>
+			<if test='searchCondition ==null or searchCondition == ""'>
+				AND UPPER(USER_ID) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test='searchCondition !=null and searchCondition !="" and searchCondition==1'>
+				AND UPPER(USER_ID) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+		</if>
+
+		<!-- 제한여부 -->
+		<if test='schEtc01 !=null and schEtc01 !=""'>
+			AND BRK_YN = #{schEtc01}
+		</if>
+	</sql>
+
+	<!-- 제한 사용자 목록 조회 -->
+	<select id="selectList" parameterType="rstMngVO" resultType="rstMngVO">
+		/* UserIdRstMngMapper.selectList */
+		SELECT USER_SERNO			userSerno
+			 , USER_ID				userId
+			 , BRK_YN				brkYn
+		  FROM T_USER_ID_RST_MNG
+		<where>
+			<include refid="Where"/>
+		   AND USE_YN = 'Y'
+		</where>
+		 LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+	</select>
+
+	<!-- 제한 사용자 목록 수 조회 -->
+	<select id="selectCount" parameterType="rstMngVO" resultType="int">
+		/* UserIdRstMngMapper.selectCount */
+		SELECT COUNT(1)
+		  FROM T_USER_ID_RST_MNG
+		<where>
+			<include refid="Where"/>
+		   AND USE_YN = 'Y'
+		</where>
+	</select>
+
+	<!-- 제한 ID 체크 -->
+	<select id="idRstSelectCount" parameterType="userVO" resultType="int">
+		/* UserIdRstMngMapper.idRstSelectCount */
+		SELECT COUNT(1)
+		  FROM T_USER_ID_RST_MNG
+		 WHERE USER_ID = #{userId}
+		   AND BRK_YN = 'Y'
+	</select>
+
+	<select id="idOvlpSelectCount" parameterType="rstMngVO" resultType="int">
+		/* UserIdRstMngMapper.idOvlpSelectCount */
+		SELECT COUNT(1)
+		  FROM T_USER_ID_RST_MNG
+		 WHERE USER_ID = #{userId}
+	</select>
+
+	<!-- 등록 -->
+	<insert id="insertContents" parameterType="rstMngVO">
+		/* UserIdRstMngMapper.insertContents */
+		INSERT INTO T_USER_ID_RST_MNG
+			 ( USER_SERNO
+			 , USER_ID
+			 , BRK_YN
+			 , REGR_SERNO
+			 , REG_DT
+			 )
+		VALUES
+			 ( #{userSerno	}
+			 , #{userId		}
+			 , 'Y'
+			 , #{loginSerno	}
+			 , NOW()
+			 )
+	</insert>
+
+	<!-- 삭제 -->
+	<delete id="deleteContents" parameterType="rstMngVO">
+		/* UserIdRstMngMapper.deleteContents */
+		UPDATE T_USER_ID_RST_MNG
+		   SET USE_YN 	   = 'N'
+		 WHERE USER_SERNO  = #{userSerno}
+	</delete>
+
+	<!-- 일괄 제한-->
+	<update id="allBlock" parameterType="rstMngVO">
+		/* UserIdRstMngMapper.allBlock */
+		UPDATE T_USER_ID_RST_MNG
+		   SET BRK_YN = 'Y'
+		 WHERE USER_SERNO IN (<foreach collection="schEtc12" item="item" separator=",">#{item}</foreach>)
+	</update>
+
+	<!-- 일괄 제한 해제-->
+	<update id="allClear" parameterType="rstMngVO">
+		/* UserIdRstMngMapper.allClear */
+		UPDATE T_USER_ID_RST_MNG
+		   SET BRK_YN = 'N'
+		 WHERE USER_SERNO IN (<foreach collection="schEtc11" item="item" separator=",">#{item}</foreach>)
+	</update>
+
+	<select id="selectExcelList" parameterType="rstMngVO" resultType="rstMngVO">
+		/* UserIdRstMngMapper.selectExcelList */
+		SELECT USER_SERNO			userSerno
+			, USER_ID				userId
+			, BRK_YN				brkYn
+		 FROM T_USER_ID_RST_MNG
+		<where>
+		  <include refid="Where"/>
+		  AND USE_YN = 'Y'
+		</where>
+	</select>
+
+</mapper>

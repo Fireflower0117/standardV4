@@ -1,0 +1,66 @@
+:root {
+    --red: #DB2828;
+    --green: #198754;
+    --blue: #2185D0;
+    --gray: #8D8E8E;
+    --gray-light: #E0E1E2;
+    --dark: #333333;
+    --black : #000;
+
+    --basic-bg: #F9FAFB; 
+    --bdr: #DEDEDF;
+    --bdr-focus: #85B7D9;
+    --plholder-focus-font: #858585;
+    --plholder-font: #c7c7c7;
+    --disabled-bg: #EAEAEA;
+    --disabled-font: #9199A1;
+    --chk-bg: var(--blue);
+    --err-bg: #FFF6F6;
+    --err-bdr: #E0B4B4;
+    --err-font: #9F3A38;
+
+    --tbl-bdr: #E8E9E9;
+    --tbl-th: #F9FAFB; /* = --basic-bg */
+    --form-tbl-hover-bg: #F2F2F2;
+    --board-tbl-hover-bg: #F8FBFF;
+
+    --btn-red-hover: #C52424;
+    --btn-green-hover: #16794B;
+    --btn-blue-hover: #1E77BB;
+    --btn-gray-hover: #7F8080;
+    --btn-gray-light-hover: #C9CACB;
+    --btn-disabled-bg: #F1F2F2;
+    --btn-disabled-font: #B5B5B5;
+
+    --btn-hover: #F4F4F4;
+    --btn-bd-red-hover: #FDF4F4;
+    --btn-bd-green-hover: #F3F9F6;
+    --btn-bd-blue-hover: #F3F9FD;
+    --btn-bd-gray-hover: #F9F9F9;
+    --btn-bd-disabled: #E0E1E2;
+
+    --tag-red: #E27878;
+    --tag-green: #62B399;
+    --tag-blue: #88B4E4;
+    --tag-gray: #ADADAD;
+    --tag-black: #5A6063;
+    
+    --msg-bdr: #B7B7B7;
+	--msg-bg: #F8F8F9;
+	
+	--msg-red-bg: var(--err-bg);
+	--msg-red-bdr: var(--err-bdr);
+	--msg-red-font: var(--err-font);
+	
+	--msg-yellow-bg: #FFFAF3;
+	--msg-yellow-bdr: #D0C0A6;
+	--msg-yellow-font: #794B02;
+	
+	--msg-green-bg: #FCFFF5;
+	--msg-green-bdr: #AFC3AF;
+	--msg-green-font: #1A531B;
+	
+	--msg-blue-bg: #F8FFFF;
+	--msg-blue-bdr: #AAC4CB;
+	--msg-blue-font: #0E566C;
+}

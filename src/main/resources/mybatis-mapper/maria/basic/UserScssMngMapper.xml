@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.kps.partners.mapper.UserScssMngMapper">
+
+	<insert id="insertContents" parameterType="userVO">
+		/* UserScssMngMapper.insertContents */
+		INSERT INTO T_USER_SCSS_MNG
+		     ( USER_SERNO
+			 , USER_ID
+			 , USER_PSWD
+			 , USER_NM
+			 , GRP_AUTH_ID
+			 , USER_TEL_NO
+			 , USER_EMAIL_ADDR
+			 , PSWD_MSMT_NOCS
+			 , BRK_YN
+			 , LST_ACS_DT
+			 , LST_PSWD_CHG_DT
+			 , AUTH_AREA_CD
+			 , SNS_SE_CD
+			 , SNS_USER_ID
+			 , INTG_YN
+			 , POST_NO
+			 , HOME_ADDR
+			 , HOME_ADDR_DTLS
+			 , BLON_NM
+			 , FAX_NO
+			 , INLN_NO
+			 , JRNK_CD
+			 , REGR_SERNO
+			 , REG_DT
+			 , UPDR_SERNO
+			 , UPD_DT
+			 , USE_YN
+		 	 , SCSS_DT
+			 )
+		SELECT USER_SERNO
+			 , USER_ID
+			 , USER_PSWD
+			 , USER_NM
+			 , GRP_AUTH_ID
+			 , USER_TEL_NO
+			 , USER_EMAIL_ADDR
+			 , PSWD_MSMT_NOCS
+			 , BRK_YN
+			 , LST_ACS_DT
+			 , LST_PSWD_CHG_DT
+			 , AUTH_AREA_CD
+			 , SNS_SE_CD
+			 , SNS_USER_ID
+			 , INTG_YN
+			 , POST_NO
+			 , HOME_ADDR
+			 , HOME_ADDR_DTLS
+			 , BLON_NM
+			 , FAX_NO
+			 , INLN_NO
+			 , JRNK_CD
+			 , REGR_SERNO
+			 , REG_DT
+			 , UPDR_SERNO
+			 , UPD_DT
+			 , USE_YN
+			 , NOW()
+		  FROM T_USER_MNG
+		 WHERE USER_SERNO = #{userSerno}
+	</insert>
+
+	<!-- 월별 탈퇴추이(현재년도) -->
+	<select id="selectScssUserMon" resultType="java.util.HashMap">
+		/* UserScssMngMapper.selectScssUserMon */
+		SELECT DATE_FORMAT(REG_DT, '%m')        regDt
+			 , COUNT(1)                         cnt
+		  FROM T_USER_SCSS_MNG
+		 WHERE SCSS_DT <![CDATA[>=]]> DATE_FORMAT(NOW(), '%Y-01-01 00:00:00')
+		   AND USER_ID IS NOT NULL
+	  GROUP BY DATE_FORMAT(REG_DT, '%m')
+	</select>
+
+	<!-- 일별 탈퇴추이 -->
+	<select id="selectScssUserDay" parameterType="acsStatVO" resultType="java.util.HashMap">
+		/* UserScssMngMapper.selectScssUserDay */
+		SELECT DATE_FORMAT(REG_DT, '%d')        regDt
+			 , COUNT(1)                         cnt
+		  FROM T_USER_SCSS_MNG
+		 WHERE SCSS_DT <![CDATA[>=]]> DATE_FORMAT(NOW(), '%Y-01-01 00:00:00')
+		   AND DATE_FORMAT(REG_DT, '%m') = #{schEtc00}
+		   AND USER_ID IS NOT NULL
+	  GROUP BY DATE_FORMAT(REG_DT, '%d')
+	  ORDER BY regDt
+	</select>
+
+	<!-- 탈퇴회원 목록 -->
+	<select id="selectScssUserList" parameterType="acsStatVO" resultType="userVO">
+		/* UserScssMngMapper.selectScssUserList */
+		SELECT A.USER_ID            userId
+			 , A.USER_NM            userNm
+			 , B.GRP_AUTH_NM        grpAuthNm
+		  FROM T_USER_SCSS_MNG A
+	 LEFT JOIN T_GRP_AUTH_MNG B
+		    ON A.GRP_AUTH_ID  = B.GRP_AUTH_ID AND B.DEL_YN = 'N'
+		 WHERE DATE_FORMAT(A.REG_DT, '%Y.%m.%d') = #{schEtc00}
+		   AND A.USER_ID IS NOT NULL
+	  ORDER BY A.USER_SERNO DESC
+		 LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+	</select>
+
+	<!-- 탈퇴회원 건수 -->
+	<select id="selectScssUserCount" parameterType="acsStatVO" resultType="int">
+		/* UserScssMngMapper.selectScssUserCount */
+		SELECT COUNT(1)
+		  FROM T_USER_SCSS_MNG
+		 WHERE DATE_FORMAT(REG_DT, '%Y.%m.%d') = #{schEtc00}
+		   AND USER_ID IS NOT NULL
+	</select>
+
+</mapper>

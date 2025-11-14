@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.kps.partners.mapper.ErrLogMngMapper">
+
+	<sql id="Where">
+			<if test="schEtc11 != null and schEtc11.length > 0">
+				AND A.ERR_TP_NM IN
+				<foreach collection="schEtc11" item="errType"  open="(" close=")" separator=",">
+					#{errType}
+				</foreach>
+			</if>
+		<if test='searchStartDate !=null and searchStartDate !=""'>
+			AND DATE(#{searchStartDate}) <![CDATA[ <= ]]> DATE_FORMAT(A.ERR_OCCR_DT, '%Y.%m.%d')
+		</if>
+		<if test='searchEndDate !=null and searchEndDate !=""'>
+			AND DATE_FORMAT(A.ERR_OCCR_DT, '%Y.%m.%d') <![CDATA[ <= ]]> DATE(#{searchEndDate})
+		</if>
+		<if test='searchKeyword !=null and searchKeyword !=""'>
+			<if test='searchCondition ==null or searchCondition ==""'>
+				AND (UPPER(A.MENU_CG_NM) LIKE CONCAT('%',IFNULL(UPPER(#{searchKeyword}), ''),'%') OR UPPER(B.MENU_NM) LIKE CONCAT('%',IFNULL(UPPER(#{searchKeyword}), ''),'%'))
+			</if>
+			<if test='searchCondition !=null and searchCondition !="" and searchCondition=="menuCgNm"'>
+				AND UPPER(A.MENU_CG_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test='searchCondition !=null and searchCondition !="" and searchCondition=="menuNm"'>
+				AND UPPER(B.MENU_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+		</if>
+	</sql>
+	<!-- 에러로그 등록 -->
+	<insert id="insertContents" parameterType="errlogVO">
+		/* ErrLogMngMapper.insertContents */
+		INSERT INTO T_ERR_LOG_MNG
+		     ( ERR_TP_NM
+		  	 , ERR_EXPL
+		  	 , SVR_ERR_CTT
+		  	 , MENU_CG_NM
+		  	 , ERR_PTH_NM
+		  	 , ERR_OCCR_URL_ADDR
+		  	 , ERR_OCCR_IP_ADDR
+			 )
+		VALUES
+		     ( #{errTpNm}
+		     , #{errExpl}
+		     , #{svrErrCtt}
+		     , #{menuCgNm}
+		     , #{errPthNm}
+		     , #{errOccrUrlAddr}
+		     , #{errOccrIpAddr}
+			 )
+	</insert>
+
+	<!-- 메뉴별 에러 건수 -->
+	<select id="selectMenuErr" resultType="java.util.HashMap">
+		/* ErrLogMngMapper.selectMenuErr */
+		SELECT A.MENU_CG_NM		menuCgNm
+			 , B.MENU_NM		menuNm
+			 , COUNT(1)			cnt
+		  FROM T_ERR_LOG_MNG A
+	INNER JOIN T_MENU_MNG B ON A.MENU_CG_NM = B.MENU_CD
+		 WHERE B.MENU_CL	= 'FT'
+		   AND B.USE_YN		= 'Y'
+	  GROUP BY A.MENU_CG_NM
+	  ORDER BY cnt
+	</select>
+
+	<!-- 메뉴별 에러 건수 상세 -->
+	<select id="selectMenuErrDetail" parameterType="acsStatVO" resultType="java.util.HashMap">
+		/* ErrLogMngMapper.selectMenuErrDetail */
+		SELECT ERR_TP_NM	menuNm
+			 , COUNT(1)		cnt
+		  FROM T_ERR_LOG_MNG
+		 WHERE MENU_CG_NM = #{menuCd}
+	  GROUP BY ERR_TP_NM
+	</select>
+
+
+    <!-- 에러로그 건수 조회 -->
+    <select id="selectCount" parameterType="errlogVO" resultType="int">
+		/* ErrLogMngMapper.selectCount */
+        SELECT COUNT(1)
+          FROM T_ERR_LOG_MNG A
+		  LEFT OUTER JOIN T_MENU_MNG B
+		    ON A.MENU_CG_NM = B.MENU_CD
+        <where>
+			<include refid="Where"></include>
+		   AND B.MENU_NM IS NOT NULL
+		</where>
+    </select>
+
+    <!-- 에러로그 목록 조회 -->
+    <select id="selectList" parameterType="errlogVO" resultType="errlogVO">
+		/* ErrLogMngMapper.selectList */
+        SELECT A.ERR_LOG_SERNO        						errLogSerno
+             , REPLACE(A.ERR_TP_NM," ","")  				errTpNm
+             , A.ERR_EXPL             						errExpl
+             , A.SVR_ERR_CTT          						svrErrCtt
+             , A.MENU_CG_NM           						menuCgNm
+			 , B.MENU_NM									menuNm
+             , A.ERR_PTH_NM           						errPthNm
+             , A.ERR_OCCR_URL_ADDR    						errOccrUrlAddr
+             , A.ERR_OCCR_IP_ADDR     						errOccrIpAddr
+             , DATE_FORMAT(A.ERR_OCCR_DT, '%Y.%m.%d %H:%i') errOccrDt
+             , A.USE_YN               						useYn
+          FROM T_ERR_LOG_MNG A
+		  LEFT OUTER JOIN T_MENU_MNG B
+		    ON A.MENU_CG_NM = B.MENU_CD
+        <where>
+          <include refid="Where"></include>
+		   AND B.MENU_NM IS NOT NULL
+		</where>
+	  ORDER BY A.ERR_LOG_SERNO DESC
+		 LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+    </select>
+
+	<!-- 에러로그 상세 조회 -->
+	<select id="selectContents" parameterType="errlogVO" resultType="errlogVO">
+		/* ErrLogMngMapper.selectContents */
+		SELECT A.ERR_LOG_SERNO        		errLogSerno
+			 , REPLACE(A.ERR_TP_NM," ","")  errTpNm
+			 , A.ERR_EXPL             		errExpl
+			 , A.SVR_ERR_CTT          		svrErrCtt
+			 , A.MENU_CG_NM           		menuCgNm
+			 , B.MENU_NM			  		menuNm
+			 , A.ERR_PTH_NM           		errPthNm
+			 , A.ERR_OCCR_URL_ADDR    		errOccrUrlAddr
+			 , A.ERR_OCCR_IP_ADDR     		errOccrIpAddr
+			 , A.ERR_OCCR_DT          		errOccrDt
+			 , A.USE_YN               		useYn
+		  FROM T_ERR_LOG_MNG A
+		  LEFT OUTER JOIN T_MENU_MNG B
+		   ON A.MENU_CG_NM = B.MENU_CD
+		WHERE A.ERR_LOG_SERNO = #{errLogSerno}
+	</select>
+
+	<!-- 에러 유형 목록 조회 -->
+	<select id="errTpSelectList" resultType="errlogVO">
+		/* ErrLogMngMapper.errTpSelectList */
+		SELECT DISTINCT(REPLACE(A.ERR_TP_NM," ",""))            errTpNm
+		  FROM T_ERR_LOG_MNG A
+	  ORDER BY ERR_TP_NM
+	</select>
+
+	<!-- 엑셀 리스트 조회 -->
+	<select id="selectExcelList" parameterType="errlogVO" resultType="errlogVO">
+		/* ErrLogMngMapper.selectExcelList */
+		SELECT A.ERR_LOG_SERNO        						errLogSerno
+			 , REPLACE(A.ERR_TP_NM," ","")  				errTpNm
+			 , A.ERR_EXPL             						errExpl
+			 , A.SVR_ERR_CTT          						svrErrCtt
+			 , A.MENU_CG_NM           						menuCgNm
+			 , B.MENU_NM									menuNm
+			 , A.ERR_PTH_NM           						errPthNm
+			 , A.ERR_OCCR_URL_ADDR    						errOccrUrlAddr
+			 , A.ERR_OCCR_IP_ADDR     						errOccrIpAddr
+			 , DATE_FORMAT(A.ERR_OCCR_DT, '%Y.%m.%d %H:%i') errOccrDt
+			 , A.USE_YN               						useYn
+		  FROM T_ERR_LOG_MNG A
+		  LEFT OUTER JOIN T_MENU_MNG B
+			ON A.MENU_CG_NM = B.MENU_CD
+		<where>
+			<include refid="Where"></include>
+		   AND B.MENU_NM IS NOT NULL
+		</where>
+		 ORDER BY A.ERR_LOG_SERNO DESC
+	</select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmLoginMapper">
+        <select id="getSession" parameterType="cmmnDefaultVO" resultType="itsmSessionVO">
+        /* ItsmLoginMapper.getSession */
+        SELECT A.USER_SERNO 										userSerno
+             , A.USER_ID 											userId
+             , A.USER_NM 											userNm
+             , A.GRP_AUTH_ID 										grpAuthId
+             , A.USER_TEL_NO 										userTelNo
+             , A.USER_EMAIL_ADDR 									userEmailAddr
+             , DATE_FORMAT(A.LST_ACS_DT,'%Y-%m-%d %H:%i:%s')		lstAcsDt
+             , case
+                 when A.GRP_AUTH_ID = 'allAdmin' OR A.GRP_AUTH_ID = 'developer'
+                     then 0
+                 else IFNULL((SELECT C.SVC_SN FROM ITSM_USER_SVC C WHERE C.USER_SERNO = A.USER_SERNO AND C.USE_YN = 'Y'), -1)
+                 end                                                userSvcSn
+        FROM T_USER_MNG A
+        WHERE USER_SERNO    = #{loginSerno}
+          AND USE_YN 		= 'Y'
+    </select>
+
+</mapper>

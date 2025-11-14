@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="opnt.atchFileMng">
+
+	<!-- 파일생성 -->
+	<insert id="putAtchFile" parameterType="fileVO">
+		<selectKey keyProperty="fileSeqo" order="BEFORE" resultType="java.lang.String">
+			SELECT IFNULL(CAST(MAX(D.FILE_SEQO) AS INT) + 1, 0) FROM T_ATCH_FILE_MNG D WHERE D.ATCH_FILE_ID = #{atchFileId}
+		</selectKey>
+
+		INSERT INTO T_ATCH_FILE_MNG (
+			ATCH_FILE_ID
+			, FILE_SEQO
+			, PHCL_FILE_PTH_NM
+			, PHCL_FILE_NM
+			, RL_FILE_NM
+			, FILE_EXTN_NM
+			, FILE_SZ_VAL
+			, FILE_TP_NM
+			, IMG_WDTH_SZ_VAL
+			, IMG_HGHT_SZ_VAL
+			, FILE_BYTE
+		<if test="ftLoginSerno != null and ftLoginSerno != ''">										   
+			, REGR_SERNO
+		</if>
+		<if test="loginSerno == null and loginSerno == ''">
+		    , REGR_SERNO										   
+		</if>
+			, REG_DT
+			, DEL_YN
+		) VALUES (
+			#{atchFileId}
+			, #{fileSeqo}
+			, #{phclFilePthNm}
+			, #{fileNmPhclFileNm}
+			, #{fileRlNm}
+			, #{fileFextNm}
+			, #{fileSizeVal}
+			, #{fileTpNm}
+			, #{imgSqrVal}
+			, #{imgHghtVal}
+			, #{fileByte}
+		<if test="ftLoginSerno != null and ftLoginSerno != ''">
+		    , #{ftLoginSerno}										   
+		</if>
+		<if test="loginSerno == null and loginSerno == ''">
+		    , #{loginSerno}										   
+		</if>
+			, NOW()
+			, 'N'
+		)
+	</insert>
+
+	<!-- 파일 삭제 -->
+	<update id="delAtchFile" parameterType="fileVO">
+		UPDATE T_ATCH_FILE_MNG
+		SET DEL_YN = 'Y'
+		WHERE ATCH_FILE_ID = #{atchFileId}
+			<if test="fileSeqo != null and fileSeqo != ''">
+				AND FILE_SEQO = #{fileSeqo}
+			</if>
+			AND DEL_YN = 'N'
+	</update>
+
+	<!-- 파일 List 조회 -->
+	<select id="getAtchFileList" parameterType="fileVO" resultType="fileVO">
+		SELECT ATCH_FILE_ID 		atchFileId
+			 , FILE_SEQO 			fileSeqo
+			 , PHCL_FILE_PTH_NM 	phclFilePthNm
+			 , PHCL_FILE_NM 		fileNmPhclFileNm
+			 , RL_FILE_NM 			fileRlNm
+			 , FILE_EXTN_NM 		fileFextNm
+			 , FILE_CN 				fileCtt
+			 , FILE_SZ_VAL 			fileSizeVal
+			 , FILE_TP_NM 			fileTpNm
+			 , FILE_REF_VAL 		fileRefVal
+			 , IMG_WDTH_SZ_VAL 		imgSqrVal
+			 , IMG_HGHT_SZ_VAL 		imgHghtVal
+			 , FILE_BYTE			fileByte
+			 , REGR_SERNO 			regId
+			 , REG_DT 				regDt
+			 , DEL_YN 				delYn
+		  FROM T_ATCH_FILE_MNG
+		 WHERE ATCH_FILE_ID = #{atchFileId}
+		   AND DEL_YN = 'N'
+		 ORDER BY FILE_SEQO
+	</select>
+	
+	<!-- 파일 단건 조회 -->
+	<select id="getAtchFile" parameterType="fileVO" resultType="fileVO">
+		/* kr.or.kps.partners.mapper.AtchFileMngMapper.getAtchFile  */
+		SELECT ATCH_FILE_ID 		atchFileId
+			 , FILE_SEQO 			fileSeqo
+			 , PHCL_FILE_PTH_NM 	phclFilePthNm
+			 , PHCL_FILE_NM 		fileNmPhclFileNm
+			 , RL_FILE_NM 			fileRlNm
+			 , FILE_EXTN_NM 		fileFextNm
+			 , FILE_CN 				fileCtt
+			 , FILE_SZ_VAL 			fileSizeVal
+			 , FILE_TP_NM 			fileTpNm
+			 , FILE_REF_VAL 		fileRefVal
+			 , IMG_WDTH_SZ_VAL 		imgSqrVal
+			 , IMG_HGHT_SZ_VAL 		imgHghtVal
+			 , FILE_BYTE			fileByte
+			 , REGR_SERNO 			regId
+			 , REG_DT 				regDt
+			 , DEL_YN 				delYn
+		  FROM T_ATCH_FILE_MNG
+		 WHERE ATCH_FILE_ID = #{atchFileId}
+		   AND DEL_YN = 'N'
+		   AND FILE_SEQO = #{fileSeqo}
+		<if test='fileNmPhclFileNm != null and fileNmPhclFileNm != ""'>
+		   AND PHCL_FILE_NM = #{fileNmPhclFileNm}
+		</if>
+	</select>
+
+	<!-- 파일 일련번호 생성 -->
+	<select id="getAtchFileId" resultType="java.lang.String">
+		SELECT IFNULL(MAX(CAST(ATCH_FILE_ID  AS UNSIGNED)),0)+1 
+		  FROM T_ATCH_FILE_MNG
+	</select>
+	
+</mapper>

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmRqrMngMapper">
+
+    <sql id="Where">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (UPPER(A.RQR_ID) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(A.RQR_ITM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(A.RQR_DTL_ID) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(A.RQR_DTL) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(A.RQR_SRC) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(A.RQR_CLS) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(FNC_USER_NM(A.CUST_MNGR_SN)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(FNC_USER_NM(A.DVLP_MNGR_SN)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%'))
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER(A.RQR_ID) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER(A.RQR_ITM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==3">
+                AND UPPER(A.RQR_DTL_ID) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==4">
+                AND UPPER(A.RQR_DTL) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==5">
+                AND UPPER(A.RQR_SRC) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==6">
+                AND UPPER(A.RQR_CLS) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==7">
+                AND UPPER(FNC_USER_NM(A.CUST_MNGR_SN)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==8">
+                AND UPPER(FNC_USER_NM(A.DVLP_MNGR_SN)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND A.SVC_SN = #{schEtc00}
+        </if>
+        <if test="schEtc01 !=null and schEtc01 !=''">
+            AND A.RQR_PROC = #{schEtc01}
+        </if>
+        <if test="searchStartDate !=null and searchStartDate !=''">
+            AND A.REG_DT <![CDATA[ >= ]]> DATE_FORMAT(CONCAT(#{searchStartDate},' 00:00:00'),'%Y.%m.%d %H:%i:%s')
+        </if>
+        <if test="searchEndDate !=null and searchEndDate !=''">
+            AND A.REG_DT <![CDATA[ <= ]]> DATE_FORMAT(CONCAT(#{searchEndDate},' 23:59:59'),'%Y.%m.%d %H:%i:%s')
+        </if>
+    </sql>
+
+    <sql id="Where2">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (UPPER((TAU.USER_NM)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR 	UPPER((TAU.USER_TEL_NO)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR 	UPPER((TAU.USER_EMAIL_ADDR)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%'))
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER((TAU.USER_NM)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER((TAU.USER_TEL_NO)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==3">
+                AND UPPER((TAU.USER_EMAIL_ADDR)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+    </sql>
+
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmRqstVO" resultType="itsmRqstVO">
+        /* ItsmRqrMngMapper.selectList */
+        SELECT A.RQR_SN								                 rqrSn
+             , A.RQR_ID								                 rqrId
+             , A.RQR_ITM							                 rqrItm
+             , A.RQR_DTL							                 rqrDtl
+             , A.RQR_SRC							                 rqrSrc
+             , A.RQR_PROC							                 rqrProc
+             , ITSM_FNC_CODE_NM(A.RQR_PROC)				             rqrProcNm
+             , A.RQR_CLS							                 rqrCls
+             , A.CUST_MNGR_SN						                 custMngrSn
+             , FNC_USER_NM(A.CUST_MNGR_SN)			                 custMngrNm
+             , A.DVLP_MNGR_SN						                 dvlpMngrSn
+             , FNC_USER_NM(A.DVLP_MNGR_SN)			                 dvlpMngrNm
+             , A.ATCH_FILE_ID						                 atchFileId
+             , A.RQR_DTL_ID							                 rqrDtlId
+             , A.RQR_CN								                 rqrCn
+             , A.RQR_DIV							                 rqrDiv
+             , A.DCMNT_ID							                 dcmntId
+             , A.SVC_SN							                     svcSn
+             , ITSM_FNC_SVC_NM(A.SVC_SN)					         svcNm
+             , A.ATCH_FILE_ID              			                 atchFileId
+             , A.RGTR_SN                    		                 rgtrSn
+             , A.MDFCN_DT               
+             , A.MDFR_SN                    	                     mdfrSn
+             , FNC_USER_NM(A.RGTR_SN)  				                 rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')                     regDt
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')                   mdfcnDt
+             , (SELECT COUNT(1) 
+                  FROM ITSM_RQR_MNG_PROC B
+                 WHERE B.RQR_SN = A.RQR_SN AND B.USE_YN = 'Y')       rqrProcCnt
+             , (SELECT COUNT(1) 
+                  FROM ITSM_RQR_MNG_PROC B 
+                 WHERE B.RQR_SN = A.RQR_SN  
+                   AND B.USE_YN = 'Y' 
+                   AND DATE_FORMAT(B.REG_DT,'%Y-%m-%d') = CURDATE()) newComCnt
+          FROM ITSM_RQR_MNG A
+        <where>
+            <include refid="Where"/>
+            AND  A.USE_YN ='Y'
+        </where>
+         ORDER BY A.RQR_SN DESC
+        <if test="excelYn ==null or excelYn == ''">
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+    </select>
+
+    <select id="selectCount" parameterType="itsmRqstVO" resultType="int">
+        /* ItsmRqrMngMapper.selectCount */
+        SELECT COUNT(1)
+          FROM ITSM_RQR_MNG A
+        <where>
+            <include refid="Where"/>
+            AND  A.USE_YN ='Y'
+        </where>
+    </select>
+
+    <!-- 상세 -->
+    <select id="selectContents" parameterType="itsmRqstVO" resultType="itsmRqstVO">
+        /* ItsmRqrMngMapper.selectContents */
+        SELECT A.RQR_SN								     rqrSn
+             , A.RQR_ID								     rqrId
+             , A.RQR_ITM							     rqrItm
+             , A.RQR_DTL							     rqrDtl
+             , A.RQR_SRC							     rqrSrc
+             , A.RQR_PROC							     rqrProc
+             , ITSM_FNC_CODE_NM(A.RQR_PROC)				 rqrProcNm
+             , A.RQR_CLS							     rqrCls
+             , A.CUST_MNGR_SN						     custMngrSn
+             , FNC_USER_NM(A.CUST_MNGR_SN)			     custMngrNm
+             , A.DVLP_MNGR_SN						     dvlpMngrSn
+             , FNC_USER_NM(A.DVLP_MNGR_SN)			     dvlpMngrNm
+             , A.ATCH_FILE_ID						     atchFileId
+             , A.RQR_DTL_ID							     rqrDtlId
+             , A.RQR_CN								     rqrCn
+             , A.RQR_DIV							     rqrDiv
+             , A.SVC_SN							         svcSn
+             , ITSM_FNC_SVC_NM(A.SVC_SN)				 svcNm
+             , A.DCMNT_ID							     dcmntId
+             , A.ATCH_FILE_ID              			     atchFileId
+             , A.RGTR_SN                    		     rgtrSn
+             , A.MDFCN_DT
+             , A.MDFR_SN                    	         mdfrSn
+             , FNC_USER_NM(A.RGTR_SN)  				     rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')         regDt
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')       mdfcnDt
+             , B.COF_SN								     cofSn
+          FROM ITSM_RQR_MNG A
+          LEFT OUTER JOIN ITSM_CONFER_MNG_DMND B
+            ON A.RQR_SN = B.DMND_SN
+           AND B.MENU_CD = 'rqst'
+           AND B.USE_YN = 'Y'
+         WHERE A.RQR_SN = #{rqrSn}
+           AND A.USE_YN  ='Y'
+    </select>
+
+    <!-- 생성 -->
+    <insert id="insertContents" parameterType="itsmRqstVO">
+        /* ItsmRqrMngMapper.insertContents */
+        INSERT INTO ITSM_RQR_MNG
+             ( RQR_ID
+             , RQR_ITM
+             , RQR_DTL
+             , RQR_SRC
+             , RQR_PROC
+             , RQR_CLS
+             , CUST_MNGR_SN
+             , DVLP_MNGR_SN
+             , ATCH_FILE_ID
+             , RQR_DTL_ID
+             , RQR_CN
+             , RQR_DIV
+             , DCMNT_ID
+             , SVC_SN
+             , REG_DT
+             , RGTR_SN
+             )
+        VALUES
+             ( #{rqrId}
+             , #{rqrItm}
+             , #{rqrDtl}
+             , #{rqrSrc}
+             , #{rqrProc}
+             , #{rqrCls}
+             , IF(#{custMngrSn} = '',NULL,#{custMngrSn})
+             , IF(#{dvlpMngrSn} = '',NULL,#{dvlpMngrSn})
+             , #{atchFileId}
+             , #{rqrDtlId}
+             , #{rqrCn}
+             , #{rqrDiv}
+             , #{dcmntId}
+             , #{svcSn}
+             , NOW()
+             , #{loginSerno}
+             )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="updateContents" parameterType="itsmRqstVO">
+        /* ItsmRqrMngMapper.updateContents */
+        UPDATE ITSM_RQR_MNG
+          SET RQR_ID			= #{rqrId}
+            , RQR_ITM			= #{rqrItm}
+            , RQR_DTL			= #{rqrDtl}
+            , RQR_SRC			= #{rqrSrc}
+            , RQR_PROC			= #{rqrProc}
+            , RQR_CLS			= #{rqrCls}
+            , CUST_MNGR_SN		= IF(#{custMngrSn} = '',NULL,#{custMngrSn})
+            , DVLP_MNGR_SN		= IF(#{dvlpMngrSn} = '',NULL,#{dvlpMngrSn})
+            , ATCH_FILE_ID		= #{atchFileId}
+            , RQR_DTL_ID		= #{rqrDtlId}
+            , RQR_CN			= #{rqrCn}
+            , RQR_DIV			= #{rqrDiv}
+            , DCMNT_ID			= #{dcmntId}
+            , SVC_SN			= #{svcSn}
+            , MDFR_SN			= #{loginSerno}
+            , MDFCN_DT			= NOW()
+        WHERE RQR_SN 	        = #{rqrSn}
+    </update>
+
+    <!-- 삭제 -->
+    <update id="deleteContents" parameterType="itsmRqstVO">
+        /* ItsmRqrMngMapper.deleteContents */
+        UPDATE ITSM_RQR_MNG
+        SET USE_YN 	  = 'N'
+        WHERE RQR_SN   = #{rqrSn}
+    </update>
+
+    <!-- 추가요청사항 코멘트 목록 -->
+    <select id="selectCommentList" parameterType="itsmRqstVO" resultType="itsmRqstVO">
+        /* ItsmRqrMngMapper.selectCommentList */
+        SELECT A.RQR_PROC_SN 							  rqrProcSn
+             , A.RQR_PROC_CN 							  rqrProcCn
+             , A.RQR_PROC_STTS 							  rqrProcStts
+             , ITSM_FNC_CODE_NM(A.RQR_PROC_STTS) 		  rqrProcSttsNm
+             , A.RGTR_SN								  rgtrSn
+             , FNC_USER_NM(A.RGTR_SN) 					  rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i') 	  regDt
+             , A.MDFR_SN								  mdfrSn
+             , FNC_USER_NM(A.MDFR_SN) 					  mdfrId
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')		  mdfcnDt
+             , A.PROC_ATCH_FILE_ID						  procAtchFileId
+             , (SELECT COUNT(1) 
+                  FROM ITSM_ATCH_FILE_MNG B 
+                 WHERE B.ATCH_FILE_ID = A.PROC_ATCH_FILE_ID 
+                   AND B.DEL_YN = 'N')                    delAtchCnt
+          FROM ITSM_RQR_MNG_PROC A
+         WHERE A.RQR_SN = #{rqrSn}
+           AND A.USE_YN = 'Y'
+         ORDER BY A.RQR_PROC_SN DESC
+         LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <!-- 댓글 건수 -->
+    <select id="selectCommentCount" parameterType="itsmRqstVO" resultType="int">
+        /* ItsmRqrMngMapper.selectCommentCount */
+        SELECT COUNT(1)
+          FROM ITSM_RQR_MNG_PROC
+         WHERE USE_YN 		 = 'Y'
+           AND RQR_SN = #{rqrSn}
+    </select>
+
+    <!-- 코멘트 상세 -->
+    <select id="selectCommentContents" parameterType="itsmRqstVO" resultType="itsmRqstVO">
+        /* ItsmRqrMngMapper.selectCommentContents */
+        SELECT A.RQR_PROC_SN 							  rqrProcSn
+             , A.RQR_PROC_CN 							  rqrProcCn
+             , A.RQR_PROC_STTS 							  rqrProcStts
+             , ITSM_FNC_CODE_NM(A.RQR_PROC_STTS) 		  rqrProcSttsNm
+             , A.RGTR_SN								  rgtrSn
+             , FNC_USER_NM(A.RGTR_SN) 					  rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i') 	  regDt
+             , A.MDFR_SN								  mdfrSn
+             , FNC_USER_NM(A.MDFR_SN) 					  mdfrId
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')		  mdfcnDt
+             , A.PROC_ATCH_FILE_ID						  procAtchFileId
+             , (SELECT COUNT(1) 
+                  FROM ITSM_ATCH_FILE_MNG B
+                 WHERE B.ATCH_FILE_ID = A.PROC_ATCH_FILE_ID 
+                   AND B.DEL_YN = 'N') delAtchCnt
+          FROM ITSM_RQR_MNG_PROC A
+         WHERE A.RQR_PROC_SN = #{rqrProcSn}
+    </select>
+
+    <!-- 추가요청사항 코멘트 생성 -->
+    <insert id="insertCommentContents" parameterType="itsmRqstVO">
+        /* ItsmRqrMngMapper.insertCommentContents */
+        INSERT INTO ITSM_RQR_MNG_PROC
+             ( RQR_PROC_CN
+             , RQR_SN
+             , REG_DT
+             , RGTR_SN
+             , PROC_ATCH_FILE_ID
+             , RQR_PROC_STTS
+             ) 
+        VALUES 
+             ( #{rqrProcCn}
+             , #{rqrSn}
+             , NOW()
+             , #{loginSerno}
+             , #{procAtchFileId}
+             , #{rqrProcStts}
+             )
+    </insert>
+
+    <!-- 추가요청사항 코멘트 수정 -->
+    <update id="updateCommentContents" parameterType="itsmRqstVO">
+        /* ItsmRqrMngMapper.updateCommentContents */
+        UPDATE ITSM_RQR_MNG_PROC
+           SET RQR_PROC_CN   	 	= #{rqrProcCn}
+             , MDFR_SN 		  		= #{loginSerno}
+             , MDFCN_DT 	 	  	= NOW()
+             , PROC_ATCH_FILE_ID 	= #{procAtchFileId}
+             , RQR_PROC_STTS 		= #{rqrProcStts}
+         WHERE RQR_PROC_SN 	 	    = #{rqrProcSn}
+    </update>
+
+    <!-- 추가요청사항 코멘트 삭제 -->
+    <update id="deleteCommentContents" parameterType="itsmRqstVO">
+        /* ItsmRqrMngMapper.deleteCommentContents */
+        UPDATE ITSM_RQR_MNG_PROC
+           SET USE_YN  	    = 'N'
+         WHERE RQR_PROC_SN  = #{rqrProcSn}
+    </update>
+
+    <!-- 댓글 전체 삭제 -->
+    <update id="deleteComments" parameterType="itsmRqstVO">
+        /* ItsmRqrMngMapper.deleteComments */
+        UPDATE ITSM_RQR_MNG_PROC
+           SET USE_YN = 'N'
+         WHERE RQR_SN = #{rqrSn}
+    </update>
+
+
+    <!-- 목록 -->
+    <select id="selectRqstList" parameterType="itsmConferRecVO" resultType="itsmConferRecVO">
+        /* ItsmRqrMngMapper.selectRqstList */
+        SELECT RQR_SN							rqrSn
+             , RQR_ID							rqrId
+             , RQR_ITM							rqrItm
+             , RQR_DTL							rqrDtl
+          FROM ITSM_RQR_MNG A
+         WHERE USE_YN = 'Y'
+           AND SVC_SN = #{svcSn}
+         ORDER BY RQR_SN DESC
+         LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <select id="selectRqstListCount" parameterType="itsmConferRecVO" resultType="int">
+        /* ItsmRqrMngMapper.selectRqstListCount */
+        SELECT COUNT(1)
+          FROM ITSM_RQR_MNG
+         WHERE USE_YN = 'Y'
+           AND SVC_SN = #{svcSn}
+    </select>
+
+    <select id="selectRqstDmndList" parameterType="itsmConferRecVO" resultType="itsmConferRecVO">
+        /* ItsmRqrMngMapper.selectRqstDmndList */
+        SELECT A.RQR_SN					rqrSn
+             , A.RQR_ID					rqrId
+             , A.RQR_ITM				rqrItm
+             , A.RQR_DTL				rqrDtl
+          FROM ITSM_RQR_MNG A
+          LEFT OUTER JOIN ITSM_CONFER_MNG_DMND C
+            ON A.RQR_SN = C.DMND_SN
+           AND C.USE_YN = 'Y'
+         WHERE A.USE_YN = 'Y'
+           AND C.COF_SN = #{cofSn}
+         ORDER BY C.COF_SN
+    </select>
+
+
+    <!-- 게시글 본인글 여부 -->
+    <select id="regrCheck" parameterType="itsmConferRecVO" resultType="boolean">
+        /* ItsmRqrMngMapper.regrCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                END
+          FROM ITSM_RQR_MNG
+         WHERE RQR_SN = #{rqrSn}
+    </select>
+
+    <!-- 댓글 본인글 여부 -->
+    <select id="regrCommentCheck" parameterType="itsmConferRecVO" resultType="boolean">
+        /* ItsmRqrMngMapper.regrCommentCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                END
+          FROM ITSM_RQR_MNG_PROC
+         WHERE RQR_PROC_SN = #{rqrProcSn}
+    </select>
+
+</mapper>

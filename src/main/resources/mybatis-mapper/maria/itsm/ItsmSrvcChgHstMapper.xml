@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmSrvcChgHstMapper">
+
+    <sql id="Where">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND A.CHG_TTL LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND A.CHG_TTL LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND A.SVC_SN = #{schEtc00}
+        </if>
+    </sql>
+
+    <sql id="Main">
+        AND A.SVC_SN = #{schEtc00}
+    </sql>
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmSysStsVO" resultType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.selectList */
+        SELECT A.CHG_SN								AS chgSn
+        , A.CHG_TTL							AS chgTtl
+        , A.CHG_CN								AS chgCn
+        , A.SVC_SN							AS svcSn
+        , ITSM_FNC_SVC_NM(A.SVC_SN)							AS svcNm
+        , A.RGTR_SN                    		AS rgtrSn
+        , A.MDFCN_DT
+        , A.MDFR_SN                    	    AS mdfrSn
+        , FNC_USER_NM(A.RGTR_SN)  				AS rgtrNm
+        , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')    AS regDt
+        , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')  AS mdfcnDt
+        , (SELECT COUNT(1) FROM ITSM_IMPRV_DMND B WHERE B.CHG_SN = A.CHG_SN AND B.CHG_HST_REG_YN = 'Y' AND B.PRCS_GBN != 'PG07') AS cnt
+        FROM ITSM_SRVC_CHG_HST A
+        WHERE A.USE_YN ='Y'
+        <include refid="Where"/>
+        ORDER BY A.CHG_SN DESC
+        <if test="excelYn ==null or excelYn == ''">
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+    </select>
+
+    <select id="selectCount" parameterType="itsmSysStsVO" resultType="int">
+        /* ItsmSrvcChgHstMapper.selectCount */
+        SELECT COUNT(1)
+        FROM ITSM_SRVC_CHG_HST A
+        WHERE A.USE_YN ='Y'
+        <include refid="Where"/>
+    </select>
+
+    <!-- 상세 -->
+    <select id="selectContents" parameterType="itsmSysStsVO" resultType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.selectContents */
+        SELECT A.CHG_SN								AS chgSn
+             , A.CHG_TTL							AS chgTtl
+             , A.CHG_CN								AS chgCn
+             , A.SVC_SN							AS svcSn
+             , ITSM_FNC_SVC_NM(A.SVC_SN)							AS svcNm
+             , A.RGTR_SN                    		AS rgtrSn
+             , A.MDFCN_DT
+             , A.MDFR_SN                    	    AS mdfrSn
+             , FNC_USER_NM(A.RGTR_SN)  				AS rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')    AS regDt
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')  AS mdfcnDt
+        FROM ITSM_SRVC_CHG_HST A
+        WHERE A.USE_YN  ='Y'
+          AND A.CHG_SN = #{chgSn}
+    </select>
+
+    <!-- 생성 -->
+    <insert id="insertContents" parameterType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.insertContents */
+        <selectKey keyProperty="chgSn" order="AFTER" resultType="String" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO ITSM_SRVC_CHG_HST(
+        CHG_TTL
+        , CHG_CN
+        , SVC_SN
+        , REG_DT
+        , RGTR_SN
+        ) VALUES (
+        #{chgTtl      ,jdbcType=VARCHAR}
+        , #{chgCn      ,jdbcType=VARCHAR}
+        , #{svcSn   	,jdbcType=VARCHAR}
+        , NOW()
+        , #{loginSerno}
+        )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="updateContents" parameterType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.updateContents */
+        UPDATE ITSM_SRVC_CHG_HST
+        SET CHG_TTL			= #{chgTtl       ,jdbcType=VARCHAR}
+          , CHG_CN			= #{chgCn}
+          , SVC_SN			= #{svcSn   	,jdbcType=VARCHAR}
+          , MDFCN_DT			= NOW()
+        WHERE CHG_SN 	   = #{chgSn}
+    </update>
+
+    <!-- 삭제 -->
+    <update id="deleteContents" parameterType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.deleteContents */
+        UPDATE ITSM_SRVC_CHG_HST
+        SET USE_YN 	  = 'N'
+        WHERE CHG_SN   = #{chgSn}
+    </update>
+
+    <!-- 추가요청사항 코멘트 목록 -->
+    <select id="selectCommentList" parameterType="itsmSysStsVO" resultType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.selectCommentList */
+        SELECT A.RQR_PROC_SN 							  AS rqrProcSn
+             , A.RQR_PROC_CN 							  AS rqrProcCn
+             , A.RQR_PROC_STTS 							  AS rqrProcStts
+             , ITSM_FNC_CODE_NM(A.RQR_PROC_STTS) 				  AS rqrProcSttsNm
+             , A.RGTR_SN								  AS rgtrSn
+             , FNC_USER_NM(A.RGTR_SN) 					  AS rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i') 	  AS regDt
+             , A.MDFR_SN								  AS mdfrSn
+             , FNC_USER_NM(A.MDFR_SN) 					  AS mdfrId
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')		  AS mdfcnDt
+             , A.PROC_ATCH_FILE_ID						 	  AS procAtchFileId
+             , (SELECT COUNT(1) FROM itsm_atch_file_mng B WHERE B.ATCH_FILE_ID = A.PROC_ATCH_FILE_ID AND B.DEL_YN = 'N') AS delAtchCnt
+        FROM ITSM_SRVC_CHG_HST_PROC A
+        WHERE A.CHG_SN 	 = #{chgSn}
+          AND A.USE_YN = 'Y'
+        ORDER BY A.RQR_PROC_SN DESC
+        LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <!-- 댓글 건수 -->
+    <select id="selectCommentCount" parameterType="itsmSysStsVO" resultType="int">
+        /* ItsmSrvcChgHstMapper.selectCommentCount */
+        SELECT COUNT(1)
+        FROM ITSM_SRVC_CHG_HST_PROC
+        WHERE USE_YN 		 = 'Y'
+          AND CHG_SN = #{chgSn}
+    </select>
+
+    <!-- 코멘트 상세 -->
+    <select id="selectCommentContents" parameterType="itsmSysStsVO" resultType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.selectCommentContents */
+        SELECT A.RQR_PROC_SN 							  AS rqrProcSn
+             , A.RQR_PROC_CN 							  AS rqrProcCn
+             , A.RQR_PROC_STTS 							  AS rqrProcStts
+             , ITSM_FNC_CODE_NM(A.RQR_PROC_STTS) 				  AS rqrProcSttsNm
+             , A.RGTR_SN								  AS rgtrSn
+             , FNC_USER_NM(A.RGTR_SN) 					  AS rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i') 	  AS regDt
+             , A.MDFR_SN								  AS mdfrSn
+             , FNC_USER_NM(A.MDFR_SN) 					  AS mdfrId
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')		  AS mdfcnDt
+             , A.PROC_ATCH_FILE_ID						 	  AS procAtchFileId
+             , (SELECT COUNT(1) FROM itsm_atch_file_mng B WHERE B.ATCH_FILE_ID = A.PROC_ATCH_FILE_ID AND B.DEL_YN = 'N') AS delAtchCnt
+        FROM ITSM_SRVC_CHG_HST_PROC A
+        WHERE A.RQR_PROC_SN = #{rqrProcSn}
+    </select>
+
+    <!-- 추가요청사항 코멘트 생성 -->
+    <insert id="insertCommentContents" parameterType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.insertCommentContents */
+        INSERT INTO ITSM_SRVC_CHG_HST_PROC(
+                                            RQR_PROC_CN
+                                          , CHG_SN
+                                          , REG_DT
+                                          , RGTR_SN
+                                          , PROC_ATCH_FILE_ID
+                                          , RQR_PROC_STTS
+        ) VALUES (
+                     #{rqrProcCn  	      ,jdbcType=VARCHAR}
+                 , #{chgSn          ,jdbcType=VARCHAR}
+                 , NOW()
+                 , #{loginSerno 	  ,jdbcType=VARCHAR}
+                 , #{procAtchFileId    ,jdbcType=VARCHAR}
+                 , #{rqrProcStts    ,jdbcType=VARCHAR}
+                 )
+    </insert>
+
+    <!-- 추가요청사항 코멘트 수정 -->
+    <update id="updateCommentContents" parameterType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.updateCommentContents */
+        UPDATE ITSM_SRVC_CHG_HST_PROC
+        SET RQR_PROC_CN   	 	= #{rqrProcCn   	 	,jdbcType=VARCHAR}
+          , MDFR_SN 		  		= #{loginSerno  	,jdbcType=VARCHAR}
+          , MDFCN_DT 	 	  	= NOW()
+          , PROC_ATCH_FILE_ID 	= #{procAtchFileId  ,jdbcType=VARCHAR}
+          , RQR_PROC_STTS 		= #{rqrProcStts  ,jdbcType=VARCHAR}
+        WHERE RQR_PROC_SN 	 	  = #{rqrProcSn    ,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 추가요청사항 코멘트 삭제 -->
+    <update id="deleteCommentContents" parameterType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.deleteCommentContents */
+        UPDATE ITSM_SRVC_CHG_HST_PROC
+        SET USE_YN  	   = 'N'
+        WHERE RQR_PROC_SN     = #{rqrProcSn}
+    </update>
+
+    <!-- 댓글 전체 삭제 -->
+    <update id="deleteComments" parameterType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.deleteComments */
+        UPDATE ITSM_SRVC_CHG_HST_PROC
+        SET USE_YN  = 'N'
+        WHERE CHG_SN = #{chgSn}
+    </update>
+
+    <!-- 엑셀 -->
+    <select id="selectExcelList" parameterType="itsmSysStsVO" resultType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.selectExcelList */
+        SELECT
+        ROW_NUMBER() OVER() 												AS RNUM
+        , TB.CHG_SN												    	AS chgSn
+        , TB.DMND_TTL														AS dmndTtl
+        , ITSM_FNC_CODE_NM(TB.DMND_CD)												AS dmndCdNm
+        , DATE_FORMAT(TB.REG_DT, '%Y.%m.%d') 								AS regDt
+        , IFNULL(FNC_USER_NM(TB.MNGR_ID),'-') 								AS mngrNm
+        FROM ITSM_SRVC_CHG_HST TB
+        WHERE TB.USE_YN ='Y'
+        <include refid="Where"/>
+        ORDER BY TB.CHG_SN DESC
+        LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <!-- 목록 -->
+    <select id="selectMainList" parameterType="itsmSysStsVO" resultType="itsmSysStsVO">
+        /* ItsmSrvcChgHstMapper.selectMainList */
+        SELECT A.CHG_SN								AS chgSn
+        , A.CHG_TTL							AS chgTtl
+        , A.CHG_CN								AS chgCn
+        , A.SVC_SN							AS svcSn
+        , ITSM_FNC_SVC_NM(A.SVC_SN)							AS svcNm
+        , A.RGTR_SN                    		AS rgtrSn
+        , A.MDFCN_DT
+        , A.MDFR_SN                    	    AS mdfrSn
+        , FNC_USER_NM(A.RGTR_SN)  				AS rgtrNm
+        , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')    AS regDt
+        , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')  AS mdfcnDt
+        FROM ITSM_SRVC_CHG_HST A
+        WHERE A.USE_YN ='Y'
+        <include refid="Main"/>
+        ORDER BY A.CHG_SN DESC
+        LIMIT 5
+    </select>
+
+
+    <!-- 게시글 본인글 여부 -->
+    <select id="regrCheck" parameterType="itsmSysStsVO" resultType="boolean">
+        /* ItsmSrvcChgHstMapper.regrCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                   END
+          FROM ITSM_SRVC_CHG_HST
+         WHERE CHG_SN = #{chgSn}
+    </select>
+
+
+</mapper>

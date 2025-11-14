@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.operm.pop.mapper.ItsmPopMapperTemp">
+
+    <sql id="Where">
+		<if test="searchKeyword !=null and searchKeyword !=''">
+			<if test="searchCondition ==null or searchCondition ==''">
+				AND (UPPER(TB.POPUP_TTL_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+						OR UPPER(TB.BLTNB_CN) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+			</if>
+			<if test="searchCondition ==1">
+				AND UPPER(TB.POPUP_TTL_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test="searchCondition ==2">
+				AND UPPER(TB.BLTNB_CN) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+	 	</if>
+	 	<if test="schEtc00 !=null and schEtc00 !=''">
+	 		AND TB.POPUP_YN = #{schEtc00}
+	 	</if>
+		<if test="schEtc01 !=null and schEtc01 !=''">
+			<if test="searchStartDate !=null and searchStartDate !='' and searchEndDate !=null and searchEndDate !=''">
+				<choose>
+				<when test="schEtc01 == 0 ">
+					AND TB.REG_DT <![CDATA[ >= ]]> DATE_FORMAT(CONCAT(#{searchStartDate},' 00:00:00'),'%Y.%m.%d %H:%i:%s')
+					AND TB.REG_DT <![CDATA[ <= ]]> DATE_FORMAT(CONCAT(#{searchEndDate},' 23:59:59'),'%Y.%m.%d %H:%i:%s')
+				</when>
+			 	<when test="schEtc01 == 1 ">
+			 		<![CDATA[
+				 		AND (
+				 			( #{searchStartDate} <= TB.PSTG_BGNG_DT
+				 				AND TB.PSTG_BGNG_DT<= #{searchEndDate} )
+				 			OR ( #{searchStartDate} <= TB.PSTG_END_DT
+				 				AND TB.PSTG_END_DT <= #{searchEndDate})
+				 			OR (TB.PSTG_BGNG_DT <= #{searchStartDate}
+				 				AND #{searchEndDate} <= TB.PSTG_END_DT )
+				 			OR	TB.POPUP_PSTG_PRD_YN = 'N'
+				 			)
+		 			]]>
+				</when>
+				</choose>
+ 			</if>
+		</if>
+	</sql>
+	
+	<!-- 목록(페이징) -->
+	<select id="selectList" parameterType="itsmPopVO" resultType="itsmPopVO">
+		/* SmPopMapper.selectList */
+		SELECT TB.POPUP_SN 								popupSn
+		 	 , DATE_FORMAT(TB.REG_DT, '%Y.%m.%d') 		regDt
+		 	 , DATE_FORMAT(TB.MDFCN_DT, '%Y.%m.%d') 		mdfcnDt
+		 	 , DATE_FORMAT(TB.PSTG_BGNG_DT, '%Y.%m.%d')	pstgBgngDt
+		 	 , DATE_FORMAT(TB.PSTG_END_DT, '%Y.%m.%d') 	pstgEndDt
+		 	 , FNC_USER_NM(TB.RGTR_SN) 					regrNm
+		 	 , ITSM_FNC_USER_ID(TB.RGTR_SN) 					rgtrId
+		 	 , ITSM_FNC_CODE_NM(TB.SE_VAL) 						seValNm
+		 	 , ITSM_FNC_CODE_NM(TB.POPUP_TRGT_CD) 				popupTrgtCdNm
+			 , TB.POPUP_TTL_NM 							popupTtlNm
+			 , TB.POPUP_CN 								popupCn
+			 , TB.RGTR_SN 								rgtrSn
+			 , TB.MDFR_SN 								mdfrSn
+			 , TB.POPUP_WDTH_SZ_VAL						popupWdthSzVal
+			 , TB.POPUP_HGHT_SZ_VAL						popupHghtSzVal
+			 , TB.RPRS_IMG_FILE_ID						rprsImgFileId
+			 , TB.POPUP_TRGT_CD							popupTrgtCd
+			 , TB.POPUP_YN								popupYn
+			 , TB.POPUP_UPND_MARGN_VAL					popupUpndMargnVal
+			 , TB.POPUP_LSD_MARGN_VAL					popupLsdMargnVal
+			 , TB.SE_VAL								seVal
+			 , TB.POPUP_PSTG_PRD_YN						popupPstgPrdYn
+		  FROM ITSM_POPUP_MNG	TB
+		 WHERE USE_YN ='Y'
+		<include refid="Where"/>
+   	    ORDER BY POPUP_SN DESC
+		LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+	</select>
+	
+	<!-- 건수 -->
+	<select id="selectCount" parameterType="itsmPopVO" resultType="int">
+		/* SmPopMapper.selectCount */
+		SELECT COUNT(1)
+		FROM ITSM_POPUP_MNG  TB
+		WHERE TB.USE_YN ='Y'
+	 	<include refid="Where"/>
+	</select>
+	
+	<!-- 메인리스트 -->
+	<select id="selectMainPopup" parameterType="itsmPopVO" resultType="itsmPopVO">
+		/* SmPopMapper.selectMainPopup */
+		SELECT TB.POPUP_SN 								popupSn
+			 , TB.POPUP_TTL_NM							popupTtlNm
+			 , TB.POPUP_CN								popupCn
+			 , TB.RGTR_SN								rgtrSn
+			 , TB.MDFR_SN								mdfrSn
+			 , DATE_FORMAT(TB.REG_DT, '%Y.%m.%d')			regDt
+			 , DATE_FORMAT(TB.MDFCN_DT, '%Y.%m.%d')		mdfcnDt
+			 , FNC_USER_NM(TB.RGTR_SN) 					regrNm
+			 , ITSM_FNC_USER_ID(TB.RGTR_SN) 					rgtrId
+			 , TB.POPUP_WDTH_SZ_VAL						popupWdthSzVal
+			 , TB.POPUP_HGHT_SZ_VAL						popupHghtSzVal
+			 , TB.POPUP_UPND_MARGN_VAL					popupUpndMargnVal
+			 , TB.POPUP_LSD_MARGN_VAL					popupLsdMargnVal 
+			 , TB.POPUP_TRGT_CD							popupTrgtCd          
+			 , TB.RPRS_IMG_FILE_ID						rprsImgFileId
+			 , ITSM_FNC_FILE_SEQO(TB.RPRS_IMG_FILE_ID, 'MAX')	fileSeqo
+		FROM
+			ITSM_POPUP_MNG TB
+		WHERE	TB.SE_VAL 		= #{seVal}
+			AND	TB.USE_YN 		='Y'
+			AND	TB.POPUP_YN 	='Y'
+			AND (
+				(TB.PSTG_BGNG_DT <![CDATA[ <= ]]> DATE_FORMAT(NOW(),'%Y.%m.%d')
+					AND TB.PSTG_END_DT <![CDATA[ >= ]]> DATE_FORMAT(NOW(),'%Y.%m.%d'))
+				 OR	TB.POPUP_PSTG_PRD_YN = 'N'
+				)
+		ORDER BY TB.POPUP_SN DESC
+	</select>
+	
+	<!-- 상세 -->
+	<select id="selectContents" parameterType="itsmPopVO" resultType="itsmPopVO">
+		/* SmPopMapper.selectContents */
+		SELECT TB.POPUP_SN 										popupSn
+			 , TB.POPUP_TTL_NM									popupTtlNm
+			 , TB.POPUP_CN										popupCn
+			 , TB.RGTR_SN										rgtrSn
+			 , TB.MDFR_SN										mdfrSn
+			 , DATE_FORMAT(TB.REG_DT, '%Y.%m.%d')					regDt
+			 , DATE_FORMAT(TB.MDFCN_DT, '%Y.%m.%d')				mdfcnDt
+			 , FNC_USER_NM(TB.RGTR_SN)							regrNm
+			 , ITSM_FNC_USER_ID(TB.RGTR_SN)							rgtrId
+			 , ITSM_FNC_USER_ID(TB.MDFR_SN)							mdfrId
+			 , DATE_FORMAT(TB.PSTG_BGNG_DT, '%Y.%m.%d')			pstgBgngDt 
+			 , DATE_FORMAT(TB.PSTG_END_DT, '%Y.%m.%d')			pstgEndDt 
+			 , TB.POPUP_PSTG_PRD_YN								popupPstgPrdYn
+			 , TB.POPUP_WDTH_SZ_VAL								popupWdthSzVal
+			 , TB.POPUP_HGHT_SZ_VAL								popupHghtSzVal
+			 , TB.POPUP_UPND_MARGN_VAL							popupUpndMargnVal
+			 , TB.POPUP_LSD_MARGN_VAL							popupLsdMargnVal 
+			 , TB.RPRS_IMG_FILE_ID								rprsImgFileId
+			 , TB.POPUP_TRGT_CD									popupTrgtCd          
+		 	 , ITSM_FNC_CODE_NM(TB.POPUP_TRGT_CD)						popupTrgtCdNm
+			 , TB.POPUP_YN										popupYn              
+			 , TB.SE_VAL										seVal
+			 , ITSM_FNC_CODE_NM(TB.SE_VAL)								seValNm
+			 , ITSM_FNC_FILE_SEQO(TB.RPRS_IMG_FILE_ID, 'MAX')			fileSeqo
+		FROM 
+		    ITSM_POPUP_MNG TB
+		WHERE TB.USE_YN ='Y'	   
+			AND TB.POPUP_SN = #{popupSn}
+	</select>
+	
+	<!-- 생성 -->
+	<insert id="insertContents" parameterType="itsmPopVO">
+		/* SmPopMapper.insertContents */
+		INSERT INTO ITSM_POPUP_MNG(				
+			  POPUP_TTL_NM
+			, POPUP_CN
+			, BLTNB_CN
+			, REG_DT
+			, RGTR_SN
+			<if test='popupPstgPrdYn == "Y"'>
+			, PSTG_BGNG_DT
+			, PSTG_END_DT
+			</if>
+			<if test="popupWdthSzVal != '' and popupWdthSzVal != 0">
+			, POPUP_WDTH_SZ_VAL
+			</if>
+			<if test="popupHghtSzVal != '' and popupHghtSzVal != 0">
+			, POPUP_HGHT_SZ_VAL
+			</if>
+			, RPRS_IMG_FILE_ID		
+			, POPUP_TRGT_CD			
+			, POPUP_YN				
+			, POPUP_UPND_MARGN_VAL	
+			, POPUP_LSD_MARGN_VAL
+			, SE_VAL
+			, POPUP_PSTG_PRD_YN								
+		) VALUES (
+			  #{popupTtlNm			,jdbcType=VARCHAR}
+			, #{popupCn				,jdbcType=VARCHAR}
+			, #{bltnbCn				,jdbcType=VARCHAR}
+			, NOW()
+			, #{loginSerno			,jdbcType=VARCHAR}
+			<if test='popupPstgPrdYn == "Y"'>
+			, #{pstgBgngDt			,jdbcType=VARCHAR}
+			, #{pstgEndDt   		,jdbcType=VARCHAR}
+			</if>
+			<if test="popupWdthSzVal != '' and popupWdthSzVal != 0">
+			, IFNULL(#{popupWdthSzVal		,jdbcType=VARCHAR},0)
+			</if>
+			<if test="popupHghtSzVal != '' and popupHghtSzVal != 0">
+			, IFNULL(#{popupHghtSzVal		,jdbcType=VARCHAR},0)
+			</if>
+			, #{rprsImgFileId 		,jdbcType=VARCHAR}    
+			, #{popupTrgtCd   		,jdbcType=VARCHAR}    
+			, #{popupYn       		,jdbcType=VARCHAR}    
+			, #{popupUpndMargnVal	,jdbcType=VARCHAR}
+			, #{popupLsdMargnVal    ,jdbcType=VARCHAR}
+			, #{seVal				,jdbcType=VARCHAR}
+			, #{popupPstgPrdYn		,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateContents" parameterType="itsmPopVO">
+		/* SmPopMapper.updateContents */
+		UPDATE ITSM_POPUP_MNG
+		   SET 
+      		  POPUP_TTL_NM 			= #{popupTtlNm			,jdbcType=VARCHAR} 					
+      		, POPUP_CN 				= #{popupCn				,jdbcType=VARCHAR}
+      		, BLTNB_CN 				= #{bltnbCn				,jdbcType=VARCHAR}
+      		<if test='popupPstgPrdYn == "Y"'>
+      		, PSTG_BGNG_DT			= #{pstgBgngDt			,jdbcType=VARCHAR} 
+      		, PSTG_END_DT   		= #{pstgEndDt   		,jdbcType=VARCHAR}
+      		</if>
+			, MDFR_SN 				= #{loginSerno			,jdbcType=VARCHAR} 	
+      		, MDFCN_DT 				= NOW()
+      		<if test="popupWdthSzVal != '' and popupWdthSzVal != 0">
+      		, POPUP_WDTH_SZ_VAL		= IFNULL(#{popupWdthSzVal	,jdbcType=VARCHAR},0)
+      		</if>
+      		<if test="popupHghtSzVal != '' and popupHghtSzVal != 0">
+			, POPUP_HGHT_SZ_VAL		= IFNULL(#{popupHghtSzVal  	,jdbcType=VARCHAR},0)
+			</if>
+			, RPRS_IMG_FILE_ID		= #{rprsImgFileId		,jdbcType=VARCHAR}      
+			, POPUP_TRGT_CD			= #{popupTrgtCd  		,jdbcType=VARCHAR}      
+			, POPUP_YN				= #{popupYn      		,jdbcType=VARCHAR}      
+			, POPUP_UPND_MARGN_VAL	= #{popupUpndMargnVal	,jdbcType=VARCHAR} 
+			, POPUP_LSD_MARGN_VAL	= #{popupLsdMargnVal    ,jdbcType=VARCHAR}
+			, SE_VAL				= #{seVal    			,jdbcType=VARCHAR}
+			, POPUP_PSTG_PRD_YN		= #{popupPstgPrdYn    	,jdbcType=VARCHAR}
+      	WHERE POPUP_SN 	= #{popupSn}
+	</update>
+	
+	<!-- 삭제 -->
+	<update id="deleteContents" parameterType="itsmPopVO">
+		/* SmPopMapper.deleteContents */
+		UPDATE ITSM_POPUP_MNG
+			SET
+			  USE_YN	= 'N'
+			, MDFR_SN 	= #{loginSerno,	jdbcType=VARCHAR} 	
+      		, MDFCN_DT 	= NOW()
+		WHERE POPUP_SN 	= #{popupSn}
+	</update>
+
+</mapper>

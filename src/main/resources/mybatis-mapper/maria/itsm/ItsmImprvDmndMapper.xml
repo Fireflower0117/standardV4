@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmImprvDmndMapper">
+
+    <sql id="Where">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (UPPER(A.DMND_TTL) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(FNC_USER_NM(A.RQSTR_ID)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(FNC_USER_NM(A.USER_SERNO)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%'))
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER(A.DMND_TTL) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER(FNC_USER_NM(A.RQSTR_ID)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==3">
+                AND UPPER(FNC_USER_NM(A.USER_SERNO)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND A.SVC_SN = #{schEtc00}
+        </if>
+        <if test="schEtc01 !=null and schEtc01 !=''">
+            AND A.DMND_CD = #{schEtc01}
+        </if>
+        <if test="schEtc02 !=null and schEtc02 !=''">
+            AND A.PRCS_CD = #{schEtc02}
+        </if>
+        <if test="searchStartDate !=null and searchStartDate !=''">
+            AND A.DMND_DT <![CDATA[ >= ]]> DATE_FORMAT(CONCAT(#{searchStartDate},' 00:00:00'),'%Y.%m.%d %H:%i:%s')
+        </if>
+        <if test="searchEndDate !=null and searchEndDate !=''">
+            AND A.DMND_DT <![CDATA[ <= ]]> DATE_FORMAT(CONCAT(#{searchEndDate},' 23:59:59'),'%Y.%m.%d %H:%i:%s')
+        </if>
+    </sql>
+
+    <sql id="Where2">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (UPPER(A.USER_NM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                 OR 	UPPER((A.MNGR_SOSOK)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                 OR 	UPPER((A.MNGR_TEL)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%'))
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER((A.USER_NM)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER((A.MNGR_SOSOK)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==3">
+                AND UPPER((A.MNGR_TEL)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+    </sql>
+
+    <sql id="Main">
+        AND A.SVC_SN = #{schEtc00}
+    </sql>
+
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmImpFncVO" resultType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.selectList */
+        SELECT A.IMPRV_SN                   		                         imprvSn
+             , A.DMND_TTL                    		                         dmndTtl
+             , A.DMND_CD                     		                         dmndCd
+             , ITSM_FNC_CODE_NM(A.DMND_CD)             	                     dmndCdNm
+             , A.PRCS_CD                     		                         prcsCd
+             , ITSM_FNC_CODE_NM(A.PRCS_CD)             	                     prcsCdNm
+             , A.PRCS_GBN                     		                         prcsGbn
+             , ITSM_FNC_CODE_NM(A.PRCS_GBN)             	                 prcsGbnNm
+             , DATE_FORMAT(A.PRCS_DT, '%Y.%m.%d') 	                         prcsDt
+             , DATE_FORMAT(A.DMND_DT, '%Y.%m.%d')	                         dmndDt
+             , DATE_FORMAT(A.PRNMNT_DT, '%Y.%m.%d')	                         prnmntDt
+             , A.DMND_RMK                     		                         dmndRmk
+             , A.RQSTR_ID                    		                         rqstrId
+             , FNC_USER_NM(A.RQSTR_ID)   				                     rqstrNm
+             , A.PRCS_CN                     		                         prcsCn
+             , A.USER_SERNO                    		                         userSn
+             , FNC_USER_NM(A.USER_SERNO)      		                         userNm
+             , A.SVC_SN                    		                             svcSn
+             , ITSM_FNC_SVC_NM(A.SVC_SN)               		                 svcNm
+             , A.ATCH_FILE_ID              			                         atchFileId
+             , A.RGTR_SN                    		                         rgtrSn
+             , FNC_USER_NM(A.RGTR_SN)  				                         rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d') 	                         regDt
+             , (SELECT COUNT(1)
+                  FROM ITSM_IMPRV_DMND_COMMENT B
+                 WHERE B.IMPRV_SN = A.IMPRV_SN
+                   AND B.USE_YN = 'Y')				                         comCnt
+             , (SELECT COUNT(1)
+                  FROM ITSM_IMPRV_DMND_COMMENT B
+                 WHERE B.IMPRV_SN = A.IMPRV_SN
+                   AND B.USE_YN = 'Y'
+                   AND NOW() - INTERVAL 1 DAY <![CDATA[ <= ]]> B.REG_DT
+                   AND B.REG_DT <![CDATA[ <= ]]> NOW())			            newComCnt
+         FROM ITSM_IMPRV_DMND A
+       <where>
+           <include refid="Where"/>
+           AND A.USE_YN ='Y'
+       </where>
+        ORDER BY A.IMPRV_SN DESC
+        <if test="excelYn ==null or excelYn == ''">
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+    </select>
+
+    <select id="selectCount" parameterType="itsmImpFncVO" resultType="int">
+        /* ItsmImprvDmndMapper.selectCount */
+        SELECT COUNT(1)
+          FROM ITSM_IMPRV_DMND A
+        <where>
+            <include refid="Where"/>
+            AND  A.USE_YN ='Y'
+        </where>
+    </select>
+
+    <!-- 상세 -->
+    <select id="selectContents" parameterType="itsmImpFncVO" resultType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.selectContents */
+        SELECT A.IMPRV_SN							 imprvSn
+             , A.DMND_TTL							 dmndTtl
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d') 	 regDt
+             , DATE_FORMAT(A.PRCS_DT, '%Y.%m.%d') 	 prcsDt
+             , A.DMND_CD							 dmndCd
+             , A.DMND_CN							 dmndCn
+             , ITSM_FNC_CODE_NM(A.DMND_CD)			 dmndCdNm
+             , A.PRCS_CD							 prcsCd
+             , ITSM_FNC_CODE_NM(A.PRCS_CD)			 prcsCdNm
+             , A.PRCS_GBN                     		 prcsGbn
+             , ITSM_FNC_CODE_NM(A.PRCS_GBN)          prcsGbnNm
+             , A.DMND_RMK							 dmndRmk
+             , DATE_FORMAT(A.DMND_DT, '%Y.%m.%d')	 dmndDt
+             , DATE_FORMAT(A.PRNMNT_DT, '%Y.%m.%d')	 prnmntDt
+             , A.RQSTR_ID							 rqstrId
+             , FNC_USER_NM(A.RQSTR_ID) 				 rqstrNm
+             , A.PRCS_CN							 prcsCn
+             , A.SVC_SN                    		     svcSn
+             , ITSM_FNC_SVC_NM(A.SVC_SN)             svcNm
+             , A.UPR_MENU_CD                         uprMenuCd
+             , A.MENU_CD                    		 menuCd
+             , CASE
+                 WHEN A.MENU_CD = 'main'
+                     THEN '메인'
+                 WHEN A.MENU_CD = 'common'
+                     THEN '공통'
+                 ELSE D.MENU_NM
+                 END                                 menuNm
+             , A.ATCH_FILE_ID						 atchFileId
+             , A.RGTR_SN						     rgtrSn
+             , A.USER_SERNO							 userSerno
+             , FNC_USER_NM(A.USER_SERNO)			 userNm
+             , C.COF_SN								 cofSn
+          FROM ITSM_IMPRV_DMND A
+          LEFT OUTER JOIN ITSM_CONFER_MNG_DMND C
+            ON A.IMPRV_SN = C.DMND_SN
+           AND C.MENU_CD = 'impFnc'
+           AND C.USE_YN = 'Y'
+          LEFT OUTER JOIN T_MENU_MNG D
+            ON A.MENU_CD = D.MENU_CD
+           AND D.USE_YN = 'Y'
+         WHERE A.USE_YN  ='Y'
+           AND A.IMPRV_SN = #{imprvSn}
+    </select>
+
+    <!-- 생성 -->
+    <insert id="insertContents" parameterType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.insertContents */
+        <selectKey resultType="String" keyProperty="imprvSn" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO ITSM_IMPRV_DMND
+             ( DMND_TTL
+             , DMND_CD
+             , DMND_CN
+             , DMND_RMK
+             , RQSTR_ID
+             , ATCH_FILE_ID
+             , REG_DT
+             , RGTR_SN
+             , SVC_SN
+             , DMND_DT
+             )
+        VALUES
+             ( #{dmndTtl}
+             , #{dmndCd}
+             , #{dmndCn}
+             , #{dmndRmk}
+             , #{loginSerno}
+             , #{atchFileId}
+             , NOW()
+             , #{loginSerno}
+             , #{svcSn}
+             , #{dmndDt}
+             )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="updateContents" parameterType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.updateContents */
+        UPDATE ITSM_IMPRV_DMND
+           SET DMND_TTL         = #{dmndTtl}
+             , DMND_CD          = #{dmndCd}
+             , DMND_CN          = #{dmndCn}
+             , DMND_DT          = #{dmndDt}
+             , DMND_RMK         = #{dmndRmk}
+             , RQSTR_ID         = #{loginSerno}
+             , ATCH_FILE_ID		= #{atchFileId}
+             , MDFR_SN			= #{loginSerno}
+             , SVC_SN			= #{svcSn}
+             , MDFCN_DT			= NOW()
+         WHERE IMPRV_SN 	    = #{imprvSn}
+    </update>
+
+    <!-- 삭제 -->
+    <update id="deleteContents" parameterType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.deleteContents */
+        UPDATE ITSM_IMPRV_DMND
+           SET USE_YN 	  = 'N'
+         WHERE IMPRV_SN   = #{imprvSn}
+    </update>
+
+    <!-- 추가요청사항 코멘트 목록 -->
+    <select id="selectComList" parameterType="itsmImpFncVO" resultType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.selectComList */
+        SELECT A.CMNT_SN 								         cmntSn
+             , A.CMNT_CN 								         cmntCn
+             , A.RGTR_SN								         rgtrSn
+             , FNC_USER_NM(A.RGTR_SN) 					         regrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i') 	         regDt
+             , A.MDFR_SN								         mdfrSn
+             , FNC_USER_NM(A.MDFR_SN) 					         mdfrId
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')		         mdfcnDt
+             , A.CMNT_ATCH_FILE_ID						 	     cmntAtchFileId
+             , (SELECT COUNT(1) 
+                  FROM itsm_atch_file_mng B
+                 WHERE B.ATCH_FILE_ID = A.CMNT_ATCH_FILE_ID
+                   AND B.DEL_YN = 'N')                           delAtchCnt
+          FROM ITSM_IMPRV_DMND_COMMENT A
+         WHERE A.IMPRV_SN 	 = #{imprvSn}
+           AND A.USE_YN = 'Y'
+         ORDER BY A.CMNT_SN DESC
+    </select>
+
+    <!-- 추가요청사항 코멘트 생성 -->
+    <insert id="comInsertContents" parameterType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.comInsertContents */
+        INSERT INTO ITSM_IMPRV_DMND_COMMENT
+             ( CMNT_CN
+             , IMPRV_SN
+             , REG_DT
+             , RGTR_SN
+             , CMNT_ATCH_FILE_ID
+             )
+        VALUES
+             ( #{cmntCn}
+             , #{imprvSn}
+             , NOW()
+             , #{loginSerno}
+             , #{cmntAtchFileId}
+             )
+    </insert>
+
+    <!-- 추가요청사항 코멘트 수정 -->
+    <update id="comUpdateContents" parameterType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.comUpdateContents */
+        UPDATE ITSM_IMPRV_DMND_COMMENT
+          SET CMNT_CN   	 	 = #{cmntCn}
+            , MDFR_SN 		 	 = #{loginSerno}
+            , MDFCN_DT 	 	     = NOW()
+            , CMNT_ATCH_FILE_ID  = #{cmntAtchFileId}
+        WHERE CMNT_SN 	 	     = #{cmntSn}
+    </update>
+
+    <!-- 추가요청사항 코멘트 삭제 -->
+    <update id="comDeleteContents" parameterType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.comDeleteContents */
+        UPDATE ITSM_IMPRV_DMND_COMMENT
+           SET USE_YN  	   = 'N'
+         WHERE CMNT_SN     = #{cmntSn}
+    </update>
+
+
+
+    <!-- 처리상태 적용 -->
+    <update id="prcsCdUpdate" parameterType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.prcsCdUpdate */
+        UPDATE ITSM_IMPRV_DMND_CN
+           SET PRCS_CD    = 'PO03'
+             , PRCS_CN	  = #{prcsCn}
+             , PRCS_DT	  = NOW()
+         WHERE DMND_CN_SN = #{dmndCnSn}
+    </update>
+
+    <!-- 개발담당자 배정 -->
+    <update id="updateMngr" parameterType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.updateMngr */
+        UPDATE ITSM_IMPRV_DMND
+           SET USER_SERNO = #{userSn}
+         WHERE IMPRV_SN   = #{imprvSn}
+    </update>
+
+
+    <!-- 목록 -->
+    <select id="selectMainList" parameterType="itsmImpFncVO" resultType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.selectMainList */
+        SELECT A.IMPRV_SN                   		 imprvSn
+             , A.DMND_TTL                    		 dmndTtl
+             , A.DMND_CD                     		 dmndCd
+             , ITSM_FNC_CODE_NM(A.DMND_CD)           dmndCdNm
+             , A.PRCS_CD                     		 prcsCd
+             , ITSM_FNC_CODE_NM(A.PRCS_CD)           prcsCdNm
+             , A.PRCS_GBN                     		 prcsGbn
+             , ITSM_FNC_CODE_NM(A.PRCS_GBN)          prcsGbnNm
+             , DATE_FORMAT(A.PRCS_DT, '%Y.%m.%d') 	 prcsDt
+             , DATE_FORMAT(A.DMND_DT, '%Y.%m.%d')	 dmndDt
+             , DATE_FORMAT(A.PRNMNT_DT, '%Y.%m.%d')	 prnmntDt
+             , A.DMND_RMK                     		 dmndRmk
+             , A.RQSTR_ID                    		 rqstrId
+             , FNC_USER_NM(A.RQSTR_ID)   		     rqstrNm
+             , A.PRCS_CN                     		 prcsCn
+             , A.USER_SERNO                    		 userSn
+             , (B.USER_NM)      		             userNm
+             , A.SVC_SN                    		     svcSn
+             , ITSM_FNC_SVC_NM(A.SVC_SN)             svcNm
+             , A.ATCH_FILE_ID              			 atchFileId
+             , A.RGTR_SN                    		 rgtrSn
+             , FNC_USER_NM(A.RGTR_SN)  				 rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%m-%d') 	     regDt
+          FROM ITSM_IMPRV_DMND A
+          LEFT OUTER JOIN T_USER_MNG B
+            ON A.USER_SERNO = B.USER_SERNO
+           AND B.USE_YN = 'Y'
+        <where>
+            <include refid="Main"/>
+            AND A.USE_YN ='Y'
+            AND A.PRCS_CD IN ('PO01', 'PO02')
+        </where>
+         ORDER BY A.DMND_DT IS NOT NULL DESC, A.DMND_DT, A.DMND_CD = 'RE01' DESC, A.DMND_CD = 'RE03' DESC
+         LIMIT 4
+    </select>
+
+    <!-- 메인 목록 -->
+    <select id="selectMyList" parameterType="itsmImpFncVO" resultType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.selectMyList */
+        SELECT A.IMPRV_SN                   		 imprvSn
+             , A.DMND_TTL                    		 dmndTtl
+             , A.DMND_CD                     		 dmndCd
+             , ITSM_FNC_CODE_NM(A.DMND_CD)           dmndCdNm
+             , A.PRCS_CD                     		 prcsCd
+             , ITSM_FNC_CODE_NM(A.PRCS_CD)           prcsCdNm
+             , A.PRCS_GBN                     		 prcsGbn
+             , ITSM_FNC_CODE_NM(A.PRCS_GBN)          prcsGbnNm
+             , DATE_FORMAT(A.PRCS_DT, '%Y.%m.%d') 	 prcsDt
+             , DATE_FORMAT(A.DMND_DT, '%Y.%m.%d')	 dmndDt
+             , DATE_FORMAT(A.PRNMNT_DT, '%Y.%m.%d')	 prnmntDt
+             , A.DMND_RMK                     		 dmndRmk
+             , A.PRCS_CN                     		 prcsCn
+             , A.USER_SERNO                    		 userSn
+             , (B.USER_NM)      		             userNm
+             , A.ATCH_FILE_ID              			 atchFileId
+             , A.RGTR_SN                    		 rgtrSn
+             , FNC_USER_NM(A.RGTR_SN)  				 rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%m-%d') 	     regDt
+             , DATE_FORMAT(A.REG_DT, '%m') 		     month
+             , DATE_FORMAT(A.REG_DT, '%d') 		     day
+          FROM ITSM_IMPRV_DMND A
+          LEFT OUTER JOIN T_USER_MNG B
+            ON A.USER_SERNO = B.USER_SERNO
+           AND B.USE_YN = 'Y'
+         WHERE A.USE_YN ='Y'
+           AND A.PRCS_CD IN ('PO01', 'PO02')
+           AND A.RQSTR_ID = #{loginSerno}
+         ORDER BY A.DMND_DT IS NOT NULL DESC, A.DMND_DT, A.DMND_CD = 'RE01' DESC, A.DMND_CD = 'RE03' DESC
+    </select>
+
+
+    <!-- 당월 -->
+    <select id="selectCntChart" parameterType="itsmImpFncVO" resultType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.selectCntChart */
+        SELECT SUM(CASE WHEN A.DMND_CD = 'RE01' AND A.PRCS_CD = 'PO03' THEN 1 ELSE 0 END)   AS cnt1  /* 완료 긴급 */
+             , SUM(CASE WHEN A.DMND_CD = 'RE02' AND A.PRCS_CD = 'PO03' THEN 1 ELSE 0 END)   AS cnt2  /* 완료 일반 */
+             , SUM(CASE WHEN A.DMND_CD = 'RE03' AND A.PRCS_CD = 'PO03' THEN 1 ELSE 0 END)   AS cnt3  /* 완료 중요 */
+             , SUM(CASE WHEN A.DMND_CD = 'RE01' AND A.PRCS_CD = 'PO02' THEN 1 ELSE 0 END)   AS cnt4  /* 진행중 긴급 */
+             , SUM(CASE WHEN A.DMND_CD = 'RE02' AND A.PRCS_CD = 'PO02' THEN 1 ELSE 0 END)   AS cnt5  /* 진행중 일반 */
+             , SUM(CASE WHEN A.DMND_CD = 'RE03' AND A.PRCS_CD = 'PO02' THEN 1 ELSE 0 END)   AS cnt6  /* 진행중 중요 */
+             , SUM(CASE WHEN A.DMND_CD = 'RE01' AND A.PRCS_CD = 'PO01' THEN 1 ELSE 0 END)   AS cnt7  /* 요청 긴급 */
+             , SUM(CASE WHEN A.DMND_CD = 'RE02' AND A.PRCS_CD = 'PO01' THEN 1 ELSE 0 END)   AS cnt8  /* 요청 일반 */
+             , SUM(CASE WHEN A.DMND_CD = 'RE03' AND A.PRCS_CD = 'PO01' THEN 1 ELSE 0 END)   AS cnt9  /* 요청 중요 */
+          FROM ITSM_IMPRV_DMND A
+        <where>
+            <include refid="Main"/>
+            AND A.USE_YN ='Y'
+            AND DATE_FORMAT(A.REG_DT, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+            AND (A.PRCS_GBN != 'PG07' OR A.PRCS_GBN IS NULL)
+        </where>
+    </select>
+
+
+    <!-- 금주 처리현황 -->
+    <select id="selectWeekCntChart" parameterType="itsmImpFncVO" resultType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.selectWeekCntChart */
+        SELECT NVL(SUM(CASE WHEN A.DMND_CD = 'RE01' AND A.PRCS_CD = 'PO03' THEN 1 ELSE 0 END), 0)                                                cnt1  /* 완료 긴급 */
+             , NVL(SUM(CASE WHEN A.DMND_CD = 'RE02' AND A.PRCS_CD = 'PO03' THEN 1 ELSE 0 END), 0)                                                cnt2  /* 완료 일반 */
+             , NVL(SUM(CASE WHEN A.DMND_CD = 'RE03' AND A.PRCS_CD = 'PO03' THEN 1 ELSE 0 END), 0)                                                cnt3  /* 완료 중요 */
+             , NVL(SUM(CASE WHEN A.PRCS_CD = 'PO03' THEN 1 ELSE 0 END), 0)						 	                                             all1  /* 완료 */
+             , NVL(SUM(CASE WHEN A.DMND_CD = 'RE01' AND A.PRCS_CD = 'PO02' THEN 1 ELSE 0 END) , 0)                                               cnt4  /* 진행중 긴급 */
+             , NVL(SUM(CASE WHEN A.DMND_CD = 'RE02' AND A.PRCS_CD = 'PO02' THEN 1 ELSE 0 END) , 0)                                               cnt5  /* 진행중 일반 */
+             , NVL(SUM(CASE WHEN A.DMND_CD = 'RE03' AND A.PRCS_CD = 'PO02' THEN 1 ELSE 0 END) , 0)                                               cnt6  /* 진행중 중요 */
+             , NVL(SUM(CASE WHEN A.PRCS_CD = 'PO02' THEN 1 ELSE 0 END), 0)					 		                                             all2  /* 진행중 */
+             , NVL(SUM(CASE WHEN A.DMND_CD = 'RE01' AND A.PRCS_CD = 'PO01' THEN 1 ELSE 0 END), 0)                                                cnt7  /* 요청 긴급 */
+             , NVL(SUM(CASE WHEN A.DMND_CD = 'RE02' AND A.PRCS_CD = 'PO01' THEN 1 ELSE 0 END), 0)                                                cnt8  /* 요청 일반 */
+             , NVL(SUM(CASE WHEN A.DMND_CD = 'RE03' AND A.PRCS_CD = 'PO01' THEN 1 ELSE 0 END), 0)                                                cnt9  /* 요청 중요 */
+             , NVL(SUM(CASE WHEN A.PRCS_CD = 'PO01' THEN 1 ELSE 0 END), 0)						 	                                             all3  /* 요청 */
+             , COUNT(1)   							 										                                                     all4  /* 전체 */
+             , CASE WHEN FLOOR((DAYOFMONTH(DATE_FORMAT(NOW(), '%Y%m%d'))-1)/7)+1 >= 5 AND DATE_FORMAT(NOW(), '%d') <![CDATA[ < ]]> 6
+                    THEN DATE_FORMAT(NOW(), '%m') - 1
+                    ELSE DATE_FORMAT(NOW(), '%m') END										                                                     month	/* 월 */
+             , CEIL((DAYOFMONTH(DATE_FORMAT(DATE_SUB(NOW(), INTERVAL (DAYOFWEEK(NOW()) + 5) % 7 DAY), '%Y.%m.%d'))
+                + WEEKDAY(DATE_FORMAT(DATE_FORMAT(DATE_SUB(NOW(), INTERVAL (DAYOFWEEK(NOW()) + 5) % 7 DAY), '%Y.%m.%d'), '%Y-%m-01')) + 1) / 7)	 week /* 주차 */
+             , DATE_FORMAT(DATE_SUB(NOW(), INTERVAL (DAYOFWEEK(NOW()) + 5) % 7 DAY), '%Y.%m.%d')	                                             weekStartDay  /* 금주의 시작일(월요일 날짜) */
+             , DATE_FORMAT(DATE_ADD(NOW(), INTERVAL (7 - DAYOFWEEK(NOW()) + 1) DAY), '%m.%d')		                                             weekEndDay  /* 금주의 종료일(일요일 날짜) */
+          FROM ITSM_IMPRV_DMND A
+        <where>
+            <include refid="Main"/>
+            AND A.USE_YN ='Y'
+            AND DATE_FORMAT(DATE_SUB(NOW(), INTERVAL (DAYOFWEEK(NOW()) + 5) % 7 DAY), '%Y-%m-%d') <![CDATA[ <= ]]> DATE_FORMAT(A.REG_DT, '%Y-%m-%d')
+            AND DATE_FORMAT(DATE_ADD(NOW(), INTERVAL (7 - DAYOFWEEK(NOW()) + 1) DAY), '%Y-%m-%d') >= DATE_FORMAT(A.REG_DT, '%Y-%m-%d')
+            AND (A.PRCS_GBN != 'PG07' OR A.PRCS_GBN IS NULL)
+        </where>
+    </select>
+
+
+    <!-- 통계 년도 -->
+    <select id="selectYearChart" parameterType="itsmImpFncVO" resultType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.selectYearChart */
+        SELECT DATE_FORMAT(REG_DT, '%Y')	 regDt
+          FROM ITSM_IMPRV_DMND
+         WHERE USE_YN ='Y'
+         GROUP BY DATE_FORMAT(REG_DT, '%Y')
+         ORDER BY DATE_FORMAT(REG_DT, '%Y') DESC
+    </select>
+
+    <!-- 통계 종합 -->
+    <select id="selectAllChart" parameterType="itsmStatVO" resultType="itsmStatVO">
+        /* ItsmImprvDmndMapper.selectAllChart */
+        SELECT COUNT(1)   							 			 	     all1   /* 전체 */
+             , NVL(SUM(CASE WHEN DMND_CD = 'RE01' THEN 1 ELSE 0 END),0)	 cnt1   /* 긴급 */
+             , NVL(SUM(CASE WHEN DMND_CD = 'RE02' THEN 1 ELSE 0 END),0)	 cnt2	/* 일반 */
+             , NVL(SUM(CASE WHEN DMND_CD = 'RE03' THEN 1 ELSE 0 END),0)	 cnt3	/* 중요 */
+          FROM ITSM_IMPRV_DMND
+         WHERE USE_YN ='Y'
+           AND PRCS_CD = 'PO03'
+           AND (PRCS_GBN != 'PG07' OR PRCS_GBN IS NULL)
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND SVC_SN = #{schEtc00}
+        </if>
+           AND DATE_FORMAT(REG_DT, '%Y') = #{year}
+    </select>
+
+
+    <!-- /itsm/sprt/sysSts/form 화면에서 처리내용 불러오는 팝업 목록 -->
+    <select id="selectPrcsListPop" parameterType="itsmImpFncVO" resultType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.selectPrcsListPop */
+        SELECT B.*
+          FROM (SELECT A.IMPRV_SN                   		 imprvSn
+                     , A.DMND_TTL                     		 dmndTtl
+                     , A.PRCS_CN                     		 prcsCn
+                     , ITSM_FNC_CODE_NM(A.DMND_CD)           dmndCdNm
+                     , ITSM_FNC_CODE_NM(A.PRCS_CD)           prcsCdNm
+                     , DATE_FORMAT(A.PRCS_DT, '%Y.%m.%d') 	 prcsDt
+                  FROM ITSM_IMPRV_DMND A
+                <where>
+                    <include refid="Where2"/>
+                    AND A.USE_YN ='Y'
+                    AND A.SVC_SN = #{svcSn}
+                    AND (A.PRCS_GBN != 'PG07' OR A.PRCS_GBN IS NULL)
+                    AND A.PRCS_CD = 'PO03'
+                    AND A.CHG_HST_REG_YN = 'N'
+                </where>
+
+                <if test="chgSn != null and chgSn != ''">
+                    UNION ALL
+                    SELECT A.IMPRV_SN                   	 imprvSn
+                        , A.DMND_TTL                     		 dmndTtl
+                        , A.PRCS_CN                     		 prcsCn
+                        , ITSM_FNC_CODE_NM(A.DMND_CD)            dmndCdNm
+                        , ITSM_FNC_CODE_NM(A.PRCS_CD)            prcsCdNm
+                        , DATE_FORMAT(A.PRCS_DT, '%Y.%m.%d') 	 prcsDt
+                    FROM ITSM_IMPRV_DMND A
+                    <where>
+                        <include refid="Where2"/>
+                        AND A.CHG_SN = #{chgSn}
+                        AND (A.PRCS_GBN != 'PG07' OR A.PRCS_GBN IS NULL)
+                    </where>
+                </if>
+
+                  ) B
+         ORDER BY B.imprvSn DESC
+         LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <select id="selectPrcsCountPop" parameterType="itsmImpFncVO" resultType="int">
+        /* ItsmImprvDmndMapper.selectPrcsCountPop */
+        SELECT COUNT(1)
+          FROM ( SELECT A.IMPRV_SN
+                   FROM ITSM_IMPRV_DMND A
+                <where>
+                    <include refid="Where2"/>
+                    AND A.USE_YN ='Y'
+                    AND A.SVC_SN = #{svcSn}
+                    AND (A.PRCS_GBN != 'PG07' OR A.PRCS_GBN IS NULL)
+                    AND A.PRCS_CD = 'PO03'
+                    AND A.CHG_HST_REG_YN = 'N'
+                </where>
+                <if test="chgSn != null and chgSn != ''">
+                    UNION ALL
+
+                    SELECT A.IMPRV_SN
+                    FROM ITSM_IMPRV_DMND A
+                    <where>
+                        <include refid="Where2"/>
+                        AND A.CHG_SN = #{chgSn}
+                        AND (A.PRCS_GBN != 'PG07' OR A.PRCS_GBN IS NULL)
+                    </where>
+                </if>
+                ) B
+    </select>
+
+    <!-- 요청사항 Y로 업데이트 -->
+    <update id="updateDmndList" parameterType="itsmSysStsVO">
+        /* ItsmImprvDmndMapper.updateDmndList */
+        UPDATE ITSM_IMPRV_DMND
+           SET CHG_HST_REG_YN    	= 'Y'
+             , CHG_SN 		  		= #{chgSn}
+         WHERE IMPRV_SN 	 	    = #{imprvSn}
+    </update>
+
+    <!-- 요청사항 N으로 업데이트 -->
+    <update id="chgDmndYn" parameterType="itsmSysStsVO">
+        /* ItsmImprvDmndMapper.deleteDmndList -> ItsmImprvDmndMapper.chgDmndYn */
+        UPDATE ITSM_IMPRV_DMND
+           SET CHG_HST_REG_YN    	= 'N'
+             , CHG_SN 		  		= NULL
+         WHERE CHG_SN 	 	        = #{chgSn}
+    </update>
+
+    <!-- 변경이력에 등록된 요청목록  -->
+    <select id="selectChgDmndList" parameterType="itsmSysStsVO" resultType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.selectDmndList -> ItsmImprvDmndMapper.selectChgDmndList */
+        SELECT A.IMPRV_SN                            imprvSn
+             , A.DMND_TTL                            dmndTtl
+             , A.PRCS_CN                             prcsCn
+             , ITSM_FNC_CODE_NM(A.DMND_CD)           dmndCdNm
+             , ITSM_FNC_CODE_NM(A.PRCS_CD)           prcsCdNm
+             , ITSM_FNC_CODE_NM(A.PRCS_GBN)          prcsGbnNm
+             , DATE_FORMAT(A.PRCS_DT, '%Y.%m.%d')    prcsDt
+             , FNC_USER_NM(A.USER_SERNO)			 userNm
+             , A.MENU_CD                    		 menuCd
+             , D.MENU_NM                    		 menuNm
+             , E.MENU_CD 							 upMenuCd
+             , E.MENU_NM 							 upMenuNm
+          FROM ITSM_IMPRV_DMND A
+          LEFT OUTER JOIN T_MENU_MNG D
+            ON A.MENU_CD = D.MENU_CD
+           AND D.USE_YN = 'Y'
+          LEFT OUTER JOIN T_MENU_MNG E
+            ON E.MENU_CD = D.UPR_MENU_CD
+           AND E.USE_YN = 'Y'
+         WHERE A.USE_YN ='Y'
+           AND (A.PRCS_GBN != 'PG07' OR A.PRCS_GBN IS NULL)
+           AND A.CHG_SN = #{chgSn}
+         ORDER BY A.IMPRV_SN DESC
+    </select>
+
+    <!-- 요청사항 목록 -->
+    <select id="selectImpFncList" parameterType="itsmConferRecVO" resultType="itsmConferRecVO">
+        /* ItsmImprvDmndMapper.selectImpFncList */
+        SELECT IMPRV_SN                   		     imprvSn
+             , DMND_TTL                     		 dmndTtl
+             , ITSM_FNC_CODE_NM(DMND_CD)             dmndCdNm
+             , ITSM_FNC_CODE_NM(PRCS_CD)             prcsCdNm
+          FROM ITSM_IMPRV_DMND
+         WHERE USE_YN ='Y'
+           AND PRCS_CD IN ('PO01','PO02')
+           AND SVC_SN = #{svcSn}
+
+         UNION
+
+        SELECT A.IMPRV_SN                   		 imprvSn
+             , A.DMND_TTL                     		 dmndTtl
+             , ITSM_FNC_CODE_NM(A.DMND_CD)           dmndCdNm
+             , ITSM_FNC_CODE_NM(A.PRCS_CD)           prcsCdNm
+          FROM ITSM_IMPRV_DMND A
+          LEFT OUTER JOIN ITSM_CONFER_MNG_DMND B
+            ON A.IMPRV_SN = B.DMND_SN
+         WHERE B.COF_SN = #{cofSn}
+         LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <select id="selectImpFncListCount" parameterType="itsmConferRecVO" resultType="int">
+        /* ItsmImprvDmndMapper.selectImpFncListCount */
+        SELECT COUNT(1)
+          FROM ( SELECT IMPRV_SN
+                   FROM ITSM_IMPRV_DMND
+                  WHERE USE_YN ='Y'
+                    AND PRCS_CD IN ('PO01','PO02')
+                    AND SVC_SN = #{svcSn}
+
+                  UNION
+
+                  SELECT A.IMPRV_SN
+                    FROM ITSM_IMPRV_DMND A
+                    LEFT OUTER JOIN ITSM_CONFER_MNG_DMND B
+                      ON A.IMPRV_SN = B.DMND_SN
+                   WHERE B.COF_SN = #{cofSn}
+                ) C
+    </select>
+
+    <!-- 보고서에 등록된 요청사항 -->
+    <select id="selectImpFncDmndList" parameterType="itsmConferRecVO" resultType="itsmConferRecVO">
+        /* ItsmImprvDmndMapper.selectImpFncDmndList */
+        SELECT A.IMPRV_SN                    		 imprvSn
+             , A.DMND_TTL                     		 dmndTtl
+             , A.DMND_CD                     		 dmndCd
+             , ITSM_FNC_CODE_NM(A.DMND_CD)           dmndCdNm
+             , A.PRCS_CN                     		 prcsCn
+             , A.PRCS_CD                     		 prcsCd
+             , ITSM_FNC_CODE_NM(A.PRCS_CD)           prcsCdNm
+          FROM ITSM_IMPRV_DMND A
+          LEFT OUTER JOIN ITSM_CONFER_MNG_DMND B
+            ON A.IMPRV_SN = B.DMND_SN
+           AND B.USE_YN = 'Y'
+         WHERE A.USE_YN ='Y'
+           AND B.MENU_CD = 'impFnc'
+           AND B.COF_SN = #{cofSn}
+         ORDER BY B.COF_SN
+    </select>
+
+    <!-- 서비스 요구 납기 준수율 -->
+    <select id="selectImpDmntDtContent" parameterType="itsmSlaDefVO" resultType="itsmSlaDefVO">
+        /* ItsmImprvDmndMapper.selectImpDmntDtContent */
+        SELECT COUNT(1)										                                        allCnt	/* 모든 요청 건수(요청일 기준) */
+             , NVL(SUM(CASE WHEN DMND_DT >= PRCS_DT AND PRCS_CD = 'PO03' THEN 1 ELSE 0 END),0) 	    doneCnt /* 처리된 요청 건수(요청일 기준) */
+          FROM ITSM_IMPRV_DMND
+         WHERE USE_YN = 'Y'
+           AND SVC_SN = #{svcSn}
+           AND DATE_FORMAT(DMND_DT, '%Y.%m') = #{searchbgngYm}
+    </select>
+
+    <!-- 서비스 요구 처리율 -->
+    <select id="selectImpAllContent" parameterType="itsmSlaDefVO" resultType="itsmSlaDefVO">
+        /* ItsmImprvDmndMapper.selectImpAllContent */
+        SELECT COUNT(1)											            allCnt	/* 모든 요청 건수 */
+             , NVL(SUM(CASE WHEN PRCS_CD = 'PO03' THEN 1 ELSE 0 END),0) 	doneCnt /* 처리된 요청 건수 */
+          FROM ITSM_IMPRV_DMND
+         WHERE SVC_SN = #{svcSn}
+           AND DATE_FORMAT(REG_DT, '%Y.%m') = #{searchbgngYm}
+           AND USE_YN = 'Y'
+    </select>
+
+    <!-- 서비스 장애 적기 해결율 -->
+    <select id="selectImpErrContent" parameterType="itsmSlaDefVO" resultType="itsmSlaDefVO">
+        /* ItsmImprvDmndMapper.selectImpErrContent */
+        SELECT COUNT(1)						                                                                     allCnt	/* 모든 요청 건수 */
+             , NVL(SUM(CASE WHEN PRCS_CD = 'PO03' AND ADDTIME(REG_DT, '1:0:0') >= PRCS_DT THEN 1 ELSE 0 END),0)  doneCnt /* 처리된 요청 건수 */
+          FROM ITSM_IMPRV_DMND
+         WHERE SVC_SN = #{svcSn}
+           AND PRCS_GBN = 'PG03'
+           AND DATE_FORMAT(REG_DT, '%Y.%m') = #{searchbgngYm}
+           AND USE_YN = 'Y'
+    </select>
+
+    <!-- 긴급 서비스 요구 처리율 -->
+    <select id="selectImpRe01Content" parameterType="itsmSlaDefVO" resultType="itsmSlaDefVO">
+        /* ItsmImprvDmndMapper.selectImpRe01Content */
+        SELECT COUNT(1)			                                         allCnt	/* 모든 긴급 건수 */
+             , NVL(SUM(CASE WHEN PRCS_CD = 'PO03' THEN 1 ELSE 0 END),0)  doneCnt /* 처리된 긴급 건수 */
+          FROM ITSM_IMPRV_DMND
+         WHERE SVC_SN = #{svcSn}
+           AND DMND_CD = 'RE01'
+           AND DATE_FORMAT(REG_DT, '%Y.%m') = #{searchbgngYm}
+           AND USE_YN = 'Y'
+    </select>
+
+    <!-- 담당자처리현황 -->
+    <select id="statMngr" parameterType="itsmStatVO" resultType="itsmStatVO">
+        /* ItsmImprvDmndMapper.statMngr */
+        SELECT C.*
+          FROM (SELECT NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '01' THEN 1 ELSE 0 END),0)	cnt1
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '02' THEN 1 ELSE 0 END),0)	cnt2
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '03' THEN 1 ELSE 0 END),0)	cnt3
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '04' THEN 1 ELSE 0 END),0)	cnt4
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '05' THEN 1 ELSE 0 END),0)	cnt5
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '06' THEN 1 ELSE 0 END),0)	cnt6
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '07' THEN 1 ELSE 0 END),0)	cnt7
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '08' THEN 1 ELSE 0 END),0)	cnt8
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '09' THEN 1 ELSE 0 END),0)	cnt9
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '10' THEN 1 ELSE 0 END),0)	cnt10
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '11' THEN 1 ELSE 0 END),0)	cnt11
+                     , NVL(SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '12' THEN 1 ELSE 0 END),0)	cnt12
+                     , ROUND(AVG(B.REQ_DD), 2)                                                      avg
+                     , MIN(B.REQ_DD)                                                                min
+                     , MAX(B.REQ_DD)                                                                max
+                     , (A.USER_NM)                                                                  userNm
+                     , A.USER_SERNO
+                     , COUNT(1)		                                                                all1
+                  FROM T_USER_MNG A
+                  LEFT OUTER JOIN ITSM_IMPRV_DMND B
+                    ON A.USER_SERNO = B.USER_SERNO
+                   AND B.USE_YN = 'Y'
+                   AND (B.PRCS_GBN != 'PG07' OR B.PRCS_GBN IS NULL)
+                   AND B.PRCS_CD = 'PO03'
+                   AND DATE_FORMAT(B.REG_DT, '%Y') = #{year}
+                <if test="schEtc00 !=null and schEtc00 !=''">
+                    AND B.SVC_SN = #{schEtc00}
+                </if>
+                 WHERE A.USE_YN = 'Y'
+                   AND A.GRP_AUTH_ID = 'developer'
+                 GROUP BY A.USER_SERNO WITH ROLLUP) C
+         ORDER BY CASE WHEN C.USER_SERNO IS NULL THEN 0 ELSE 1 END, C.userNm;
+    </select>
+
+
+    <!-- 담당자 배정 함수 -->
+    <update id="updateContentsManager" parameterType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.updateContentsManager */
+        UPDATE ITSM_IMPRV_DMND
+        SET PRCS_CD 	   = 'PO02'
+          , USER_SERNO  = #{userSerno}
+        <if test="prnmntDt !=null and prnmntDt !=''">
+          , PRNMNT_DT   = #{prnmntDt}
+        </if>
+        WHERE IMPRV_SN    = #{imprvSn}
+    </update>
+
+
+    <!-- 처리완료 함수 -->
+    <update id="updateContentsSubmit" parameterType="itsmImpFncVO">
+        /* ItsmImprvDmndMapper.updateContentsSubmit */
+        UPDATE ITSM_IMPRV_DMND
+        SET
+            PRCS_CD         = 'PO03'
+          , USER_SERNO      = #{userSerno}
+          , REQ_DD          = DATEDIFF(NOW(),#{regDt})
+          , PRCS_DT         = NOW()
+          , MENU_CD         = #{menuCd}
+          , PRCS_GBN        = #{prcsGbn}
+          , PRCS_CN         = #{prcsCn}
+        WHERE IMPRV_SN      = #{imprvSn}
+    </update>
+
+
+    <!-- 게시글 본인글 여부 -->
+    <select id="regrCheck" parameterType="itsmImpFncVO" resultType="boolean">
+        /* ItsmImprvDmndMapper.regrCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                END
+          FROM ITSM_IMPRV_DMND
+         WHERE IMPRV_SN = #{imprvSn}
+    </select>
+
+    <!-- 댓글 본인글 여부 -->
+    <select id="regrCommentCheck" parameterType="itsmImpFncVO" resultType="boolean">
+        /* ItsmImprvDmndMapper.regrCommentCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                   END
+        FROM ITSM_IMPRV_DMND_COMMENT
+        WHERE CMNT_SN = #{cmntSn}
+    </select>
+
+
+
+</mapper>

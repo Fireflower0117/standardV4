@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmConferMngMapper">
+
+    <sql id="Where">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (UPPER(A.COF_TTL) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(A.COF_CN) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(A.REG_NM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%'))
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER(A.COF_TTL) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER(A.COF_CN) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==3">
+                AND UPPER(A.REG_NM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND A.SVC_SN = #{schEtc00}
+        </if>
+        <if test="schEtc01 !=null and schEtc01 !=''">
+            AND DATE_FORMAT(A.COF_DT,'%Y.%m.%d') <![CDATA[ >= ]]> DATE_FORMAT(#{schEtc01},'%Y.%m.%d')
+        </if>
+        <if test="schEtc02 !=null and schEtc02 !=''">
+            AND DATE_FORMAT(A.COF_DT,'%Y.%m.%d') <![CDATA[ <= ]]> DATE_FORMAT(#{schEtc02},'%Y.%m.%d')
+        </if>
+        <if test="searchStartDate !=null and searchStartDate !=''">
+            AND DATE_FORMAT(A.REG_DT,'%Y.%m.%d') <![CDATA[ >= ]]> DATE_FORMAT(#{searchStartDate},'%Y.%m.%d')
+        </if>
+        <if test="searchEndDate !=null and searchEndDate !=''">
+            AND DATE_FORMAT(A.REG_DT,'%Y.%m.%d') <![CDATA[ <= ]]> DATE_FORMAT(#{searchEndDate},'%Y.%m.%d')
+        </if>
+
+    </sql>
+
+    <sql id="Where2">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (UPPER((TAU.USER_NM)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR 	UPPER((TAU.USER_TEL_NO)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR 	UPPER((TAU.USER_EMAIL_ADDR)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%'))
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER((TAU.USER_NM)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER((TAU.USER_TEL_NO)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==3">
+                AND UPPER((TAU.USER_EMAIL_ADDR)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+    </sql>
+
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmConferRecVO" resultType="itsmConferRecVO">
+        /* SmConferRecMapper.selectList */
+        SELECT A.COF_SN							     cofSn
+             , A.COF_TTL							 cofTtl
+             , A.COF_CN							     cofCn
+             , A.COF_DT 
+             , A.REG_NM							     regNm
+             , A.APVR_NM							 apvrNm
+             , A.VERSION							 version
+             , A.COF_INFO							 cofInfo
+             , A.COF_KIND							 cofKind
+             , A.COF_TYPE							 cofType
+             , A.COF_NM							     cofNm
+             , A.ATCH_FILE_ID						 atchFileId
+             , A.COF_STA_HH						     cofStaHh
+             , A.COF_STA_MI						     cofStaMi
+             , A.COF_END_HH						     cofEndHh
+             , A.COF_END_MI						     cofEndMi
+             , A.SVC_SN						         svcSn
+             , ITSM_FNC_SVC_NM(A.SVC_SN)					 svcNm
+             , A.RGTR_SN 							 rgtrSn
+             , A.REG_DT
+             , A.MDFCN_DT
+             , A.MDFR_SN 							 mdfrSn
+             , ITSM_FNC_USER_INFO(A.RGTR_SN, 'USER_NM') 	 rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d') 	 regDt
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')   mdfcnDt
+             , DATE_FORMAT(A.COF_DT, '%Y.%m.%d') 	 cofDt
+             , (SELECT COUNT(1) 
+                  FROM ITSM_CONFER_ATTEND B 
+                 WHERE B.COF_SN = A.COF_SN 
+                   AND B.USE_YN = 'Y')                attCnt
+          FROM ITSM_CONFER_MNG A
+        <where>
+            <include refid="Where"/>
+            AND  A.USE_YN ='Y'
+        </where>
+         ORDER BY A.COF_SN DESC
+        <if test="excelYn ==null or excelYn == ''">
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+
+    </select>
+
+    <select id="selectCount" parameterType="itsmConferRecVO" resultType="int">
+        /* SmConferRecMapper.selectCount */
+        SELECT COUNT(1)
+          FROM ITSM_CONFER_MNG A
+        <where>
+            <include refid="Where"/>
+            AND  A.USE_YN ='Y'
+        </where>
+    </select>
+
+    <!-- 상세 -->
+    <select id="selectContents" parameterType="itsmConferRecVO" resultType="itsmConferRecVO">
+        /* SmConferRecMapper.selectContents */
+        SELECT COF_SN								cofSn
+             , COF_TTL							    cofTtl
+             , COF_CN								cofCn
+             , DATE_FORMAT(COF_DT, '%Y.%m.%d')		cofDt
+             , REG_NM								regNm
+             , APVR_NM							    apvrNm
+             , VERSION							    version
+             , COF_INFO							    cofInfo
+             , COF_KIND							    cofKind
+             , COF_TYPE							    cofType
+             , COF_NM								cofNm
+             , ATCH_FILE_ID						    atchFileId
+             , COF_STA_HH							cofStaHh
+             , COF_STA_MI							cofStaMi
+             , COF_END_HH							cofEndHh
+             , COF_END_MI							cofEndMi
+             , SVC_SN							    svcSn
+             , ITSM_FNC_SVC_NM(SVC_SN)						svcNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 		regDt
+          FROM ITSM_CONFER_MNG
+         WHERE USE_YN  ='Y'
+           AND COF_SN = #{cofSn}
+    </select>
+
+    <!-- 생성 -->
+    <insert id="insertContents" parameterType="itsmConferRecVO">
+        /* SmConferRecMapper.insertContents */
+        <selectKey keyProperty="cofSn" order="AFTER" resultType="String" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO ITSM_CONFER_MNG
+             ( COF_TTL
+             , COF_CN
+             , COF_DT
+             , REG_NM
+             , APVR_NM
+             , VERSION
+             , COF_INFO
+             , COF_KIND
+             , COF_TYPE
+             , COF_NM
+             , ATCH_FILE_ID
+             , COF_STA_HH
+             , COF_STA_MI
+             , COF_END_HH
+             , COF_END_MI
+             , SVC_SN
+             , RGTR_SN
+             , REG_DT
+             )
+        VALUES
+             ( #{cofTtl}
+             , #{cofCn}
+             , #{cofDt}
+             , #{regNm}
+             , #{apvrNm}
+             , '1.0'
+             , '운영/관리'
+             , '회의록'
+             , #{cofType}
+             , #{cofNm}
+             , #{atchFileId}
+             , #{cofStaHh}
+             , #{cofStaMi}
+             , #{cofEndHh}
+             , #{cofEndMi}
+             , #{svcSn }
+             , #{loginSerno}
+             , NOW()
+             )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="updateContents" parameterType="itsmConferRecVO">
+        /* SmConferRecMapper.updateContents */
+        UPDATE ITSM_CONFER_MNG
+           SET COF_TTL          	= #{cofTtl}
+             , COF_CN          	    = #{cofCn}
+             , COF_DT          	    = #{cofDt}
+             , REG_NM         	    = #{regNm}
+             , APVR_NM         	    = #{apvrNm}
+             , VERSION         	    = #{version}
+             , COF_INFO         	= #{cofInfo}
+             , COF_KIND         	= #{cofKind}
+             , COF_TYPE         	= #{cofType}
+             , COF_NM         	    = #{cofNm}
+             , ATCH_FILE_ID			= #{atchFileId}
+             , COF_STA_HH			= #{cofStaHh}
+             , COF_STA_MI			= #{cofStaMi}
+             , COF_END_HH			= #{cofEndHh}
+             , COF_END_MI			= #{cofEndMi}
+             , SVC_SN				= #{svcSn}
+             , REG_DT				= #{regDt}
+             , MDFR_SN				= #{loginSerno}
+             , MDFCN_DT				= NOW()
+         WHERE COF_SN               = #{cofSn}
+    </update>
+
+    <!-- 삭제 -->
+    <update id="deleteContents" parameterType="itsmConferRecVO">
+        /* SmConferRecMapper.deleteContents */
+        UPDATE ITSM_CONFER_MNG
+           SET USE_YN 	= 'N'
+         WHERE COF_SN   = #{cofSn}
+    </update>
+
+    <!-- 참석자 목록 -->
+    <select id="selectAttList" parameterType="itsmConferRecVO" resultType="itsmConferRecVO">
+        /* SmConferRecMapper.selectAttList */
+        SELECT COF_SN									cofSN
+             , ATT_SN 							        attSn
+             , ATT_DEPT_CD 							    attDeptCd
+             , ITSM_FNC_CODE_NM(ATT_DEPT_CD) 				    attDeptNm
+             , ATT_NM									attNm
+             , ATT_OFTL_NM							    attOftlNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d HH24:MI')	regDt
+             , DATE_FORMAT(MDFCN_DT, '%Y.%m.%d')		mdfcnDt
+             , FNC_USER_NM(RGTR_SN) 					    rgtrNm
+             , FNC_USER_NM(MDFR_SN) 					    mdfrNm
+          FROM ITSM_CONFER_ATTEND
+         WHERE COF_SN                     = #{cofSn}
+           AND SUBSTRING(ATT_DEPT_CD,1,4) = #{attDeptCd}
+           AND USE_YN = 'Y'
+         ORDER BY ATT_SN ASC
+    </select>
+
+    <!-- 참석자 상세 -->
+    <select id="selectAttContents" parameterType="itsmConferRecVO" resultType="itsmConferRecVO">
+        /* SmConferRecMapper.selectAttContents */
+        SELECT ATT_SN				  attSn
+             , COF_SN				  cofSn
+             , ATT_DEPT_CD			  attDeptCd
+             , ATT_NM				  attNm
+             , ATT_OFTL_NM			  attOftlNm
+             , MDFR_SN				  mdfrSn
+          FROM ITSM_CONFER_ATTEND
+         WHERE USE_YN 	  = 'Y'
+           AND COF_SN     = #{cofSn}
+         ORDER BY ATT_SN
+    </select>
+
+    <!-- 참석자 생성 -->
+    <update id="attInsertContents" parameterType="itsmConferRecVO">
+        /* SmConferRecMapper.attInsertContents */
+        INSERT INTO ITSM_CONFER_ATTEND
+             ( COF_SN
+             , ATT_SN
+             , ATT_DEPT_CD
+             , ATT_NM
+             , ATT_OFTL_NM
+             , REG_DT
+             , RGTR_SN
+             )
+        VALUES
+             ( #{cofSn}
+             , #{attSn}
+             , #{attDeptCd}
+             , #{attNm}
+             , #{attOftlNm}
+             , NOW()
+             , #{loginSerno}
+             )
+            ON DUPLICATE KEY
+        UPDATE ATT_DEPT_CD	= #{attDeptCd}
+             , ATT_SN 		= #{attSn}
+             , ATT_NM 		= #{attNm}
+             , ATT_OFTL_NM 	= #{attOftlNm}
+             , MDFR_SN 		= #{loginSerno}
+             , USE_YN 		= 'Y'
+    </update>
+
+    <!-- 참석자 수정 -->
+    <update id="attUpdateContents" parameterType="itsmConferRecVO">
+        /* SmConferRecMapper.attUpdateContents */
+        UPDATE ITSM_CONFER_ATTEND
+           SET ATT_DEPT_CD   	 = #{attDeptCd}
+             , ATT_NM 		 	 = #{attNm}
+             , ATT_OFTL_NM 		 = #{attOftlNm}
+             , MDFR_SN 		 	 = #{loginSerno}
+             , MDFCN_DT 	 	 = NOW()
+             , USE_YN 			 = 'Y'
+         WHERE ATT_SN 	 	     = #{attSn}
+    </update>
+
+    <!-- 참석자 삭제 -->
+    <update id="attDeleteContents" parameterType="itsmConferRecVO">
+        /* SmConferRecMapper.attDeleteContents */
+        UPDATE ITSM_CONFER_ATTEND
+           SET USE_YN  	  = 'N'
+         WHERE COF_SN     = #{cofSn}
+    </update>
+
+    <!-- 목록 -->
+    <select id="selectDmndList" parameterType="itsmConferRecVO" resultType="itsmConferRecVO">
+        /* SmConferRecMapper.selectDmndList */
+        SELECT COF_SN							cofSn
+             , COF_DMND_SN						rqrId
+             , MENU_CD							menuCd
+             , DMND_SN							dmndSn
+          FROM ITSM_CONFER_MNG_DMND
+         WHERE USE_YN = 'Y'
+           AND SVC_SN = #{svcSn}
+         ORDER BY RQR_SN DESC
+         LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <update id="dmndInsertContents" parameterType="itsmConferRecVO">
+        /* SmConferRecMapper.dmndInsertContents */
+        INSERT INTO ITSM_CONFER_MNG_DMND
+             ( COF_SN
+             , COF_DMND_SN
+             , MENU_CD
+             , DMND_SN
+             )
+        VALUES
+             ( #{cofSn}
+             , #{cofDmndSn}
+             , #{menuCd}
+             , #{dmndSn}
+             )
+            ON DUPLICATE KEY
+        UPDATE USE_YN 		= 'Y'
+             , MENU_CD		= #{menuCd}
+             , DMND_SN		= #{dmndSn}
+    </update>
+
+    <!-- 요구사항 삭제 -->
+    <update id="deleteDmndContents" parameterType="itsmConferRecVO">
+        /* SmConferRecMapper.deleteDmndContents */
+        UPDATE ITSM_CONFER_MNG_DMND
+           SET USE_YN  	  = 'N'
+         WHERE COF_SN     = #{cofSn}
+    </update>
+
+
+
+</mapper>

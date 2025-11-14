@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmIdeaMngMapper">
+
+    <sql id="Where">
+        <if test="searchKeyword != '' and searchKeyword != null">
+            <if test="searchCondition ==null or searchCondition ==''">
+                AND (UPPER(A.IDEA_TTL) LIKE CONCAT('%',IFNULL(UPPER(#{searchKeyword}), ''),'%')
+                OR  UPPER(A.BLTNB_CN) LIKE CONCAT('%',IFNULL(UPPER(#{searchKeyword}), ''),'%'))
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition ==1">
+                AND UPPER(A.IDEA_TTL) LIKE CONCAT('%',IFNULL(UPPER(#{searchKeyword}), ''),'%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition ==2">
+                AND UPPER(A.BLTNB_CN) LIKE CONCAT('%',IFNULL(UPPER(#{searchKeyword}), ''),'%')
+            </if>
+        </if>
+
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND A.SVC_SN = #{schEtc00}
+        </if>
+
+        <!-- 처리상황 -->
+        <if test="schEtc01 !=null and schEtc01 !=''">
+            <if test="schEtc01 ==1">
+                AND A.PRCS_STTS = 'B'
+            </if>
+            <if test="schEtc01 ==2">
+                AND A.PRCS_STTS = 'I'
+            </if>
+            <if test="schEtc01 ==3">
+                AND A.PRCS_STTS = 'E'
+            </if>
+        </if>
+
+
+    </sql>
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmIdeaVO" resultType="itsmIdeaVO">
+        /* ItsmIdeaMngMapper.selectList */
+        SELECT A.IDEA_SN                   			                 ideaSn
+             , A.IDEA_TTL                     		                 ideaTtl
+             , A.BLTNB_CN                   		                 bltnbCn
+             , DATE_FORMAT(A.REG_DT,'%Y.%m.%d')                      regDt
+             , FNC_USER_NM(A.RGTR_SN) 				                 rgtrNm
+             , A.MDFCN_DT                   		                 mdfcnDt
+             , A.MDFR_SN                    		                 mdfrSn
+             , A.USE_YN                     		                 useYn
+             , A.SVC_SN	                    		                 svcSn
+             , ITSM_FNC_SVC_NM(A.SVC_SN)                 		     svcNm
+             , A.PRCS_STTS                     		                 prcsStts
+             , (SELECT COUNT(1)
+                  FROM ITSM_IDEA_CMNT TA
+                 WHERE TA.UP_PSTAT_SN = A.IDEA_SN
+                   AND TA.USE_YN = 'Y')				                 comCnt
+             , (SELECT COUNT(1)
+                  FROM ITSM_IDEA_CMNT TA
+                 WHERE TA.UP_PSTAT_SN = A.IDEA_SN
+                   AND TA.USE_YN = 'Y'
+                   AND  NOW() - INTERVAL 1 DAY <![CDATA[ <= ]]> TA.REG_DT
+                   AND TA.REG_DT  <![CDATA[ <= ]]> NOW())			 newComCnt
+          FROM ITSM_IDEA_MNG A
+        <where>
+            <include refid="Where"/>
+            AND  A.USE_YN ='Y'
+        </where>
+         ORDER BY IDEA_SN DESC
+        <if test="excelYn ==null or excelYn == ''">
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+    </select>
+
+    <!-- 건수 -->
+    <select id="selectCount" parameterType="itsmIdeaVO" resultType="int">
+        /* ItsmIdeaMngMapper.selectCount */
+        SELECT COUNT(1)
+          FROM ITSM_IDEA_MNG A
+        <where>
+            <include refid="Where"/>
+            AND  A.USE_YN ='Y'
+        </where>
+    </select>
+
+    <!-- 상세(단건 조회) -->
+    <select id="selectContents" parameterType="itsmIdeaVO" resultType="itsmIdeaVO">
+        /* ItsmIdeaMngMapper.selectContents */
+        SELECT IDEA_SN                   			 ideaSn
+             , IDEA_TTL                     		 ideaTtl
+             , BLTNB_CN                   		     bltnbCn
+             , ATCH_FILE_ID                          atchFileId
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d')       regDt
+             , RGTR_SN                               rgtrSn
+             , ITSM_FNC_SVC_NM(SVC_SN)               svcNm
+             , SVC_SN                 		         svcSn
+             , FNC_USER_NM(RGTR_SN) 				 rgtrNm
+             , ITSM_FNC_USER_ID(RGTR_SN) 			 rgtrId
+             , FNC_USER_NM(MDFR_SN) 				 mdfrNm
+             , DATE_FORMAT(MDFCN_DT, '%Y.%m.%d') 	 mdfcnDt
+             , MDFR_SN                               mdfrSn
+             , USE_YN                                useYn
+             , PRCS_STTS                     	     prcsStts
+          FROM ITSM_IDEA_MNG 
+         WHERE USE_YN = 'Y'
+           AND IDEA_SN = #{ideaSn}
+    </select>
+
+
+    <!-- 생성 -->
+    <insert id="insertContents" parameterType="itsmIdeaVO">
+        /* ItsmIdeaMngMapper.insertContents */
+        <selectKey keyProperty="ideaSn" order="AFTER" resultType="java.lang.String">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO ITSM_IDEA_MNG
+             ( IDEA_TTL
+             , BLTNB_CN
+             , ATCH_FILE_ID
+             , REG_DT
+             , RGTR_SN
+             , PRCS_STTS
+             , SVC_SN
+             ) 
+        VALUES 
+             ( #{ideaTtl}
+             , #{bltnbCn}
+             , IF(#{atchFileId} = '',NULL,#{atchFileId})
+             , NOW()
+             , #{loginSerno}
+             , 'B'
+             , #{svcSn}
+             )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="updateContents" parameterType="itsmIdeaVO">
+        /* ItsmIdeaMngMapper.updateContents */
+        UPDATE ITSM_IDEA_MNG
+           SET IDEA_TTL         = #{ideaTtl}
+             , SVC_SN           = #{svcSn}
+             , BLTNB_CN         = #{bltnbCn}
+             , ATCH_FILE_ID     = IF(#{atchFileId} = '',NULL,#{atchFileId})
+             , MDFR_SN 			= #{loginSerno}
+             , MDFCN_DT 		= NOW()
+            <if test="prcsStts != null and prcsStts != ''">
+                , PRCS_STTS     = #{prcsStts}
+            </if>
+         WHERE IDEA_SN 			= #{ideaSn}
+    </update>
+
+    <!-- 삭제 -->
+    <update id="deleteContents" parameterType="itsmIdeaVO">
+        /* ItsmIdeaMngMapper.deleteContents */
+        UPDATE ITSM_IDEA_MNG
+           SET USE_YN		= 'N'
+         WHERE IDEA_SN 		= #{ideaSn}
+    </update>
+
+
+    <!-- 댓글 목록 -->
+    <select id="selectCommentList" parameterType="itsmIdeaVO" resultType="itsmIdeaVO">
+        /* ItsmIdeaMngMapper.selectCommentList */
+        SELECT A.CMNT_SN                             cmntSn
+             , A.UP_PSTAT_SN                         upPstatSn
+             , A.CMNT_CN                             cmntCn
+             , DATE_FORMAT(A.REG_DT,'%Y.%m.%d')      regDt
+             , A.RGTR_SN                             rgtrSn
+             , FNC_USER_NM(A.RGTR_SN) 				 rgtrNm
+             , ITSM_FNC_USER_ID(A.RGTR_SN) 			 rgtrId
+             , A.MDFCN_DT                            mdfcnDt
+             , A.MDFR_SN                             mdfrSn
+             , A.USE_YN                              useYn
+             , A.CMNT_ATCH_FILE_ID					 cmntAtchFileId
+             , (SELECT COUNT(1) 
+                  FROM ITSM_ATCH_FILE_MNG B 
+                 WHERE B.ATCH_FILE_ID = A.CMNT_ATCH_FILE_ID 
+                   AND B.DEL_YN = 'N')               delAtchCnt
+          FROM ITSM_IDEA_CMNT A
+         WHERE A.USE_YN		 = 'Y'
+           AND A.UP_PSTAT_SN = #{ideaSn}
+        ORDER BY CMNT_SN DESC
+        LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <!-- 댓글 건수 -->
+    <select id="selectCommentCount" parameterType="itsmIdeaVO" resultType="int">
+        /* ItsmIdeaMngMapper.selectCommentCount */
+        SELECT COUNT(1)
+          FROM ITSM_IDEA_CMNT
+         WHERE USE_YN 		 = 'Y'
+           AND UP_PSTAT_SN   = #{ideaSn}
+    </select>
+
+    <!-- 댓글 생성 -->
+    <insert id="insertCommentContents" parameterType="itsmIdeaVO">
+        /* ItsmIdeaMngMapper.insertCommentContents */
+        <selectKey keyProperty="cmntSn" order="AFTER" resultType="java.lang.String">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO ITSM_IDEA_CMNT
+             ( CMNT_CN
+             , REG_DT
+             , RGTR_SN
+             , UP_PSTAT_SN
+             , CMNT_ATCH_FILE_ID
+             )
+        VALUES
+             ( #{cmntCn}
+             , NOW()
+             , #{loginSerno}
+             , #{ideaSn}
+             , #{cmntAtchFileId}
+             )
+    </insert>
+
+    <!-- 댓글 수정 -->
+    <insert id="updateAnswerContents" parameterType="itsmIdeaVO">
+        /* ItsmIdeaMngMapper.updateAnswerContents */
+        UPDATE ITSM_IDEA_CMNT
+           SET CMNT_CN		        = #{cmntCn}
+             , MDFR_SN 		        = #{loginSerno}
+             , MDFCN_DT 	        = NOW()
+             , CMNT_ATCH_FILE_ID    = #{cmntAtchFileId}
+         WHERE CMNT_SN 		        = #{cmntSn}
+
+    </insert>
+
+    <!-- 댓글 삭제 -->
+    <delete id="deleteAnswerContents" parameterType="itsmIdeaVO">
+        /* ItsmIdeaMngMapper.deleteAnswerContents */
+        UPDATE ITSM_IDEA_CMNT
+           SET USE_YN  = 'N'
+         WHERE CMNT_SN = #{cmntSn}
+    </delete>
+
+    <!-- 처리상태 수정 -->
+    <update id="updateState" parameterType="itsmIdeaVO">
+        /* ItsmIdeaMngMapper.updateState */
+        UPDATE ITSM_IDEA_MNG
+           SET PRCS_STTS = #{prcsStts}
+         WHERE IDEA_SN 	 = #{ideaSn}
+    </update>
+
+    <!-- 게시글 본인글 여부 -->
+    <select id="regrCheck" parameterType="itsmIdeaVO" resultType="boolean">
+        /* ItsmIdeaMngMapper.regrCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                END
+          FROM ITSM_IDEA_MNG
+         WHERE IDEA_SN = #{ideaSn}
+    </select>
+
+    <!-- 댓글 본인글 여부 -->
+    <select id="regrCommentCheck" parameterType="itsmIdeaVO" resultType="boolean">
+        /* ItsmIdeaMngMapper.regrCommentCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                END
+          FROM ITSM_IDEA_CMNT
+         WHERE CMNT_SN = #{cmntSn}
+    </select>
+
+</mapper>

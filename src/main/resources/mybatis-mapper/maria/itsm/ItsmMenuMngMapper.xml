@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmMenuMngMapper">
+
+    <!-- 메뉴 조회 -->
+    <select id="selectList" parameterType="itsmMenuVO" resultType="itsmMenuVO">
+        /* ItsmMenuMngMapper.selectList */
+        SELECT
+                  A.UPR_MENU_CD	    uprMenuCd
+                , A.MENU_CD		    menuCd
+                , A.MENU_LVL		menuLvl
+                , A.MENU_NM		    menuNm
+                , A.MENU_SEQO 		menuSeqo
+                , A.LWR_TAB_YN 	    lwrTabYn
+                , ( SELECT EXISTS ( SELECT * FROM ITSM_MENU B WHERE B.UPR_MENU_CD = A.MENU_CD AND USE_YN = 'Y' ) ) isLeaf
+        FROM ITSM_MENU A
+        <where>
+            <if test="divn != null and divn != ''">
+                A.UPR_MENU_CD = #{divn}
+            </if>
+            AND A.USE_YN = 'Y'
+        </where>
+        ORDER BY A.MENU_LVL, A.MENU_SEQO
+    </select>
+
+    <!-- 메뉴 상세 조회 -->
+    <select id="selectContents" parameterType="itsmMenuVO" resultType="itsmMenuVO">
+        /* ItsmMenuMngMapper.selectContents */
+        SELECT
+              A.UPR_MENU_CD		    uprMenuCd
+            , A.MENU_CD			    menuCd
+            , A.MENU_LVL			menuLvl
+            , A.MENU_NM			    menuNm
+            , A.MENU_SEQO 			menuSeqo
+            , A.MENU_NM 			menuNm
+            , A.MENU_URL_ADDR 		menuUrlAddr
+            , A.MENU_EXPL 			menuExpl
+            , A.EXPSR_YN 			expsrYn
+            , A.LWR_TAB_YN 		    lwrTabYn
+            , A.TGT_BLANK_YN 		tgtBlankYn
+            , ( SELECT EXISTS ( SELECT * FROM ITSM_MENU C WHERE C.UPR_MENU_CD = A.MENU_CD AND USE_YN = 'Y' ) ) isLeaf
+            , ( SELECT D.LWR_TAB_YN FROM ITSM_MENU D WHERE D.MENU_CD = A.UPR_MENU_CD AND USE_YN = 'Y' )     prLwrTabYn
+        FROM ITSM_MENU A
+        <where>
+            A.MENU_CD = #{menuCd}
+            AND A.USE_YN = 'Y'
+        </where>
+    </select>
+
+
+    <insert id="insertContents" parameterType="itsmMenuVO">
+        /* ItsmMenuMngMapper.insertContents */
+        INSERT INTO ITSM_MENU(
+                    UPR_MENU_CD
+                  , MENU_CD
+                  , MENU_LVL
+                  , MENU_SEQO
+                  , MENU_NM
+                  , MENU_URL_ADDR
+                  , MENU_EXPL
+                  , REGR_SERNO
+                  , REG_DT
+                  , EXPSR_YN
+                  , LWR_TAB_YN
+                  , TGT_BLANK_YN
+        )
+        VALUES (
+                 #{uprMenuCd}
+               , #{menuCd}
+               , #{menuLvl}
+               , #{menuSeqo}
+               , #{menuNm}
+               , #{menuUrlAddr}
+               , #{menuExpl}
+               , #{loginSerno}
+               , NOW()
+               , #{expsrYn}
+               , #{lwrTabYn}
+               , #{tgtBlankYn}
+               )
+    </insert>
+
+    <update id="updateContents" parameterType="itsmMenuVO">
+        /* ItsmMenuMngMapper.updateContents */
+        UPDATE ITSM_MENU
+        SET MENU_NM 			= #{menuNm}
+        , MENU_EXPL		= #{menuExpl}
+        , EXPSR_YN 		= #{expsrYn}
+        , TGT_BLANK_YN		= #{tgtBlankYn}
+        , UPDR_SERNO		= #{loginSerno}
+        , UPD_DT			= NOW()
+        <if test="menuUrlAddr != null and menuUrlAddr != ''">
+            , MENU_URL_ADDR 	= #{menuUrlAddr}
+        </if>
+        <if test="lwrTabYn != null and lwrTabYn != ''">
+            , LWR_TAB_YN		= #{lwrTabYn}
+        </if>
+        <where>
+            MENU_CD 	= #{menuCd}
+        </where>
+    </update>
+
+    <!-- 메뉴 수정시 자기 1차자식메뉴의 메뉴하부탭여부를 수정한다. -->
+    <update id="updateChildContents" parameterType="itsmMenuVO">
+        /* ItsmMenuMngMapper.updateChildContents */
+		<![CDATA[
+        UPDATE ITSM_MENU
+        SET MENU_LWPRT_TAB_YN = #{lwrTabYn}
+        WHERE UPR_MENU_CD 		= #{menuCd}
+          AND MENU_LVL     = '3'
+        ]]>
+    </update>
+
+    <delete id="deleteContents" parameterType="itsmMenuVO">
+        /* ItsmMenuMngMapper.deleteContents */
+		<![CDATA[
+        UPDATE ITSM_MENU
+        SET USE_YN   = 'N'
+        WHERE MENU_SERNO = #{menuSerno}
+        ]]>
+    </delete>
+
+
+
+
+    <!-- 메뉴 상세 조회 -->
+    <select id="selectMenuContents" parameterType="itsmMenuVO" resultType="itsmMenuVO">
+        /* ItsmMenuMngMapper.selectMenuContents */
+        SELECT MENU_SERNO	 			AS menuSerno
+             , UPR_MENU_CD 			AS uprMenuCd
+             , MENU_CD 				AS menuCd
+             , MENU_NM 				AS menuNm
+             , MENU_LVL 		AS menuLvl
+             , MENU_SEQO 			AS menuSeqo
+             , MENU_EXPL 			AS menuExpl
+             , MENU_URL_ADDR 		AS menuUrlAddr
+             , MENU_LWPRT_TAB_YN 	AS lwrTabYn
+             , TARGET_BLANK_YN 		AS targetBlankYn
+        FROM ITSM_MENU
+        WHERE USE_YN 		= 'Y'
+          AND MENU_CD 		= #{uprMenuCd}
+        ORDER BY MENU_SEQO
+    </select>
+
+    <!-- 메뉴 4차 생성시 2차메뉴의 하부탭여부 체크 -->
+    <select id="selectmenutabchkCount" parameterType="itsmMenuVO" resultType="int">
+        /* ItsmMenuMngMapper.selectmenutabchkCount */
+        SELECT COUNT(1)
+        FROM ITSM_MENU A
+        WHERE A.USE_YN 		= 'Y'
+          AND A.MENU_CD 		= (
+            SELECT MAX(B.UPR_MENU_CD)
+            FROM ITSM_MENU B
+            WHERE B.MENU_CD = #{uprMenuCd}
+              AND B.USE_YN  = 'Y'
+        )
+          AND A.MENU_LWPRT_TAB_YN = 'Y'
+    </select>
+
+    <update id="orderUpTargetUpdateContents" parameterType="itsmMenuVO">
+        /* ItsmMenuMngMapper.orderUpTargetUpdateContents */
+        UPDATE ITSM_MENU
+        SET MENU_SEQO 	= MENU_SEQO + 1
+        <where>
+            UPR_MENU_CD = #{uprMenuCd}
+            AND MENU_SEQO = #{menuSeqo} - 1
+            AND USE_YN = 'Y'
+        </where>
+    </update>
+
+    <update id="orderDownTargetUpdateContents" parameterType="itsmMenuVO" >
+        /* ItsmMenuMngMapper.orderDownTargetUpdateContents */
+        UPDATE ITSM_MENU
+        SET MENU_SEQO 	= MENU_SEQO-1
+        <where>
+            UPR_MENU_CD 	= #{uprMenuCd}
+            AND MENU_SEQO  = #{menuSeqo} + 1
+            AND USE_YN 		= 'Y'
+        </where>
+    </update>
+
+    <update id="orderUpSelfUpdateContents" parameterType="itsmMenuVO">
+        /* ItsmMenuMngMapper.orderUpSelfUpdateContents */
+        UPDATE ITSM_MENU
+        SET MENU_SEQO 	= MENU_SEQO - 1
+        <where>
+                MENU_CD 	= #{menuCd}
+            AND MENU_SEQO  > 1
+            AND USE_YN 		= 'Y'
+        </where>
+    </update>
+
+    <update id="orderDownSelfUpdateContents" parameterType="itsmMenuVO">
+        /* ItsmMenuMngMapper.orderDownSelfUpdateContents */
+        UPDATE ITSM_MENU
+        SET MENU_SEQO = MENU_SEQO + 1
+        <where>
+            MENU_CD 	= #{menuCd}
+            AND MENU_SEQO <![CDATA[<=]]> (SELECT B.MENU_SEQO FROM(SELECT MAX(MENU_SEQO) AS MENU_SEQO FROM ITSM_MENU A WHERE UPR_MENU_CD = #{uprMenuCd})B)
+            AND USE_YN 		= 'Y'
+        </where>
+    </update>
+
+    <select id="menuCdOvlpChk" parameterType="itsmMenuVO" resultType="int">
+        /* ItsmMenuMngMapper.menuCdOvlpChk */
+        SELECT COUNT(MENU_CD)
+        FROM ITSM_MENU
+        WHERE UPPER(MENU_CD) = UPPER(#{menuCd})
+    </select>
+
+    <!-- 메뉴 Header 목록 조회 -->
+    <select id="selectMenuList" parameterType="itsmMenuVO" resultType="itsmMenuVO">
+        /* ItsmMenuMngMapper.selectMenuList */
+            SELECT
+                  A.UPR_MENU_CD 			uprMenuCd
+                , A.MENU_LVL 				menuLvl
+                , A.MENU_SEQO 				menuSeqo
+                , A.MENU_NM 				menuNm
+                , A.MENU_CD 				menuCd
+                , A.MENU_URL_ADDR 			menuUrlAddr
+                , A.LWR_TAB_YN				lwrTabYn
+                , CASE
+                        WHEN A.TGT_BLANK_YN = 'A' THEN ''
+                        WHEN A.TGT_BLANK_YN = 'B' THEN '_blank'
+                        ELSE ''
+                    END 					tgtBlankYn
+                , ( SELECT EXISTS ( SELECT *
+                                      FROM ITSM_MENU D
+                                 LEFT JOIN ITSM_MENU_AUTH_MNG E
+                                        ON D.MENU_CD = E.MENU_CD
+                                     WHERE D.UPR_MENU_CD = A.MENU_CD
+                                       AND D.USE_YN = 'Y'
+                                       AND E.GRP_AUTH_ID = #{grpAuthId} )
+                                                                            ) isLeaf
+            FROM ITSM_MENU A
+       LEFT JOIN ITSM_MENU_AUTH_MNG B
+              ON A.MENU_CD = B.MENU_CD
+       LEFT JOIN ITSM_MENU C
+              ON C.MENU_CD = A.UPR_MENU_CD
+             AND C.USE_YN = 'Y'
+            <where>
+                <if test="menuLvl != null and menuLvl != ''">
+                    AND A.MENU_LVL = #{menuLvl}
+                </if>
+                AND B.GRP_AUTH_ID = #{grpAuthId}
+                AND A.EXPSR_YN = 'Y'
+                AND A.USE_YN	= 'Y'
+                <if test="lwrTabYn != null and lwrTabYn != ''">
+                    AND C.LWR_TAB_YN = #{lwrTabYn}
+                </if>
+            </where>
+        ORDER BY A.MENU_SEQO
+    </select>
+
+    <!-- 권한설정용 - 메뉴조회 - 오라클용 -->
+    <select id="selectMenuTreeList" parameterType="itsmMenuVO" resultType="itsmMenuVO">
+        /* ItsmMenuMngMapper.selectMenuTreeList */
+        WITH RECURSIVE menu_tree AS (SELECT A.MENU_SERNO 						AS menuSerno
+                                          , A.UPR_MENU_CD 					AS uprMenuCd
+                                          , A.MENU_LVL 					AS menuLvl
+                                          , A.MENU_SEQO 					AS menuSeqo
+                                          , A.MENU_NM 						AS menuNm
+                                          , A.MENU_CD 						AS menuCd
+                                          , A.MENU_URL_ADDR 				AS menuUrlAddr
+                                          , IF(B.MENU_CD IS NULL, 'N', 'Y') AS menuChk
+                                          , COALESCE(B.WRT_AUTH_YN, 'R')  AS wrtAuthYn
+                                          , 1 AS lvl
+                                          , CASE WHEN EXISTS (SELECT *
+                                                              FROM ITSM_MENU C
+                                                              WHERE C.UPR_MENU_CD = A.MENU_CD
+                                                                AND C.USE_YN = 'Y') THEN 0 ELSE 1 END AS isleaf
+                                     FROM ITSM_MENU A
+                                              LEFT OUTER JOIN itsm_menu_auth_mng B
+                                                              ON A.MENU_CD 		= B.MENU_CD
+                                                                  AND B.GRP_AUTH_ID = #{grpAuthId}
+                                     WHERE A.USE_YN 		= 'Y'
+                                       AND A.EXPSR_YN 		= 'Y'
+                                       AND A.UPR_MENU_CD 	= #{uprMenuCd}
+                                     UNION ALL
+                                     SELECT A.MENU_SERNO
+                                          , A.UPR_MENU_CD
+                                          , A.MENU_LVL
+                                          , A.MENU_SEQO
+                                          , A.MENU_NM, A.MENU_CD
+                                          , A.MENU_URL_ADDR
+                                          , IF(B.MENU_CD IS NULL, 'N', 'Y') 	AS menuChk
+                                          , COALESCE(B.WRT_AUTH_YN, 'R')  AS wrtAuthYn
+                                          , menu_tree.lvl + 1
+                                          , CASE WHEN EXISTS (SELECT *
+                                                              FROM ITSM_MENU C
+                                                              WHERE C.UPR_MENU_CD = A.MENU_CD
+                                                                AND C.USE_YN = 'Y') THEN 0 ELSE 1 END AS isleaf
+                                     FROM ITSM_MENU A
+                                              LEFT OUTER JOIN itsm_menu_auth_mng B
+                                                              ON A.MENU_CD 		= B.MENU_CD
+                                                                  AND B.GRP_AUTH_ID = #{grpAuthId}
+                                              JOIN menu_tree
+                                                   ON A.UPR_MENU_CD 	= menu_tree.menuCd
+                                     WHERE A.USE_YN		= 'Y'
+                                       AND A.EXPSR_YN 		= 'Y'
+        )
+        SELECT menuSerno
+             , uprMenuCd
+             , menuLvl
+             , menuSeqo
+             , menuNm
+             , menuCd
+             , menuUrlAddr
+             , menuChk
+             , wrtAuthYn
+             , lvl
+             , isleaf
+        FROM menu_tree
+        ORDER BY menuSeqo
+    </select>
+
+    <!-- 권한설정용 - 메뉴조회 - 마리아 DB,오라클 -->
+    <select id="selectDBMenuTreeList" parameterType="itsmMenuVO" resultType="itsmMenuVO">
+        /* ItsmMenuMngMapper.selectDBMenuTreeList */
+        SELECT A.MENU_SERNO 							AS menuSerno
+             , A.UPR_MENU_CD 						AS uprMenuCd
+             , A.MENU_LVL 						AS menuLvl
+             , A.MENU_SEQO 							AS menuSeqo
+             , A.MENU_NM 							AS menuNm
+             , A.MENU_CD 							AS menuCd
+             , A.MENU_URL_ADDR 						AS menuUrlAddr
+             , CASE WHEN (SELECT COUNT(1) FROM ITSM_MENU WHERE UPR_MENU_CD = A.MENU_CD AND USE_YN = 'Y') > 0 THEN '0' ELSE '1' END AS isleaf
+        FROM ITSM_MENU A
+        WHERE A.USE_YN 		  = 'Y'
+          AND A.EXPSR_YN 		  = 'Y'
+          AND A.MENU_CD NOT IN (SELECT MENU_CD FROM T_TBL_BLTNB_MNG)
+        ORDER BY A.MENU_SEQO
+    </select>
+
+    <update id="arrangeSortSeqo" parameterType="itsmMenuVO">
+        /* ItsmMenuMngMapper.arrangeSortSeqo */
+        UPDATE ITSM_MENU A
+        SET MENU_SEQO = (SELECT RNUM
+                         FROM (SELECT B.MENU_SERNO
+                                    , ROW_NUMBER() OVER() AS RNUM
+                               FROM (SELECT MENU_SERNO
+                                     FROM ITSM_MENU
+                                     WHERE USE_YN = 'Y'
+                                       AND MENU_LVL = #{menuLvl}
+                                       AND UPR_MENU_CD = #{uprMenuCd}
+                                     ORDER BY MENU_SEQO
+                                    ) B
+                              ) C
+                         WHERE A.MENU_SERNO = C.MENU_SERNO
+        )
+        WHERE USE_YN 		= 'Y'
+          AND MENU_LVL = #{menuLvl}
+          AND UPR_MENU_CD   = #{uprMenuCd}
+    </update>
+
+
+    <!-- ITSM 시스템이 아닌 본서비스의 메뉴 목록을 불러오는 함수 -->
+    <select id="selectMenuListNotITSM" parameterType="itsmCodeVO" resultType="itsmCodeVO">
+        /* ItsmMenuMngMapper.selectMenuListNotITSM */
+        SELECT
+              'common'  cdVal
+            , '공통'    cdValNm
+        UNION
+        SELECT
+              'main'   cdVal
+            , '메인'    cdValNm
+        UNION
+        SELECT
+              MENU_CD   cdVal
+            , MENU_NM   cdValNm
+        FROM T_MENU_MNG A
+        WHERE USE_YN = 'Y'
+        AND EXPSR_YN = 'Y'
+        AND MENU_CL = 'ma'
+        <choose>
+            <when test="uppoCdVal != '' and uppoCdVal != null">
+                AND UPR_MENU_CD = #{uppoCdVal}
+            </when>
+            <otherwise>
+                AND MENU_LVL = '1'
+            </otherwise>
+        </choose>
+    </select>
+
+
+
+    <select id="selectAuthMenuList" parameterType="itsmMenuVO" resultType="itsmMenuVO">
+        /* MaCodeMapper.selectMenuList -> ItsmMenuMngMapper.selectAuthMenuList*/
+        SELECT A.MENU_SERNO menuSerno
+             , A.UPR_MENU_CD uprMenuCd
+             , A.MENU_LVL menuLvl
+             , A.MENU_SEQO menuSeqo
+             , A.MENU_NM menuNm
+             , A.MENU_CD menuCd
+             , A.MENU_URL_ADDR menuUrlAddr
+             , CASE   WHEN B.MENU_CD IS NULL THEN  'N'  ELSE 'Y' END menuChk
+             , IFNULL(B.WRT_AUTH_YN, 'R')	wrtAuthYn
+        FROM ITSM_MENU A
+         LEFT OUTER JOIN itsm_menu_auth_mng B
+         ON B.GRP_AUTH_ID = #{grpAuthId}
+             AND A.MENU_CD  = B.MENU_CD
+        WHERE A.MENU_LVL = #{menuLvl}
+          AND A.UPR_MENU_CD = #{uprMenuCd}
+          AND A.USE_YN = 'Y'
+          AND A.EXPSR_YN = 'Y'
+        ORDER BY A.MENU_SEQO
+    </select>
+
+    <!-- 통계 종합 - 서비스변경현황2 -->
+    <select id="selectChange2Chart" parameterType="itsmStatVO" resultType="itsmStatVO">
+        /* ItsmMenuMngMapper.selectChange2Chart */
+        select
+        PA.*
+
+        from (
+        select
+        A.MENU_SEQO
+        , A.MENU_CD																menuCd
+        , A.MENU_NM															menuNm
+        , COUNT(B.IMPRV_SN)													cnt
+        from ITSM_MENU A
+        left join ITSM_IMPRV_DMND B
+        on A.MENU_CD = B.UPR_MENU_CD
+        AND DATE_FORMAT(B.REG_DT, '%Y') = #{year}
+        AND B.PRCS_GBN != 'PG07'
+        AND B.PRCS_CD = 'PO03'
+        AND B.CHG_HST_REG_YN = 'Y'
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND B.SVC_SN = #{schEtc00}
+        </if>
+        where A.use_YN = 'Y'
+        and A.MENU_LVL ='1'
+        group by A.MENU_CD
+        ) PA
+        ORDER BY CASE WHEN PA.menuCd IS NULL THEN 0 ELSE 1 END, PA.MENU_SEQO;
+    </select>
+
+    <!-- 서비스처리현황2-->
+    <select id="statChgView" parameterType="itsmStatVO" resultType="itsmStatVO">
+        /* ItsmMenuMngMapper.statChgView */
+        select
+        PA.*
+
+        from (
+        select
+        A.MENU_SEQO
+        , A.MENU_CD																menuCd
+        , A.MENU_NM															menuNm
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '01' THEN 1 ELSE 0 END) month1
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '02' THEN 1 ELSE 0 END) month2
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '03' THEN 1 ELSE 0 END) month3
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '04' THEN 1 ELSE 0 END) month4
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '05' THEN 1 ELSE 0 END) month5
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '06' THEN 1 ELSE 0 END) month6
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '07' THEN 1 ELSE 0 END) month7
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '08' THEN 1 ELSE 0 END) month8
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '09' THEN 1 ELSE 0 END) month9
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '10' THEN 1 ELSE 0 END) month10
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '11' THEN 1 ELSE 0 END) month11
+        , SUM(CASE WHEN DATE_FORMAT(B.REG_DT, '%m') = '12' THEN 1 ELSE 0 END) month12
+        , COUNT(B.IMPRV_SN)													cnt
+        from ITSM_MENU A
+        left join ITSM_IMPRV_DMND B
+        on A.MENU_CD = B.UPR_MENU_CD
+        AND DATE_FORMAT(B.REG_DT, '%Y') = #{year}
+        AND B.PRCS_GBN != 'PG07'
+        AND B.PRCS_CD = 'PO03'
+        AND B.CHG_HST_REG_YN = 'Y'
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND B.SVC_SN = #{schEtc00}
+        </if>
+        where A.use_YN = 'Y'
+        and A.MENU_LVL ='1'
+        group by A.MENU_CD with rollup
+        ) PA
+        ORDER BY CASE WHEN PA.menuCd IS NULL THEN 0 ELSE 1 END, PA.MENU_SEQO;
+
+    </select>
+
+    <!-- 메뉴 중복 검사-->
+    <select id="menuCdDuplCheck" parameterType="itsmMenuVO" resultType="int">
+        /* ItsmMenuMngMapper.menuCdDuplCheck */
+        SELECT
+        COUNT(1)
+        FROM ITSM_MENU
+        <where>
+            MENU_CD = #{menuCd}
+        </where>
+    </select>
+</mapper>

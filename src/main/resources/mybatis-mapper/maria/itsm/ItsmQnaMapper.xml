@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmQnaMapper">
+    
+    <sql id="Where">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (UPPER(A.DMND_TTL) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR UPPER(FNC_USER_NM(A.RQSTR_ID)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%'))
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER(A.DMND_TTL) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER(FNC_USER_NM(A.RQSTR_ID)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND A.SVC_SN = #{schEtc00}
+        </if>
+        <if test="schEtc01 !=null and schEtc01 !=''">
+            AND A.DMND_CD = #{schEtc01}
+        </if>
+        <if test="schEtc02 !=null and schEtc02 !=''">
+            <choose>
+                <when test="schEtc02==1">
+                    AND (SELECT COUNT(1) FROM ITSM_QNA_COMMENT TA WHERE TA.QNA_SN = A.QNA_SN AND TA.USE_YN = 'Y') > 0
+                </when>
+                <otherwise>
+                    AND (SELECT COUNT(1) FROM ITSM_QNA_COMMENT TA WHERE TA.QNA_SN = A.QNA_SN AND TA.USE_YN = 'Y') = 0
+                </otherwise>
+            </choose>
+        </if>
+        <if test="searchStartDate !=null and searchStartDate !=''">
+            AND A.REG_DT <![CDATA[ >= ]]> DATE_FORMAT(CONCAT(#{searchStartDate},' 00:00:00'),'%Y.%m.%d %H:%i:%s')
+        </if>
+        <if test="searchEndDate !=null and searchEndDate !=''">
+            AND A.REG_DT <![CDATA[ <= ]]> DATE_FORMAT(CONCAT(#{searchEndDate},' 23:59:59'),'%Y.%m.%d %H:%i:%s')
+        </if>
+    </sql>
+
+    <sql id="Where2">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (UPPER((TAU.USER_NM)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR 	UPPER((TAU.USER_TEL_NO)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR 	UPPER((TAU.USER_EMAIL_ADDR)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%'))
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER((TAU.USER_NM)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER((TAU.USER_TEL_NO)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==3">
+                AND UPPER((TAU.USER_EMAIL_ADDR)) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+    </sql>
+
+
+    <sql id="Main">
+        AND SVC_SN = #{schEtc00}
+    </sql>
+
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmQnaVO" resultType="itsmQnaVO">
+        /* ItsmQnaMapper.selectList */
+        SELECT A.QNA_SN                   		                      qnaSn
+             , A.DMND_TTL                    		                  dmndTtl
+             , A.DMND_CD                     		                  dmndCd
+             , ITSM_FNC_CODE_NM(A.DMND_CD)             	              dmndCdNm
+             , A.DMND_CN                     		                  dmndCn
+             , A.RQSTR_ID                    		                  rqstrId
+             , FNC_USER_NM(A.RQSTR_ID)   			                  rqstrNm
+             , A.PRCS_CN                     		                  prcsCn
+             , A.MNGR_ID                    		                  mngrSn
+             , FNC_USER_NM(A.MNGR_ID)   				              mngrNm
+             , A.PRCS_CD                     		                  prcsCd
+             , ITSM_FNC_CODE_NM(A.PRCS_CD)             	              prcsCdNm
+             , A.ATCH_FILE_ID              		                      atchFileId
+             , A.JOB_CD                     		                  jobCd
+             , ITSM_FNC_CODE_NM(A.JOB_CD)             	              jobCdNm
+             , A.RGTR_SN                    		                  rgtrSn
+             , A.MDFR_SN                    	                      mdfrSn
+             , A.SVC_SN                    	                          svcSn
+             , ITSM_FNC_SVC_NM(A.SVC_SN)                              svcNm
+             , FNC_USER_NM(A.RGTR_SN)  				                  rgtrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')                      regDt
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')                    mdfcnDt
+             , DATE_FORMAT(A.PRCS_DT, '%Y.%m.%d')                     prcsDt
+             , DATE_FORMAT(A.RFLT_DT, '%Y.%m.%d')                     rfltDt
+             , (SELECT COUNT(1) 
+                  FROM ITSM_QNA_COMMENT B
+                 WHERE B.QNA_SN = A.QNA_SN 
+                   AND B.USE_YN = 'Y')                                cmntCnt
+             , (SELECT COUNT(1) 
+                  FROM ITSM_QNA_COMMENT B
+                 WHERE B.QNA_SN = A.QNA_SN  
+                   AND B.USE_YN = 'Y' 
+                   AND DATE_FORMAT(B.REG_DT,'%Y-%m-%d') = CURDATE())  newComCnt
+          FROM ITSM_QNA A
+        <where>
+            <include refid="Where"/>
+            AND  A.USE_YN ='Y'
+        </where>
+         ORDER BY A.QNA_SN DESC
+        <if test="excelYn ==null or excelYn == ''">
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+    </select>
+
+    <select id="selectCount" parameterType="itsmQnaVO" resultType="int">
+        /* ItsmQnaMapper.selectCount */
+        SELECT COUNT(1)
+          FROM ITSM_QNA A
+        <where>
+            <include refid="Where"/>
+            AND  A.USE_YN ='Y'
+        </where>
+    </select>
+
+    <!-- 상세 -->
+    <select id="selectContents" parameterType="itsmQnaVO" resultType="itsmQnaVO">
+        /* ItsmQnaMapper.selectContents */
+        SELECT QNA_SN							 qnaSn
+             , DMND_TTL							 dmndTtl
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	 regDt
+             , DMND_CD							 dmndCd
+             , ITSM_FNC_CODE_NM(DMND_CD)		 dmndCdNm
+             , DMND_CN							 dmndCn
+             , RQSTR_ID							 rqstrId
+             , FNC_USER_NM(RQSTR_ID) 			 rqstrNm
+             , PRCS_CN							 prcsCn
+             , MNGR_ID							 mngrSn
+             , FNC_USER_NM(MNGR_ID)				 mngrNm
+             , PRCS_CD							 prcsCd
+             , ITSM_FNC_CODE_NM(PRCS_CD)		 prcsCdNm
+             , DATE_FORMAT(PRCS_DT, '%Y.%m.%d')  prcsDt
+             , DATE_FORMAT(RFLT_DT, '%Y.%m.%d')  rfltDt
+             , ATCH_FILE_ID						 atchFileId
+             , JOB_CD							 jobCd
+             , ITSM_FNC_CODE_NM(JOB_CD)			 jobCdNm
+             , RGTR_SN						     rgtrSn
+             , SVC_SN                    	     svcSn
+             , ITSM_FNC_SVC_NM(SVC_SN )          svcNm
+          FROM ITSM_QNA
+         WHERE USE_YN  ='Y'
+           AND QNA_SN = #{qnaSn}
+    </select>
+
+    <!-- 생성 -->
+    <insert id="insertContents" parameterType="itsmQnaVO">
+        /* ItsmQnaMapper.insertContents */
+        INSERT INTO ITSM_QNA
+             ( DMND_TTL
+             , DMND_CD
+             , DMND_CN
+             , RQSTR_ID
+             , ATCH_FILE_ID
+             , REG_DT
+             , RGTR_SN
+             , SVC_SN
+        <if test="prcsCd !=null and prcsCd !=''">
+            <if test='prcsCd.equals("PO03")'>
+                , PRCS_DT
+            </if>
+        </if>
+        <if test="jobCd !=null and jobCd !=''">
+            , JOB_CD
+            <if test="rfltDt !=null and rfltDt !=''">
+                , RFLT_DT
+            </if>
+        </if>
+             )
+        VALUES
+             ( #{dmndTtl}
+             , #{dmndCd}
+             , #{dmndCn}
+             , #{loginSerno}
+             , #{atchFileId}
+             , NOW()
+             , #{loginSerno}
+             , #{svcSn}
+            <if test="prcsCd !=null and prcsCd !=''">
+                <if test='prcsCd.equals("PO03")'>
+                    , NOW()
+                </if>
+            </if>
+            <if test="jobCd !=null and jobCd !=''">
+                , #{jobCd}
+                <if test="rfltDt !=null and rfltDt !=''">
+                    , #{rfltDt}
+                </if>
+            </if>
+            )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="updateContents" parameterType="itsmQnaVO">
+        /* ItsmQnaMapper.updateContents */
+        UPDATE ITSM_QNA
+           SET DMND_TTL         	    = #{dmndTtl}
+             , DMND_CD          	    = #{dmndCd}
+             , DMND_CN          	    = #{dmndCn}
+             , RQSTR_ID         	    = #{loginSerno}
+             , ATCH_FILE_ID				= #{atchFileId}
+             , SVC_SN					= #{svcSn}
+             , MDFR_SN					= #{loginSerno}
+             , MDFCN_DT					= NOW()
+             <if test="prcsCd !=null and prcsCd !=''">
+                 <if test='prcsCd.equals("PO03")'>
+                     , PRCS_DT 			= NOW()
+                 </if>
+             </if>
+             <if test="jobCd !=null and jobCd !=''">
+                 , JOB_CD				= #{jobCd}
+                 <if test="rfltDt !=null and rfltDt !=''">
+                     , RFLT_DT			= #{rfltDt}
+                 </if>
+             </if>
+        WHERE QNA_SN 	                = #{qnaSn}
+    </update>
+
+    <!-- 삭제 -->
+    <update id="deleteContents" parameterType="itsmQnaVO">
+        /* ItsmQnaMapper.deleteContents */
+        UPDATE ITSM_QNA
+           SET USE_YN 	  = 'N'
+         WHERE QNA_SN     = #{qnaSn}
+    </update>
+
+    <!-- 추가요청사항 코멘트 목록 -->
+    <select id="selectComList" parameterType="itsmQnaVO" resultType="itsmQnaVO">
+        /* ItsmQnaMapper.selectComList */
+        SELECT A.CMNT_SN 								   cmntSn
+             , A.CMNT_CN 								   cmntCn
+             , A.RGTR_SN								   rgtrSn
+             , FNC_USER_NM(A.RGTR_SN) 					   regrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i') 	   regDt
+             , A.MDFR_SN								   mdfrSn
+             , FNC_USER_NM(A.MDFR_SN) 					   mdfrId
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')		   mdfcnDt
+             , A.CMNT_ATCH_FILE_ID						   cmntAtchFileId
+             , (SELECT COUNT(1) 
+                  FROM ITSM_ATCH_FILE_MNG B 
+                 WHERE B.ATCH_FILE_ID = A.CMNT_ATCH_FILE_ID 
+                   AND B.DEL_YN = 'N')                     delAtchCnt
+          FROM ITSM_QNA_COMMENT A
+         WHERE A.QNA_SN = #{qnaSn}
+           AND A.USE_YN = 'Y'
+         ORDER BY A.CMNT_SN DESC
+    </select>
+
+
+    <!-- 추가요청사항 코멘트 생성 -->
+    <insert id="comInsertContents" parameterType="itsmQnaVO">
+        /* ItsmQnaMapper.comInsertContents */
+        INSERT INTO ITSM_QNA_COMMENT
+             ( CMNT_CN
+             , QNA_SN
+             , REG_DT
+             , RGTR_SN
+             , CMNT_ATCH_FILE_ID
+             )
+        VALUES
+             ( #{cmntCn}
+             , #{qnaSn}
+             , NOW()
+             , #{loginSerno}
+             , #{cmntAtchFileId}
+             )
+    </insert>
+
+    <!-- 추가요청사항 코멘트 수정 -->
+    <update id="comUpdateContents" parameterType="itsmQnaVO">
+        /* ItsmQnaMapper.comUpdateContents */
+        UPDATE ITSM_QNA_COMMENT
+           SET CMNT_CN   	 	 = #{cmntCn}
+             , MDFR_SN 		 	 = #{loginSerno}
+             , MDFCN_DT 	 	 = NOW()
+             , CMNT_ATCH_FILE_ID = #{cmntAtchFileId}
+         WHERE CMNT_SN 	 	     = #{cmntSn}
+    </update>
+
+    <!-- 추가요청사항 코멘트 삭제 -->
+    <update id="comDeleteContents" parameterType="itsmQnaVO">
+        /* ItsmQnaMapper.comDeleteContents */
+        UPDATE ITSM_QNA_COMMENT
+           SET USE_YN  	  = 'N'
+         WHERE CMNT_SN    = #{cmntSn}
+    </update>
+
+    <!-- 목록 -->
+    <select id="selectMainList" parameterType="itsmQnaVO" resultType="itsmQnaVO">
+        /* ItsmQnaMapper.selectMainList */
+        SELECT QNA_SN                   		    qnaSn
+             , DMND_TTL                    		    dmndTtl
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d')      regDt
+             , DATE_FORMAT(MDFCN_DT, '%Y.%m.%d')    mdfcnDt
+          FROM ITSM_QNA
+        <where>
+            <include refid="Main"/>
+            AND USE_YN ='Y'
+        </where>
+         ORDER BY QNA_SN DESC
+         LIMIT 5
+    </select>
+
+    <!-- 게시글 본인글 여부 -->
+    <select id="regrCheck" parameterType="itsmQnaVO" resultType="boolean">
+        /* ItsmQnaMapper.regrCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                END
+          FROM ITSM_QNA
+         WHERE QNA_SN = #{qnaSn}
+    </select>
+
+    <!-- 댓글 본인글 여부 -->
+    <select id="regrCommentCheck" parameterType="itsmQnaVO" resultType="boolean">
+        /* ItsmQnaMapper.regrCommentCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                END
+          FROM ITSM_QNA_COMMENT
+         WHERE CMNT_SN = #{cmntSn}
+    </select>
+
+</mapper>

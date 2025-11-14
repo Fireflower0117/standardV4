@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmRptWeekMapper">
+
+    <!--
+        ITSM_RPT_WEEK
+        ITSM_RPT_WEEK_MTRL
+        ITSM_RPT_WEEK_ACTN
+    -->
+
+    <sql id="where">
+        <if test='schEtc00 !=null and schEtc00 !=""'>
+            AND SVC_SN = #{schEtc00}
+        </if>
+        <if test='schEtc01 !=null and schEtc01 !=""'>
+            AND (SUBSTR(WEEK_START_YMD,1,4) = #{schEtc01} OR SUBSTR(WEEK_END_YMD,1,4) = #{schEtc01})
+        </if>
+        <if test='schEtc02 !=null and schEtc02 !=""'>
+            AND (SUBSTR(WEEK_START_YMD,5,2) = #{schEtc02} OR SUBSTR(WEEK_END_YMD,5,2) = #{schEtc02})
+        </if>
+        <if test='searchStartDate !=null and searchStartDate !=""'>
+            <![CDATA[
+				AND STR_TO_DATE(WEEK_START_YMD,'%Y%m%d') >= STR_TO_DATE(#{searchStartDate},'%Y.%m.%d')
+		 	]]>
+        </if>
+        <if test='searchEndDate !=null and searchEndDate !=""'>
+            <![CDATA[
+		 		AND  STR_TO_DATE(WEEK_END_YMD,'%Y%m%d') <= STR_TO_DATE(#{searchEndDate},'%Y.%m.%d')
+	 		]]>
+        </if>
+    </sql>
+
+    <!-- 주간보고 목록 조회 -->
+    <select id="selectList" parameterType="itsmRptWeekVO" resultType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.selectList */
+        SELECT RPT_SN															AS rptSn
+        , SVC_SN																AS svcSn
+        , ITSM_FNC_SVC_NM(SVC_SN)														AS svcNm
+        , PRJ_NM																AS prjNm
+        , CNTR_START_YMD														AS cntrStartYmd
+        , CNTR_END_YMD 															AS cntrEndYmd
+        , CNTR_NO																AS cntrNo
+        , CMPN_NM																AS cmpnNm
+        , TO_CHAR(STR_TO_DATE(WEEK_START_YMD, '%Y%m%d'), 'YYYY.MM.DD')			AS weekStartYmd
+        , TO_CHAR(STR_TO_DATE(WEEK_END_YMD, '%Y%m%d'), 'YYYY.MM.DD')			AS weekEndYmd
+        , MON_WEEK																AS monWeek
+        , ANLY_START_YMD														AS anlyStartYmd
+        , ANLY_END_YMD 															AS anlyEndYmd
+        , DSGN_START_YMD														AS dsgnStartYmd
+        , DSGN_END_YMD 															AS dsgnEndYmd
+        , IMP_START_YMD															AS impStartYmd
+        , IMP_END_YMD 															AS impEndYmd
+        , TEST_START_YMD														AS testStartYmd
+        , TEST_END_YMD 															AS testEndYmd
+        , PILOT_START_YMD														AS pilotStartYmd
+        , PILOT_END_YMD															AS pilotEndYmd
+        , ANLY_PRFR																AS anlyPrfr
+        , DSGN_PRFR                                                        		AS dsgnPrfr
+        , IMP_PRFR                                                         		AS impPrfr
+        , TEST_PRFR                                                        		AS testPrfr
+        , PILOT_PRFR                                                       		AS pilotPrfr
+        , ANLY_PLAN                                                        		AS anlyPlan
+        , DSGN_PLAN                                                        		AS dsgnPlan
+        , IMP_PLAN                                                         		AS impPlan
+        , TEST_PLAN                                                        		AS testPlan
+        , PILOT_PLAN                                                       		AS pilotPlan
+        , NEXT_WEEK_START_YMD  													AS nextWeekStartYmd
+        , NEXT_WEEK_END_YMD    													AS nestWeekEndYmd
+        , THIS_EMP_PRJ                                                    		AS thisEmpPrj
+        , THIS_EMP_PLAN                                                   		AS thisEmpPlan
+        , THIS_EMP_DSGN                                                   		AS thisEmpDsgn
+        , THIS_EMP_DEV                                                    		AS thisEmpDev
+        , NEXT_EMP_PRJ                                                    		AS nextEmpPrj
+        , NEXT_EMP_PLAN                                                   		AS nextEmpPlan
+        , NEXT_EMP_DSGN                                                   		AS nextEmpDsgn
+        , NEXT_EMP_DEV                                                    		AS nextEmpDev
+        , RPT_RMRK                                                        		AS rptRmrk
+        , ISSUE_CN                                                        		AS issueCn
+        , ACTN_PLAN                                                       		AS actnPlan
+        , THIS_PRFR                                                       		AS thisPrfr
+        , NEXT_PLAN                                                       		AS nextPlan
+        , ITSM_FNC_USER_INFO(RGST_SN, 'USER_NM')                                 		AS rgstSn
+        , TO_CHAR(RGST_DT,'YYYY.MM.DD')                                   		AS rgstDt
+        , TO_CHAR(RVSE_DT,'YYYY.MM.DD')                                   		AS rvseDt
+        FROM itsm_rpt_week				WHERE USE_YN = 'Y'
+        <include refid="where"/>
+        ORDER BY MON_WEEK DESC
+        LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <!-- 주간보고 목록 건수 -->
+    <select id="selectCount" parameterType="itsmRptWeekVO" resultType="int">
+        /* ItsmRptWeekMapper.selectCount */
+        SELECT COUNT(1)
+        FROM itsm_rpt_week
+        WHERE USE_YN ='Y'
+        <include refid="where"/>
+    </select>
+
+    <!-- 주간보고 상세 조회 -->
+    <select id="selectContents" parameterType="itsmRptWeekVO" resultType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.selectContents */
+        SELECT RPT_SN															AS rptSn
+             , SVC_SN															AS svcSn
+             , ITSM_FNC_SVC_NM(SVC_SN)													AS svcNm
+             , PRJ_NM															AS prjNm
+             , CNTR_START_YMD													AS cntrStartYmd
+             , CNTR_END_YMD 													AS cntrEndYmd
+             , CNTR_NO															AS cntrNo
+             , CMPN_NM															AS cmpnNm
+             , TO_CHAR(DATE_FORMAT(WEEK_START_YMD, 'YYYYMMDD'), 'YYYY.MM.DD')		AS weekStartYmd
+             , TO_CHAR(DATE_FORMAT(WEEK_END_YMD, 'YYYYMMDD'), 'YYYY.MM.DD')			AS weekEndYmd
+             , MON_WEEK															AS monWeek
+             , ANLY_START_YMD													AS anlyStartYmd
+             , ANLY_END_YMD 													AS anlyEndYmd
+             , DSGN_START_YMD													AS dsgnStartYmd
+             , DSGN_END_YMD 													AS dsgnEndYmd
+             , IMP_START_YMD													AS impStartYmd
+             , IMP_END_YMD 														AS impEndYmd
+             , TEST_START_YMD													AS testStartYmd
+             , TEST_END_YMD 													AS testEndYmd
+             , PILOT_START_YMD													AS pilotStartYmd
+             , PILOT_END_YMD													AS pilotEndYmd
+             , ANLY_PRFR														AS anlyPrfr
+             , DSGN_PRFR                                                        AS dsgnPrfr
+             , IMP_PRFR                                                         AS impPrfr
+             , TEST_PRFR                                                        AS testPrfr
+             , PILOT_PRFR                                                       AS pilotPrfr
+             , ANLY_PLAN                                                        AS anlyPlan
+             , DSGN_PLAN                                                        AS dsgnPlan
+             , IMP_PLAN                                                         AS impPlan
+             , TEST_PLAN                                                        AS testPlan
+             , PILOT_PLAN                                                       AS pilotPlan
+             , LAST_WEEK_START_YMD  											AS lastWeekStartYmd
+             , LAST_WEEK_END_YMD    											AS lastWeekEndYmd
+             , NEXT_WEEK_START_YMD  											AS nextWeekStartYmd
+             , NEXT_WEEK_END_YMD    											AS nestWeekEndYmd
+             , THIS_EMP_PRJ                                                     AS thisEmpPrj
+             , THIS_EMP_PLAN                                                    AS thisEmpPlan
+             , THIS_EMP_DSGN                                                    AS thisEmpDsgn
+             , THIS_EMP_DEV                                                     AS thisEmpDev
+             , NEXT_EMP_PRJ                                                     AS nextEmpPrj
+             , NEXT_EMP_PLAN                                                    AS nextEmpPlan
+             , NEXT_EMP_DSGN                                                    AS nextEmpDsgn
+             , NEXT_EMP_DEV                                                     AS nextEmpDev
+             , RPT_RMRK                                                         AS rptRmrk
+             , ISSUE_CN                                                         AS issueCn
+             , ACTN_PLAN                                                        AS actnPlan
+             , THIS_PRFR                                                        AS thisPrfr
+             , NEXT_PLAN                                                        AS nextPlan
+             , ITSM_FNC_USER_INFO(RGST_SN, 'USER_NM')                                  AS rgstSn
+             , TO_CHAR(RGST_DT,'YYYY.MM.DD')                                    AS rgstDt
+             , TO_CHAR(RVSE_DT,'YYYY.MM.DD')                                    AS rvseDt
+        FROM itsm_rpt_week
+        WHERE USE_YN = 'Y'
+          AND RPT_SN = #{rptSn}
+    </select>
+
+    <!-- 요청자료 목록 -->
+    <select id="selectMtrlList" parameterType="itsmRptWeekVO" resultType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.selectMtrlList */
+        SELECT RPT_MTRL_SN			AS rptMtrlSn
+             , RPT_SN				AS rptSn
+             , MTRL_GBN				AS mtrlGbn
+             , MTRL_CN				AS mtrlCn
+             , REQ_DT				AS reqDt
+             , PROC_GBN				AS procGbn
+             , MTRL_RMRK			AS mtrlRmrk
+        FROM itsm_rpt_week_mtrl
+        WHERE USE_YN = 'Y'
+          AND RPT_SN = #{rptSn}
+    </select>
+
+    <!-- 지시 및 조치사항 목록 -->
+    <select id="selectActnList" parameterType="itsmRptWeekVO" resultType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.selectActnList */
+        SELECT RPT_ACTN_SN			AS rptActnSn
+             , RPT_SN				AS rptSn
+             , INSTR_CN				AS instrCn
+             , INSTR_DT				AS instrDt
+             , ACTN_GBN				AS actnGbn
+             , ACTN_RMRK			AS actnRmrk
+        FROM itsm_rpt_week_actn
+        WHERE USE_YN = 'Y'
+          AND RPT_SN = #{rptSn}
+    </select>
+
+    <!-- 금주,차주 날짜 조회 -->
+    <select id="selectBefWeekContents" parameterType="itsmRptWeekVO" resultType="itsmRptWeekVO" >
+        /* ItsmRptWeekMapper.selectBefWeekContents */
+        SELECT
+            RPT_SN AS rptSn,
+            DATE_FORMAT(WEEK_START_YMD, '%Y.%m.%d') AS weekStartYmd,
+            DATE_FORMAT(WEEK_END_YMD, '%Y.%m.%d') AS weekEndYmd,
+            DATE_FORMAT(NEXT_WEEK_START_YMD, '%Y.%m.%d') AS nextWeekStartYmd,
+            DATE_FORMAT(NEXT_WEEK_END_YMD, '%Y.%m.%d') AS nextWeekEndYmd
+        FROM itsm_rpt_week
+        WHERE RPT_SN = #{rptSn}
+    </select>
+
+    <!-- 주간보고 등록 -->
+    <insert id="insertContents" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.insertContents2 */
+        INSERT INTO itsm_rpt_week(
+                                   PRJ_NM
+                                 , CNTR_START_YMD
+                                 , CNTR_END_YMD
+                                 , CNTR_NO
+                                 , CMPN_NM
+                                 , WEEK_START_YMD
+                                 , WEEK_END_YMD
+                                 , MON_WEEK
+                                 , ANLY_START_YMD
+                                 , ANLY_END_YMD
+                                 , DSGN_START_YMD
+                                 , DSGN_END_YMD
+                                 , IMP_START_YMD
+                                 , IMP_END_YMD
+                                 , TEST_START_YMD
+                                 , TEST_END_YMD
+                                 , PILOT_START_YMD
+                                 , PILOT_END_YMD
+                                 , ANLY_PRFR
+                                 , DSGN_PRFR
+                                 , IMP_PRFR
+                                 , TEST_PRFR
+                                 , PILOT_PRFR
+                                 , ANLY_PLAN
+                                 , DSGN_PLAN
+                                 , IMP_PLAN
+                                 , TEST_PLAN
+                                 , PILOT_PLAN
+                                 , LAST_WEEK_START_YMD
+                                 , LAST_WEEK_END_YMD
+                                 , NEXT_WEEK_START_YMD
+                                 , NEXT_WEEK_END_YMD
+                                 , THIS_EMP_PRJ
+                                 , THIS_EMP_PLAN
+                                 , THIS_EMP_DSGN
+                                 , THIS_EMP_DEV
+                                 , NEXT_EMP_PRJ
+                                 , NEXT_EMP_PLAN
+                                 , NEXT_EMP_DSGN
+                                 , NEXT_EMP_DEV
+                                 , RPT_RMRK
+                                 , ISSUE_CN
+                                 , ACTN_PLAN
+                                 , THIS_PRFR
+                                 , NEXT_PLAN
+                                 , RGST_SN
+                                 , RGST_DT
+        ) VALUES (
+                     'MCS 취약계층 복지서비스'
+                 , '2023.07.11'
+                 , '2023.12.15'
+                 , '202307047AC - 00'
+                 , '주식회사 오픈노트'
+                 , #{weekStartYmd, jdbcType=VARCHAR}
+                 , #{weekEndYmd, jdbcType=VARCHAR}
+                 , #{monWeek, jdbcType=VARCHAR}
+                 , '23.08'
+                 , '23.08'
+                 , '23.08'
+                 , '23.09'
+                 , '23.09'
+                 , '23.11'
+                 , '23.11'
+                 , '23.11'
+                 , '23.11'
+                 , '23.12'
+                 , #{anlyPrfr, jdbcType=VARCHAR}
+                 , #{dsgnPrfr, jdbcType=VARCHAR}
+                 , #{impPrfr, jdbcType=VARCHAR}
+                 , #{testPrfr, jdbcType=VARCHAR}
+                 , #{pilotPrfr, jdbcType=VARCHAR}
+                 , #{anlyPlan, jdbcType=VARCHAR}
+                 , #{dsgnPlan, jdbcType=VARCHAR}
+                 , #{impPlan, jdbcType=VARCHAR}
+                 , #{testPlan, jdbcType=VARCHAR}
+                 , #{pilotPlan, jdbcType=VARCHAR}
+                 , #{lastWeekStartYmd, jdbcType=VARCHAR}
+                 , #{lastWeekEndYmd, jdbcType=VARCHAR}
+                 , #{nextWeekStartYmd, jdbcType=VARCHAR}
+                 , #{nextWeekEndYmd, jdbcType=VARCHAR}
+                 , #{thisEmpPrj, jdbcType=VARCHAR}
+                 , #{thisEmpPlan, jdbcType=VARCHAR}
+                 , #{thisEmpDsgn, jdbcType=VARCHAR}
+                 , #{thisEmpDev, jdbcType=VARCHAR}
+                 , #{nextEmpPrj, jdbcType=VARCHAR}
+                 , #{nextEmpPlan, jdbcType=VARCHAR}
+                 , #{nextEmpDsgn, jdbcType=VARCHAR}
+                 , #{nextEmpDev, jdbcType=VARCHAR}
+                 , #{rptRmrk, jdbcType=VARCHAR}
+                 , #{issueCn, jdbcType=VARCHAR}
+                 , #{actnPlan, jdbcType=VARCHAR}
+                 , #{thisPrfr, jdbcType=VARCHAR}
+                 , #{nextPlan, jdbcType=VARCHAR}
+                 , #{loginSerno, jdbcType=VARCHAR}
+                 , NOW()
+                 )
+    </insert>
+
+    <!-- 주간보고 수정 -->
+    <update id="updateContents" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.updateContents */
+		<![CDATA[
+        UPDATE itsm_rpt_week
+        SET ANLY_PRFR                 = #{anlyPrfr, jdbcType=VARCHAR}
+          , DSGN_PRFR                 = #{dsgnPrfr, jdbcType=VARCHAR}
+          , IMP_PRFR                  = #{impPrfr, jdbcType=VARCHAR}
+          , TEST_PRFR                 = #{testPrfr, jdbcType=VARCHAR}
+          , PILOT_PRFR                = #{pilotPrfr, jdbcType=VARCHAR}
+          , ANLY_PLAN                 = #{anlyPlan, jdbcType=VARCHAR}
+          , DSGN_PLAN                 = #{dsgnPlan, jdbcType=VARCHAR}
+          , IMP_PLAN                  = #{impPlan, jdbcType=VARCHAR}
+          , TEST_PLAN                 = #{testPlan, jdbcType=VARCHAR}
+          , PILOT_PLAN                = #{pilotPlan, jdbcType=VARCHAR}
+          , THIS_EMP_PRJ              = #{thisEmpPrj, jdbcType=VARCHAR}
+          , THIS_EMP_PLAN             = #{thisEmpPlan, jdbcType=VARCHAR}
+          , THIS_EMP_DSGN             = #{thisEmpDsgn, jdbcType=VARCHAR}
+          , THIS_EMP_DEV              = #{thisEmpDev, jdbcType=VARCHAR}
+          , NEXT_EMP_PRJ              = #{nextEmpPrj, jdbcType=VARCHAR}
+          , NEXT_EMP_PLAN             = #{nextEmpPlan, jdbcType=VARCHAR}
+          , NEXT_EMP_DSGN             = #{nextEmpDsgn, jdbcType=VARCHAR}
+          , NEXT_EMP_DEV              = #{nextEmpDev, jdbcType=VARCHAR}
+          , RPT_RMRK                  = #{rptRmrk, jdbcType=VARCHAR}
+          , ISSUE_CN                  = #{issueCn, jdbcType=VARCHAR}
+          , ACTN_PLAN                 = #{actnPlan, jdbcType=VARCHAR}
+          , THIS_PRFR                 = #{thisPrfr, jdbcType=VARCHAR}
+          , NEXT_PLAN                 = #{nextPlan, jdbcType=VARCHAR}
+          , RVSE_SN                   = #{loginSerno, jdbcType=VARCHAR}
+          , RVSE_DT                   = NOW()
+        WHERE RPT_SN = #{rptSn}
+        ]]>
+    </update>
+
+    <!-- 주간보고 삭제 -->
+    <update id="deleteContents" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.deleteContents */
+        UPDATE itsm_rpt_week
+        SET USE_YN = 'N'
+        WHERE RPT_SN = #{rptSn}
+    </update>
+
+    <!-- 요청자료목록 useYn N처리 -->
+    <update id="updateMtrlUseYnN" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.updateMtrlUseYnN */
+        UPDATE itsm_rpt_week_mtrl
+        SET USE_YN = 'N'
+        WHERE RPT_SN = #{rptSn}
+    </update>
+
+    <!-- 요청자료 목록 등록  -->
+    <insert id="insertMtrlContents" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.insertMtrlContents */
+        INSERT INTO itsm_rpt_week_mtrl(
+                                        RPT_SN
+                                      , MTRL_CN
+                                      , MTRL_GBN
+                                      , REQ_DT
+                                      , MTRL_RMRK
+                                      , PROC_GBN
+                                      , RGST_SN
+                                      , RGST_DT  )
+        VALUES (
+                   #{rptSn, jdbcType=VARCHAR}
+               , #{mtrlCn, jdbcType=VARCHAR}
+               , #{mtrlGbn, jdbcType=VARCHAR}
+               , #{reqDt, jdbcType=VARCHAR}
+               , #{mtrlRmrk, jdbcType=VARCHAR}
+               , #{procGbn, jdbcType=VARCHAR}
+               , #{loginSerno, jdbcType=VARCHAR}
+               , NOW()
+               )
+    </insert>
+
+    <!-- 요청자료목록 수정 -->
+    <update id="updateMtrlContents" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.updateMtrlContents */
+        UPDATE itsm_rpt_week_mtrl
+        SET RPT_SN = #{rptSn, jdbcType=VARCHAR}
+          , MTRL_CN = #{mtrlCn, jdbcType=VARCHAR}
+          , REQ_DT = #{reqDt, jdbcType=VARCHAR}
+          , PROC_GBN = #{procGbn, jdbcType=VARCHAR}
+          , MTRL_RMRK = #{mtrlRmrk, jdbcType=VARCHAR}
+          , MTRL_GBN = #{mtrlGbn, jdbcType=VARCHAR}
+          , USE_YN = 'Y'
+          , RVSE_SN = #{loginSerno}
+          , RVSE_DT = NOW()
+        WHERE RPT_MTRL_SN = #{rptMtrlSn}
+    </update>
+
+    <!-- 지시 및 조치사항 useYn N처리 -->
+    <update id="updateActnUseYnN" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.updateActnUseYnN */
+        UPDATE itsm_rpt_week_actn
+        SET USE_YN = 'N'
+        WHERE RPT_SN = #{rptSn}
+    </update>
+
+    <!-- 지시 및 조치사항 목록 등록  -->
+    <insert id="insertActnContents" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.insertActnContents */
+        INSERT INTO itsm_rpt_week_actn(
+                                        RPT_SN
+                                      , INSTR_CN
+                                      , INSTR_DT
+                                      , ACTN_GBN
+                                      , ACTN_RMRK
+                                      , RGST_SN
+                                      , RGST_DT  )
+        VALUES (
+                   #{rptSn, jdbcType=VARCHAR}
+               , #{instrCn, jdbcType=VARCHAR}
+               , #{instrDt, jdbcType=VARCHAR}
+               , #{actnGbn, jdbcType=VARCHAR}
+               , #{actnRmrk, jdbcType=VARCHAR}
+               , #{loginSerno, jdbcType=VARCHAR}
+               , NOW()
+               )
+    </insert>
+
+    <!-- 지시 및 조치사항 목록 수정  -->
+    <update id="updateActnContents" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.updateActnContents */
+        UPDATE itsm_rpt_week_actn
+        SET RPT_SN = #{rptSn, jdbcType=VARCHAR}
+          , INSTR_CN = #{instrCn, jdbcType=VARCHAR}
+          , INSTR_DT = #{instrDt, jdbcType=VARCHAR}
+          , ACTN_GBN = #{actnGbn, jdbcType=VARCHAR}
+          , ACTN_RMRK = #{actnRmrk, jdbcType=VARCHAR}
+          , USE_YN = 'Y'
+          , RVSE_SN = #{loginSerno}
+          , RVSE_DT = NOW()
+        WHERE RPT_ACTN_SN = #{rptActnSn}
+    </update>
+
+    <!-- 배치) 금주일자조회 -->
+    <select id="selectThisWeek" parameterType="itsmRptWeekVO" resultType="itsmRptWeekVO" >
+        /* ItsmRptWeekMapper.selectThisWeek */
+        SELECT
+            replace(DATE_SUB(#{crtDate}, INTERVAL WEEKDAY(#{crtDate}) DAY),'-','')  weekStartYmd
+             , REPLACE(#{crtDate}, '.','') weekEndYmd
+    </select>
+
+    <!-- 배치) itsm_rpt_week 중복체크 -->
+    <select id="selectRptDupleChk" parameterType="itsmRptWeekVO" resultType="int" >
+        /* ItsmRptWeekMapper.selectRptDupleChk */
+        SELECT COUNT(1)
+        FROM itsm_rpt_week A
+        WHERE A.USE_YN = 'Y'
+          AND A.WEEK_START_YMD = #{weekStartYmd}
+          AND A.WEEK_END_YMD = #{weekEndYmd}
+          AND A.SVC_SN = #{svcSn}
+
+    </select>
+
+    <!-- 배치) 요청자료목록 등록 -->
+    <insert id="insertBatchMtrl" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.insertBatchMtrl */
+        INSERT INTO itsm_rpt_week_mtrl (
+            RPT_SN,
+            MTRL_CN,
+            REQ_DT,
+            PROC_GBN,
+            MTRL_RMRK,
+            MTRL_GBN
+        )
+        SELECT
+            #{rptSn},
+            MTRL_CN,
+            REQ_DT,
+            PROC_GBN,
+            MTRL_RMRK,
+            MTRL_GBN
+        FROM itsm_rpt_week_mtrl A
+        WHERE RPT_SN = (SELECT MAX(RPT_SN) FROM itsm_rpt_week)
+          AND USE_YN = 'Y'
+        ORDER BY RPT_MTRL_SN
+    </insert>
+
+    <!-- 배치) 지시 및 조치사항 등록 -->
+    <insert id="insertBatchActn" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.insertBatchActn */
+        INSERT INTO itsm_rpt_week_actn (
+            RPT_SN,
+            INSTR_CN,
+            INSTR_DT,
+            ACTN_GBN,
+            ACTN_RMRK
+        )
+        SELECT
+            #{rptSn},
+            INSTR_CN,
+            INSTR_DT,
+            ACTN_GBN,
+            ACTN_RMRK
+        FROM itsm_rpt_week_actn A
+        WHERE RPT_SN = (SELECT MAX(RPT_SN) FROM itsm_rpt_week)
+          AND USE_YN = 'Y'
+        ORDER BY RPT_ACTN_SN;
+    </insert>
+
+    <!-- 배치) itsm_rpt_week 등록 -->
+    <insert id="insertBatchContents" parameterType="itsmRptWeekVO">
+        /* ItsmRptWeekMapper.insertBatchContents */
+        <selectKey keyProperty="rptSn" order="AFTER" resultType="String" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO itsm_rpt_week  (
+        PRJ_NM
+        , SVC_SN
+        , CNTR_START_YMD
+        , CNTR_END_YMD
+        , CNTR_NO
+        , CMPN_NM
+        , ANLY_START_YMD
+        , ANLY_END_YMD
+        , DSGN_START_YMD
+        , DSGN_END_YMD
+        , IMP_START_YMD
+        , IMP_END_YMD
+        , TEST_START_YMD
+        , TEST_END_YMD
+        , PILOT_START_YMD
+        , PILOT_END_YMD
+        , ANLY_PRFR
+        , DSGN_PRFR
+        , IMP_PRFR
+        , TEST_PRFR
+        , PILOT_PRFR
+        , ANLY_PLAN
+        , DSGN_PLAN
+        , IMP_PLAN
+        , TEST_PLAN
+        , PILOT_PLAN
+        , THIS_EMP_PRJ
+        , THIS_EMP_PLAN
+        , THIS_EMP_DSGN
+        , THIS_EMP_DEV
+        , NEXT_EMP_PRJ
+        , NEXT_EMP_PLAN
+        , NEXT_EMP_DSGN
+        , NEXT_EMP_DEV
+        , RPT_RMRK
+        , THIS_PRFR
+        , NEXT_PLAN
+        , ISSUE_CN
+        , ACTN_PLAN
+        , LAST_WEEK_START_YMD
+        , LAST_WEEK_END_YMD
+        , NEXT_WEEK_START_YMD
+        , NEXT_WEEK_END_YMD
+        , MON_WEEK
+        , WEEK_START_YMD
+        , WEEK_END_YMD
+        )
+        SELECT
+        ITSM_FNC_SVC_NM(#{svcSn}) PRJ_NM
+        , #{svcSn}
+        , '2023.07.11' CNTR_START_YMD
+        , '2023.12.15' CNTR_END_YMD
+        , '202307047AC - 00' CNTR_NO
+        , '주식회사 오픈노트' CMPN_NM
+        , '23.08' ANLY_START_YMD
+        , '23.08' ANLY_END_YMD
+        , '23.08' DSGN_START_YMD
+        , '23.09' DSGN_END_YMD
+        , '23.09' IMP_START_YMD
+        , '23.11' IMP_END_YMD
+        , '23.11' TEST_START_YMD
+        , '23.11' TEST_END_YMD
+        , '23.11' PILOT_START_YMD
+        , '23.12' PILOT_END_YMD
+        , NVL(B.ANLY_PRFR,0) ANLY_PRFR
+        , NVL(B.DSGN_PRFR,0) DSGN_PRFR
+        , NVL(B.IMP_PRFR,0) IMP_PRFR
+        , NVL(B.TEST_PRFR,0) TEST_PRFR
+        , NVL(B.PILOT_PRFR,0) PILOT_PRFR
+        , NVL(B.ANLY_PLAN,0) ANLY_PLAN
+        , NVL(B.DSGN_PLAN,0) DSGN_PLAN
+        , NVL(B.IMP_PLAN,0) IMP_PLAN
+        , NVL(B.TEST_PLAN,0) TEST_PLAN
+        , NVL(B.PILOT_PLAN,0) PILOT_PLAN
+        , NVL(B.THIS_EMP_PRJ,0) LAST_EMP_PRJ
+        , NVL(B.THIS_EMP_PLAN,0) LAST_EMP_PLAN
+        , NVL(B.THIS_EMP_DSGN,0) LAST_EMP_DSGN
+        , NVL(B.THIS_EMP_DEV,0) LAST_EMP_DEV
+        , NVL(B.NEXT_EMP_PRJ,0) NEXT_EMP_PRJ
+        , NVL(B.NEXT_EMP_PLAN,0) NEXT_EMP_PLAN
+        , NVL(B.NEXT_EMP_DSGN,0) NEXT_EMP_DSGN
+        , NVL(B.NEXT_EMP_DEV,0) NEXT_EMP_DEV
+        , NVL(B.RPT_RMRK,'') RPT_RMRK
+        , NVL(B.THIS_PRFR,'') THIS_PRFR
+        , NVL(B.NEXT_PLAN,'') NEXT_PLAN
+        , NVL(B.ISSUE_CN,'') ISSUE_CN
+        , NVL(B.ACTN_PLAN,'') ACTN_PLAN
+        , STR_TO_DATE(#{crtDate},'%Y.%m.%d') LAST_WEEK_START_YMD
+        , DATE_ADD(STR_TO_DATE(#{crtDate},'%Y.%m.%d'), INTERVAL 4 DAY) LAST_WEEK_END_YMD
+        , DATE_ADD(STR_TO_DATE(#{crtDate},'%Y.%m.%d'), INTERVAL 3 DAY) NEXT_WEEK_START_YMD
+        , DATE_ADD(STR_TO_DATE(#{crtDate},'%Y.%m.%d'), INTERVAL 7 DAY) NEXT_WEEK_END_YMD
+        , CONCAT(YEAR(STR_TO_DATE(#{crtDate}, '%Y.%m.%d')) %100,'년 ',date_format(STR_TO_DATE(#{crtDate},'%Y.%m.%d'),'%m'),'월 ', week(STR_TO_DATE(#{crtDate},'%Y.%m.%d')) - week(DATE_FORMAT(STR_TO_DATE(#{crtDate}, '%Y.%m.%d'), '%Y-%m-01')) + 1,'주') MON_WEEK
+        , DATE_FORMAT(DATE_ADD(STR_TO_DATE(#{crtDate},'%Y.%m.%d'), INTERVAL -4 DAY),'%Y%m%d') WEEK_START_YMD
+        , DATE_FORMAT(STR_TO_DATE(#{crtDate},'%Y.%m.%d'),'%Y%m%d') WEEK_END_YMD
+        FROM (select 1 as dummy) PA
+        left join (
+        SELECT
+        RPT_SN
+        , SVC_SN
+        , PRJ_NM
+        , ANLY_PRFR
+        , DSGN_PRFR
+        , IMP_PRFR
+        , TEST_PRFR
+        , PILOT_PRFR
+        , ANLY_PLAN
+        , DSGN_PLAN
+        , IMP_PLAN
+        , TEST_PLAN
+        , PILOT_PLAN
+        , THIS_EMP_PRJ
+        , THIS_EMP_PLAN
+        , THIS_EMP_DSGN
+        , THIS_EMP_DEV
+        , NEXT_EMP_PRJ
+        , NEXT_EMP_PLAN
+        , NEXT_EMP_DSGN
+        , NEXT_EMP_DEV
+        , RPT_RMRK
+        , THIS_PRFR
+        , NEXT_PLAN
+        , ISSUE_CN
+        , ACTN_PLAN
+        FROM itsm_rpt_week
+        WHERE USE_YN = 'Y'
+        ORDER BY RPT_SN DESC
+        limit 1
+        ) B
+        ON  #{svcSn} = B.SVC_SN
+    </insert>
+
+
+    <!-- 금주,차주 날짜 조회(월간 mapper) -->
+    <select id="selectBefMonthContents" parameterType="itsmRptMthVO" resultType="itsmRptMthVO" >
+        /* ItsmRptWeekMapper.selectBefWeekContents -> ItsmRptWeekMapper.selectBefMonthContents */
+        SELECT RPT_SN																																	AS rptSn
+             , TO_CHAR(DATE_FORMAT(WEEK_START_YMD, 'YYYYMMDD'), 'YYYY.MM.DD')																			AS weekStartYmd
+             , TO_CHAR(DATE_FORMAT(WEEK_END_YMD, 'YYYYMMDD'), 'YYYY.MM.DD')																				AS weekEndYmd
+             , TO_CHAR(TRUNC(NOW(),'iw')+3,'yy')||'년 '||TO_CHAR(DATE_FORMAT(WEEK_END_YMD),'MM')||'월 '||TO_CHAR(DATE_FORMAT(WEEK_END_YMD),'W')||'주' AS monWeek
+             , TO_CHAR(TRUNC(DATE_FORMAT(WEEK_END_YMD,'YYYYMMDD'),'iw')+4,'YYYY.MM.DD') 																	AS nextWeekStartYmd
+             , TO_CHAR(TRUNC(DATE_FORMAT(WEEK_END_YMD,'YYYYMMDD'),'iw')+10,'YYYY.MM.DD') 																	AS nextWeekEndYmd
+             , TO_CHAR(TRUNC(NOW(),'iw')+10,'yy')||'년 '||TO_CHAR(TRUNC(DATE_FORMAT(WEEK_END_YMD,'YYYYMMDD'),'iw')+11,'MM')||'월 '|| TO_CHAR(TRUNC(DATE_FORMAT(WEEK_END_YMD,'YYYYMMDD'),'iw')+11,'W')||'주' AS monWeek1
+        FROM itsm_rpt_week
+        WHERE RPT_SN = #{rptSn}
+    </select>
+
+</mapper>

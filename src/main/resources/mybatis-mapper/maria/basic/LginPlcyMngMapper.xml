@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.kps.partners.mapper.LginPlcyMngMapper">
+
+	<!-- 로그인정책 건수 조회 -->
+	<select id="selectCount" resultType="int">
+		/* LginPlcyMngMapper.selectCount */
+		SELECT COUNT(1)					 	
+		  FROM T_LGIN_PLCY_MNG
+		 WHERE USE_YN = 'Y'
+	</select>
+
+	<!-- 로그인정책 단건 조회 -->
+	<select id="selectOne" resultType="lginPlcyVO">
+		/* LginPlcyMngMapper.selectOne */
+		SELECT LGIN_PLCY_SERNO						lginPlcySerno		
+			 , PWD_CHG_CYCL_DD						pwdChgCyclDd
+			 , CASE WHEN PWD_CHG_CYCL_USE_YN != NULL THEN PWD_CHG_CYCL_USE_YN
+			        ELSE 'N'
+			    END AS pwdChgCyclUseYn
+			 , SCSS_ACC_PSSN_PRD_CD					scssAccPssnPrdCd
+			 , FNC_CODE_NM(SCSS_ACC_PSSN_PRD_CD)	scssAccPssnPrdNm
+			 , CASE WHEN LGIN_LMT_CNT != NULL THEN LGIN_LMT_CNT
+			        ELSE 0
+			    END AS lginLmtCnt
+			 , CASE WHEN LGIN_LMT_USE_YN != NULL THEN LGIN_LMT_USE_YN 
+			        ELSE 'N'
+			     END AS lginLmtUseYn
+			 , BASC_GRP_AUTH_ID						bascGrpAuthId
+			 , MBRS_BASC_GRP_AUTH_ID				mbrsBascGrpAuthId
+			 , REGEPS_ID							regepsId
+			 , REGEPS_PSWD							regepsPswd
+			 , REGEPS_EMAIL							regepsEmail
+			 , REGEPS_PHONE							regepsPhone
+		  FROM T_LGIN_PLCY_MNG
+		 WHERE USE_YN = 'Y'
+		 LIMIT 1
+	</select>
+
+	<!-- 로그인정책 등록 -->
+	<insert id="insertContents" parameterType="lginPlcyVO">
+		/* LginPlcyMngMapper.insertContents */
+		INSERT INTO T_LGIN_PLCY_MNG 
+			 ( PWD_CHG_CYCL_DD
+			 , PWD_CHG_CYCL_USE_YN
+			 , SCSS_ACC_PSSN_PRD_CD
+			 , LGIN_LMT_CNT
+			 , LGIN_LMT_USE_YN
+			 , BASC_GRP_AUTH_ID
+			 , MBRS_BASC_GRP_AUTH_ID
+			 , REGEPS_ID
+			 , REGEPS_PSWD
+			 , REGEPS_EMAIL
+			 , REGEPS_PHONE
+			 , REGR_SERNO
+			 , REG_DT
+	   		 )
+	    VALUES 
+	    	 ( NULLIF(#{pwdChgCyclDd}, '')
+			 , #{pwdChgCyclUseYn}
+			 , NULLIF(#{scssAccPssnPrdCd}, '')
+			 , NULLIF(#{lginLmtCnt}, '')
+			 , #{lginLmtUseYn}
+			 , #{bascGrpAuthId}
+			 , #{mbrsBascGrpAuthId}
+			 , NULLIF(#{regepsId}, '')
+			 , NULLIF(#{regepsPswd}, '')
+			 , NULLIF(#{regepsEmail}, '')
+			 , NULLIF(#{regepsPhone}, '')
+			 , #{loginSerno}
+			 , NOW()
+			 )
+	</insert>
+
+	<!-- 로그인정책 수정 -->
+	<update id="updateContents" parameterType="lginPlcyVO">
+		/* LginPlcyMngMapper.updateContents */
+		UPDATE T_LGIN_PLCY_MNG
+		   SET PWD_CHG_CYCL_DD          = #{pwdChgCyclDd}
+			 , PWD_CHG_CYCL_USE_YN      = #{pwdChgCyclUseYn}
+			 , SCSS_ACC_PSSN_PRD_CD     = #{scssAccPssnPrdCd}
+			 , LGIN_LMT_CNT             = #{lginLmtCnt}
+			 , LGIN_LMT_USE_YN          = #{lginLmtUseYn}
+			 , BASC_GRP_AUTH_ID         = #{bascGrpAuthId}
+			 , MBRS_BASC_GRP_AUTH_ID    = #{mbrsBascGrpAuthId}
+			 , REGEPS_ID                = NULLIF(#{regepsId}, '')
+			 , REGEPS_PSWD              = NULLIF(#{regepsPswd}, '')
+			 , REGEPS_EMAIL             = NULLIF(#{regepsEmail}, '')
+			 , REGEPS_PHONE             = NULLIF(#{regepsPhone}, '')
+			 , UPDR_SERNO				= #{loginSerno}
+			 , UPD_DT					= NOW()	
+		 WHERE LGIN_PLCY_SERNO 			= #{lginPlcySerno}
+	</update>
+
+</mapper>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.operm.inspMng.mapper.ItsmInspMngMapperTemp">
+
+	<sql id="Where">
+		<if test="searchKeyword !=null and searchKeyword !=''">
+			AND (UPPER(A.FRM_NM) LIKE CONCAT('%' , UPPER(#{searchKeyword}) ,'%'))
+		</if>
+
+		<if test="schEtc01 != null and schEtc01 !='' ">
+			AND A.INSP_GBN = #{schEtc01}
+		</if>
+	</sql>
+
+	<sql id="WhereItm">
+		<if test="schEtc04 !=null and schEtc04 !=''">
+			AND (UPPER(A.ITM_CN) LIKE CONCAT('%' , UPPER(#{schEtc04}) ,'%'))
+		</if>
+
+		<if test="schEtc01 != null and schEtc01 !='' ">
+			AND A.ITM_GBN = #{schEtc01}
+		</if>
+	</sql>
+
+	<!-- 목록 -->
+	<select id="selectList" parameterType="itsmInspMngVO" resultType="itsmInspMngVO">
+		/* SmInspMngMapper.selectList */
+		SELECT A.FRM_SN 						AS frmSn
+			, A.INSP_GBN 						AS inspGbn
+			, ITSM_FNC_CODE_NM(A.INSP_GBN)			AS inspGbnNm
+			, A.FRM_NM 							AS frmNm
+			, FNC_USER_NM(A.RGTR_SN) 				AS rgtrNm
+			, DATE_FORMAT(A.REG_DT, '%Y.%m.%d') AS regDt
+			, A.USE_YN 							AS useYn
+			, (SELECT COUNT(1)
+			FROM ITSM_INSP_FORM_ITEM SA
+			WHERE SA.FRM_SN  = A.FRM_SN
+			and USE_YN = 'Y')						AS itmCnt
+		FROM ITSM_INSP_FORM A
+		WHERE A.USE_YN = 'Y'
+		<include refid="Where"/>
+		ORDER BY A.FRM_SN DESC
+		LIMIT #{firstRecordIndex},#{recordCountPerPage}
+	</select>
+
+	<!-- 건수 -->
+	<select id="selectCount" parameterType="itsmInspMngVO" resultType="int">
+		/* SmInspMngMapper.selectCount */
+		SELECT COUNT(1) AS cnt
+		FROM ITSM_INSP_FORM A
+		WHERE A.USE_YN = 'Y'
+		<include refid="Where"/>
+	</select>
+
+	<!-- 상세(단건조회) -->
+	<select id="selectContents" parameterType="itsmInspMngVO" resultType="itsmInspMngVO">
+		/* SmInspMngMapper.selectContents */
+		SELECT A.FRM_SN 						AS frmSn
+			 , A.INSP_GBN 						AS inspGbn
+			 , ITSM_FNC_CODE_NM(A.INSP_GBN)			AS inspGbnNm
+			 , A.FRM_NM 						AS frmNm
+			 , A.RGTR_SN 						AS rgtrSn
+			 , FNC_USER_NM(A.RGTR_SN) 			AS regtNm
+			 , A.USE_YN 						AS useYn
+		FROM ITSM_INSP_FORM A
+		WHERE FRM_SN = #{frmSn}
+	</select>
+
+	<!-- 등록 -->
+	<insert id="insertContents" parameterType="itsmInspMngVO">
+		/* SmInspMngMapper.insertContents */
+		<selectKey resultType="String" keyProperty="frmSn" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO ITSM_INSP_FORM (
+		 FRM_NM
+		, INSP_GBN
+		, RGTR_SN
+		) VALUES (
+		 #{frmNm, jdbcType=VARCHAR}
+		, #{inspGbn, 	jdbcType=VARCHAR}
+		, #{loginSerno, 	jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 수정 -->
+	<update id="updateContents" parameterType="itsmInspMngVO">
+		/* SmInspMngMapper.updateContents */
+		UPDATE ITSM_INSP_FORM
+		SET
+			FRM_NM = #{frmNm, jdbcType=VARCHAR}
+		  , INSP_GBN =  #{inspGbn, 	jdbcType=VARCHAR}
+		  , MDFCN_DT = NOW()
+		  , MDFR_SN  = #{loginSerno, 	jdbcType=VARCHAR}
+		WHERE FRM_SN = #{frmSn}
+	</update>
+
+	<!-- 업데이트 당시 항목들 N 처리 먼저 -->
+	<update id="updateContentsItmsN" parameterType="itsmInspMngVO">
+		/* SmInspMngMapper.updateContentsItmsN */
+		UPDATE ITSM_INSP_FORM_ITEM
+		SET
+			USE_YN = 'N'
+		WHERE FRM_SN = #{frmSn}
+	</update>
+
+	<!-- 삭제 -->
+	<update id="deleteContents" parameterType="itsmInspMngVO">
+		/* SmInspMngMapper.deleteContents */
+		UPDATE ITSM_INSP_FORM
+		SET USE_YN = 'N'
+		WHERE FRM_SN = #{frmSn}
+	</update>
+
+
+	<!-- 여기서부터 항목 관련 쿼리 -->
+	<!-- form 에서 항목 불러오기 -->
+
+	<!-- 건수 -->
+	<select id="selectCountItm" parameterType="itsmInspMngVO" resultType="int">
+		/* SmInspMngMapper.selectCountItm */
+		SELECT COUNT(1) AS cnt
+		FROM ITSM_ITEM A
+		WHERE A.USE_YN = 'Y'
+		<if test="itmList != null and itmList != ''">
+			AND A.ITM_SN NOT IN
+			<foreach collection="itmList" item="list" index="index" separator="," open="(" close=")">
+				#{list.itmSn, jdbcType=VARCHAR}
+			</foreach>
+		</if>
+		<include refid="WhereItm"/>
+	</select>
+
+	<!--updateForm 진입시 항목 목록 뿌리기
+	 	그리고 점검 이력 목록에서 점검양식 클릭시 form 화면에 뿌리기-->
+	<select id="selectListItmUpdateForm" parameterType="itsmInspMngVO" resultType="itsmInspMngVO">
+		/* SmInspMngMapper.selectListItmUpdateForm */
+		SELECT
+			  A.ITM_CN							AS itmCn
+			, A.ITM_SN							AS itmSn
+			, A.FRM_ITM_SN						AS frmItmSn
+			, A.ESNTL_YN						AS esntlYn
+			, A.ITM_SEQO						AS itmSeqo
+			, ITSM_FNC_CODE_NM(B.ITM_GBN)				as itmGbnNm
+			, B.AUTO_YN 						as autoYn
+			, B.AUTO_PATH 						as autoPath
+		FROM ITSM_INSP_FORM_ITEM A
+				 left join ITSM_ITEM B
+						   on B.ITM_SN = A.ITM_SN
+		WHERE A.USE_YN = 'Y'
+		AND   A.FRM_SN = #{frmSn}
+		ORDER BY A.ITM_SEQO ASC
+	</select>
+
+	<!-- 목록 -->
+	<select id="selectListItm" parameterType="itsmInspMngVO" resultType="itsmInspMngVO">
+		/* SmInspMngMapper.selectListItm */
+		SELECT A.ITM_SN 						AS itmSn
+		, A.ITM_GBN 						AS itmGbn
+		, ITSM_FNC_CODE_NM(A.ITM_GBN)				AS itmGbnNm
+		, A.ITM_CN							AS itmCn
+		, FNC_USER_NM(A.RGTR_SN) 				AS rgtrNm
+		, DATE_FORMAT(A.REG_DT, '%Y.%m.%d') AS regDt
+		, A.AUTO_YN 						as autoYn
+		, A.AUTO_PATH 						as autoPath
+		FROM ITSM_ITEM A
+		WHERE A.USE_YN = 'Y'
+		<if test="itmList != null and itmList != ''">
+			AND A.ITM_SN NOT IN
+			<foreach collection="itmList" item="list" index="index" separator="," open="(" close=")">
+				#{list.itmSn, jdbcType=VARCHAR}
+			</foreach>
+		</if>
+		<include refid="WhereItm"/>
+		ORDER BY A.ITM_SN DESC
+		LIMIT #{firstRecordIndex},#{recordCountPerPage}
+	</select>
+
+	<!-- 항목 선정된 목록 -->
+	<select id="selectListCheckedItms" parameterType="itsmInspMngVO" resultType="itsmInspMngVO">
+		/* SmInspMngMapper.selectListCheckedItms */
+		SELECT A.ITM_SN 						AS itmSn
+		, A.ITM_GBN 						AS itmGbn
+		, ITSM_FNC_CODE_NM(A.ITM_GBN)				AS itmGbnNm
+		, A.ITM_CN							AS itmCn
+		, FNC_USER_NM(A.RGTR_SN) 				AS rgtrNm
+		, DATE_FORMAT(A.REG_DT, '%Y.%m.%d') AS regDt
+		, A.AUTO_YN 						as autoYn
+		, A.AUTO_PATH 						as autoPath
+		FROM ITSM_ITEM A
+		WHERE A.USE_YN = 'Y'
+		<if test="itmList != null and itmList != ''">
+			AND A.ITM_SN IN
+			<foreach collection="itmList" item="list" index="index" separator="," open="(" close=")">
+				#{list.itmSn, jdbcType=VARCHAR}
+			</foreach>
+		</if>
+		ORDER BY A.ITM_SN DESC
+	</select>
+	<!-- 양식 항목 등록 -->
+	<insert id="insertContentsItms" parameterType="itsmInspMngVO">
+		/* SmInspMngMapper.insertContentsItms */
+		INSERT INTO ITSM_INSP_FORM_ITEM (
+					FRM_SN
+				  , FRM_ITM_SN
+				  , ITM_SEQO
+				  , ITM_CN
+				  , ITM_SN
+				  , RGTR_SN
+				  , ESNTL_YN
+		) VALUES (
+					 #{frmSn, jdbcType=VARCHAR}
+				 , #{frmItmSn}
+				 , #{itmSeqo, jdbcType=VARCHAR}
+				 , #{itmCn, jdbcType=VARCHAR}
+				 , #{itmSn, jdbcType=VARCHAR}
+				 , #{loginSerno, 	jdbcType=VARCHAR}
+				 , #{esntlYn, jdbcType=VARCHAR}
+				 ) ON DUPLICATE KEY UPDATE
+			FRM_SN		= #{frmSn}
+		,	ITM_SEQO 	= #{itmSeqo}
+		,	ITM_CN 		= #{itmCn, jdbcType=VARCHAR}
+		,	ITM_SN  	= #{itmSn, jdbcType=VARCHAR}
+		,	ESNTL_YN 	= #{esntlYn, jdbcType=VARCHAR}
+		,	USE_YN 		= 'Y'
+	</insert>
+</mapper>

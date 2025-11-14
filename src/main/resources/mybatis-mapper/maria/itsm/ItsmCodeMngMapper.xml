@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmCodeMngMapper">
+
+    <insert id="insertContents" parameterType="itsmCodeVO">
+        /*ItsmCodeMngMapper.insertContents  */
+        INSERT INTO ITSM_CODE_MNG
+             ( CD_SN
+             , UP_CD_VAL
+             , CD_VAL
+             , CD_NM
+             , CD_LVL_VAL
+             , RGTR_SN
+             , CD_SORT_SEQO
+             , CD_DTL_EXPL
+             )
+        VALUES
+             ( (SELECT NVL(MAX(A.CD_SN)+1,1) FROM ITSM_CODE_MNG A)
+             , CASE WHEN TRIM(#{uppoCdVal}) = '' THEN '0' ELSE #{uppoCdVal} END
+             , #{cdVal}
+             , #{cdValNm}
+             , #{cdLvlVal}
+             , #{loginSerno, jdbcType=VARCHAR}
+             , (SELECT NVL(MAX(B.CD_SORT_SEQO)+1,1) FROM ITSM_CODE_MNG B WHERE B.UP_CD_VAL = #{uppoCdVal})
+             , #{cdDtlsExpl}
+             )
+	</insert>
+
+
+    <update id="updateContents" parameterType="itsmCodeVO">
+        /* ItsmCodeMngMapper.updateContents */
+        UPDATE ITSM_CODE_MNG
+           SET CD_NM = #{cdValNm}
+             , CD_DTL_EXPL = #{cdDtlsExpl}
+         WHERE CD_VAL = #{cdVal}
+           AND UP_CD_VAL = #{uppoCdVal}
+    </update>
+
+
+    <delete id="deleteContents" parameterType="itsmCodeVO">
+        /* ItsmCodeMngMapper.deleteContents */
+        UPDATE ITSM_CODE_MNG
+           SET USE_YN = 'N'
+         WHERE CD_VAL = #{cdVal}
+           AND UP_CD_VAL = #{uppoCdVal}
+            OR UP_CD_VAL = #{cdVal}
+    </delete>
+
+    <select id="selectList" parameterType="itsmCodeVO" resultType="itsmCodeVO">
+        /* ItsmCodeMngMapper.selectList */
+        SELECT CD_SN                serno
+             , UP_CD_VAL            uppoCdVal
+             , (SELECT count(1) FROM ITSM_CODE_MNG WHERE UP_CD_VAL = A.CD_VAL AND USE_YN = 'Y') AS chldCnt
+             , CD_VAL               cdVal
+             , CD_NM                cdValNm
+             , CD_LVL_VAL           cdLvlVal
+             , CD_SORT_SEQO         cdSortSeqo
+             , CD_DTL_EXPL          cdDtlsExpl
+          FROM ITSM_CODE_MNG A
+         WHERE USE_YN='Y'
+           AND UP_CD_VAL = #{uppoCdVal}
+         ORDER BY CD_SORT_SEQO
+        <if test="sort == 'ASC'">
+            ASC
+        </if>
+        <if test="sort == 'DESC'">
+            DESC
+        </if>
+    </select>
+
+    <select id="selectCdContent" parameterType="itsmCodeVO" resultType="itsmCodeVO">
+        /* ItsmCodeMngMapper.selectCdContent */
+        SELECT CD_SN            serno
+             , UP_CD_VAL        uppoCdVal
+             , CD_VAL           cdVal
+             , CD_NM            cdValNm
+             , CD_LVL_VAL       cdLvlVal
+             , CD_SORT_SEQO     cdSortSeqo
+             , CD_DTL_EXPL      cdDtlsExpl
+          FROM ITSM_CODE_MNG
+         WHERE USE_YN='Y'
+           AND CD_VAL = #{cdVal}
+    </select>
+
+    <update id="orderUpTargetUpdateContents" parameterType="itsmCodeVO">
+        /* ItsmCodeMngMapper.orderUpTargetUpdateContents */
+        UPDATE ITSM_CODE_MNG
+           SET CD_SORT_SEQO = CD_SORT_SEQO + 1
+         WHERE USE_YN='Y'
+           AND UP_CD_VAL = #{uppoCdVal}
+           AND CD_SORT_SEQO = #{cdSortSeqo} - 1
+    </update>
+
+    <update id="orderDownTargetUpdateContents" parameterType="itsmCodeVO" >
+        /* ItsmCodeMngMapper.orderDownTargetUpdateContents */
+        UPDATE ITSM_CODE_MNG
+           SET CD_SORT_SEQO = CD_SORT_SEQO - 1
+         WHERE USE_YN = 'Y'
+           AND UP_CD_VAL = #{uppoCdVal}    /*코드그룹ID */
+           AND CD_SORT_SEQO = #{cdSortSeqo} + 1
+    </update>
+
+    <update id="orderUpSelfUpdateContents" parameterType="itsmCodeVO">
+        /* ItsmCodeMngMapper.orderUpSelfUpdateContents */
+		<![CDATA[
+        UPDATE ITSM_CODE_MNG
+           SET CD_SORT_SEQO = CD_SORT_SEQO-1
+         WHERE USE_YN='Y'
+           AND CD_VAL = #{cdVal}    /*코드ID */
+           AND CD_SORT_SEQO > 1
+        ]]>
+    </update>
+
+    <update id="orderDownSelfUpdateContents" parameterType="itsmCodeVO">
+        /* ItsmCodeMngMapper.orderDownSelfUpdateContents */
+		<![CDATA[
+        UPDATE ITSM_CODE_MNG
+           SET CD_SORT_SEQO = CD_SORT_SEQO + 1
+         WHERE USE_YN = 'Y'
+           AND CD_VAL = #{cdVal}    /*코드ID */
+           AND CD_SORT_SEQO <= (SELECT B.CD_SORT_SEQO
+                                  FROM (SELECT MAX(CD_SORT_SEQO)    CD_SORT_SEQO
+                                          FROM ITSM_CODE_MNG A
+                                         WHERE UP_CD_VAL = #{uppoCdVal}
+                                       ) B)
+        ]]>
+    </update>
+
+    <select id="selectChkCount" parameterType="itsmCodeVO" resultType="int">
+        /* ItsmCodeMngMapper.selectChkCount */
+        SELECT COUNT(CD_VAL)
+          FROM ITSM_CODE_MNG
+         WHERE CD_VAL = #{cdVal}
+    </select>
+
+    <select id="cdNmSelectContents" parameterType="itsmCodeVO" resultType="String">
+        /* ItsmCodeMngMapper.cdNmSelectContents */
+        SELECT CD_NM        cdValNm
+          FROM ITSM_CODE_MNG
+         WHERE USE_YN='Y'
+           AND CD_VAL = #{cdVal}
+    </select>
+
+
+
+    <select id="selectCodeExcelList"  resultType="itsmCodeVO">
+        /* ItsmCodeMngMapper.selectCodeExcelList */
+        WITH RECURSIVE EXCEL AS (
+            SELECT A.UP_CD_VAL
+                 , A.CD_VAL
+                 , A.CD_NM
+                 , A.CD_LVL_VAL
+                 , A.CD_SORT_SEQO
+                 , A.CD_DTL_EXPL
+                 , A.CD_VAL AS X
+              FROM ITSM_CODE_MNG A
+             WHERE A.UP_CD_VAL = '0'
+               AND A.USE_YN = 'Y'
+
+             UNION ALL
+
+            SELECT B.UP_CD_VAL
+                 , B.CD_VAL
+                 , B.CD_NM
+                 , B.CD_LVL_VAL
+                 , B.CD_SORT_SEQO
+                 , B.CD_DTL_EXPL
+                 , C.X AS X
+              FROM ITSM_CODE_MNG B
+             INNER JOIN EXCEL C
+                ON B.UP_CD_VAL = C.CD_VAL
+             WHERE B.USE_YN = 'Y'
+        )
+        SELECT @ROWNUM:=@ROWNUM+1           rNum
+             , (CASE WHEN D.UP_CD_VAL = '0' THEN '-'
+                    ELSE D.UP_CD_VAL)       uppoCdVal
+             , D.CD_VAL					    cdVal
+             , D.CD_NM					    cdValNm
+             , D.CD_LVL_VAL				    cdLvlVal
+             , D.CD_SORT_SEQO			    cdSortSeqo
+             , D.CD_DTL_EXPL			    cdDtlsExpl
+          FROM EXCEL D , (SELECT @ROWNUM:=0) R
+         ORDER BY D.X ASC, D.CD_LVL_VAL ASC, D.CD_SORT_SEQO ASC
+    </select>
+
+    <select id="getCnt" parameterType="java.lang.String" resultType="int">
+        /* ItsmCodeMngMapper.getCnt */
+        SELECT COUNT(CD_VAL)
+          FROM ITSM_CODE_MNG
+         WHERE USE_YN = 'Y'
+          AND UP_CD_VAL = #{uppoCdVal}
+    </select>
+
+    <select id="selectDepthList1" parameterType="itsmCodeVO" resultType="itsmCodeVO">
+        SELECT CD_SN                serno
+             , UP_CD_VAL            uppoCdVal
+             , CD_VAL               cdVal
+             , CD_NM                cdValNm
+             , CD_LVL_VAL           cdLvlVal
+             , CD_SORT_SEQO         cdSortSeqo
+             , CD_DTL_EXPL          cdDtlsExpl
+          FROM ITSM_CODE_MNG
+         WHERE USE_YN='Y'
+           AND UP_CD_VAL = 'DF'
+           AND CD_LVL_VAL = '2'
+         ORDER BY CD_SORT_SEQO ASC
+    </select>
+
+
+    <select id="selectDepthList2" parameterType="itsmCodeVO" resultType="itsmCodeVO">
+        SELECT CD_SN                        serno
+             , UP_CD_VAL                    uppoCdVal
+             , CD_VAL                       cdVal
+             , CD_NM                        cdValNm
+             , CD_LVL_VAL                   cdLvlVal
+             , CD_SORT_SEQO                 cdSortSeqo
+             , CD_DTL_EXPL                  cdDtlsExpl
+          FROM ITSM_CODE_MNG
+         WHERE USE_YN = 'Y'
+           AND UP_CD_VAL LIKE 'CARE%'
+           AND CD_LVL_VAL = #{cdLvlVal}
+
+        UNION ALL
+
+        SELECT CD_SN                        serno
+             , UP_CD_VAL                    uppoCdVal
+             , CD_VAL                       cdVal
+             , CD_NM                        cdValNm
+             , CD_LVL_VAL                   cdLvlVal
+             , CD_SORT_SEQO                 cdSortSeqo
+             , CD_DTL_EXPL                  cdDtlsExpl
+          FROM ITSM_CODE_MNG
+         WHERE USE_YN = 'Y'
+           AND UP_CD_VAL LIKE 'SUPP%'
+           AND CD_LVL_VAL = #{cdLvlVal}
+
+        UNION ALL
+
+        SELECT CD_SN                        serno
+             , UP_CD_VAL                    uppoCdVal
+             , CD_VAL                       cdVal
+             , CD_NM                        cdValNm
+             , CD_LVL_VAL                   cdLvlVal
+             , CD_SORT_SEQO                 cdSortSeqo
+             , CD_DTL_EXPL                  cdDtlsExpl
+          FROM ITSM_CODE_MNG
+         WHERE USE_YN = 'Y'
+           AND UP_CD_VAL LIKE 'SAFE%'
+           AND CD_LVL_VAL = #{cdLvlVal}
+    </select>
+
+
+    <select id="selectSvcList" parameterType="itsmCodeVO" resultType="itsmCodeVO">
+        /* MaCodeMapper.selectSvcList */
+        SELECT SVC_SN 		cdVal
+             , SVC_NM 		cdValNm
+          FROM ITSM_SINFO
+         WHERE USE_YN = 'Y'
+         ORDER BY SVC_SN ASC
+    </select>
+
+    <select id="selectManagerList" parameterType="itsmCodeVO" resultType="itsmCodeVO">
+        /* MaCodeMapper.selectManagerList */
+        SELECT USER_SERNO 		 cdVal
+             , USER_NM 		     cdValNm
+          FROM T_USER_MNG
+         WHERE USE_YN = 'Y'
+           AND GRP_AUTH_ID = 'developer'
+           AND USER_SERNO IN ( SELECT USER_SERNO
+                                 FROM ITSM_USER_SVC US
+                                WHERE US.USE_YN = 'Y'
+                                  AND US.SVC_SN = #{svcSn}
+                              )
+         ORDER BY USER_SERNO
+    </select>
+
+</mapper>

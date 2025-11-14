@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="opnt.basic.mapper.BltnbMngMapper">
+	
+	<sql id="Where">
+		<if test="searchKeyword !=null and searchKeyword !=''">
+			<if test="searchCondition ==null or searchCondition == ''">
+				AND (UPPER(A.BLTNB_TITL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+				 OR UPPER(A.BLTNB_CTT) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+				AND UPPER(A.BLTNB_TITL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+				AND UPPER(A.BLTNB_CTT) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+		</if>
+		<if test="bltnbCl == 'nt'">
+			<if test="schEtc01 !=null and schEtc01 !=''">
+				<if test="schEtc01 == 1">
+					AND A.NTI_YN = 'Y'
+				</if>
+				<if test="schEtc01 == 2">
+					AND A.NTI_YN = 'N'
+				</if>
+			</if>
+		</if>
+		<if test="bltnbCl == 'qa'">
+			<if test="schEtc02 !=null and schEtc02 !=''">
+				<if test="schEtc02 == 1">
+					AND B.REPL_SERNO IS NULL
+				</if>
+				<if test="schEtc02 == 2">
+					AND B.REPL_SERNO IS NOT NULL
+				</if>
+			</if>
+		</if>
+		<if test="searchStartDate !=null and searchStartDate !='' and searchEndDate !=null and searchEndDate !='' ">
+				AND ( #{searchStartDate} <![CDATA[ <= ]]> A.REG_DT AND DATE_SUB(A.REG_DT, INTERVAL 1 DAY) <![CDATA[ <= ]]> #{searchEndDate} )
+		</if>
+	</sql>
+	
+	<!-- 게시글 건수 조회 -->
+	<select id="selectContentCount" parameterType="bltnbVO" resultType="bltnbVO">
+		/* basic.BltnbMngMapper.selectContentCount */
+		SELECT COUNT(1) rowCnt
+		  FROM T_BLTNB_MNG A
+		  <if test="bltnbCl == 'qa'">
+	 LEFT JOIN T_BLTNB_REPl_MNG B
+	 		ON B.BLTNB_SERNO = A.BLTNB_SERNO
+	 	   AND B.USE_YN = 'Y' 
+		 </if>
+		<where>
+			<include refid="Where"/>
+		   AND A.MENU_CD = #{menuCd}
+		   AND A.BLTNB_CL = #{bltnbCl}
+		   AND A.USE_YN = 'Y'
+		</where>
+	</select>
+	
+	<!-- 게시글 목록 조회 -->
+	<select id="selectContentList" parameterType="bltnbVO" resultType="bltnbVO">
+		/* basic.BltnbMngMapper.selectContentList */
+		SELECT 
+			   A.BLTNB_SERNO									bltnbSerno
+			 , A.BLTNB_CL										bltnbCl
+			 , A.REGR_SERNO										regrSerno  
+			 , FNC_USER_NM(A.REGR_SERNO)						regrNm  
+			 , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')				regDt   
+			 , A.BLTNB_TITL										bltnbTitl
+			 , A.ATCH_FILE_ID									atchFileId
+		  <if test="bltnbCl == 'fa'">
+			 , A.BLTNB_CTT										bltnbCtt
+		  </if>
+		  <if test="bltnbCl == 'nt'">
+			 , IF(A.NTI_YN	= 'Y', '공지','미공지')				ntiYn
+			 , DATE_FORMAT(A.NTI_STRT_DT, '%Y.%m.%d')			ntiStrtDt
+			 , DATE_FORMAT(A.NTI_END_DT, '%Y.%m.%d')			ntiEndDt
+		  <![CDATA[
+			 , CASE WHEN NOW() < A.NTI_END_DT + 1 AND NOW()  >=  A.NTI_STRT_DT AND A.NTI_YN = 'Y' THEN 'Y' 
+	           ELSE 'N' 
+	           END 												ntiCheck
+	      ]]>
+		  </if>
+		  <if test="bltnbCl == 'qa'">
+			 , IF(A.SCRET_YN = 'Y', '비밀','공개')				scretYn
+			 , IF(B.REPL_CTT IS NOT NULL, '답변완료','처리중')	replCtt	
+		  </if> 
+		  <if test="bltnbCl == 'gr'">
+			 , MIN(C.FILE_SEQO) 								fileSeqo
+			 , C.PHCL_FILE_NM 									fileNmPhclFileNm
+		  </if> 
+		  FROM T_BLTNB_MNG A
+		  <if test="bltnbCl == 'qa'">
+	 LEFT JOIN T_BLTNB_REPl_MNG B
+	 		ON B.BLTNB_SERNO = A.BLTNB_SERNO
+	 	   AND B.USE_YN = 'Y' 
+		 </if>
+		 <if test="bltnbCl == 'gr'">
+	 LEFT JOIN T_ATCH_FILE_MNG C
+            ON C.ATCH_FILE_ID = A.ATCH_FILE_ID
+           AND C.DEL_YN = 'N'
+		 </if>
+		 <where>
+		   <include refid="Where"/>
+		   AND A.MENU_CD = #{menuCd}
+		   AND A.BLTNB_CL = #{bltnbCl}
+		   AND A.USE_YN = 'Y'
+		 </where>
+		 <if test="bltnbCl == 'gr'">
+	  GROUP BY A.BLTNB_SERNO, A.BLTNB_CL, A.REGR_SERNO, A.REG_DT, A.BLTNB_TITL, A.ATCH_FILE_ID
+		 </if>
+	  ORDER BY 
+	  	 <if test="bltnbCl == 'nt'">
+	  		   ntiCheck DESC ,
+	  	 </if>
+	  		   A.BLTNB_SERNO DESC
+		 LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+	</select>
+	
+	<!-- 게시글 Excel 목록 조회 -->
+	<select id="selectExcelList" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbMngMapper.selectExcelList */
+		SELECT 
+			   IFNULL(FNC_USER_NM(A.REGR_SERNO),'-')						regrSerno
+			 , IFNULL(DATE_FORMAT(A.REG_DT, '%Y.%m.%d'),'-')				regDt
+			 , IFNULL(FNC_USER_NM(A.UPDR_SERNO),'-')						updrSerno  
+			 , IFNULL(DATE_FORMAT(A.UPD_DT, '%Y.%m.%d'),'-')				updDt     
+			 , IFNULL(A.BLTNB_TITL,'-')										bltnbTitl
+			 , IFNULL(A.BLTNB_CTT,'-')										bltnbCtt
+		  <if test="bltnbCl == 'nt'">
+			 , IFNULL(IF(A.NTI_YN	= 'Y', '공지','미공지'),'-')			ntiYn
+			 , IFNULL(DATE_FORMAT(A.NTI_STRT_DT, '%Y.%m.%d'),'-')			ntiStrtDt
+			 , IFNULL(DATE_FORMAT(A.NTI_END_DT, '%Y.%m.%d'),'-')			ntiEndDt
+		  <![CDATA[
+			 , CASE WHEN NOW() < A.NTI_END_DT + 1 AND NOW()  >=  A.NTI_STRT_DT AND A.NTI_YN = 'Y' THEN 'Y' 
+	           ELSE 'N' 
+	           END 															ntiCheck
+	      ]]>
+		  </if>
+		  <if test="bltnbCl == 'qa'">
+			 , IFNULL(IF(A.SCRET_YN = 'Y', '비밀','공개'),'-')				scretYn
+			 , IFNULL(IF(B.REPL_CTT IS NOT NULL, '답변완료','처리중'),'-')	replCtt	
+			 , IFNULL(FNC_USER_NM(B.REGR_SERNO),'-')						replRegrNm  
+			 , IFNULL(DATE_FORMAT(B.REG_DT, '%Y.%m.%d'),'-')				replRegDt
+		  </if>
+		  FROM T_BLTNB_MNG A
+		  <if test="bltnbCl == 'qa'">
+	 LEFT JOIN T_BLTNB_REPl_MNG B
+	 		ON B.BLTNB_SERNO = A.BLTNB_SERNO
+	 	   AND B.USE_YN = 'Y' 
+		 </if>
+		 <where>
+		   <include refid="Where"/>
+		   AND A.MENU_CD = #{menuCd}
+		   AND A.BLTNB_CL = #{bltnbCl}
+		   AND A.USE_YN = 'Y'
+		 </where>
+	  ORDER BY 
+	  	 <if test="bltnbCl == 'nt'">
+	  		   ntiCheck DESC ,
+	  	 </if>
+	  		   A.BLTNB_SERNO DESC
+	</select>
+	
+	<!-- 게시글 상세조회 -->
+	<select id="selectContents" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbMngMapper.selectContents */
+		SELECT 
+		       A.BLTNB_SERNO							bltnbSerno
+			 , A.BLTNB_CL								bltnbCl
+			 , A.REGR_SERNO								regrSerno
+			 , FNC_USER_NM(A.REGR_SERNO)				regrNm    
+			 , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')		regDt   
+			 , A.BLTNB_TITL								bltnbTitl
+			 , A.BLTNB_CTT								bltnbCtt
+			 , A.ATCH_FILE_ID							atchFileId
+		  <if test="bltnbCl == 'nt'">
+			 , A.NTI_YN									ntiYn
+			 , DATE_FORMAT(A.NTI_STRT_DT, '%Y.%m.%d')	ntiStrtDt
+			 , DATE_FORMAT(A.NTI_END_DT, '%Y.%m.%d')	ntiEndDt
+		  </if>
+		  <if test="bltnbCl == 'qa'">	
+			 , B.REPL_CTT						    	replCtt
+			 , FNC_USER_NM(B.REGR_SERNO)				replRegrNm  
+			 , DATE_FORMAT(B.REG_DT, '%Y.%m.%d')		replRegDt
+			 , A.SCRET_YN								scretYn
+			 , A.BLTNB_PSWD								bltnbPswd   
+		  </if> 
+		  FROM T_BLTNB_MNG A
+		  <if test="bltnbCl == 'qa'">
+	 LEFT JOIN T_BLTNB_REPl_MNG B
+	 		ON B.BLTNB_SERNO = A.BLTNB_SERNO
+	 	   AND B.USE_YN = 'Y' 
+		 </if>
+		<where> 
+			   A.BLTNB_SERNO = #{bltnbSerno}
+		   AND A.MENU_CD = #{menuCd}
+		   AND A.BLTNB_CL = #{bltnbCl}
+		   AND A.USE_YN = 'Y'
+		</where>
+	</select>
+	
+	<!-- 게시글 비밀번호 조회 -->
+	<select id="getBltnbPswd" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbMngMapper.getBltnbPwsd */
+		SELECT 
+			   BLTNB_PSWD bltnbPswd
+		  FROM T_BLTNB_MNG
+		 <where>
+		       BLTNB_SERNO = #{bltnbSerno}
+		   AND USE_YN = 'Y'
+		 </where>
+	</select>
+	
+	<!-- 게시글 등록자 체크 -->
+	<select id="regrCheck" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbMngMapper.regrCheck */
+		SELECT 
+		 <if test="path1 != null and path1 !=''"> 
+		    <if test="path1 == 'ma'">
+		       CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
+					ELSE 0
+			   END										   
+			</if>
+			<if test="path1 == 'ft'">
+		       CASE WHEN REGR_SERNO = #{ftLoginSerno} THEN 1
+					ELSE 0
+			   END									   
+			</if>
+		</if> AS isRegrChecked
+		  FROM T_BLTNB_MNG
+		 <where>
+		       BLTNB_SERNO = #{bltnbSerno}
+		   AND USE_YN = 'Y'
+		 </where>
+	</select>
+	
+	<!-- 댓글 등록자 체크 -->
+	<select id="regrReplCheck" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbMngMapper.regrReplCheck */
+		SELECT 
+		       CASE WHEN REGR_SERNO = #{ftLoginSerno} THEN 1
+					ELSE 0
+			   END AS  isRegrReplChecked								   
+		  FROM T_BLTNB_REPL_MNG
+		 <where>
+		       REPL_SERNO = #{replSerno}
+		   AND USE_YN = 'Y'
+		 </where>
+	</select>
+	
+	
+	
+	<!-- 게시글 이전글 다음글 -->
+	<select id="selectPrevNextContents" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbMngMapper.selectPrevNextContents */
+        ( SELECT 
+                 A.BLTNB_SERNO 		serno
+               , A.BLTNB_TITL 		titl
+               , '이전글'			divn
+           FROM T_BLTNB_MNG A
+        <where> 
+                A.MENU_CD = #{menuCd}
+            AND A.BLTNB_SERNO  <![CDATA[ < ]]> #{bltnbSerno}
+            AND A.USE_YN = 'Y'
+        </where>
+       ORDER BY A.BLTNB_SERNO DESC 
+          LIMIT 1 )
+           UNION ALL
+		( SELECT 
+				 B.BLTNB_SERNO 		serno
+			   , B.BLTNB_TITL  		titl
+			   , '다음글'			divn	
+		    FROM T_BLTNB_MNG B
+           <where>  B.MENU_CD = #{menuCd}
+             AND B.BLTNB_SERNO <![CDATA[ > ]]> #{bltnbSerno}
+             AND B.USE_YN = 'Y' 
+             </where>
+	    ORDER BY B.BLTNB_SERNO ASC 
+	       LIMIT 1 )
+	</select>
+	
+	<!-- 게시글 등록 -->
+	<insert id="insertContents" parameterType="bltnbVO">
+		/* BltnbMngMapper.insertContents */
+		INSERT INTO T_BLTNB_MNG(
+				MENU_CD
+			  , BLTNB_CL
+			  , REG_DT			
+			  , BLTNB_TITL		
+			  , BLTNB_CTT		
+			  , ATCH_FILE_ID
+		<if test="path1 != null and path1 !=''"> 		
+			  , REGR_SERNO		
+		</if>
+		<if test="bltnbCl == 'nt'"> 
+			  , NTI_YN		
+			<if test="ntiStrtDt != null and ntiStrtDt !=''">
+			  , NTI_STRT_DT	
+			</if>
+			<if test="ntiEndDt != null and ntiEndDt !=''">
+			  , NTI_END_DT
+			</if>
+		</if>
+		<if test="bltnbCl == 'qa'"> 
+			  , SCRET_YN
+			<if test="bltnbPswd != null and bltnbPswd !=''">
+			  , BLTNB_PSWD								   
+			</if>
+		</if>
+	    )
+	    VALUES (
+	    		#{menuCd}
+	    	  , #{bltnbCl}
+	    	  , NOW()
+	    	  , #{bltnbTitl}
+	    	  , #{bltnbCtt}
+	    	  , #{atchFileId}
+	    <if test="path1 != null and path1 !=''"> 
+		    <if test="path1 == 'ma'">
+		      ,	#{loginSerno}										   
+			</if>
+			<if test="path1 == 'ft'">
+		      ,	#{ftLoginSerno}										   
+			</if>
+		</if>
+	   	<if test="bltnbCl == 'nt'"> 
+	    	  , #{ntiYn}
+	    	<if test="ntiStrtDt != null and ntiStrtDt !=''">
+	    	  , #{ntiStrtDt}
+	    	</if>
+	    	<if test="ntiEndDt != null and ntiEndDt !=''">
+	    	  , #{ntiEndDt}
+	    	</if>
+	    </if>
+	    <if test="bltnbCl == 'qa'"> 
+			  , #{scretYn}
+			<if test="bltnbPswd != null and bltnbPswd !=''">
+			  , #{bltnbPswd}								  
+			</if> 
+		</if>
+		) 
+	</insert>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateContents" parameterType="bltnbVO">
+		/* BltnbMngMapper.updateContents */
+		UPDATE T_BLTNB_MNG
+		   SET BLTNB_TITL 		= #{bltnbTitl}	
+			 , BLTNB_CTT		= #{bltnbCtt}	
+			 , ATCH_FILE_ID 	= #{atchFileId}
+		<if test="path1 != null and path1 !=''"> 
+		    <if test="path1 == 'ma'">
+			 , UPDR_SERNO		= #{loginSerno}
+			</if>
+			<if test="path1 == 'ft'">
+			 , UPDR_SERNO		= #{ftLoginSerno}									   
+			</if>
+		</if>
+			 , UPD_DT			= NOW()
+		<if test="bltnbCl == 'nt'"> 
+			 , NTI_YN			= #{ntiYn}
+			<if test="ntiStrtDt != null and ntiStrtDt !=''">
+			 , NTI_STRT_DT	  	= #{ntiStrtDt}
+			</if>
+			<if test="ntiEndDt != null and ntiEndDt !=''">
+			 , NTI_END_DT		= #{ntiEndDt}
+			</if>
+		</if>
+		<if test="bltnbCl == 'qa'"> 
+			  , SCRET_YN		= #{scretYn}
+			<if test='scretYn == "Y" and bltnbPswd != null and bltnbPswd !=""'>
+			  , BLTNB_PSWD		= #{bltnbPswd}				
+			</if>
+			<if test='scretYn == "N"'>
+		      , BLTNB_PSWD		= ''
+			</if>
+		</if>
+	    <where> 
+		 	   BLTNB_SERNO = #{bltnbSerno}
+		   AND MENU_CD	= #{menuCd}
+		   AND BLTNB_CL = #{bltnbCl}
+		   AND USE_YN   = 'Y'
+	    </where>
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<update id="deleteContents" parameterType="bltnbVO">
+		/* BltnbMngMapper.deleteContents */
+		UPDATE T_BLTNB_MNG
+		   SET USE_YN 	= 'N'
+	   <where> 
+	   		   BLTNB_SERNO = #{bltnbSerno}
+		   AND MENU_CD	= #{menuCd}
+		   AND BLTNB_CL = #{bltnbCl}
+	  </where>
+	</update>
+	
+	
+	<!-- 추천 생성 -->
+	<insert id="insertLikeContents" parameterType="bltnbVO" useGeneratedKeys="true" keyProperty="rcmdSerno">
+		/* BltnbMngMapper.insertLikeContents */
+		<selectKey keyProperty="rcmdSerno" order="AFTER" resultType="java.lang.String">
+            SELECT IFNULL(MAX(RCMD_SERNO),1) FROM T_BLTNB_RCMD_MNG
+        </selectKey>
+		INSERT INTO T_BLTNB_RCMD_MNG (
+			  	    MENU_CD
+			      , BLTNB_SERNO
+			      , RCMD_YN
+			      , REGR_SERNO
+			      , REG_DT
+		          ) VALUES (
+				    #{menuCd}
+				  , #{bltnbSerno}
+				  , #{rcmdYn}
+				  , #{ftLoginSerno}
+				  , NOW()
+				  )
+	</insert>
+	
+	<!-- 추천 수정 -->
+	<update id="updateLikeContents" parameterType="bltnbVO">
+		/* BltnbMngMapper.updateLikeContents */
+		UPDATE T_BLTNB_RCMD_MNG
+		   SET
+		       RCMD_YN 		= #{rcmdYn}
+			 , UPDR_SERNO 	= #{ftLoginSerno}
+			 , UPD_DT 		= NOW()
+	   <where>
+		       MENU_CD		= #{menuCd}
+		   AND BLTNB_SERNO  = #{bltnbSerno}
+		   AND REGR_SERNO 	= #{ftLoginSerno}
+		   AND USE_YN 		= 'Y'
+	  </where>	
+	</update>
+	
+	<!-- 추천 삭제 -->
+	<update id="deleteLikeContents" parameterType="bltnbVO">
+		/* BltnbMngMapper.deleteLikeContents */
+		UPDATE T_BLTNB_RCMD_MNG
+		   SET
+		       USE_YN		= 'N' 
+			 , UPDR_SERNO 	= #{ftLoginSerno}
+			 , UPD_DT 		= NOW()
+	   <where>
+		       MENU_CD		= #{menuCd}
+		   AND BLTNB_SERNO  = #{bltnbSerno}
+		   AND REGR_SERNO 	= #{ftLoginSerno}
+	  </where>	
+	</update>
+	
+	<!-- 추천 조회 -->
+	<select id="selectLikeContents" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbMngMapper.selectLikeContents */
+		SELECT 
+			   RCMD_SERNO  	rcmdSerno
+			 , RCMD_YN 		rcmdYn
+		  FROM T_BLTNB_RCMD_MNG
+	   <where> 
+	   		   MENU_CD		= #{menuCd}	
+		   AND BLTNB_SERNO 	= #{bltnbSerno}
+		   AND REGR_SERNO 	= #{ftLoginSerno}
+		   AND USE_YN 	    = 'Y'
+	  </where>
+	</select>
+	
+	<!-- 추천 카운터 -->
+	<select id="selectLikeCounts" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbMngMapper.selectLikeCounts */
+		SELECT 
+			   IFNULL(SUM(IF(A.RCMD_YN = 'Y',1, 0)),0)  rcmdYCnt
+			 , IFNULL(SUM(IF(A.RCMD_YN = 'N',1, 0)),0)  rcmdNCnt
+			 , B.RCMD_SERNO 							rcmdSerno
+			 , B.RCMD_YN								rcmdYn
+		  FROM T_BLTNB_RCMD_MNG A
+	 LEFT JOIN T_BLTNB_RCMD_MNG B
+	        ON B.MENU_CD 	 = A.MENU_CD 
+	       AND B.BLTNB_SERNO = A.BLTNB_SERNO 
+	       AND B.REGR_SERNO  = #{ftLoginSerno} 
+	       AND B.USE_YN 	 = 'Y'
+		<where>
+		 	   A.MENU_CD 	 = #{menuCd}	   
+		   AND A.BLTNB_SERNO = #{bltnbSerno}
+		   AND A.USE_YN 	 = 'Y'
+	  </where>
+	</select>
+	
+	<!-- 댓글 건수 조회 -->
+	<select id="selectReplCount" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbReplMngMapper.selectReplCount */
+	 	SELECT 
+			   COUNT(1) rowCnt
+		  FROM T_BLTNB_REPL_MNG
+		  <where>
+		       BLTNB_SERNO = #{bltnbSerno}
+		   AND UPR_REPL_SERNO IS NULL 
+		   AND USE_YN = 'Y'
+		  </where>
+	</select>
+	
+	<!-- 댓글 상세 조회 -->
+	<select id="selectReplContents" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbReplMngMapper.selectReplContents */
+		SELECT 
+			   REPL_SERNO								replSerno		
+			 , REPL_CTT						    		replCtt
+			 , FNC_USER_NM(REGR_SERNO)					replRegrNm  
+			 , REGR_SERNO								replRegrSerno  
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d')			replRegDt
+		  FROM T_BLTNB_REPL_MNG 
+		  <where>
+		       BLTNB_SERNO = #{bltnbSerno}  
+		   AND USE_YN = 'Y'
+		  </where>
+	</select>
+	
+	<!-- 댓글 목록 조회 -->
+	<select id="selectReplList" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbReplMngMapper.selectReplList */
+		SELECT 
+			   A.REPL_SERNO									replSerno		
+			 , A.REPL_CTT						    		replCtt
+			 , IFNULL(B.USER_NM,'알수없음')					replRegrNm  
+			 , A.REGR_SERNO									replRegrSerno  
+			 , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%m:%s')	replRegDt
+			 , (SELECT COUNT(1) FROM T_BLTNB_REPL_MNG C WHERE C.UPR_REPL_SERNO = A.REPL_SERNO AND C.USE_YN = 'Y') replCnt
+		  FROM T_BLTNB_REPL_MNG A
+	 LEFT JOIN T_USER_MNG B
+	 		ON A.REGR_SERNO = B.USER_SERNO
+	 	   AND B.USE_YN = 'Y'
+		  <where>
+		       A.BLTNB_SERNO = #{bltnbSerno}
+		   AND A.UPR_REPL_SERNO IS NULL   
+		   AND A.USE_YN = 'Y'
+		  </where>
+	  ORDER BY A.REPL_SERNO DESC
+	</select>
+	
+	<!-- 대댓글 목록 조회 -->
+	<select id="selectReplOfReplList" parameterType="bltnbVO" resultType="bltnbVO">
+		/* BltnbReplMngMapper.selectReplOfReplList */
+		SELECT 
+			   A.REPL_SERNO									replSerno		
+			 , A.REPL_CTT						    		replCtt
+			 , IFNULL(B.USER_NM,'알수없음')					replRegrNm  
+			 , A.REGR_SERNO									replRegrSerno  
+			 , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%m:%s')	replRegDt
+		  FROM T_BLTNB_REPL_MNG A
+	 LEFT JOIN T_USER_MNG B
+	 		ON A.REGR_SERNO = B.USER_SERNO
+	 	   AND B.USE_YN = 'Y'
+		  <where>
+		       A.UPR_REPL_SERNO = #{replSerno}
+		   AND A.USE_YN = 'Y'
+		  </where>
+	  ORDER BY A.REPL_SERNO DESC
+	</select>
+	
+	<!-- 댓글 등록 -->
+	<insert id="insertReplContents" parameterType="bltnbVO">
+		/* BltnbReplMngMapper.insertReplContents */
+		INSERT INTO T_BLTNB_REPL_MNG (
+			        BLTNB_SERNO
+			  	  , REPL_CTT
+			<if test="uprReplSerno != null and uprReplSerno != ''"> 		
+			 	  , UPR_REPL_SERNO		
+			</if>  	  		
+			<if test="path1 != null and path1 !=''"> 		
+			 	  , REGR_SERNO		
+			</if>		
+			      , REG_DT			
+	     	      )
+	       VALUES (
+	    			#{bltnbSerno}
+	    		  , #{replCtt}
+	    	<if test="uprReplSerno != null and uprReplSerno != ''"> 		
+			 	  , #{uprReplSerno}		
+			</if>  	  			
+	     	<if test="path1 != null and path1 !=''"> 
+		    	<if test="path1 == 'ma'">
+		      	  ,	#{loginSerno}										   
+				</if>
+				<if test="path1 == 'ft'">
+		      	  ,	#{ftLoginSerno}										   
+				</if>
+			</if>
+	    	  	  , NOW()
+		          ) 
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateReplContents" parameterType="bltnbVO">
+		/* BltnbReplMngMapper.updateReplContents */
+		UPDATE T_BLTNB_REPL_MNG
+		   SET REPL_CTT 		= #{replCtt}	
+		<if test="path1 != null and path1 !=''"> 
+		    <if test="path1 == 'ma'">
+			 , UPDR_SERNO		= #{loginSerno}
+			</if>
+			<if test="path1 == 'ft'">
+			 , UPDR_SERNO		= #{ftLoginSerno}									   
+			</if>
+		</if>
+			 , UPD_DT			= NOW()
+		<where>
+			   REPL_SERNO = #{replSerno}
+		</where>
+	</update>
+	
+	
+	<!-- 댓글 삭제 -->
+	<update id="deleteReplContents" parameterType="bltnbVO">
+		/* BltnbReplMngMapper.deleteReplContents */
+		UPDATE T_BLTNB_REPL_MNG
+		   SET USE_YN 	= 'N'
+		 <where> 
+		 	   REPL_SERNO = #{replSerno}
+		 </where>
+	</update>
+</mapper>

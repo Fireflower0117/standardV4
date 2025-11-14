@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmSlaRptdMapper">
+
+    <sql id="Where">
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND SVC_SN = #{schEtc00}
+        </if>
+        <if test="schEtc01 !=null and schEtc01 !=''">
+            AND DATE_FORMAT(BGNG_YM, '%Y.%m') = #{schEtc01}
+        </if>
+    </sql>
+
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmSlaRptVO" resultType="itsmSlaRptVO">
+        /* ItsmSlaRptdMapper.selectList */
+        SELECT RPTD_SN										rptdSn
+             , RPTD_TTL										rptdTtl
+             , SVC_SN										svcSn
+             , ITSM_FNC_SVC_NM(SVC_SN)						svcNm
+             , DATE_FORMAT(BGNG_YM, '%Y.%m')				bgngYm
+             , CONCAT(DATE_FORMAT(BGNG_YM, '%Y.%m'),'.01')	bgngDt
+             , DATE_FORMAT(BGNG_YM, '%Y.%m.%d')				endDt
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 				regDt
+          FROM ITSM_SLA_RPTD
+        <where>
+            <include refid="Where"/>
+            AND USE_YN ='Y'
+        </where>
+         ORDER BY RPTD_SN DESC
+         LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <select id="selectCount" parameterType="itsmSlaRptVO" resultType="int">
+        /* ItsmSlaRptdMapper.selectCount */
+        SELECT COUNT(1)
+          FROM ITSM_SLA_RPTD
+        <where>
+            <include refid="Where"/>
+            AND USE_YN ='Y'
+        </where>
+    </select>
+
+    <select id="selectRptDupleChk" parameterType="itsmSlaDefVO" resultType="int">
+        /* ItsmSlaRptdMapper.selectRptDupleChk */
+        SELECT COUNT(1)
+          FROM ITSM_SLA_RPTD
+         WHERE USE_YN = 'Y'
+           AND SVC_SN = #{svcSn}
+           AND DATE_FORMAT(BGNG_YM, '%Y.%m') = DATE_FORMAT(#{bgngYm}, '%Y.%m')
+    </select>
+
+    <!-- 생성 -->
+    <insert id="insertContents" parameterType="itsmSlaRptVO">
+        /* ItsmSlaRptdMapper.insertContents */
+        <selectKey resultType="String" keyProperty="rptdSn" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO ITSM_SLA_RPTD
+             ( SCRNG_SN
+             , RPTD_TTL
+             , BGNG_YM
+             , REG_DT
+             , RGTR_SN
+             , SVC_SN
+             )
+        VALUES
+             ( #{scrngSn}
+             , #{rptdTtl}
+             , IF(#{bgngYm} = '', NULL, #{bgngYm})
+             , NOW()
+             , #{loginSerno}
+             , #{svcSn}
+             )
+    </insert>
+
+</mapper>

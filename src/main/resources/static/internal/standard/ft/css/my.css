@@ -1,0 +1,6 @@
+@charset "utf-8";
+
+#content{position:relative; width:1280px;margin:0 auto;padding:30px 0;}
+#content #lnb{position: absolute;left:-260px;top:8px;}
+
+#header .gnb_bg{z-index: 9;}

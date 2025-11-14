@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmErrMapper">
+
+    <sql id="Where">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (
+                UPPER(B.ERR_OCCR_URL_ADDR) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                )
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER(B.ERR_OCCR_URL_ADDR) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND A.SVC_SN = #{schEtc00}
+        </if>
+
+        <if test="schEtc01 !=null and schEtc01 !=''">
+            AND B.ERR_TP_NM LIKE CONCAT('%', UPPER(#{schEtc01}), '%')
+        </if>
+
+        <if test="schEtc02 !=null and schEtc02 !=''">
+            AND A.MENU_CD = #{schEtc02}
+        </if>
+        <if test="schEtc03 !=null and schEtc03 !=''">
+            AND A.ERR_GBN = #{schEtc03}
+        </if>
+        <if test="schEtc05 !=null and schEtc05 !='' and schEtc05 =='1'">
+            AND A.ERR_RES_DT IS NOT NULL
+        </if>
+        <if test="schEtc05 !=null and schEtc05 !='' and schEtc05 =='2'">
+            AND A.ERR_RES_DT IS  NULL
+        </if>
+    </sql>
+
+    <sql id="Main">
+        AND A.SVC_SN = #{schEtc00}
+    </sql>
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmErrVO" resultType="itsmErrVO">
+        /* ItsmmErrMapper.selectList */
+        SELECT
+        A.ERR_SN	 										errSn
+        , A.ERR_LOG_SERNO 									errLogSn
+        , A.MNGR_SN	 									mngrSn
+        , FNC_USER_NM(A.MNGR_SN)								mngrNm
+        , A.ERR_RES_CN	 									errResCn
+        , A.SVC_SN	 									svcSn
+        , ITSM_FNC_SVC_NM(A.SVC_SN)	 									svcNm
+        , DATE_FORMAT(A.ERR_OCCR_DT, '%Y.%m.%d %H:%i') 	errOccrDt
+        , DATE_FORMAT(A.ERR_RES_DT, '%Y.%m.%d %H:%i') 		errResDt
+        , A.ERR_GBN											errGbn
+        , ITSM_FNC_CODE_NM(A.ERR_GBN)								errGbnNm
+        , A.MENU_CD											menuCd
+        , (SELECT MENU_NM FROM itsm_menu WHERE MENU_CD = A.MENU_CD) 	menuNm
+        , A.REQ_DD											reqDd
+        , B.ERR_TP_NM 										errTpNm
+        , B.ERR_EXPL 										errExpl
+        , B.SVR_ERR_CTT 									svrErrInfoCtt
+        , B.ERR_PTH_NM 									errPthNm
+        , B.ERR_OCCR_URL_ADDR 								errPageUrlAddr
+        , B.ERR_OCCR_IP_ADDR 								ipAddr
+        FROM ITSM_ERR A
+        LEFT JOIN T_ERR_LOG_MNG B
+        ON A.ERR_LOG_SERNO = B.ERR_LOG_SERNO
+        WHERE A.USE_YN ='Y'
+        <include refid="Where"/>
+        ORDER BY A.ERR_SN DESC
+        <if test="excelYn ==null or excelYn == ''">
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+    </select>
+
+    <select id="selectCount" parameterType="itsmErrVO" resultType="int">
+        /* ItsmmErrMapper.selectCount */
+        SELECT COUNT(A.ERR_SN) cnt
+        FROM ITSM_ERR A
+        LEFT JOIN T_ERR_LOG_MNG B
+        ON A.ERR_LOG_SERNO = B.ERR_LOG_SERNO
+        WHERE A.USE_YN ='Y'
+        <include refid="Where"/>
+    </select>
+
+    <!-- 상세 -->
+    <select id="selectContents" parameterType="itsmErrVO" resultType="itsmErrVO">
+        /* ItsmmErrMapper.selectContents */
+        SELECT
+            A.ERR_SN	 										errSn
+             , A.ERR_LOG_SERNO 									errLogSn
+             , A.MNGR_SN	 									mngrSn
+             , FNC_USER_NM(A.MNGR_SN)								mngrNm
+             , A.ERR_RES_CN	 									errResCn
+             , A.SVC_SN	 									svcSn
+             , ITSM_FNC_SVC_NM(A.SVC_SN)	 									svcNm
+             , DATE_FORMAT(A.ERR_OCCR_DT, '%Y.%m.%d %H:%i') 	errOccrDt
+             , DATE_FORMAT(A.ERR_RES_DT, '%Y.%m.%d %H:%i') 		errResDt
+             , (SELECT MENU_NM FROM itsm_menu WHERE MENU_CD = A.MENU_CD) 	menuNm
+             , A.ERR_GBN										errGbn
+             , ITSM_FNC_CODE_NM(A.ERR_GBN)								errGbnNm
+             , A.MENU_CD										menuCd
+             , A.REQ_DD											reqDd
+             , B.ERR_TP_NM 										errTpNm
+             , B.ERR_EXPL 										errExpl
+             , B.SVR_ERR_CTT 									svrErrInfoCtt
+             , B.ERR_PTH_NM 									errPthNm
+             , B.ERR_OCCR_URL_ADDR 								errPageUrlAddr
+             , B.ERR_OCCR_IP_ADDR 								ipAddr
+        FROM ITSM_ERR A
+                 LEFT JOIN T_ERR_LOG_MNG B
+                           ON A.ERR_LOG_SERNO = B.ERR_LOG_SERNO
+        WHERE A.ERR_SN = #{errSn}
+    </select>
+
+    <!-- 수정 -->
+    <update id="updateContents" parameterType="itsmErrVO">
+        /* ItsmmErrMapper.updateContents */
+        UPDATE ITSM_ERR
+        SET
+            MNGR_SN 		= #{mngrSn}
+          , ERR_RES_CN 		= #{errResCn}
+          , MENU_CD 		= #{menuCd}
+          , ERR_GBN 		= #{errGbn}
+          , REQ_DD	 		= DATEDIFF(NOW(),(SELECT ERR_OCCR_DT FROM ITSM_ERR WHERE ERR_SN =  #{errSn})  )
+          , ERR_RES_DT 	= NOW()
+        WHERE ERR_SN   = #{errSn}
+    </update>
+
+
+    <!-- 개발담당자 배정 -->
+    <update id="updateMngr" parameterType="itsmErrVO">
+        /* ItsmmErrMapper.updateMngr */
+        UPDATE ITSM_ERR
+        SET MNGR_SN 		= #{mngrSn}
+          , 	ERR_MNGR_DT 	= NOW()
+        WHERE ERR_SN   = #{errSn}
+    </update>
+
+
+    <!-- 목록 -->
+    <select id="selectMainList" parameterType="itsmErrVO" resultType="itsmErrVO">
+        /* ItsmmErrMapper.selectMainList */
+        SELECT
+        A.ERR_SN	 										errSn
+        , A.ERR_LOG_SERNO 									errLogSn
+        , A.MNGR_SN	 									mngrSn
+        , FNC_USER_NM(A.MNGR_SN)								mngrNm
+        , A.ERR_RES_CN	 									errResCn
+        , A.SVC_SN	 									svcSn
+        , ITSM_FNC_SVC_NM(A.SVC_SN)	 									svcNm
+        , DATE_FORMAT(A.ERR_OCCR_DT, '%Y.%m.%d %H:%i') 	errOccrDt
+        , DATE_FORMAT(A.ERR_RES_DT, '%Y.%m.%d %H:%i') 		errResDt
+        , A.ERR_GBN											errGbn
+        , ITSM_FNC_CODE_NM(A.ERR_GBN)								errGbnNmItsmDocMapper
+        , A.MENU_CD											menuCd
+        , (SELECT MENU_NM FROM itsm_menu WHERE MENU_CD = A.MENU_CD) 	menuNm
+        , A.REQ_DD											reqDd
+        , B.ERR_TP_NM 										errTpNm
+        , B.ERR_EXPL 										errExpl
+        , B.SVR_ERR_CTT 									svrErrInfoCtt
+        , B.ERR_PTH_NM 									errPthNm
+        , B.ERR_OCCR_URL_ADDR 								errPageUrlAddr
+        , B.ERR_OCCR_IP_ADDR 								ipAddr
+        FROM ITSM_ERR A
+        LEFT JOIN T_ERR_LOG_MNG B
+        ON A.ERR_LOG_SERNO = B.ERR_LOG_SERNO
+        WHERE A.USE_YN ='Y'
+        <include refid="Main"/>
+        ORDER BY A.ERR_SN DESC
+        LIMIT 5
+    </select>
+
+
+    <!-- 장애현황 -->
+    <select id="statErr" parameterType="itsmStatVO" resultType="itsmStatVO">
+        /* ItsmErrMapper.statErr */
+        SELECT TA.*
+        FROM (SELECT CONCAT(M.MONTH, '월') 			AS month
+        <choose>
+            <when test="schEtc00 !=null and schEtc00 !=''">
+                , NVL(SUM(CASE WHEN B.SVC_SN = #{schEtc00} THEN 1 ELSE 0 END),0)	AS all1
+            </when>
+            <otherwise>
+                , COUNT(A.ERR_LOG_SERNO)	AS all1
+            </otherwise>
+        </choose>
+        , NVL(SUM(CASE WHEN A.ERR_TP_NM = '404 error' <if test="schEtc00 !=null and schEtc00 !=''">AND B.SVC_SN = #{schEtc00}</if> THEN 1 ELSE 0 END),0) AS cnt1
+        , NVL(SUM(CASE WHEN A.ERR_TP_NM = '500 error' <if test="schEtc00 !=null and schEtc00 !=''">AND B.SVC_SN = #{schEtc00}</if> THEN 1 ELSE 0 END),0) AS cnt2
+        , NVL(SUM(CASE WHEN A.ERR_TP_NM != '404 error' AND A.ERR_TP_NM != '500 error' <if test="schEtc00 !=null and schEtc00 !=''">AND B.SVC_SN = #{schEtc00}</if> THEN 1 ELSE 0 END),0) AS cnt3
+        , NVL(SUM(CASE WHEN B.ERR_GBN = 'ERGB01' <if test="schEtc00 !=null and schEtc00 !=''">AND B.SVC_SN = #{schEtc00}</if> THEN 1 ELSE 0 END),0)      AS cnt4 /* front */
+        , NVL(SUM(CASE WHEN B.ERR_GBN = 'ERGB02' <if test="schEtc00 !=null and schEtc00 !=''">AND B.SVC_SN = #{schEtc00}</if> THEN 1 ELSE 0 END),0)      AS cnt5 /* pg */
+        , NVL(SUM(CASE WHEN B.ERR_GBN = 'ERGB03' <if test="schEtc00 !=null and schEtc00 !=''">AND B.SVC_SN = #{schEtc00}</if> THEN 1 ELSE 0 END),0)      AS cnt6 /* db */
+        , NVL(SUM(CASE WHEN B.ERR_GBN = 'ERGB04' <if test="schEtc00 !=null and schEtc00 !=''">AND B.SVC_SN = #{schEtc00}</if> THEN 1 ELSE 0 END),0)      AS cnt7 /* servert */
+        FROM ITSM_STAT_MONTH M
+        LEFT OUTER JOIN T_ERR_LOG_MNG A
+        ON M.MONTH = REPLACE(DATE_FORMAT(A.ERR_OCCR_DT, '%m'), '0', '')
+        AND A.USE_YN = 'Y'
+        AND DATE_FORMAT(A.ERR_OCCR_DT, '%Y') = #{year}
+        LEFT OUTER JOIN ITSM_ERR B
+        ON A.ERR_LOG_SERNO = B.ERR_LOG_SERNO
+        AND B.USE_YN = 'Y'
+        GROUP BY CONCAT(M.MONTH, '월') WITH ROLLUP) TA
+        ORDER BY TA.month * 1
+    </select>
+
+</mapper>

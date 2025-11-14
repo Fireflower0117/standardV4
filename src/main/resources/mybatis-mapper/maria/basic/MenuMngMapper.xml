@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.mapper.basic.menuMngMapper">
+
+	<sql id="Where">
+		<if test="searchKeyword !=null and searchKeyword !=''">
+			<if test="searchCondition ==null or searchCondition == ''">
+				AND (UPPER(MENU_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+				OR UPPER(MENU_CD) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+				AND UPPER(MENU_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+				AND UPPER(MENU_CD) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+		</if>
+	</sql>
+	
+	<!-- 메뉴 목록 조회 -->
+	<select id="selectList" parameterType="menuVO" resultType="menuVO">
+		/* MenuMngMapper.selectList */
+		SELECT 
+			   A.MENU_CL		menuCl
+			 , A.UPR_MENU_CD	uprMenuCd
+			 , A.MENU_CD		menuCd
+			 , A.MENU_LVL		menuLvl  
+			 , A.MENU_NM		menuNm 
+			 , A.MENU_SEQO 		menuSeqo
+			 , A.LWR_TAB_YN 	lwrTabYn
+			 , ( SELECT EXISTS ( SELECT * FROM T_MENU_MNG B WHERE B.UPR_MENU_CD = A.MENU_CD AND USE_YN = 'Y' ) ) isLeaf
+			 , A.MENU_TP_CL		menuTpCl
+		  FROM T_MENU_MNG A
+		  <where>
+		 	   <if test="divn != null and divn != ''">
+			   A.UPR_MENU_CD = #{divn}		  	
+		  	</if>
+		   AND A.USE_YN = 'Y'
+		 </where>
+	  ORDER BY A.MENU_LVL, A.MENU_SEQO
+	</select>
+	 
+	
+	<!-- 메뉴 Header 목록 조회 -->
+	<select id="selectMenuList" parameterType="menuVO" resultType="menuVO">
+		/* MenuMngMapper.selectMenuList */
+		SELECT 
+			   A.MENU_CL				menuCl  
+		     , A.UPR_MENU_CD 			uprMenuCd
+			 , A.MENU_LVL 				menuLvl
+			 , A.MENU_SEQO 				menuSeqo
+			 , A.MENU_NM 				menuNm
+			 , A.MENU_CD 				menuCd
+			 , A.MENU_URL_ADDR 			menuUrlAddr
+			 , A.LWR_TAB_YN				lwrTabYn
+			 , CASE WHEN A.TGT_BLANK_YN = 'A' THEN ''
+			 		WHEN A.TGT_BLANK_YN = 'B' THEN '_blank'
+			 		ELSE '' 
+			   END 						tgtBlankYn
+			 , ( SELECT EXISTS ( SELECT * 
+			 					   FROM T_MENU_MNG D 
+			 			      LEFT JOIN T_MENU_AUTH_MNG E 
+			 			             ON D.MENU_CD = E.MENU_CD
+          						    AND E.MENU_SE_CD = #{menuSeCd}
+          						    AND E.USE_YN	= 'Y'
+			 			          WHERE D.UPR_MENU_CD = A.MENU_CD 
+			 			            AND D.USE_YN = 'Y'
+			 			            AND D.MENU_CL = #{menuCl}
+		   							AND E.GRP_AUTH_ID = #{grpAuthId} ) 
+			   															) isLeaf
+		  FROM T_MENU_MNG A
+     LEFT JOIN T_MENU_AUTH_MNG B
+            ON A.MENU_CD = B.MENU_CD
+           AND B.MENU_SE_CD = #{menuSeCd}
+           AND B.USE_YN	= 'Y'
+     LEFT JOIN T_MENU_MNG C
+     	    ON C.MENU_CD = A.UPR_MENU_CD
+     	   AND C.USE_YN = 'Y'
+        <where>
+		 	   A.MENU_CL = #{menuCl}
+		   <if test="menuLvl != null and menuLvl != ''">
+           AND A.MENU_LVL = #{menuLvl}
+           </if>
+		   AND B.GRP_AUTH_ID = #{grpAuthId}
+		   AND A.EXPSR_YN = 'Y'
+		   AND A.USE_YN	= 'Y'
+		   <if test="lwrTabYn != null and lwrTabYn != ''">
+		   AND C.LWR_TAB_YN = #{lwrTabYn}
+		   </if>
+		</where>
+	  ORDER BY A.MENU_SEQO 
+	</select>
+	
+	
+	<!-- 메뉴CL별 접근권한 MenuList 조회 -->
+	<select id="selectRecursiveClMenuList" parameterType="menuVO" resultType="menuVO">
+		/* MenuMngMapper.selectRecursiveClMenuList */ 
+		WITH RECURSIVE TB_RECUR_MENUS AS (
+			   <![CDATA[ 
+			   SELECT  A.MENU_CL			  
+					 , A.UPR_MENU_CD 			
+					 , A.MENU_CD  			
+					 , 1 AS MENU_LVL	
+					 , A.MENU_SEQO  AS MENU_SEQ 
+					 , A.MENU_NM 		
+					 , CAST(A.MENU_NM AS CHAR(100) CHARACTER SET UTF8) AS MENU_PATH	 
+					 , A.MENU_URL_ADDR 		
+					 , A.LWR_TAB_YN	
+					 , A.EXPSR_YN		
+					 , A.TGT_BLANK_YN 
+					 , CAST(LPAD(A.MENU_SEQO, 4, '0') AS CHAR(200)) AS SORT_PATH 
+				  FROM t_menu_mng  A 
+				 WHERE UPR_MENU_CD IS NULL  
+			     UNION ALL
+			   SELECT A.MENU_CL			 
+					 , A.UPR_MENU_CD 			
+					 , A.MENU_CD 	  			
+					 , TRM.MENU_LVL + 1 AS MENU_LVL				 
+					 , A.MENU_SEQO AS MENU_SEQ 
+					 , A.MENU_NM 	
+					 , CONCAT(TRM.MENU_PATH, ' > ', A.MENU_NM ) AS MENU_PATH	 
+					 , A.MENU_URL_ADDR 		
+					 , A.LWR_TAB_YN	
+					 , A.EXPSR_YN					 		
+					 , A.TGT_BLANK_YN  
+					 , CONCAT(TRM.SORT_PATH, '-', LPAD(A.MENU_SEQO, 4, '0'))
+				  FROM t_menu_mng A
+				 INNER JOIN TB_RECUR_MENUS TRM ON A.UPR_MENU_CD = TRM.MENU_CD
+			   ]]>
+		  ) 
+		  SELECT TRM.MENU_CL			  
+			   , TRM.UPR_MENU_CD 			
+			   , TRM.MENU_CD 	
+			   , TRM.MENU_LVL - 1 AS MENU_LVL				 
+			   , TRM.MENU_SEQ	
+			   , CASE WHEN NOT EXISTS (SELECT 1 
+										 FROM T_MENU_MNG TMM 
+										WHERE TMM.UPR_MENU_CD = TRM.MENU_CD
+								 ) 
+					  THEN 'END' 
+					  ELSE '' 
+				 END AS IS_LEAF
+			   , TRM.MENU_NM 		
+			   , TRM.MENU_PATH	 
+			   , TRM.MENU_URL_ADDR 		
+			   , TRM.LWR_TAB_YN	
+			   , TRM.EXPSR_YN		
+			   , TRM.TGT_BLANK_YN   
+			FROM TB_RECUR_MENUS TRM 
+			WHERE TRM.MENU_CL = #{menuCl}
+			ORDER BY TRM.SORT_PATH
+	</select>
+	
+	
+	<!-- Role별 접근권한 MenuList 조회 -->
+	<select id="selectRecursiveAuthMenuList" parameterType="menuVO" resultType="menuVO">
+           /* MenuMngMapper.selectRecursiveAuthMenuList */
+			WITH RECURSIVE TB_RECUR_MENUS AS (
+				  <![CDATA[ 
+				   SELECT  A.MENU_CL			  
+						 , A.UPR_MENU_CD 			
+						 , A.MENU_CD  			
+						 , 1 AS MENU_LVL	
+						 , A.MENU_SEQO  AS MENU_SEQ 
+						 , A.MENU_NM 		
+						 , CAST(A.MENU_NM AS CHAR(100) CHARACTER SET UTF8) AS MENU_PATH	 
+						 , A.MENU_URL_ADDR 		
+						 , A.LWR_TAB_YN	
+						 , A.EXPSR_YN		
+						 , A.TGT_BLANK_YN  
+						 , CAST(LPAD(A.MENU_SEQO, 4, '0') AS CHAR(200)) AS SORT_PATH
+				      FROM T_MENU_MNG  A 
+				     WHERE UPR_MENU_CD IS NULL
+				       AND USE_YN = 'Y'
+					   AND MENU_CL  = #{menuCl}
+				     UNION ALL
+				   SELECT A.MENU_CL			 
+					  	 , A.UPR_MENU_CD 			
+						 , A.MENU_CD 	  			
+						 , TRM.MENU_LVL + 1 AS MENU_LVL				 
+						 , A.MENU_SEQO AS MENU_SEQ 
+						 , A.MENU_NM 	
+						 , CONCAT(TRM.MENU_PATH, ' > ', A.MENU_NM ) AS MENU_PATH	 
+						 , A.MENU_URL_ADDR 		
+						 , A.LWR_TAB_YN	
+						 , A.EXPSR_YN					 		
+						 , A.TGT_BLANK_YN 
+						 , CONCAT(TRM.SORT_PATH, '-', LPAD(A.MENU_SEQO, 4, '0'))
+				      FROM T_MENU_MNG A
+				     INNER JOIN TB_RECUR_MENUS TRM ON A.UPR_MENU_CD = TRM.MENU_CD    
+				     WHERE 1 = 1  
+				       AND A.USE_YN = 'Y'
+				   ]]>
+	  ) 
+	  SELECT TRM.MENU_CL			  
+		   , TRM.UPR_MENU_CD 			
+		   , TRM.MENU_CD 	
+		   , TRM.MENU_LVL - 1 AS MENU_LVL				 
+	       , TRM.MENU_SEQ	
+		   , CASE WHEN NOT EXISTS (SELECT 1 
+									 FROM T_MENU_MNG TMM 
+									WHERE TMM.UPR_MENU_CD = TRM.MENU_CD
+							 ) 
+				  THEN 'END' 
+			      ELSE '' 
+			 END AS IS_LEAF
+		   , TRM.MENU_NM 		
+		   , TRM.MENU_PATH	 
+		   , TRM.MENU_URL_ADDR 		
+		   , TRM.LWR_TAB_YN	
+		   , TRM.EXPSR_YN		
+		   , TRM.TGT_BLANK_YN   
+		FROM TB_RECUR_MENUS TRM
+		LEFT JOIN T_MENU_AUTH_MNG MAM ON TRM.MENU_CD = MAM.MENU_CD 
+									 AND MAM.USE_YN	= 'Y'
+		WHERE 1 = 1 
+		  AND MAM.GRP_AUTH_ID =  #{grpAuthId} 
+		  AND TRM.EXPSR_YN = 'Y' 
+		ORDER BY TRM.SORT_PATH
+	</select>
+	
+	
+	<!-- 메뉴 Header 공통게시판 목록 조회 -->
+	<select id="selectMenuBltnbList" parameterType="menuVO" resultType="menuVO">
+		/* MenuMngMapper.selectMenuBltnbList */
+		SELECT 
+			   A.MENU_CL				menuCl  
+		     , A.UPR_MENU_CD 			uprMenuCd
+			 , A.MENU_LVL 				menuLvl
+			 , A.MENU_SEQO 				menuSeqo
+			 , A.MENU_NM 				menuNm
+			 , A.MENU_CD 				menuCd
+			 , CONCAT('/ma/us/bltnb/',A.MENU_CD, '/list.do')	menuUrlAddr
+			 , A.LWR_TAB_YN				lwrTabYn
+			 , A.MENU_TP_CL				menuTpCl				
+			 , CASE WHEN A.TGT_BLANK_YN = 'A' THEN ''
+			 		WHEN A.TGT_BLANK_YN = 'B' THEN '_blank'
+			 		ELSE '' 
+			   END 						tgtBlankYn
+			 , ( SELECT EXISTS 
+			 					( SELECT * 
+			 					   FROM T_MENU_MNG C 
+			 			      LEFT JOIN T_MENU_AUTH_MNG D 
+			 			             ON C.MENU_CD = D.MENU_CD
+          						    AND D.USE_YN	= 'Y'
+			 			          WHERE C.UPR_MENU_CD = A.MENU_CD 
+			 			            AND C.USE_YN = 'Y' ) 
+			   														) isLeaf
+		  FROM T_MENU_MNG A
+     LEFT JOIN T_MENU_AUTH_MNG B
+            ON B.GRP_AUTH_ID = #{grpAuthId}
+           AND B.USE_YN	= 'Y'
+		<where>
+		  	   A.MENU_TP_CL = 'B'
+		   AND A.MENU_CL = 'ft'
+		   AND A.EXPSR_YN = 'Y'
+		   AND A.USE_YN	= 'Y'
+		   AND B.MENU_CD = 'bltnb'
+		</where>
+	  ORDER BY A.MENU_SEQO
+	  
+	</select>
+	
+	<!-- 메뉴 Excel 목록 조회 -->
+	<select id="selectExcelList" parameterType="menuVO" resultType="menuVO">
+		/* MenuMngMapper.selectExcelList */
+		SELECT 
+			   IFNULL(B.MENU_NM,'-')										menuCl
+			 , IFNULL(A.UPR_MENU_CD,'-')									uprMenuCd
+			 , IFNULL(A.MENU_CD,'-')										menuCd
+			 , IFNULL(A.MENU_LVL,'-')										menuLvl
+			 , IFNULL(A.MENU_SEQO,'-') 										menuSeqo  
+			 , IFNULL(A.MENU_NM,'-')										menuNm 
+			 , IFNULL(IF(A.MENU_URL_ADDR = '',NULL,A.MENU_URL_ADDR),'-') 	menuUrlAddr
+			 , CASE WHEN A.MENU_TP_CL = 'A' THEN '개별'
+  			 		  WHEN A.MENU_TP_CL = 'B' THEN '게시판'
+ 			 		  WHEN A.MENU_TP_CL = 'C' THEN '컨텐츠'
+ 			 		 	ELSE '-'
+ 			 		 	END                            						menuTpCl
+			 , CASE WHEN A.BLTNB_CL = 'bd' THEN '일반'
+  			 		  WHEN A.BLTNB_CL = 'nt' THEN '공지사항'
+ 			 		  WHEN A.BLTNB_CL = 'gr' THEN '갤러리'
+ 			 		  WHEN A.BLTNB_CL = 'fa' THEN 'FAQ'
+ 			 		  WHEN A.BLTNB_CL = 'qa' THEN 'QNA'
+ 			 		 	ELSE '-'
+ 			 		 	END													bltnbCl
+			 , IFNULL(IF(A.MENU_EXPL = '',NULL,A.MENU_EXPL),'-')			menuExpl
+			 , CASE WHEN A.LWR_TAB_YN = 'Y' THEN '사용'
+  			 		  WHEN A.LWR_TAB_YN = 'N' THEN '미사용'
+ 			 		 	ELSE '-'
+ 			 		 	END													lwrTabYn
+ 			 , CASE WHEN A.EXPSR_YN = 'Y' THEN '노출'
+  			 		  WHEN A.EXPSR_YN = 'N' THEN '미노출'
+ 			 		 	ELSE '-'
+ 			 		 	END													expsrYn
+ 			 , CASE WHEN A.TGT_BLANK_YN = 'A' THEN '현재창'
+  			 		  WHEN A.TGT_BLANK_YN = 'B' THEN '새창'
+ 			 		 	ELSE '-'
+ 			 		 	END													tgtBlankYn
+			 , IFNULL(FNC_USER_NM(A.REGR_SERNO),'-')						regrSerno
+			 , IFNULL(DATE_FORMAT(A.REG_DT, '%Y.%m.%d'),'-')				regDt
+			 , IFNULL(FNC_USER_NM(A.UPDR_SERNO),'-')						updrSerno  
+			 , IFNULL(DATE_FORMAT(A.UPD_DT, '%Y.%m.%d'),'-')				updDt   
+		  FROM T_MENU_MNG A
+     LEFT JOIN T_MENU_MNG B
+		    ON B.MENU_CD = A.MENU_CL
+		   AND B.USE_YN = 'Y'
+		  <where>
+		 	   A.USE_YN = 'Y'
+		 </where>
+	  ORDER BY B.MENU_NM, A.MENU_LVL,A.UPR_MENU_CD, A.MENU_SEQO
+	</select>
+	
+	<!-- 메뉴 상세 조회 -->
+	<select id="selectContents" parameterType="menuVO" resultType="menuVO">
+		/* MenuMngMapper.selectContents */
+		SELECT 
+		       A.MENU_CL			menuCl
+			 , A.UPR_MENU_CD		uprMenuCd
+			 , A.MENU_CD			menuCd
+			 , A.MENU_LVL			menuLvl  
+			 , A.MENU_NM			menuNm 
+			 , A.MENU_SEQO 			menuSeqo
+			 , A.MENU_NM 			menuNm
+			 , A.MENU_URL_ADDR 		menuUrlAddr
+			 , A.MENU_TP_CL 		menuTpCl
+			 , A.BLTNB_CL 			bltnbCl
+			 , A.MENU_EXPL 			menuExpl
+			 , A.EXPSR_YN 			expsrYn
+			 , A.LWR_TAB_YN 		lwrTabYn
+			 , A.TGT_BLANK_YN 		tgtBlankYn
+			 , B.CONT_SERNO	 		contSerno
+			 , ( SELECT EXISTS ( SELECT * FROM T_MENU_MNG C WHERE C.UPR_MENU_CD = A.MENU_CD AND USE_YN = 'Y' ) ) isLeaf
+			 , ( SELECT D.LWR_TAB_YN FROM T_MENU_MNG D WHERE D.MENU_CD = A.UPR_MENU_CD AND USE_YN = 'Y' ) prLwrTabYn
+		  FROM T_MENU_MNG A
+	 LEFT JOIN T_CONT_MNG B
+	        ON A.MENU_CD = B.MENU_CD
+	       AND B.USE_YN = 'Y'
+	    <where>
+		       A.MENU_CD = #{menuCd}
+		   AND A.USE_YN = 'Y'
+		</where>
+	</select>
+	
+	<select id="menuCdDuplCheck" parameterType="menuVO" resultType="menuVO">
+		/* MenuMngMapper.menuCdDuplCheck */
+		SELECT 
+			   COUNT(1) menuCnt
+		  FROM T_MENU_MNG
+		 <where>
+		       MENU_CD = #{menuCd}
+		 </where>
+	</select>
+	
+	<!-- 메뉴 등록자 체크 -->
+	<select id="regrCheck" parameterType="menuVO" resultType="menuVO">
+		/* MenuMngMapper.regrCheck */
+		SELECT 
+		      CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
+					ELSE 0
+			   END isMyRegr		 								   
+		  FROM T_MENU_MNG
+		 <where>
+		       MENU_SERNO = #{menuSerno}
+		   AND USE_YN = 'Y'
+		 </where>
+	</select>
+	
+	<!-- 메뉴 게시판 유형 조회 -->
+	<select id="inqBltnbCl" parameterType="CommonMap" resultType="bltnbVo">
+		/* basic.MenuMngMapper.inqBltnbCl */
+		SELECT  BLTNB_CL bltnbCl
+		  FROM T_MENU_MNG
+		 <where> 
+		       MENU_CD = #{menuCd}
+		   AND USE_YN = 'Y' 
+		 </where>  
+	</select>
+	
+	<!-- 메뉴 명 조회 -->
+	<select id="selectMenuNm" parameterType="menuVO" resultType="menuVO">
+		/*MenuMngMapper.selectMenuNm */
+		SELECT 
+		       MENU_NM	menuNm
+		  FROM T_MENU_MNG
+		<where>
+		  	   MENU_CD = #{menuCd}
+		   AND USE_YN = 'Y'
+		</where>
+	</select>
+	
+	<!-- 메뉴 등록 -->
+	<insert id="insertContents" parameterType="menuVO">
+		/* MenuMngMapper.insertContents */
+		INSERT INTO T_MENU_MNG(
+			   MENU_CL
+			 , UPR_MENU_CD
+			 , MENU_CD
+			 , MENU_LVL
+			 , MENU_SEQO
+			 , MENU_NM
+			 , MENU_URL_ADDR
+			 , MENU_TP_CL
+			 , BLTNB_CL
+			 , MENU_EXPL
+			 , REGR_SERNO
+			 , REG_DT
+			 , EXPSR_YN
+			 , LWR_TAB_YN
+			 , TGT_BLANK_YN
+	    )
+	    VALUES (
+	    	   #{menuCl}
+			 , #{uprMenuCd}
+			 , #{menuCd}
+			 , #{menuLvl}
+			 , #{menuSeqo}
+			 , #{menuNm}
+			 , #{menuUrlAddr}
+			 , #{menuTpCl}
+			 , #{bltnbCl}
+			 , #{menuExpl}
+			 , #{loginSerno}
+			 , NOW()
+			 , #{expsrYn}
+			 , #{lwrTabYn}
+			 , #{tgtBlankYn}
+		) 
+	</insert>
+	
+	<!-- 메뉴 수정-->
+	<update id="updateContents" parameterType="menuVO">
+		/* MenuMngMapper.updateContents */
+		UPDATE T_MENU_MNG
+		   SET MENU_NM 			= #{menuNm}
+		     , MENU_EXPL		= #{menuExpl}
+		     , EXPSR_YN 		= #{expsrYn}
+			 , TGT_BLANK_YN		= #{tgtBlankYn}
+			 , UPDR_SERNO		= #{loginSerno}
+			 , UPD_DT			= NOW()
+		<if test="menuUrlAddr != null and menuUrlAddr != ''">
+			 , MENU_URL_ADDR 	= #{menuUrlAddr}
+		</if>
+		<if test="menuTpCl != null and menuTpCl != ''">
+			 , MENU_TP_CL		= #{menuTpCl}
+		</if>
+		<if test="bltnbCl != null and bltnbCl != ''">
+			 , BLTNB_CL			= #{bltnbCl}
+		</if>
+		<if test="lwrTabYn != null and lwrTabYn != ''">
+			 , LWR_TAB_YN		= #{lwrTabYn}	 
+		</if>
+		 <where>
+		 	   MENU_CD 	= #{menuCd}
+		 </where>
+	</update>
+	
+	<!-- 메뉴 삭제 -->
+	<update id="deleteContents" parameterType="menuVO">
+		/* MenuMngMapper.deleteContents */
+		UPDATE T_MENU_MNG
+		   SET USE_YN 	= 'N'
+		<where>
+		 	  MENU_CD = #{menuCd}
+		</where>
+	</update>
+	
+	<!-- 메뉴 순서 변경 Up -->
+	<update id="orderUpTargetUpdateContents" parameterType="menuVO">
+		/* MenuMngMapper.orderUpTargetUpdateContents */
+		UPDATE T_MENU_MNG
+		   SET MENU_SEQO = MENU_SEQO + 1
+		<where>
+			<if test="uprMenuCd != null and uprMenuCd != ''">
+			  UPR_MENU_CD = #{uprMenuCd}
+			</if>
+			<if test="uprMenuCd == null or uprMenuCd == ''">
+			  UPR_MENU_CD IS NULL
+			</if>
+		  AND MENU_SEQO = #{menuSeqo} - 1
+		  AND USE_YN = 'Y'
+		</where>
+	</update>
+
+	<!-- 메뉴 순서 변경 Down -->
+	<update id="orderDownTargetUpdateContents" parameterType="menuVO" >
+		/* MenuMngMapper.orderDownTargetUpdateContents */
+		UPDATE T_MENU_MNG
+		   SET MENU_SEQO = MENU_SEQO - 1
+		<where>
+			<if test="uprMenuCd != null and uprMenuCd != ''">
+			  UPR_MENU_CD = #{uprMenuCd}
+			</if>
+			<if test="uprMenuCd == null or uprMenuCd == ''">
+			  UPR_MENU_CD IS NULL
+			</if>
+		  AND MENU_SEQO  = #{menuSeqo} + 1
+		  AND USE_YN 		= 'Y'
+		</where>
+	</update>
+
+	<!-- 메뉴 순서 변경 Up -->
+	<update id="orderUpSelfUpdateContents" parameterType="menuVO">
+		/*  MenuMngMapper.orderUpSelfUpdateContents */
+		UPDATE T_MENU_MNG
+		   SET MENU_SEQO = MENU_SEQO - 1
+		 <where>
+		       MENU_CD 	= #{menuCd}
+		   AND MENU_SEQO  > 1
+		   AND USE_YN 		= 'Y'
+		 </where>
+	</update>
+	
+	<!-- 메뉴 순서 변경 Down -->
+	<update id="orderDownSelfUpdateContents" parameterType="menuVO">
+		/*  MenuMngMapper.orderDownSelfUpdateContents */
+		UPDATE T_MENU_MNG
+		   SET MENU_SEQO = MENU_SEQO + 1
+		<where>
+			   MENU_CD 	= #{menuCd}
+		   AND MENU_SEQO <![CDATA[<=]]> (
+		   									SELECT B.menuSeqo 
+		   									  FROM ( SELECT MAX(MENU_SEQO) menuSeqo 
+		   									           FROM T_MENU_MNG A 
+		   									          <where> 
+														   <if test="uprMenuCd != null and uprMenuCd != ''">
+															  UPR_MENU_CD = #{uprMenuCd}
+															</if>
+															<if test="uprMenuCd == null or uprMenuCd == ''">
+															  UPR_MENU_CD IS NULL
+															</if>
+													   </where>	) B
+										)
+		   AND USE_YN 		= 'Y'
+		</where>
+	</update>
+	
+	<!-- 메뉴 삭제시 순서 변경 -->
+	<update id="menuDeleteOrderUpdateContents" parameterType="codeVO">
+		/* MenuMngMapper.menuDeleteOrderUpdateContents */
+		UPDATE T_MENU_MNG
+		   SET MENU_SEQO = MENU_SEQO - 1
+		<where>
+			<if test="uprMenuCd != null and uprMenuCd != ''">
+			  UPR_MENU_CD = #{uprMenuCd}
+			</if>
+			<if test="uprMenuCd == null or uprMenuCd == ''">
+			  UPR_MENU_CD IS NULL
+			</if>
+		  AND MENU_SEQO <![CDATA[ > ]]> #{menuSeqo} 
+		  AND USE_YN = 'Y'
+		</where>
+	</update>
+	
+	<!-- 메뉴 콘텐츠 내용 조회-->
+	<select id="selectContContents" parameterType="menuVO" resultType="menuVO">
+		/* ContMngMapper.selectContContents */
+		SELECT 
+		       EDITR_CONT						editrCont
+		  FROM T_CONT_MNG
+		 <where>
+		 	   MENU_CD = #{menuCd}
+		   AND USE_YN = 'Y'
+		 </where>
+	</select>
+	
+	<!-- 메뉴 콘텐츠 insert -->
+	<insert id="insertContContents" parameterType="menuVO">
+		/* ContMngMapper.insertContContents */
+		INSERT INTO T_CONT_MNG (
+				MENU_CD
+			  , EDITR_CONT
+			  , REGR_SERNO
+			  , REG_DT
+			)
+			VALUES (
+				#{menuCd}
+			  , #{editrCont}
+			  , #{loginSerno}
+			  , NOW()
+			)
+	</insert>
+	
+	<!-- 메뉴 콘텐츠 update -->
+	<update id="updateContContents" parameterType="menuVO">
+		/* ContMngMapper.updateContContents */
+		UPDATE T_CONT_MNG
+		   SET EDITR_CONT		= #{editrCont}
+			 , UPDR_SERNO		= #{loginSerno}
+			 , UPD_DT			= NOW()
+		 <where>
+		 	   MENU_CD = #{menuCd}
+		 </where>
+	</update>
+	
+	<!-- 메뉴 콘텐츠 delete -->
+	<update id="deleteContContents" parameterType="menuVO">
+		/* ContMngMapper.deleteContContents */
+		UPDATE T_CONT_MNG
+		   SET USE_YN 	= 'N'
+		 <where>
+		 	   MENU_CD = #{menuCd}
+		 </where>
+	</update>
+	
+
+	<!-- 메뉴접속 로그 등록 -->
+	<insert id="insertLogContents" parameterType="acsStatVO">
+		/* MenuMngMapper.insertLogContents */
+		INSERT INTO T_MENU_LOG_MNG(
+					MENU_URL_ADDR
+				  , ACS_IP_ADDR
+				  , MENU_CD
+				  , REGR_SERNO
+		)
+		VALUES (
+		         #{menuUrlAddr}
+			   , #{acsIpAddr}
+			   , #{menuCd}
+			   , NULLIF(#{loginSerno}, '')
+		)
+	</insert>
+
+	<!-- 메뉴별 접속수 Top5 -->
+	<select id="selectMenuRank" resultType="CommonMap">
+		/* MenuMngMapper.selectMenuRank */
+		SELECT B.MENU_CD            menuCd
+			 , B.MENU_NM            menuNm
+			 , COUNT(1)             cnt
+		  FROM T_MENU_LOG_MNG A
+	INNER JOIN T_MENU_MNG B
+			ON FNC_UPPOS_MENU_CD(A.MENU_CD, 'FT') = B.MENU_CD AND B.USE_YN = 'Y'
+	  GROUP BY B.MENU_CD
+	  ORDER BY cnt DESC
+		 LIMIT 5
+	</select>
+
+	<!-- 메뉴별 접속수 Top5 상세 -->
+	<select id="selectMenuRankDetail" parameterType="acsStatVO" resultType="CommonMap">
+		/* MenuMngMapper.selectMenuRankDetail */
+		SELECT A.MENU_CD            menuCd
+			 , B.MENU_NM            menuNm
+			 , COUNT(1)             cnt
+		  FROM T_MENU_LOG_MNG A
+	INNER JOIN T_MENU_MNG B
+			ON A.MENU_CD = B.MENU_CD AND B.USE_YN = 'Y'
+		 WHERE B.MENU_CL = 'FT'
+		   AND B.UPR_MENU_CD = #{menuCd}
+	  GROUP BY A.MENU_CD
+	  ORDER BY cnt DESC
+		 LIMIT 5
+	</select>
+
+	<!-- 메뉴별 접속수(현재날짜) -->
+	<select id="selectMenuNow" resultType="CommonMap">
+		/* MenuMngMapper.selectMenuNow */
+		SELECT B.MENU_CD            menuCd
+			 , B.MENU_NM            menuNm
+			 , COUNT(1)             cnt
+		  FROM T_MENU_LOG_MNG A
+	INNER JOIN T_MENU_MNG B
+			ON FNC_UPPOS_MENU_CD(A.MENU_CD, 'FT') = B.MENU_CD AND B.USE_YN = 'Y'
+		 WHERE A.REG_DT <![CDATA[>=]]> CURDATE()
+	  GROUP BY B.MENU_CD
+	</select>
+
+	<!-- 메뉴별 접속수(현재날짜) 상세 -->
+	<select id="selectMenuNowDetail" resultType="CommonMap">
+		/* MenuMngMapper.selectMenuNowDetail */
+		SELECT B.MENU_CD            menuCd
+			 , B.MENU_NM            menuNm
+			 , COUNT(1)             cnt
+		  FROM T_MENU_LOG_MNG A
+	INNER JOIN T_MENU_MNG B
+			ON A.MENU_CD = B.MENU_CD AND B.USE_YN = 'Y'
+		 WHERE A.REG_DT <![CDATA[>=]]> CURDATE()
+		   AND B.MENU_CL = 'FT'
+		   AND B.UPR_MENU_CD = #{menuCd}
+	  GROUP BY B.MENU_CD
+	</select>
+
+</mapper>

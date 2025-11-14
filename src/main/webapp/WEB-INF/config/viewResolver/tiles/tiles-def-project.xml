@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<!-- 관리자 레이아웃 -->
+    <definition name="manage" template="/WEB-INF/config/layout/ma/layout.jsp">
+        <put-attribute name="header" value="/WEB-INF/config/layout/ma/header.jsp"/>
+        <put-attribute name="naviGnb" value="/WEB-INF/config/layout/ma/naviGnb.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/jsp/common/layout/ma/footer.jsp"/>
+    </definition>
+	<definition name=".mLayout:/*" extends="manage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
+	</definition>
+	<definition name=".mLayout:/*/*" extends="manage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+	</definition> 
+	<definition name=".mLayout:/*/*/*" extends="manage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+	</definition>
+	<definition name=".mLayout:/*/*/*/*" extends="manage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+	</definition>
+	<definition name=".mLayout:/*/*/*/*/*" extends="manage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp" />
+	</definition>
+	<definition name=".mLayout:/*/*/*/*/*/*" extends="manage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}.jsp" />
+	</definition>
+	<definition name=".mLayout:/*/*/*/*/*/*/*" extends="manage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}.jsp" />
+	</definition>
+	<definition name=".mLayout:/*/*/*/*/*/*/*/*" extends="manage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}.jsp" />
+	</definition>
+	<definition name=".mLayout:/*/*/*/*/*/*/*/*/*" extends="manage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}.jsp" />
+	</definition>
+	<definition name=".mLayout:/*/*/*/*/*/*/*/*/*/*" extends="manage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}.jsp" />
+	</definition>
+	
+    <!-- 사용자 레이아웃 -->
+    <definition name="front" template="/WEB-INF/jsp/common/layout/ft/layout.jsp">
+        <put-attribute name="header" value="/WEB-INF/jsp/common/layout/ft/header.jsp"/>
+        <put-attribute name="aside" value="/WEB-INF/jsp/common/layout/ft/pgSubNavi.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/jsp/common/layout/ft/footer.jsp"/>
+    </definition>
+    <definition name=".fLayout:*" extends="front">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
+    </definition>
+    <definition name=".fLayout:*/*" extends="front">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+    </definition>
+    <definition name=".fLayout:*/*/*" extends="front">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+    </definition>
+    <definition name=".fLayout:*/*/*/*" extends="front">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+    </definition>
+    <definition name=".fLayout:*/*/*/*/*" extends="front">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp" />
+    </definition>
+    <definition name=".fLayout:*/*/*/*/*/*" extends="front">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}.jsp" />
+    </definition>
+    <definition name=".fLayout:*/*/*/*/*/*/*" extends="front">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}.jsp" />
+    </definition>
+    <definition name=".fLayout:*/*/*/*/*/*/*/*" extends="front">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}.jsp" />
+    </definition>
+    <definition name=".fLayout:*/*/*/*/*/*/*/*/*" extends="front">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}.jsp" />
+    </definition>
+    <definition name=".fLayout:*/*/*/*/*/*/*/*/*/*" extends="front">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}.jsp" />
+    </definition>
+    
+    <!-- 사용자 마이페이지 레이아웃 -->
+    <definition name="myManage" template="/WEB-INF/jsp/common/layout/my/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/jsp/common/layout/my/header.jsp"/>
+		<put-attribute name="aside" value="/WEB-INF/jsp/common/layout/my/aside.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/jsp/common/layout/my/footer.jsp"/>
+	</definition>
+	<definition name=".myLayout:/*" extends="myManage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
+	</definition>
+	<definition name=".myLayout:/*/*" extends="myManage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+	</definition>
+	<definition name=".myLayout:/*/*/*" extends="myManage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+	</definition>
+	<definition name=".myLayout:/*/*/*/*" extends="myManage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+	</definition>
+	<definition name=".myLayout:/*/*/*/*/*" extends="myManage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp" />
+	</definition>
+	<definition name=".myLayout:/*/*/*/*/*/*" extends="myManage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}.jsp" />
+	</definition>
+	<definition name=".myLayout:/*/*/*/*/*/*/*" extends="myManage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}.jsp" />
+	</definition>
+	<definition name=".myLayout:/*/*/*/*/*/*/*/*" extends="myManage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}.jsp" />
+	</definition>
+	<definition name=".myLayout:/*/*/*/*/*/*/*/*/*" extends="myManage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}.jsp" />
+	</definition>
+	<definition name=".myLayout:/*/*/*/*/*/*/*/*/*/*" extends="myManage">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}.jsp" />
+	</definition>
+
+    <!-- 팝업 레이아웃 -->
+    <definition name="pop" template="/WEB-INF/jsp/common/layout/popup/layout.jsp">
+	</definition>
+	<definition name=".popLayout:/*" extends="pop">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
+	</definition>
+	<definition name=".popLayout:/*/*" extends="pop">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+	</definition>
+	<definition name=".popLayout:/*/*/*" extends="pop">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+	</definition>
+	<definition name=".popLayout:/*/*/*/*" extends="pop">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+	</definition>
+	<definition name=".popLayout:/*/*/*/*/*" extends="pop">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp" />
+	</definition>
+	<definition name=".popLayout:/*/*/*/*/*/*" extends="pop">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}.jsp" />
+	</definition>
+	<definition name=".popLayout:/*/*/*/*/*/*/*" extends="pop">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}.jsp" />
+	</definition>
+	<definition name=".popLayout:/*/*/*/*/*/*/*/*" extends="pop">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}.jsp" />
+	</definition>
+	<definition name=".popLayout:/*/*/*/*/*/*/*/*/*" extends="pop">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}.jsp" />
+	</definition>
+	<definition name=".popLayout:/*/*/*/*/*/*/*/*/*/*" extends="pop">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}.jsp" />
+	</definition> 
+ 
+</tiles-definitions>

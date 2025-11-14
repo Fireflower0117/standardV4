@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.kps.partners.mapper.BoardMngMapper">
+
+	<!-- 검색 조건 -->
+	<sql id="Where">
+		<if test='searchKeyword !=null and searchKeyword !=""'>
+			<if test='searchCondition ==null or searchCondition == ""'>
+				AND (UPPER(BOARD_TITL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+				 OR UPPER(BOARD_CTT) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+			</if>
+			<if test='searchCondition !=null and searchCondition !="" and searchCondition==1'>
+				AND UPPER(BOARD_TITL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test='searchCondition !=null and searchCondition !="" and searchCondition==2'>
+				AND UPPER(BOARD_CTT) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+		</if>
+	</sql>
+
+	<!-- 게시글 건수 조회 -->
+	<select id="selectCount" parameterType="boardVO" resultType="int">
+		/* BoardMapper.selectCount */
+		SELECT COUNT(1)
+		  FROM T_BOARD_MNG
+		<where>
+		   <include refid="Where"/>
+   		   AND USE_YN = 'Y'
+		</where>
+	</select>
+
+	<!-- 게시글 목록 조회 -->
+	<select id="selectList" parameterType="boardVO" resultType="boardVO">
+		/* BoardMapper.selectList */
+		SELECT BOARD_SERNO						boardSerno
+			 , BOARD_TITL						boardTitl
+			 , BOARD_CTT						boardCtt
+			 , REGR_SERNO						regrSerno
+			 , FNC_USER_NM(REGR_SERNO)			regrNm
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	regDt
+		  FROM T_BOARD_MNG
+		 <where>
+		   <include refid="Where"/>
+   		   AND USE_YN = 'Y'
+		</where>
+	  ORDER BY BOARD_SERNO DESC
+		 LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+	</select>
+
+	<!-- 게시글 상세 조회 -->
+	<select id="selectContents" parameterType="boardVO" resultType="boardVO">
+		/* BoardMapper.selectContents */
+		SELECT BOARD_SERNO							boardSerno
+			 , BOARD_TITL							boardTitl
+			 , BOARD_CTT							boardCtt
+			 , REGR_SERNO							regrSerno
+			 , FNC_USER_NM(REGR_SERNO)				regrNm
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 		regDt
+		  FROM T_BOARD_MNG
+		 WHERE BOARD_SERNO = #{boardSerno}
+		   AND USE_YN = 'Y'
+	</select>
+
+	<!-- 게시글 등록 -->
+	<insert id="insertContents" parameterType="boardVO">
+		/* BoardMapper.insertContents */
+		INSERT INTO T_BOARD_MNG(
+			   BOARD_TITL
+			 , BOARD_CTT
+			 , REGR_SERNO
+			 , REG_DT
+	    )
+	    VALUES (
+			   #{boardTitl}
+			 , #{boardCtt}
+			 , #{loginSerno}
+			 , NOW()
+		)
+	</insert>
+
+	<!-- 게시글 수정 -->
+	<update id="updateContents" parameterType="boardVO">
+		/* BoardMapper.updateContents */
+		UPDATE T_BOARD_MNG
+		   SET BOARD_TITL 	= #{boardTitl}
+		   	 , BOARD_CTT 	= #{boardCtt}
+		   	 , UPDR_SERNO	= #{loginSerno}
+		   	 , UPD_DT		= NOW()
+		 WHERE BOARD_SERNO 	= #{boardSerno}
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<update id="deleteContents" parameterType="boardVO">
+		/* BoardMapper.deleteContents */
+		UPDATE T_BOARD_MNG
+		   SET USE_YN 	   = 'N'
+		 WHERE BOARD_SERNO = #{boardSerno}
+	</update>
+	
+	<!-- 게시글 본인글 여부 -->
+	<select id="regrCheck" parameterType="regepsVO" resultType="boolean">
+		/* BoardMapper.regrCheck */
+		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
+					ELSE 0
+			   END
+		  FROM T_BOARD_MNG 
+		 WHERE BOARD_SERNO = #{boardSerno}
+	</select>
+
+	<!-- 게시글 엑셀 목록 조회 -->
+	<select id="selectExcelList" parameterType="boardVO" resultType="boardVO">
+		/* BoardMapper.selectExcelList */
+		SELECT BOARD_SERNO						boardSerno
+			 , BOARD_TITL						boardTitl
+			 , BOARD_CTT						boardCtt
+			 , REGR_SERNO						regrSerno
+			 , FNC_USER_NM(REGR_SERNO)			regrNm
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	regDt
+		FROM T_BOARD_MNG
+		<where>
+			<include refid="Where"/>
+			AND USE_YN = 'Y'
+		</where>
+	ORDER BY BOARD_SERNO DESC
+	</select>
+</mapper>

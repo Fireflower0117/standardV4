@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmErrLogMngMapper">
+    <sql id="Where">
+        <if test="schEtc01 != '' and schEtc01 != null">
+            AND UPPER(A.ERR_TP_NM) LIKE CONCAT('%',UPPER(#{schEtc01}),'%')
+        </if>
+
+        <if test="searchStartDate !=null and searchStartDate !=''">
+            <![CDATA[
+			AND A.ERR_OCCR_DT >= DATE_FORMAT(#{searchStartDate}, '%Y.%m.%d')
+		    ]]>
+        </if>
+        <if test="searchEndDate !=null and searchEndDate !=''">
+            <![CDATA[
+			AND A.ERR_OCCR_DT <= DATE_FORMAT(#{searchEndDate},'%Y.%m.%d 23:59:59')
+		    ]]>
+        </if>
+
+        <if test="errKeyword != '' and errKeyword != null">
+            AND UPPER(A.MENU_CG_NM) LIKE CONCAT('%',UPPER(#{errKeyword}),'%')
+        </if>
+    </sql>
+
+    <select id="selectContent" parameterType="itsmErrlogVO" resultType="itsmErrlogVO">
+        /* SmErrlMapper.selectContents */
+		<![CDATA[
+        SELECT A.ERR_LOG_SERNO 			serno
+             , A.ERR_TP_NM 				errTpNm
+             , A.ERR_EXPL 				errExpl
+             , A.SVR_ERR_CTT 			svrErrInfoCtt
+             , A.MENU_CG_NM 			menuCgNm
+             , A.ERR_PTH_NM 			errPthNm
+             , A.ERR_OCCR_URL_ADDR 		errPageUrlAddr
+             , A.ERR_OCCR_IP_ADDR 		ipAddr
+             , DATE_FORMAT(A.ERR_OCCR_DT, '%Y.%m.%d %H:%i') errOccrDt
+             , A.USE_YN 				useYn
+        FROM  T_ERR_LOG_MNG A
+        WHERE A.ERR_LOG_SERNO = #{serno}
+        ]]>
+    </select>
+
+    <select id="selectList" parameterType="itsmErrlogVO" resultType="itsmErrlogVO">
+        /* SmErrlMapper.selectList */
+        SELECT A.ERR_LOG_SERNO 			serno
+        , DATE_FORMAT(A.ERR_OCCR_DT, '%Y.%m.%d %H:%i') errOccrDt
+        , A.ERR_TP_NM 				errTpNm
+        , A.ERR_EXPL 				errExpl
+        , A.SVR_ERR_CTT 			svrErrInfoCtt
+        , A.MENU_CG_NM 			menuCgNm
+        , IFNULL(TMM.MENU_NM,CASE A.MENU_CG_NM WHEN 'CMMN' THEN '공통메뉴' WHEN 'CSS' THEN 'CSS파일' WHEN 'FILE' THEN '첨부파일' WHEN 'FT' THEN '사용자페이지' WHEN 'JOIN' THEN '사용자 회원가입' WHEN 'MA' THEN '세션오류' ELSE '-' END) menuKorNm
+        , A.ERR_PTH_NM 			errPthNm
+        , A.ERR_OCCR_URL_ADDR 		errPageUrlAddr
+        , A.ERR_OCCR_IP_ADDR 		ipAddr
+        , A.USE_YN 				useYn
+        FROM T_ERR_LOG_MNG A
+        LEFT JOIN itsm_menu TMM
+        ON A.MENU_CG_NM  = TMM.MENU_CD
+        WHERE 1=1
+        <include refid="Where"/>
+        ORDER BY ERR_LOG_SERNO DESC
+        LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <select id="selectCount" parameterType="itsmCommonDefaultVO" resultType="int">
+        /* SmErrlMapper.selectCount */
+        SELECT COUNT(A.ERR_LOG_SERNO) cnt
+        FROM T_ERR_LOG_MNG A
+        WHERE 1=1
+        <include refid="Where"/>
+    </select>
+
+    <insert id="insertContent" parameterType="itsmErrlogVO">
+        /* SmErrlMapper.insertContent */
+        INSERT INTO T_ERR_LOG_MNG(
+            /* ERR_LOG_SERNO T_ERR_LOG_MNG_SEQ.NEXTVAL => auto_increment */
+                                      ERR_TP_NM
+                                    , ERR_EXPL
+                                    , SVR_ERR_CTT
+                                    , MENU_CG_NM
+                                    , ERR_PTH_NM
+                                    , ERR_OCCR_URL_ADDR
+                                    , ERR_OCCR_IP_ADDR
+        ) VALUES (
+                     #{errTpNm ,jdbcType=VARCHAR}
+                 , #{errExpl ,jdbcType=VARCHAR}
+                 , #{svrErrInfoCtt ,jdbcType=VARCHAR}
+                 , #{menuCgNm ,jdbcType=VARCHAR}
+                 , #{errPthNm ,jdbcType=VARCHAR}
+                 , #{errPageUrlAddr ,jdbcType=VARCHAR}
+                 , #{ipAddr ,jdbcType=VARCHAR}
+                 )
+
+    </insert>
+
+    <select id="selectExcelList" parameterType="itsmErrlogVO" resultType="itsmErrlogVO">
+        /* SmErrlMapper.selectList */
+        SELECT A.ERR_LOG_SERNO 			serno
+        , DATE_FORMAT(PB.ERR_OCCR_DT, '%Y.%m.%d %H:%i') errOccrDt
+        , A.ERR_TP_NM 				errTpNm
+        , A.ERR_EXPL 				errExpl
+        , A.SVR_ERR_CTT 			svrErrInfoCtt
+        , A.MENU_CG_NM 			menuCgNm
+        , A.ERR_PTH_NM 			errPthNm
+        , A.ERR_OCCR_URL_ADDR 		errPageUrlAddr
+        , A.ERR_OCCR_IP_ADDR 		ipAddr
+        , A.ERR_OCCR_DT
+        , A.USE_YN 				useYn
+        FROM T_ERR_LOG_MNG A
+        WHERE 1=1
+        <include refid="Where"/>
+        ORDER BY ERR_LOG_SERNO DESC
+    </select>
+
+    <select id="selectErrTypeList" resultType="itsmErrlogVO">
+        /* SmErrlMapper.selectErrTypeList */
+        SELECT
+            DISTINCT TRIM(SUBSTR(ERR_TP_NM, 1, LOCATE(' ', ERR_TP_NM))) errTpNm
+        FROM T_ERR_LOG_MNG
+        ORDER BY errTpNm
+    </select>
+
+</mapper>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.operm.auth.mapper.ItsmAuthMapperTemp">
+	<sql id="Where">
+		<if test="searchKeyword !=null and searchKeyword !=''">
+			<if test="searchCondition ==null or searchCondition ==''">
+				AND (UPPER(GRP_AUTH_ID) LIKE CONCAT('%',IFNULL(UPPER(#{searchKeyword}), ''),'%') OR UPPER(GRP_AUTH_NM) LIKE CONCAT('%',IFNULL(UPPER(#{searchKeyword}), ''),'%'))
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition ==1">
+				AND UPPER(GRP_AUTH_ID) LIKE CONCAT('%',IFNULL(UPPER(#{searchKeyword}), ''),'%')
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition ==2">
+				AND UPPER(GRP_AUTH_NM) LIKE CONCAT('%',IFNULL(UPPER(#{searchKeyword}), ''),'%')
+			</if>
+		</if>
+	</sql>
+
+	<select id="selectContents" parameterType="itsmAuthVO" resultType="itsmAuthVO">
+		/* MaAuthMapper.selectContents */
+		<![CDATA[
+		SELECT GRP_AUTH_SERNO serno
+			 , GRP_AUTH_ID authId
+			 , GRP_AUTH_NM grpAuthrtNm
+			 , DATE_FORMAT(REG_DT,'%Y.%m.%d') regDt
+			 , RGTR_SN 	regId
+			 , USE_YN 	useYn
+			 , GRP_AUTH_EXPL grpAuthrtExpl
+		FROM T_GRP_AUTH_MNG A
+		WHERE GRP_AUTH_SERNO = #{serno}
+		]]>
+	</select>
+
+
+	<select id="selectList" parameterType="itsmAuthVO" resultType="itsmAuthVO">
+		/* MaAuthMapper.selectList */
+		SELECT *
+		FROM (
+		SELECT PA.*
+		FROM (
+		<![CDATA[
+			      	    SELECT GRP_AUTH_SERNO serno
+							 , GRP_AUTH_ID authId
+							 , GRP_AUTH_NM grpAuthrtNm
+							 , DATE_FORMAT(REG_DT,'%Y.%m.%d') regDt
+							 , RGTR_SN regId
+							 , USE_YN useYn
+							 , GRP_AUTH_EXPL grpAuthrtExpl
+			              FROM  T_GRP_AUTH_MNG
+					     WHERE DEL_YN = 'N'
+				      ]]>
+		<include refid="Where"/>
+		<![CDATA[
+					     ORDER BY SERNO DESC 	
+					]]>
+		) PA
+		) PB
+		LIMIT #{firstRecordIndex},#{lastRecordIndex}
+	</select>
+
+	<select id="selectAllList" parameterType="itsmAuthVO" resultType="itsmAuthVO">
+		/* MaAuthMapper.selectAllList */
+		SELECT GRP_AUTH_SERNO serno
+			 , GRP_AUTH_ID authId
+			 , GRP_AUTH_NM grpAuthrtNm
+			 , DATE_FORMAT(REG_DT,'%Y.%m.%d') regDt
+			 , RGTR_SN regId
+			 , USE_YN useYn
+			 , GRP_AUTH_EXPL grpAuthrtExpl
+		FROM T_GRP_AUTH_MNG
+		WHERE DEL_YN = 'N'
+		  AND USE_YN = 'Y'
+	</select>
+
+	<select id="selectCount" parameterType="itsmAuthVO" resultType="int">
+		/* MaAuthMapper.selectCount */
+		<![CDATA[
+			SELECT COUNT(GRP_AUTH_SERNO) cnt
+			  FROM T_GRP_AUTH_MNG
+			 WHERE DEL_YN = 'N'
+		]]>
+		<include refid="Where"/>
+	</select>
+
+	<insert id="insertContents" parameterType="itsmAuthVO">
+		<selectKey keyProperty="serno" order="BEFORE" resultType="java.lang.String">
+			SELECT NVL(CAST(MAX(GRP_AUTH_SERNO) AS INT) + 1, 1) FROM T_GRP_AUTH_MNG
+		</selectKey>
+		/* MaAuthMapper.insertContents */
+		<![CDATA[
+			INSERT INTO T_GRP_AUTH_MNG(
+           	      GRP_AUTH_SERNO
+				, GRP_AUTH_ID
+				, GRP_AUTH_NM
+				, RGTR_SN
+				, USE_YN 
+				, GRP_AUTH_EXPL
+			)
+			VALUES (
+				  #{serno}
+				, TRIM(#{authId ,jdbcType=VARCHAR})
+				, #{grpAuthrtNm ,jdbcType=VARCHAR}	
+				, #{loginSerno, jdbcType=VARCHAR}
+				, #{useYn ,jdbcType=VARCHAR}
+				, #{grpAuthrtExpl ,jdbcType=VARCHAR}
+			)
+		]]>
+	</insert>
+
+
+	<update id="updateContents" parameterType="itsmAuthVO">
+		/* MaAuthMapper.updateContents */
+		UPDATE T_GRP_AUTH_MNG
+		SET
+			GRP_AUTH_ID = #{authId ,jdbcType=VARCHAR}
+		  , GRP_AUTH_NM = #{grpAuthrtNm, jdbcType=VARCHAR}
+		  , USE_YN = #{useYn,jdbcType=VARCHAR}
+		  , GRP_AUTH_EXPL = #{grpAuthrtExpl, jdbcType=VARCHAR}
+		  , MDFR_SN = #{loginSerno, jdbcType=VARCHAR}
+		  , MDFCN_DT = NOW()
+		WHERE GRP_AUTH_SERNO = #{serno}
+	</update>
+
+	<update id="deleteContents" parameterType="itsmAuthVO">
+		/* MaAuthMapper.deleteContents */
+		<![CDATA[
+		UPDATE T_GRP_AUTH_MNG
+		SET DEL_YN = 'Y'
+		WHERE GRP_AUTH_SERNO = #{serno}
+		]]>
+	</update>
+
+	<select id="overlapSelectCount" parameterType="itsmAuthVO" resultType="int">
+		<![CDATA[
+		/* MaAuthMapper.overlapSelectCount */
+		SELECT COUNT(GRP_AUTH_SERNO) cnt
+		FROM T_GRP_AUTH_MNG
+		WHERE GRP_AUTH_ID = #{authId}
+		]]>
+	</select>
+
+	<delete id="authDeleteContents" parameterType="itsmAuthVO">
+		/* MaAuthMapper.authDeleteContents */
+		<![CDATA[
+		DELETE FROM itsm_menu_auth_mng
+		WHERE GRP_AUTH_ID = #{authId}
+		]]>
+	</delete>
+
+	<insert id="authInsertContents" parameterType="itsmAuthVO">
+		/* MaAuthMapper.authInsertContents */
+		<![CDATA[
+		INSERT INTO itsm_menu_auth_mng(
+									   GRP_AUTH_ID
+									 , MENU_CD
+									 , WRT_AUTH_YN
+									 , RGTR_SN
+									 , MENU_SE_CD
+		) VALUES (
+					 #{authId ,jdbcType=VARCHAR}
+				 , #{menuCd ,jdbcType=VARCHAR}
+				 , #{wrtAuthYn, jdbcType=VARCHAR}
+				 , #{loginSerno, jdbcType=VARCHAR}
+				 , #{menuSeCd, jdbcType=VARCHAR}
+				 )
+		]]>
+	</insert>
+
+
+
+	<!-- itsm 관리자 작성 권한 취득 -->
+	<select id="getWrtItsmAuthList" parameterType="userVO" resultType="itsmAuthVO">
+		/* MaAuthMapper.getWrtItsmAuthList */
+		SELECT MENU_CD				menuCd
+			 , WRT_AUTH_YN		wrtAuthYn
+		FROM itsm_menu_auth_mng
+		WHERE GRP_AUTH_ID = #{grpAuthId}
+		  AND MENU_SE_CD = 'ITSM'
+	</select>
+
+
+
+	<select id="selectMenuList" parameterType="itsmMenuVO" resultType="itsmMenuVO">
+		/* MaAuthMapper.selectMenuList */
+		SELECT A.MENU_SERNO serno
+			 , A.UPR_MENU_CD uprMenuCd
+			 , A.MENU_LVL menuLvl
+			 , A.MENU_SEQO menuSeqo
+			 , A.MENU_NM menuNm
+			 , A.MENU_CD menuCd
+			 , A.MENU_URL_ADDR menuUrlAddr
+			 , A.MENU_SE_CD		menuSeCd
+			 , CASE   WHEN B.MENU_CD IS NULL THEN  'N'  ELSE 'Y' END menuChk
+			 , IFNULL(B.WRT_AUTH_YN, 'R')	wrtAuthYn
+		FROM itsm_menu A
+				 LEFT OUTER JOIN itsm_menu_auth_mng B
+								 ON B.GRP_AUTH_ID = #{authId}
+									 AND A.MENU_CD  = B.MENU_CD
+									 AND B.MENU_SE_CD = #{menuSeCd}
+		WHERE A.MENU_LVL = #{menuLvl}
+		  AND A.UPR_MENU_CD = #{uprMenuCd}
+		  AND A.USE_YN = 'Y'
+		  AND A.EXPSR_YN = 'Y'
+		ORDER BY A.MENU_SEQO
+	</select>
+
+	<select id="selectFtMenuList" parameterType="itsmMenuVO" resultType="itsmMenuVO">
+		/* MaAuthMapper.selectFtMenuList */
+		SELECT A.MENU_SERNO serno
+			 , A.UPR_MENU_CD uprMenuCd
+			 , A.MENU_LVL menuLvl
+			 , A.MENU_SEQO menuSeqo
+			 , A.MENU_NM menuNm
+			 , A.MENU_CD menuCd
+			 , A.MENU_URL_ADDR menuUrlAddr
+			 , CASE   WHEN B.MENU_CD IS NULL THEN  'N'  ELSE 'Y' END menuChk
+			 , IFNULL(B.WRT_AUTH_YN, 'N')	wrtAuthYn
+		FROM itsm_menu A
+				 LEFT OUTER JOIN itsm_menu_auth_mng B
+								 ON B.GRP_AUTH_ID = #{authId}
+									 AND A.MENU_CD  = B.MENU_CD
+									 AND B.MENU_SE_CD = 'FT'
+		WHERE A.MENU_LVL = #{menuLvl}
+		  AND A.UPR_MENU_CD = #{uprMenuCd}
+		  AND A.USE_YN = 'Y'
+		  AND A.EXPSR_YN = 'Y'
+		ORDER BY A.MENU_SEQO
+	</select>
+
+</mapper>

@@ -1,0 +1,15 @@
+<svg id="file_hwp" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15.004" height="20" viewBox="0 0 15.004 20">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="사각형_3520" data-name="사각형 3520" width="15.004" height="20" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_1861" data-name="그룹 1861" clip-path="url(#clip-path)">
+    <path id="패스_8734" data-name="패스 8734" d="M15,5.829,9.271,0H2.7A2.7,2.7,0,0,0,0,2.7V17.3A2.7,2.7,0,0,0,2.7,20h9.6A2.7,2.7,0,0,0,15,17.3V5.833h0Z" fill="#209ddf"/>
+    <path id="패스_8735" data-name="패스 8735" d="M183.729,5.833v0L178,0V5.833Z" transform="translate(-168.729)" fill="#68b8ea"/>
+    <path id="패스_8736" data-name="패스 8736" d="M97.119,169.939V169h-.939v.939H94.045v.939h5.208v-.939Z" transform="translate(-89.147 -160.198)" fill="#fff"/>
+    <path id="패스_8737" data-name="패스 8737" d="M109.728,207.64a.811.811,0,1,1-.811.811.811.811,0,0,1,.811-.811m0-.939a1.75,1.75,0,1,0,1.75,1.75,1.752,1.752,0,0,0-1.75-1.75" transform="translate(-102.354 -195.935)" fill="#fff"/>
+    <path id="패스_8738" data-name="패스 8738" d="M131.352,279.438a.628.628,0,1,1-.651-.6.628.628,0,0,1,.651.6" transform="translate(-123.321 -264.311)" fill="#fff"/>
+    <path id="패스_8739" data-name="패스 8739" d="M91.705,288.131v-1.11h-.939v2.134h5.549v-1.024Z" transform="translate(-86.039 -272.072)" fill="#fff"/>
+  </g>
+</svg>

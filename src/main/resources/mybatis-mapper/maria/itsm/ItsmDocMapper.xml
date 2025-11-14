@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmDocMapper">
+
+    <sql id="Where">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (
+                UPPER(DOC_NM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                )
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER(DOC_NM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+
+
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND SVC_SN = #{schEtc00}
+        </if>
+        <if test="schEtc01 !=null and schEtc01 !=''">
+            AND DOC_GBN = #{schEtc01}
+        </if>
+        <if test="schEtc02 !=null and schEtc02 !=''">
+            AND DOC_AREA_CD = #{schEtc02}
+        </if>
+        <if test="schEtc03 !=null and schEtc03 !=''">
+            AND DOC_STEP_CD = #{schEtc03}
+        </if>
+    </sql>
+
+    <sql id="Main">
+        AND SVC_SN = #{schEtc00}
+    </sql>
+
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmDocVO" resultType="itsmDocVO">
+        /* ItsmDocMapper.selectList */
+        SELECT DOC_SN											docSn
+             , DOC_NM											docNm
+             , DOC_GBN											docGbn
+             , ITSM_FNC_CODE_NM(DOC_GBN)						docGbnNm
+             , SVC_SN											svcSn
+             , ITSM_FNC_SVC_NM(SVC_SN)							svcNm
+             , DOC_CONT											docCont
+             , DOC_AREA_CD										docAreaCd
+             , ITSM_FNC_CODE_NM(DOC_AREA_CD)					docAreaNm
+             , DOC_STEP_CD										docStepCd
+             , ITSM_FNC_CODE_NM(DOC_STEP_CD)					docStepNm
+             , DOC_NO											docNo
+             , ATCH_FILE_ID										atchFileId
+             , USE_YN											useYn
+             , RGTR_SN											rgtrSn
+             , FNC_USER_NM(RGTR_SN)								rgtrNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d')					regDt
+             , FNC_USER_NM(MDFR_SN)								mdfrNm
+             , DATE_FORMAT(MDFCN_DT, '%Y.%m.%d')				mdfcnDt
+          FROM ITSM_DOC
+        <where>
+            <include refid="Where"/>
+            AND USE_YN ='Y'
+        </where>
+         ORDER BY DOC_SN DESC
+         LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+    </select>
+
+    <select id="selectCount" parameterType="itsmDocVO" resultType="int">
+        /* ItsmDocMapper.selectCount */
+        SELECT COUNT(1)
+          FROM ITSM_DOC
+        <where>
+            <include refid="Where"/>
+            AND USE_YN ='Y'
+        </where>
+    </select>
+
+    <!-- 상세 -->
+    <select id="selectContents" parameterType="itsmDocVO" resultType="itsmDocVO">
+        /* ItsmDocMapper.selectContents */
+        SELECT DOC_SN													docSn
+             , DOC_NM													docNm
+             , DOC_GBN													docGbn
+             , ITSM_FNC_CODE_NM(DOC_GBN)								docGbnNm
+             , SVC_SN													svcSn
+             , ITSM_FNC_SVC_NM(SVC_SN)									svcNm
+             , DOC_CONT												    docCont
+             , DOC_AREA_CD												docAreaCd
+             , ITSM_FNC_CODE_NM(DOC_AREA_CD)							docAreaNm
+             , DOC_STEP_CD												docStepCd
+             , ITSM_FNC_CODE_NM(DOC_STEP_CD)							docStepNm
+             , DOC_NO													docNo
+             , ATCH_FILE_ID											    atchFileId
+             , (SELECT SUBSTRING_INDEX(SUBSTRING(B.RL_FILE_NM, 11), ' v', 1)
+                  FROM ITSM_ATCH_FILE_MNG B
+                 WHERE B.DEL_YN = 'N'
+                   AND B.ATCH_FILE_ID = A.ATCH_FILE_ID)				    fileNm
+             , USE_YN													useYn
+             , RGTR_SN													rgtrSn
+             , FNC_USER_NM(RGTR_SN)										rgtrNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d %H:%i')					regDt
+             , FNC_USER_NM(MDFR_SN)										mdfrNm
+             , DATE_FORMAT(MDFCN_DT, '%Y.%m.%d %H:%i')					mdfcnDt
+          FROM ITSM_DOC A
+         WHERE A.USE_YN  ='Y'
+           AND A.DOC_SN = #{docSn}
+    </select>
+
+
+
+    <!-- 생성 -->
+    <insert id="insertContents" parameterType="itsmDocVO">
+        /* ItsmDocMapper.insertContents */
+        INSERT INTO ITSM_DOC
+             ( DOC_NM
+             , DOC_GBN
+             , SVC_SN
+             , DOC_CONT
+             , ATCH_FILE_ID
+             , RGTR_SN
+             , DOC_AREA_CD
+             , DOC_STEP_CD
+             , DOC_NO
+             ) 
+        VALUES 
+             ( #{docNm}
+             , #{docGbn}
+             , #{svcSn}
+             , #{docCont}
+             , #{atchFileId}
+             , #{loginSerno}
+             , #{docAreaCd}
+             , #{docStepCd}
+             , #{docNo}
+             )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="updateContents" parameterType="itsmDocVO">
+        /* ItsmDocMapper.updateContents */
+        UPDATE ITSM_DOC
+           SET DOC_NM			= #{docNm}
+             , DOC_GBN			= #{docGbn}
+             , SVC_SN			= #{svcSn}
+             , DOC_CONT			= #{docCont}
+             , ATCH_FILE_ID		= #{atchFileId}
+             , MDFR_SN 			= #{loginSerno}
+             , DOC_AREA_CD 		= #{docAreaCd}
+             , DOC_STEP_CD 		= #{docStepCd}
+             , DOC_NO 			= #{docNo}
+             , MDFCN_DT 		= NOW()
+         WHERE DOC_SN           = #{docSn}
+    </update>
+
+    <!-- 삭제 -->
+    <update id="deleteContents" parameterType="itsmDocVO">
+        /* ItsmDocMapper.deleteContents */
+        UPDATE ITSM_DOC
+           SET USE_YN 	= 'N'
+         WHERE DOC_SN   = #{docSn}
+    </update>
+
+
+    <!--  코멘트 목록 -->
+    <select id="selectComList" parameterType="itsmDocVO" resultType="itsmDocVO">
+        /* ItsmDocMapper.selectComList */
+        SELECT A.CMMT_SN 								  comSn
+             , A.CMMT_CN 								  comCn
+             , A.RGTR_SN								  rgtrSn
+             , FNC_USER_NM(A.RGTR_SN) 					  regrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i') 	  regDt
+             , A.MDFR_SN								  mdfrSn
+             , FNC_USER_NM(A.MDFR_SN) 					  mdfrId
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')		  mdfcnDt
+             , A.CMMT_ATCH_FILE_ID						  comAtchFileId
+             , (SELECT COUNT(1) FROM ITSM_ATCH_FILE_MNG B WHERE B.ATCH_FILE_ID = A.CMMT_ATCH_FILE_ID AND B.DEL_YN = 'N') delAtchCnt
+          FROM ITSM_DOC_COMMENT A
+         WHERE A.DOC_SN = #{docSn}
+           AND A.USE_YN = 'Y'
+         ORDER BY A.CMMT_SN DESC
+    </select>
+
+    <!--  코멘트 상세 -->
+    <select id="selectComContents" parameterType="itsmDocVO" resultType="itsmDocVO">
+        /* ItsmDocMapper.selectComContents */
+        SELECT CMMT_SN				 comSn
+             , CMMT_CN				 comCn
+             , RGTR_SN				 rgtrSn
+             , MDFR_SN				 mdfrSn
+             , CMMT_ATCH_FILE_ID	 comAtchFileId
+          FROM ITSM_DOC_COMMENT
+         WHERE USE_YN 	  = 'Y'
+           AND DOC_SN     = #{docSn}
+    </select>
+
+    <!--  코멘트 생성 -->
+    <insert id="comInsertContents" parameterType="itsmDocVO">
+        /* ItsmDocMapper.comInsertContents */
+        INSERT INTO ITSM_DOC_COMMENT
+             ( CMMT_CN
+             , DOC_SN
+             , REG_DT
+             , RGTR_SN
+             , CMMT_ATCH_FILE_ID
+             ) 
+        VALUES 
+             ( #{comCn}
+             , #{docSn}
+             , NOW()
+             , #{loginSerno}
+             , #{comAtchFileId}
+             )
+    </insert>
+
+    <!--  코멘트 수정 -->
+    <update id="comUpdateContents" parameterType="itsmDocVO">
+        /* ItsmDocMapper.comUpdateContents */
+        UPDATE ITSM_DOC_COMMENT
+           SET CMMT_CN   	 	 = #{comCn}
+             , MDFR_SN 		 	 = #{loginSerno}
+             , MDFCN_DT 	 	 = NOW()
+             , CMMT_ATCH_FILE_ID = #{comAtchFileId}
+         WHERE CMMT_SN 	 	     = #{comSn}
+    </update>
+
+    <!--  코멘트 삭제 -->
+    <update id="comDeleteContents" parameterType="itsmDocVO">
+        /* ItsmDocMapper.comDeleteContents */
+        UPDATE ITSM_DOC_COMMENT
+           SET USE_YN  	  = 'N'
+         WHERE CMMT_SN    = #{comSn}
+    </update>
+
+
+    <select id="selectMainList" parameterType="itsmDocVO" resultType="itsmDocVO">
+        /* ItsmDocMapper.selectMainList */
+        SELECT DOC_SN													docSn
+             , DOC_NM													docNm
+             , DOC_GBN													docGbn
+             , ITSM_FNC_CODE_NM(DOC_GBN)								docGbnNm
+             , SVC_SN													svcSn
+             , ITSM_FNC_SVC_NM(SVC_SN)									svcNm
+             , DOC_CONT												    docCont
+             , DOC_AREA_CD												docAreaCd
+             , ITSM_FNC_CODE_NM(DOC_AREA_CD)							docAreaNm
+             , DOC_STEP_CD												docStepCd
+             , ITSM_FNC_CODE_NM(DOC_STEP_CD)							docStepNm
+             , DOC_NO													docNo
+             , ATCH_FILE_ID											    atchFileId
+             , USE_YN													useYn
+             , RGTR_SN													rgtrSn
+             , FNC_USER_NM(RGTR_SN)										rgtrNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d')							regDt
+             , FNC_USER_NM(MDFR_SN)										mdfrNm
+             , DATE_FORMAT(MDFCN_DT, '%Y.%m.%d')						mdfcnDt
+          FROM ITSM_DOC
+        <where>
+            <include refid="Main"/>
+            AND USE_YN ='Y'
+        </where>
+         ORDER BY DOC_SN DESC
+         LIMIT 5
+    </select>
+
+
+    <select id="fileInfoList" parameterType="itsmDocVO" resultType="itsmDocVO">
+        /* ItsmDocMapper.fileInfoList */
+        SELECT FILE_SEQO 	                    fileSeqo
+             , RL_FILE_NM	                    fileNm
+             , ATCH_FILE_ID	                    atchFileId
+             , FILE_EXTN_NM	                    fileExtnNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d')	regDt
+          FROM ITSM_ATCH_FILE_MNG
+         WHERE DEL_YN 		 = 'N'
+           AND ATCH_FILE_ID  = #{atchFileId}
+    </select>
+
+    <select id="allFileInfoList" parameterType="itsmDocVO" resultType="itsmDocVO">
+        /* ItsmDocMapper.allFileInfoList */
+        SELECT FILE_SEQO 	                    fileSeqo
+             , RL_FILE_NM	                    fileNm
+             , ATCH_FILE_ID	                    atchFileId
+             , FILE_EXTN_NM	                    fileExtnNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d')	regDt
+             , REG_DT 		                    regDt2
+          FROM ITSM_ATCH_FILE_MNG
+         WHERE DEL_YN 		 = 'N'
+           AND ATCH_FILE_ID  IN (SELECT A.CMMT_ATCH_FILE_ID
+                                   FROM ITSM_DOC_COMMENT A
+                                  WHERE A.USE_YN = 'Y'
+                                    AND A.DOC_SN = #{docSn})
+
+         UNION ALL
+
+        SELECT FILE_SEQO 		                fileSeqo
+             , RL_FILE_NM		                fileNm
+             , ATCH_FILE_ID	                    atchFileId
+             , FILE_EXTN_NM	                    fileExtnNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d')	regDt
+             , REG_DT 			                regDt2
+          FROM ITSM_ATCH_FILE_MNG
+         WHERE DEL_YN 		 = 'N'
+           AND ATCH_FILE_ID = (SELECT A.ATCH_FILE_ID
+                                 FROM ITSM_DOC A
+                                WHERE A.DOC_SN = #{docSn})
+         ORDER BY regDt2 DESC
+    </select>
+
+
+    <select id="maxVersionNum" parameterType="itsmDocVO" resultType="String">
+        /* ItsmDocMapper.maxVersionNum */
+        SELECT IFNULL(RL_FILE_NM, 'v1.1')
+          FROM ITSM_ATCH_FILE_MNG
+         WHERE DEL_YN 		 = 'N'
+           AND ATCH_FILE_ID  IN (SELECT A.CMMT_ATCH_FILE_ID
+                                   FROM ITSM_DOC_COMMENT A
+                                  WHERE A.USE_YN = 'Y'
+                                    AND A.DOC_SN = #{docSn})
+         ORDER BY REG_DT DESC
+         LIMIT 1
+    </select>
+
+    <!-- 파일명 변경 -->
+    <update id="changeFileNm" parameterType="itsmDocVO">
+        /* ItsmDocMapper.changeFileNm */
+        UPDATE itsm_atch_file_mng
+           SET RL_FILE_NM 	  = #{fileNm}
+         WHERE ATCH_FILE_ID   = #{atchFileId}
+           AND FILE_SEQO	  = #{fileSeqo}
+    </update>
+
+
+    <!-- 게시글 본인글 여부 -->
+    <select id="regrCheck" parameterType="itsmDocVO" resultType="boolean">
+        /* ItsmDocMapper.regrCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                   END
+        FROM ITSM_DOC
+        WHERE DOC_SN = #{docSn}
+    </select>
+
+
+    <!-- 게시글 본인글 여부 -->
+    <select id="regrCheckComment" parameterType="itsmDocVO" resultType="boolean">
+        /* ItsmDocMapper.regrCheckComment */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                   END
+        FROM ITSM_DOC_COMMENT
+        WHERE CMMT_SN = #{comSn}
+    </select>
+</mapper>

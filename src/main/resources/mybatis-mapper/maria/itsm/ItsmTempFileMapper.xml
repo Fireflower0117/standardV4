@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.common.file.mapper.ItsmFileMapperTemp">
+
+	<!-- 파일생성 -->
+	<insert id="putAtchFile" parameterType="itsmFileVO">
+		<selectKey keyProperty="fileSeqo" order="BEFORE" resultType="java.lang.String">
+			SELECT NVL(CAST(MAX(D.FILE_SEQO) AS INT) + 1, 0) FROM itsm_atch_file_mng D WHERE D.ATCH_FILE_ID = #{atchFileId}
+		</selectKey>
+
+		INSERT INTO itsm_atch_file_mng (
+			ATCH_FILE_ID
+			, FILE_SEQO
+			, PHCL_FILE_PTH_NM
+			, PHCL_FILE_NM
+			, RL_FILE_NM
+			, FILE_EXTN_NM
+			, FILE_SZ_VAL
+			, FILE_TP_NM
+			, IMG_WDTH_SZ_VAL
+			, IMG_HGHT_SZ_VAL
+			, FILE_BYTE
+			, RGTR_SN
+			, REG_DT
+			, DEL_YN
+		) VALUES (
+			#{atchFileId}
+			, #{fileSeqo ,jdbcType=VARCHAR}
+			, #{phclFilePthNm}
+			, #{fileNmPhclFileNm}
+			, #{fileRlNm}
+			, #{fileFextNm}
+			, #{fileSizeVal}
+			, #{fileTpNm}
+			, #{imgSqrVal}
+			, #{imgHghtVal}
+			, #{fileByte}
+			, #{loginSerno, jdbcType=VARCHAR}
+			, NOW()
+			, 'N'
+		)
+	</insert>
+
+	<!-- 파일 삭제 -->
+	<update id="delAtchFile" parameterType="itsmFileVO">
+		UPDATE itsm_atch_file_mng
+		SET DEL_YN = 'Y'
+		WHERE ATCH_FILE_ID = #{atchFileId}
+			<if test="fileSeqo != null and fileSeqo != ''">
+				AND FILE_SEQO = #{fileSeqo}
+			</if>
+			AND DEL_YN = 'N'
+	</update>
+
+	<!-- 파일 List 조회 -->
+	<select id="getAtchFileList" parameterType="itsmFileVO" resultType="itsmFileVO">
+		SELECT ATCH_FILE_ID 			AS atchFileId
+			 , FILE_SEQO 				AS fileSeqo
+			 , PHCL_FILE_PTH_NM 		AS phclFfilePthNm
+			 , PHCL_FILE_NM 			AS fileNmPhclFileNm
+			 , RL_FILE_NM 				AS fileRlNm
+			 , FILE_EXTN_NM 			AS fileFextNm
+			 , FILE_CN 					AS fileCtt
+			 , FILE_SZ_VAL 				AS fileSizeVal
+			 , FILE_TP_NM 				AS fileTpNm
+			 , FILE_REF_VAL 			AS fileRefVal
+			 , IMG_WDTH_SZ_VAL 			AS imgSqrVal
+			 , IMG_HGHT_SZ_VAL 			AS imgHghtVal
+			 , FILE_BYTE				AS fileByte
+			 , RGTR_SN 					AS regId
+			 , REG_DT 					AS regDt
+			 , DEL_YN 					AS delYn
+		  FROM itsm_atch_file_mng
+		 WHERE ATCH_FILE_ID = #{atchFileId}
+		   AND DEL_YN = 'N'
+		 ORDER BY FILE_SEQO
+	</select>
+	
+	<!-- 파일 단건 조회 -->
+	<select id="getAtchFile" parameterType="itsmFileVO" resultType="itsmFileVO">
+		SELECT ATCH_FILE_ID 			AS atchFileId
+			 , FILE_SEQO 				AS fileSeqo
+			 , PHCL_FILE_PTH_NM 		AS phclFilePthNm
+			 , PHCL_FILE_NM 			AS fileNmPhclFileNm
+			 , RL_FILE_NM 				AS fileRlNm
+			 , FILE_EXTN_NM 			AS fileFextNm
+			 , FILE_CN 					AS fileCtt
+			 , FILE_SZ_VAL 				AS fileSizeVal
+			 , FILE_TP_NM 				AS fileTpNm
+			 , FILE_REF_VAL 			AS fileRefVal
+			 , IMG_WDTH_SZ_VAL 			AS imgSqrVal
+			 , IMG_HGHT_SZ_VAL 			AS imgHghtVal
+			 , FILE_BYTE				AS fileByte
+			 , RGTR_SN 					AS regId
+			 , REG_DT 					AS regDt
+			 , DEL_YN 					AS delYn
+		  FROM itsm_atch_file_mng
+		 WHERE ATCH_FILE_ID = #{atchFileId}
+		   AND DEL_YN = 'N'
+		   AND FILE_SEQO = #{fileSeqo}
+		<if test='fileNmPhclFileNm != null and fileNmPhclFileNm != ""'>
+		   AND PHCL_FILE_NM = #{fileNmPhclFileNm}
+		</if>
+	</select>
+
+	<!-- 파일 일련번호 생성 -->
+	<select id="getAtchFileId" resultType="java.lang.String">
+		SELECT NVL(CAST(MAX(ATCH_FILE_ID) AS INT) + 1, 1) FROM itsm_atch_file_mng
+	</select>
+
+</mapper>

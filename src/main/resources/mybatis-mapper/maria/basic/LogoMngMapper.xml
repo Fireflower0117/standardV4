@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.kps.partners.mapper.LogoMngMapper">
+
+    <!-- 검색조건 -->
+    <sql id="Where">
+        <if test='itmCd != null and itmCd !=""'>
+            AND A.ITM_CD = #{itmCd}
+        </if>
+        <if test='searchKeyword !=null and searchKeyword !=""'>
+            <if test='searchCondition ==null or searchCondition == ""'>
+                AND UPPER(A.URL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==1'>
+                AND UPPER(A.URL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+        </if>
+    </sql>
+
+    <!-- 게시글 건수 조회-->
+    <select id="selectCount" parameterType="logoVO" resultType="int">
+        /* LogoMngMapper.selectCount */
+        SELECT COUNT(1)
+          FROM T_LOGO_MNG A
+        <where>
+            <include refid="Where"/>
+           AND A.USE_YN = 'Y'
+        </where>
+    </select>
+
+    <!-- 게시글 목록 리스트 조회 -->
+    <select id="selectList" parameterType="logoVO" resultType="logoVO">
+        /* LogoMngMapper.selectList */
+        SELECT A.LOGO_SERNO                         logoSerno
+             , A.ITM_CD                             itmCd
+             , B.CD_NM                              itmNm
+             , A.LNK_YN                             lnkYn
+             , A.URL                                url
+             , A.LNK_TGT_CD                         linkTgtCd
+             , A.ACTVT_YN                           actvtYn
+             , A.ATCH_FILE_ID                       atchFileId
+             , C.FILE_SEQO                          fileSeqo
+             , C.PHCL_FILE_NM 						fileNmPhclFileNm
+             , A.REGR_SERNO                         regrSerno
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')    regDt
+          FROM T_LOGO_MNG A
+     LEFT JOIN T_CD_MNG B
+            ON A.ITM_CD = B.CD_VAL
+     LEFT JOIN T_ATCH_FILE_MNG C
+            ON A.ATCH_FILE_ID = C.ATCH_FILE_ID
+           AND C.DEL_YN = 'N'
+        <where>
+            <include refid="Where"/>
+           AND A.USE_YN = 'Y'
+        </where>
+      ORDER BY A.LOGO_SERNO DESC
+         LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+    </select>
+
+    <!-- 게시글 상세 조회 -->
+    <select id="selectContents" parameterType="logoVO" resultType="logoVO">
+        /* LogoMngMapper.selectContents */
+        SELECT A.LOGO_SERNO                 logoSerno
+             , A.ITM_CD                     itmCd
+             , B.CD_NM                      itmNm
+             , A.LNK_YN                     lnkYn
+             , A.URL                        url
+             , A.LNK_TGT_CD                 linkTgtCd
+             , A.ACTVT_YN                   actvtYn
+             , A.ATCH_FILE_ID               atchFileId
+             , C.FILE_SEQO                  fileSeqo
+             , C.PHCL_FILE_NM 				fileNmPhclFileNm
+             , A.REGR_SERNO                 regrSerno
+             , A.REG_DT                     regDt
+             , A.UPDR_SERNO                 updrSerno
+             , A.UPD_DT                     updDt
+          FROM T_LOGO_MNG A
+     LEFT JOIN T_CD_MNG B
+            ON A.ITM_CD = B.CD_VAL
+     LEFT JOIN T_ATCH_FILE_MNG C
+            ON A.ATCH_FILE_ID = C.ATCH_FILE_ID
+           AND C.DEL_YN = 'N'
+         WHERE A.LOGO_SERNO = #{logoSerno}
+    </select>
+
+    <!-- 등록 -->
+    <insert id="insertContent" parameterType="logoVO">
+        /* LogoMngMapper.insertContent */
+        INSERT INTO T_LOGO_MNG
+            ( ITM_CD
+            , LNK_YN
+            , URL
+            , LNK_TGT_CD
+            , ACTVT_YN
+            , ATCH_FILE_ID
+            , REGR_SERNO
+            , REG_DT
+            )
+        VALUES
+            ( #{itmCd}
+            , #{lnkYn}
+            , #{url}
+            , #{lnkTgtCd}
+            , #{actvtYn}
+            , NULLIF(#{atchFileId}, '')
+            , #{loginSerno}
+            , NOW()
+            )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="updateContents" parameterType="logoVO">
+        /* LogoMngMapper.updateContents */
+        UPDATE T_LOGO_MNG
+           SET ITM_CD       = #{itmCd}
+             , LNK_YN       = #{lnkYn}
+             , URL          = #{url}
+             , LNK_TGT_CD   = #{lnkTgtCd}
+             , ACTVT_YN     = #{actvtYn}
+             , ATCH_FILE_ID = NULLIF(#{atchFileId}, '')
+             , UPDR_SERNO   = #{loginSerno}
+             , UPD_DT       = NOW()
+         WHERE LOGO_SERNO   = #{logoSerno}
+    </update>
+
+    <!-- 삭제 -->
+    <update id="deleteContents" parameterType="logoVO">
+        /* LogoMngMapper.deleteContents */
+        UPDATE T_LOGO_MNG
+           SET USE_YN = 'N'
+         WHERE LOGO_SERNO = #{logoSerno}
+    </update>
+
+    <!-- 활성화 항목 중복 등록 판단 -->
+    <select id="itmActvtYnChk" parameterType="logoVO" resultType="int">
+        /* LogoMngMapper.itmActvtYnChk */
+        SELECT COUNT(1)
+          FROM T_LOGO_MNG
+         WHERE ITM_CD = #{itmCd}
+           AND ACTVT_YN = 'Y'
+           AND USE_YN = 'Y'
+    </select>
+
+    <!-- 활성화 등록, 수정 시 기존 활성화 항목 비활성화 -->
+    <update id="updateActvtYn" parameterType="logoVO">
+        /* LogoMngMapper.updateActvtYn */
+        UPDATE T_LOGO_MNG
+           SET ACTVT_YN = 'N'
+         WHERE ITM_CD   = #{itmCd}
+    </update>
+
+    <!-- 활성화 로고 정보 조회 -->
+    <select id="selectActvYnItm" parameterType="logoVO" resultType="logoVO">
+        /* LogoMngMapper.selectActvYnItm */
+        SELECT A.LOGO_SERNO                         logoSerno
+             , A.ITM_CD                             itmCd
+             , A.LNK_YN                             lnkYn
+             , A.URL                                url
+             , A.LNK_TGT_CD                         lnkTgtCd
+             , A.ACTVT_YN                           actvtYn
+             , A.ATCH_FILE_ID                       atchFileId
+             , C.FILE_SEQO                          fileSeqo
+             , C.PHCL_FILE_NM 						fileNmPhclFileNm
+             , A.REGR_SERNO                         regrSerno
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')    regDt
+          FROM T_LOGO_MNG A
+     LEFT JOIN T_ATCH_FILE_MNG C
+            ON A.ATCH_FILE_ID = C.ATCH_FILE_ID
+           AND C.DEL_YN = 'N'
+         WHERE A.ACTVT_YN = 'Y'
+           AND A.USE_YN = 'Y'
+    </select>
+
+    <!-- 로고 엑셀 목록 조회 -->
+    <select id="selectExcelList" resultType="logoVO">
+        /* LogoMngMapper.selectExcelList */
+        SELECT LOGO_SERNO                       logoSerno
+             , ITM_CD                           itmCd
+             , FNC_CODE_NM(ITM_CD)              itmNm
+             , LNK_YN                           lnkYn
+             , URL                              url
+             , LNK_TGT_CD                       linkTgtCd
+             , CASE LNK_TGT_CD
+                    WHEN 'self' THEN '현재창'
+                    WHEN 'balnk' THEN '새창'
+                    ELSE '-'
+               END                              linkTgtNm
+             , ACTVT_YN                         actvtYn
+             , REGR_SERNO                       regrSerno
+             , FNC_USER_NM(REGR_SERNO)          regrNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d')  regDt
+          FROM T_LOGO_MNG A
+        <where>
+            <include refid="Where"/>
+            AND USE_YN = 'Y'
+        </where>
+      ORDER BY LOGO_SERNO DESC
+    </select>
+
+    <!-- 본인글 여부 확인 -->
+    <select id="regrCheck" parameterType="logoVO" resultType="boolean">
+        /* LogoMngMapper.regrCheck */
+        SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
+                    ELSE 0
+                   END
+        FROM T_LOGO_MNG
+        WHERE LOGO_SERNO = #{regepsSerno}
+    </select>
+</mapper>

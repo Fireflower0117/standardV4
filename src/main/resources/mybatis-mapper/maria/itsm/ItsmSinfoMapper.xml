@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmSinfoMapper">
+    <!--
+        ITSM_SINFO
+        ITSM_SINFO_ITEM
+        ITSM_SINFO_ITEM_SERVER
+        ITSM_USER_SVC
+    -->
+    <sql id="Where">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (
+                    UPPER(SVC_NM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR	UPPER(SVC_MNGR) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                OR	UPPER(DEV_MNGR) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+                )
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+                AND UPPER(SVC_NM) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+                AND UPPER(SVC_MNGR) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==3">
+                AND UPPER(DEV_MNGR) LIKE CONCAT('%', UPPER(#{searchKeyword}), '%')
+            </if>
+        </if>
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND SVC_SN = #{schEtc00}
+        </if>
+        AND USE_YN = 'Y'
+    </sql>
+
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmSinfoVO" resultType="itsmSinfoVO">
+        /* ItsmSinfoMapper.selectList */
+        SELECT
+               SVC_SN										svcSn
+             , SVC_NM										svcNm
+             , SVC_URL										svcUrl
+             , SVC_MNGR										svcMngr
+             , DEV_MNGR										devMngr
+             , USE_YN										useYn
+             , RGTR_SN										rgtrSn
+             , FNC_USER_NM(RGTR_SN)					rgtrNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 				regDt
+        FROM ITSM_SINFO
+        <where>
+            <include refid="Where"/>
+        </where>
+        ORDER BY SVC_SN DESC
+        <if test="excelYn ==null or excelYn == ''">
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+    </select>
+
+    <select id="selectCount" parameterType="itsmSinfoVO" resultType="int">
+        /* ItsmSinfoMapper.selectCount */
+        SELECT COUNT(1)
+          FROM ITSM_SINFO
+        <where>
+            <include refid="Where"/>
+        </where>
+    </select>
+
+    <!-- 상세 -->
+    <select id="selectContents" parameterType="itsmSinfoVO" resultType="itsmSinfoVO">
+        /* ItsmSinfoMapper.selectContents */
+        SELECT
+                SVC_SN												svcSn
+              , SVC_NM												svcNm
+              , SVC_URL												svcUrl
+              , SVC_MNGR											svcMngr
+              , DEV_MNGR											devMngr
+              , USE_YN												useYn
+              , RGTR_SN												rgtrSn
+              , FNC_USER_NM(RGTR_SN)							rgtrNm
+              , DATE_FORMAT(REG_DT, '%Y.%m.%d %H:%i')				regDt
+              , MDFR_SN												mdfrSn
+              , FNC_USER_NM(MDFR_SN)							mdfrNm
+              , DATE_FORMAT(MDFCN_DT, '%Y.%m.%d %H:%i')				mdfcnDt
+        FROM ITSM_SINFO
+        WHERE SVC_SN = #{svcSn}
+    </select>
+
+    <!-- 생성 -->
+    <insert id="insertContents" parameterType="itsmSinfoVO">
+        /* ItsmSinfoMapper.insertContents */
+        <selectKey keyProperty="svcSn" order="AFTER" resultType="java.lang.String">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO ITSM_SINFO(
+        SVC_NM
+        , SVC_URL
+        , SVC_MNGR
+        , DEV_MNGR
+        , RGTR_SN
+        ) VALUES (
+        #{svcNm	}
+        ,#{	svcUrl	}
+        ,#{	svcMngr	}
+        ,#{	devMngr	}
+        ,#{loginSerno}
+        )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="updateContents" parameterType="itsmSinfoVO">
+        /* ItsmSinfoMapper.updateContents */
+        UPDATE ITSM_SINFO
+        SET
+            SVC_NM				 =#{	svcNm	}
+          , SVC_URL				 =#{	svcUrl	}
+          , SVC_MNGR				 =#{	svcMngr	}
+          , DEV_MNGR				 =#{	devMngr	}
+          , MDFR_SN 				= #{loginSerno}
+          , MDFCN_DT 				= NOW()
+        WHERE SVC_SN = #{svcSn}
+    </update>
+
+    <!-- 삭제 -->
+    <update id="deleteContents" parameterType="itsmSinfoVO">
+        /* ItsmSinfoMapper.deleteContents */
+        UPDATE ITSM_SINFO
+        SET USE_YN 	= 'N'
+        WHERE SVC_SN = #{svcSn}
+    </update>
+
+    <!-- 여기서부터 하단 addView 쪽 -->
+
+
+
+    <!-- 담당자 배치 -->
+    <insert id="insertContentsManager" parameterType="itsmSinfoVO">
+        /* ItsmSinfoMapper.insertContentsManager */
+        INSERT INTO ITSM_USER_SVC(
+                   USER_SERNO
+                 , SVC_SN
+        ) VALUES (
+                 #{userSerno}
+                 ,#{svcSn}
+                 )
+    </insert>
+
+    <!-- 담당자 일괄 삭제 -->
+    <update id="delMngrAll" parameterType="itsmSinfoVO">
+        /* ItsmSinfoMapper.delMngrAll */
+        UPDATE ITSM_USER_SVC
+           SET USE_YN 	= 'N'
+         WHERE SVC_SN   = #{svcSn}
+    </update>
+
+    <!-- 담당자 삭제 -->
+    <update id="delMngr" parameterType="itsmSinfoVO">
+        /* ItsmSinfoMapper.delMngr */
+        UPDATE ITSM_USER_SVC
+           SET USE_YN 	= 'N'
+         WHERE SVC_SN   = #{svcSn}
+           AND USER_SERNO  = #{userSerno}
+    </update>
+
+
+
+    <!-- 서버 항목 addView -->
+    <select id="selectContentsServer" parameterType="itsmSinfoVO" resultType="itsmSinfoVO">
+        /* SmSinfoMapper.selectContentsServer */
+        SELECT
+            SVC_SERVER_SN							    	svcServerSn
+             , SVC_SN										svcSn
+             , SERVER_GBN									serverGbn
+             , SERVER_IP									serverIp
+             , SERVER_PORT									serverPort
+             , SERVER_PATH									serverPath
+             , SERVER_LOG_PATH								serverLogPath
+             , SERVER_OS									serverOs
+             , SERVER_RAM_VOL								serverRamVol
+             , SERVER_STRG_VOL								serverStrgVol
+             , SERVER_TYPE									serverType
+             , SERVER_VERSION								serverVersion
+             , SERVER_SID									serverSid
+             , SERVER_IDE									serverIde
+             , START_IP										startIp
+             , START_PORT									startPort
+             , END_IP										endIp
+             , END_PORT										endPort
+             , SUBNET_MASK									subnetMask
+             , BROAD_CAST									broadCast
+             , ATCH_FILE_ID									atchFileId
+             , USE_YN										useYn
+             , RGTR_SN										rgtrSn
+             , FNC_USER_NM(RGTR_SN)							rgtrNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d %H:%i')		regDt
+        FROM itsm_sinfo_item_server
+        WHERE USE_YN ='Y'
+          AND SVC_SN = #{svcSn}
+          AND SERVER_GBN = #{serverGbn}
+    </select>
+
+    <!-- 서버 항목 수정 -->
+    <update id="updateContentsServer" parameterType="itsmSinfoVO">
+        /* ItsmSinfoMapper.updateContentsServer */
+        INSERT INTO itsm_sinfo_item_server(
+        SVC_SERVER_SN
+        , SVC_SN
+        , SERVER_GBN
+        , SERVER_IP
+        , SERVER_PORT
+        , SERVER_PATH
+        , SERVER_LOG_PATH
+        , SERVER_OS
+        , SERVER_RAM_VOL
+        , SERVER_STRG_VOL
+        , SERVER_TYPE
+        , SERVER_VERSION
+        , SERVER_SID
+        , SERVER_IDE
+        , START_IP
+        , START_PORT
+        , END_IP
+        , END_PORT
+        , SUBNET_MASK
+        , BROAD_CAST
+        , ATCH_FILE_ID
+        , RGTR_SN
+        ) VALUES (
+        <choose>
+            <when test="svcServerSn.equals('')">
+                NULL
+            </when>
+            <otherwise>
+                #{svcServerSn}
+            </otherwise>
+        </choose>
+        , #{svcSn}
+        , #{serverGbn}
+        , #{serverIp}
+        , #{serverPort}
+        , #{serverPath}
+        , #{serverLogPath}
+        , #{serverOs}
+        , #{serverRamVol}
+        , #{serverStrgVol}
+        , #{serverType}
+        , #{serverVersion}
+        , #{serverSid}
+        , #{serverIde}
+        , #{startIp}
+        , #{startPort}
+        , #{endIp}
+        , #{endPort}
+        , #{subnetMask}
+        , #{broadCast}
+        , #{atchFileId}
+        , #{loginSerno}
+        ) ON DUPLICATE KEY UPDATE
+          SERVER_GBN 			= #{serverGbn}
+        , SERVER_IP 			= #{serverIp}
+        , SERVER_PORT 			= #{serverPort}
+        , SERVER_PATH 			= #{serverPath}
+        , SERVER_LOG_PATH 			= #{serverLogPath}
+        , SERVER_OS 			= #{serverOs}
+        , SERVER_RAM_VOL 		= #{serverRamVol}
+        , SERVER_STRG_VOL 		= #{serverStrgVol}
+        , SERVER_TYPE 			= #{serverType}
+        , SERVER_VERSION 		= #{serverVersion}
+        , SERVER_SID 			= #{serverSid}
+        , SERVER_IDE 			= #{serverIde}
+        , START_IP 		    	= #{startIp}
+        , START_PORT 			= #{startPort}
+        , END_IP 		    	= #{endIp}
+        , END_PORT 		    	= #{endPort}
+        , SUBNET_MASK 			= #{subnetMask}
+        , BROAD_CAST 			= #{broadCast}
+        , ATCH_FILE_ID 			= #{atchFileId}
+        , MDFR_SN 				= #{loginSerno}
+        , MDFCN_DT 				= NOW()
+        , USE_YN 				= 'Y'
+    </update>
+
+    <!-- 게시글 본인글 여부 -->
+    <select id="regrCheck" parameterType="itsmSinfoVO" resultType="boolean">
+        /* ItsmSinfoMapper.regrCheck */
+        SELECT CASE WHEN RGTR_SN = #{loginSerno} THEN 1
+                    ELSE 0
+                   END
+        FROM ITSM_SINFO
+        WHERE SVC_SN = #{svcSn}
+    </select>
+</mapper>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.component.itsm.mapper.ItsmBakupMapper">
+
+    <sql id="Where">
+        <if test="searchKeyword !=null and searchKeyword !=''">
+            <if test="searchCondition ==null or searchCondition == ''">
+                AND (
+                )
+            </if>
+            <if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+            </if>
+        </if>
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND A.SVC_SN = #{schEtc00}
+        </if>
+        <if test="schEtc01 !=null and schEtc01 !=''">
+            AND A.AUTO_YN = #{schEtc01}
+        </if>
+    </sql>
+
+    <!-- 목록 -->
+    <select id="selectList" parameterType="itsmBakupVO" resultType="itsmBakupVO">
+        /* ItsmBakupMapper.selectList */
+        SELECT
+            BAK_SN												AS	bakSn
+        ,	SVC_SN												AS	svcSn
+        ,	ITSM_FNC_SVC_NM(SVC_SN)									AS	svcNm
+        ,	BAK_YN												AS	bakYn
+        ,	USE_YN												AS	useYn
+        ,	BAK_PATH											AS	bakPath
+        ,	BAK_VOL												AS	bakVol
+        ,	AUTO_YN												AS	autoYn
+        ,	BAK_TIME											AS	bakTime
+        ,	RGTR_SN												AS	rgtrSn
+        ,	FNC_USER_NM(RGTR_SN)									AS	rgtrNm
+        ,	DATE_FORMAT(REG_DT, '%Y.%m.%d')						AS	regDt
+        ,	FNC_USER_NM(MDFR_SN)									AS	mdfrNm
+        ,	DATE_FORMAT(MDFCN_DT, '%Y.%m.%d')					AS	mdfcnDt
+        FROM ITSM_BAKUP A
+        WHERE A.USE_YN ='Y'
+        <include refid="Where"/>
+        ORDER BY A.BAK_SN DESC
+        <if test="excelYn ==null or excelYn == ''">
+            LIMIT #{firstRecordIndex}, #{recordCountPerPage}
+        </if>
+    </select>
+
+    <select id="selectCount" parameterType="itsmBakupVO" resultType="int">
+        /* ItsmBakupMapper.selectCount */
+        SELECT COUNT(1)
+        FROM ITSM_BAKUP A
+        WHERE A.USE_YN ='Y'
+        <include refid="Where"/>
+    </select>
+
+
+    <!-- 상세 -->
+    <select id="selectContents" parameterType="itsmBakupVO" resultType="itsmBakupVO">
+        /* ItsmBakupMapper.selectContents */
+        SELECT
+            BAK_SN												AS	bakSn
+             ,	SVC_SN												AS	svcSn
+             ,	ITSM_FNC_SVC_NM(SVC_SN)												AS	svcNm
+             ,	BAK_YN												AS	bakYn
+             ,	USE_YN												AS	useYn
+             ,	BAK_PATH											AS	bakPath
+             ,	BAK_VOL												AS	bakVol
+             ,	AUTO_YN												AS	autoYn
+             ,	BAK_TIME												AS	bakTime
+             ,	RGTR_SN												AS	rgtrSn
+             ,	FNC_USER_NM(RGTR_SN)									AS	rgtrNm
+             ,	DATE_FORMAT(REG_DT, '%Y.%m.%d %H:%i')						AS	regDt
+             ,	FNC_USER_NM(MDFR_SN)									AS	mdfrNm
+             ,	DATE_FORMAT(MDFCN_DT, '%Y.%m.%d %H:%i')					AS	mdfcnDt
+        FROM ITSM_BAKUP A
+        WHERE A.USE_YN  ='Y'
+          AND A.BAK_SN = #{bakSn}
+    </select>
+
+    <!-- 생성 -->
+    <insert id="insertContents" parameterType="itsmBakupVO">
+        /* ItsmBakupMapper.insertContents */
+        INSERT INTO ITSM_BAKUP(
+        SVC_SN
+        <if test="autoYn !=null and autoYn !=''">
+            ,	AUTO_YN
+        </if>
+        ,	BAK_YN
+        ,	BAK_PATH
+        ,	BAK_VOL
+        ,	BAK_TIME
+
+        ) VALUES (
+        #{svcSn}
+        <if test="autoYn !=null and autoYn !=''">
+            , 'N'
+        </if>
+        , #{bakYn}
+        , #{bakPath}
+        , #{bakVol}
+        , #{bakTime}
+        )
+    </insert>
+
+    <!-- 삭제 -->
+    <update id="deleteContents" parameterType="itsmBakupVO">
+        /* ItsmBakupMapper.deleteContents */
+        UPDATE ITSM_BAKUP
+        SET USE_YN 	= 'N'
+        WHERE BAK_SN   = #{bakSn}
+    </update>
+
+    <!--  코멘트 목록 -->
+    <select id="selectComList" parameterType="itsmBakupVO" resultType="itsmBakupVO">
+        /* ItsmBakupMapper.selectComList */
+        SELECT A.CMMT_SN 								  AS comSn
+             , A.CMMT_CN 								  AS comCn
+             , A.RGTR_SN								  AS rgtrSn
+             , FNC_USER_NM(A.RGTR_SN) 					  AS regrNm
+             , DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i') 	  AS regDt
+             , A.MDFR_SN								  AS mdfrSn
+             , FNC_USER_NM(A.MDFR_SN) 					  AS mdfrId
+             , DATE_FORMAT(A.MDFCN_DT, '%Y.%m.%d')		  AS mdfcnDt
+             , A.CMMT_ATCH_FILE_ID						  AS comAtchFileId
+             , (SELECT COUNT(1) FROM itsm_atch_file_mng B WHERE B.ATCH_FILE_ID = A.CMMT_ATCH_FILE_ID AND B.DEL_YN = 'N') AS delAtchCnt
+        FROM ITSM_BAKUP_COMMENT A
+        WHERE A.BAK_SN 	 = #{bakSn}
+          AND A.USE_YN = 'Y'
+        ORDER BY A.CMMT_SN DESC
+    </select>
+
+    <!--  코멘트 상세 -->
+    <select id="selectComContents" parameterType="itsmBakupVO" resultType="itsmBakupVO">
+        /* ItsmBakupMapper.selectComContents */
+        SELECT CMMT_SN				 AS comSn
+             , CMMT_CN				 AS comCn
+             , RGTR_SN				 AS rgtrSn
+             , MDFR_SN				 AS mdfrSn
+             , CMMT_ATCH_FILE_ID		 AS comAtchFileId
+        FROM  ITSM_BAKUP_COMMENT
+        WHERE  USE_YN 	   = 'Y'
+          AND  BAK_SN     = #{bakSn}
+    </select>
+
+    <!--  코멘트 생성 -->
+    <insert id="comInsertContents" parameterType="itsmBakupVO">
+        /* ItsmBakupMapper.comInsertContents */
+        INSERT INTO ITSM_BAKUP_COMMENT(
+                                        CMMT_CN
+                                      , BAK_SN
+                                      , REG_DT
+                                      , RGTR_SN
+                                      , CMMT_ATCH_FILE_ID
+        ) VALUES (
+                     #{comCn  	      ,jdbcType=VARCHAR}
+                 , #{bakSn        ,jdbcType=VARCHAR}
+                 , NOW()
+                 , #{loginSerno 	  ,jdbcType=VARCHAR}
+                 , #{comAtchFileId ,jdbcType=VARCHAR}
+                 )
+    </insert>
+
+    <!--  코멘트 수정 -->
+    <update id="comUpdateContents" parameterType="itsmBakupVO">
+        /* ItsmBakupMapper.comUpdateContents */
+        UPDATE ITSM_BAKUP_COMMENT
+        SET CMMT_CN   	 	 = #{comCn   	 	,jdbcType=VARCHAR}
+          , MDFR_SN 		 	 = #{loginSerno  	,jdbcType=VARCHAR}
+          , MDFCN_DT 	 	 = NOW()
+          , CMMT_ATCH_FILE_ID  = #{comAtchFileId  ,jdbcType=VARCHAR}
+        WHERE CMMT_SN 	 	     = #{comSn 	 	 	,jdbcType=VARCHAR}
+    </update>
+
+    <!--  코멘트 삭제 -->
+    <update id="comDeleteContents" parameterType="itsmBakupVO">
+        /* ItsmBakupMapper.comDeleteContents */
+        UPDATE ITSM_BAKUP_COMMENT
+        SET USE_YN  	  = 'N'
+        WHERE CMMT_SN     = #{comSn}
+    </update>
+
+    <!-- 백업 동작-->
+    <insert id="updateBakupTimerN" parameterType="itsmBakupVO">
+        /* ItsmBakupMapper.updateBakupTimerN */
+        UPDATE ITSM_DATA_TIMER
+        SET
+            USE_YN = 'N'
+        WHERE USE_YN = 'Y'
+          AND SVC_SN = #{svcSn}
+    </insert>
+    <!-- 백업 동작-->
+    <insert id="updateBakupTimer" parameterType="itsmBakupVO">
+        /* ItsmBakupMapper.updateBakupTimer */
+        INSERT INTO ITSM_DATA_TIMER (
+                                      RGTR_SN
+                                    , DB_BACKUP_DAY
+                                    , DB_BACKUP_HOUR
+                                    , SVC_SN
+        )
+        VALUES (
+                   #{loginSerno}
+               , #{dbBackupDay}
+               , #{dbBackupHour}
+               , #{svcSn}
+               )
+    </insert>
+
+
+    <!-- 백업 주기 불러오기-->
+    <select id="selectContentsBakupTimer" parameterType="itsmBakupVO" resultType="itsmBakupVO">
+        /* ItsmBakupMapper.selectContentsBakupTimer */
+        SELECT
+            DB_BACKUP_DAY		dbBackupDay
+             , DB_BACKUP_HOUR	dbBackupHour
+        FROM ITSM_DATA_TIMER
+        WHERE USE_YN = 'Y'
+          AND SVC_SN = #{svcSn}
+    </select>
+
+</mapper>

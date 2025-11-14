@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.mapper.basic.MenuAuthMngMapper">
+	<!-- 조건 -->
+	<sql id="Where">
+		<if test="searchKeyword !=null and searchKeyword !=''">
+			<if test="searchCondition ==null or searchCondition == ''">
+				AND (UPPER(GRP_AUTH_ID) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+				 OR UPPER(GRP_AUTH_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+				 OR UPPER(GRP_AUTH_EXPL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition==1">
+				AND UPPER(GRP_AUTH_ID) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition==2">
+				AND UPPER(GRP_AUTH_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition==3">
+				AND UPPER(GRP_AUTH_EXPL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+		</if>
+	</sql>
+
+	<!-- 그룹권한 건수 -->
+	<select id="selectCount" parameterType="authVO" resultType="authVO">
+		/* MenuAuthMngMapper.selectCount */
+		SELECT COUNT(1) authCount
+		  FROM T_GRP_AUTH_MNG
+		<where>
+		  <include refid="Where"/>
+		   AND DEL_YN = 'N'
+		</where>
+	</select>
+
+	<!-- 그룹권한 리스트-->
+	<select id="selectList" parameterType="authVO" resultType="authVO">
+		/* MenuAuthMngMapper.selectList */
+		SELECT GRP_AUTH_SERNO 					grpAuthSerno
+			 , GRP_AUTH_ID 						grpAuthId
+			 , GRP_AUTH_NM 						grpAuthNm
+			 , GRP_AUTH_EXPL 					grpAuthExpl
+			 , DEL_YN 							delYn
+			 , REGR_SERNO 						regrSerno
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	regDt
+			 , UPDR_SERNO 						updrSerno
+			 , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	updDt
+			 , USE_YN      						useYn
+		  FROM T_GRP_AUTH_MNG
+		<where>
+			<include refid="Where"/>
+		   AND DEL_YN = 'N'
+		</where>
+	  ORDER BY GRP_AUTH_SERNO DESC
+		 LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+	</select>
+
+	<!-- 그룹권한 전체 리스트-->
+	<select id="selectAllList" resultType="authVO">
+		/* MenuAuthMngMapper.selectAllList */
+		SELECT GRP_AUTH_SERNO 					grpAuthSerno
+			 , GRP_AUTH_ID 						grpAuthId
+			 , GRP_AUTH_NM 						grpAuthNm
+			 , GRP_AUTH_EXPL 					grpAuthExpl
+			 , DEL_YN 							delYn
+			 , REGR_SERNO 						regrSerno
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	regDt
+			 , UPDR_SERNO 						updrSerno
+			 , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	updDt
+			 , USE_YN      						useYn
+		  FROM T_GRP_AUTH_MNG
+		 WHERE DEL_YN = 'N'
+	  ORDER BY GRP_AUTH_SERNO DESC
+	</select>
+
+	<!-- 그룹권한내용 -->
+	<select id="selectContents" parameterType="authVO" resultType="authVO">
+		/* MenuAuthMngMapper.selectContents */
+		SELECT GRP_AUTH_SERNO 					grpAuthSerno
+			 , GRP_AUTH_ID 						grpAuthId
+			 , GRP_AUTH_NM 						grpAuthNm
+			 , GRP_AUTH_EXPL 					grpAuthExpl
+			 , DEL_YN 							delYn
+			 , REGR_SERNO 						regrSerno
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	regDt
+			 , UPDR_SERNO 						updrSerno
+			 , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	updDt
+			 , USE_YN      						useYn
+		  FROM T_GRP_AUTH_MNG
+		 WHERE GRP_AUTH_SERNO = #{grpAuthSerno}
+	</select>
+
+	<!-- 그룹권한등록 -->
+	<insert id="insertContents" parameterType="authVO">
+		/* MenuAuthMngMapper.insertContents */
+		INSERT INTO T_GRP_AUTH_MNG
+		     ( GRP_AUTH_ID
+			 , GRP_AUTH_NM
+			 , GRP_AUTH_EXPL
+			 , USE_YN
+			 , REGR_SERNO
+			 )
+		VALUES
+		     ( #{grpAuthId 		}
+			 , #{grpAuthNm 		}
+			 , #{grpAuthExpl	}
+			 , #{useYn 			}
+			 , #{loginSerno		}
+			 )
+	</insert>
+
+	<!-- 그룹권한수정 -->
+	<update id="updateContents" parameterType="authVO">
+		/* MenuAuthMngMapper.updateContents */
+		UPDATE T_GRP_AUTH_MNG
+		   SET GRP_AUTH_NM 	  = #{grpAuthNm		}
+		   	 , GRP_AUTH_EXPL  = #{grpAuthExpl	}
+			 , USE_YN		  = #{useYn			}
+		     , UPDR_SERNO	  = #{loginSerno	}
+		     , UPD_DT 		  = NOW()
+		 WHERE GRP_AUTH_SERNO = #{grpAuthSerno	}
+	</update>
+
+	<!-- 그룹권한삭제 -->
+	<update id="deleteContents" parameterType="authVO">
+		/* MenuAuthMngMapper.deleteContents */
+		UPDATE T_GRP_AUTH_MNG
+		   SET DEL_YN 		  = 'Y'
+		 WHERE GRP_AUTH_SERNO = #{grpAuthSerno}
+	</update>
+
+	<!-- 그룹권한ID중복체크 -->
+	<select id="idOvlpSelectCount" parameterType="authVO" resultType="authVO">
+		/* MenuAuthMngMapper.idOvlpSelectCount */
+		SELECT COUNT(1) authCount
+		  FROM T_GRP_AUTH_MNG
+		 WHERE GRP_AUTH_ID = #{grpAuthId}
+	</select>
+
+	<!-- 전체 메뉴 및 권한 조회 -->
+	<select id="selectMenuList" parameterType="authVO" resultType="authVO">
+		/* MenuAuthMngMapper.selectMenuList */
+		SELECT A.MENU_SERNO 																				menuSerno
+			 , A.UPR_MENU_CD 																				uprMenuCd
+			 , A.MENU_LVL 																					menuLvl
+			 , A.MENU_SEQO 																					menuSeqo
+			 , A.MENU_NM 																					menuNm
+			 , A.MENU_CD 																					menuCd
+			 , CASE WHEN B.MENU_CD IS NULL THEN 'N' ELSE 'Y' END											authExst
+			 , NVL(B.WRT_AUTH_YN, 'R')																		wrtAuthYn
+			 , (SELECT EXISTS (SELECT * FROM T_MENU_MNG WHERE UPR_MENU_CD = A.MENU_CD AND USE_YN = 'Y'))	isLeaf
+		  FROM T_MENU_MNG A
+  		  LEFT JOIN T_MENU_AUTH_MNG B
+		    ON A.MENU_CD  		 = B.MENU_CD
+		   AND B.GRP_AUTH_ID 	 = #{grpAuthId	}
+		   AND B.MENU_SE_CD 	 = #{menuSeCd	}
+	     WHERE A.USE_YN 		 = 'Y'
+		   AND A.EXPSR_YN 	 	 = 'Y'
+		   AND A.MENU_CL   	 	 = #{menuSeCd	}
+	  ORDER BY A.MENU_SEQO
+	</select>
+	
+	<select id="selectMenuList_new" parameterType="authVO" resultType="authVO">
+		/* MenuAuthMngMapper.selectMenuList */
+			WITH RECURSIVE TB_RECUR_MENUS AS (
+			   <![CDATA[	
+			   SELECT  A.MENU_SERNO
+					, A.MENU_CL			  
+					 , A.UPR_MENU_CD 			
+					 , A.MENU_CD  			
+					 , 1 AS MENU_LVL	
+					 , A.MENU_SEQO  AS MENU_SEQ 
+					 , A.MENU_NM 		
+					 , CAST(A.MENU_NM AS CHAR(100) CHARACTER SET UTF8) AS MENU_PATH	 
+					 , A.MENU_URL_ADDR 		
+					 , A.LWR_TAB_YN	
+					 , A.EXPSR_YN		
+					 , A.TGT_BLANK_YN 
+					 , CAST(LPAD(A.MENU_SEQO, 4, '0') AS CHAR(200)) AS SORT_PATH 
+				  FROM T_MENU_MNG  A 
+				 WHERE USE_YN = 'Y'
+				   AND UPR_MENU_CD IS NULL
+				   AND MENU_CL  = #{menuSeCd}
+				 UNION ALL
+				SELECT A.MENU_SERNO 
+					 , A.MENU_CL			 
+					 , A.UPR_MENU_CD 			
+					 , A.MENU_CD 	  			
+					 , TRM.MENU_LVL + 1 AS MENU_LVL				 
+					 , A.MENU_SEQO AS MENU_SEQ 
+					 , A.MENU_NM 	
+					 , CONCAT(TRM.MENU_PATH, ' > ', A.MENU_NM ) AS MENU_PATH	 
+					 , A.MENU_URL_ADDR 		
+					 , A.LWR_TAB_YN	
+					 , A.EXPSR_YN					 		
+					 , A.TGT_BLANK_YN  
+					 , CONCAT(TRM.SORT_PATH, '-', LPAD(A.MENU_SEQO, 4, '0'))
+				  FROM T_MENU_MNG A
+				 INNER JOIN TB_RECUR_MENUS TRM ON A.UPR_MENU_CD = TRM.MENU_CD    
+				 WHERE A.USE_YN = 'Y'
+				]]>
+		    ) 
+		  SELECT TRM.MENU_SERNO 											   menuSerno
+			   , TRM.UPR_MENU_CD 											   uprMenuCd		
+			   , TRM.MENU_LVL -1											   menuLvl 
+			   , TRM.MENU_SEQ 												   menuSeqo 
+			   , TRM.MENU_NM 												   menuNm	
+			   , TRM.MENU_CD 	                                               menuCd
+			   , CASE WHEN MAM.MENU_CD IS NULL THEN 'N' ELSE 'Y' END		   authExst
+			   , NVL(MAM.WRT_AUTH_YN, 'R')									   wrtAuthYn 
+			   , CASE WHEN NOT EXISTS (SELECT 1 
+									     FROM T_MENU_MNG TMM 
+										WHERE TMM.UPR_MENU_CD = TRM.MENU_CD) 
+					  THEN 1 
+					  ELSE 0 
+				   END                                                         isLeaf  
+				, TRM.MENU_PATH	                                               menuNaviPath
+				, TRM.MENU_URL_ADDR                                            menuUrlAddr 
+			 FROM TB_RECUR_MENUS TRM
+			 LEFT JOIN T_MENU_AUTH_MNG MAM ON TRM.MENU_CD = MAM.MENU_CD  AND MAM.GRP_AUTH_ID = #{grpAuthId} AND MAM.MENU_SE_CD = #{menuSeCd} 
+			WHERE TRM.EXPSR_YN    = 'Y'
+			ORDER BY TRM.SORT_PATH
+	</select>
+
+	<!-- 메뉴 권한 입력 -->
+	<insert id="authInsertContents" parameterType="authVO">
+		/* MenuAuthMngMapper.authInsertContents */
+		INSERT INTO T_MENU_AUTH_MNG
+		     ( GRP_AUTH_ID
+			 , MENU_CD
+			 , WRT_AUTH_YN
+			 , MENU_SE_CD
+			 , REGR_SERNO
+			 )
+		VALUES
+			 ( #{grpAuthId	}
+			 , #{menuCd		}
+			 , #{wrtAuthYn	}
+			 , #{menuSeCd	}
+			 , #{loginSerno }
+			 )
+	</insert>
+
+	<!-- 메뉴 권한 삭제 -->
+	<delete id="authDeleteContents" parameterType="authVO">
+		/* MenuAuthMngMapper.authDeleteContents */
+		DELETE FROM T_MENU_AUTH_MNG
+		 WHERE GRP_AUTH_ID = #{grpAuthId}
+	</delete>
+
+	<!-- 관리자 권한 취득 -->
+	<select id="getAuthList" parameterType="loginVO" resultType="authVO">
+		/* MenuAuthMngMapper.getAuthList */
+		SELECT MENU_CD  menuCd
+		  FROM T_MENU_AUTH_MNG
+		 WHERE GRP_AUTH_ID 	= #{grpAuthId	}
+		   AND MENU_SE_CD 	= #{menuSeCd	}
+	</select>
+
+	<!-- 관리자 작성 권한 취득 -->
+	<select id="getWrtAuthList" parameterType="loginVO" resultType="authVO">
+		/* MenuAuthMngMapper.getWrtAuthList */
+		SELECT MENU_CD				menuCd
+			 , WRT_AUTH_YN			wrtAuthYn
+		  FROM T_MENU_AUTH_MNG
+		 WHERE GRP_AUTH_ID 	= #{grpAuthId	}
+		   AND MENU_SE_CD	= #{menuSeCd	}
+	</select>
+
+	<!-- 본인글 여부 -->
+	<select id="regrCheck" parameterType="authVO" resultType="authVO">
+		/* MenuAuthMngMapper.regrCheck */
+		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1 ELSE 0 END isMyRegr
+		  FROM T_GRP_AUTH_MNG
+		 WHERE GRP_AUTH_SERNO = #{grpAuthSerno}
+	</select>
+
+	<!-- 엑셀 다운로드 용 -->
+	<select id="selectExcelList" parameterType="authVO" resultType="authVO">
+		/* MenuAuthMngMapper.selectExcelList */
+		SELECT GRP_AUTH_SERNO 					grpAuthSerno
+			 , GRP_AUTH_ID 						grpAuthId
+			 , GRP_AUTH_NM 						grpAuthNm
+			 , GRP_AUTH_EXPL 					grpAuthExpl
+			 , DEL_YN 							delYn
+			 , REGR_SERNO 						regrSerno
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	regDt
+			 , UPDR_SERNO 						updrSerno
+			 , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	updDt
+			 , CASE WHEN USE_YN = 'Y' THEN '사용'
+				    ELSE '미사용'
+			    END								useYn
+		  FROM T_GRP_AUTH_MNG
+		<where>
+			<include refid="Where"/>
+		   AND DEL_YN = 'N'
+		</where>
+	  ORDER BY GRP_AUTH_SERNO DESC
+	</select>
+	
+	
+	<!-- 특정 메뉴를 권한으로 가지고 있는 그룹 ID 찾기 -->
+	<select id="getGrpAuthIdList" parameterType="authVO" resultType="authVO">
+		/* MenuAuthMngMapper.getGrpAuthIdList */
+		SELECT GRP_AUTH_ID grpAuthId
+		  FROM T_MENU_AUTH_MNG
+		 WHERE MENU_SE_CD = #{menuSeCd}
+		   AND MENU_CD = #{menuCd}
+  		   AND USE_YN = 'Y'
+	</select>
+	
+	<!-- 메뉴 권한 삭제 -->
+	<delete id="menuAuthDeleteContents" parameterType="java.lang.String">
+		/* MenuAuthMngMapper.menuAuthDeleteContents */
+		DELETE FROM T_MENU_AUTH_MNG
+		 WHERE MENU_CD = #{menuCd}
+	</delete>
+	
+	
+
+</mapper>
