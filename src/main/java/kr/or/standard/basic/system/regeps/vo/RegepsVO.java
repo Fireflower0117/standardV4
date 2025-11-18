@@ -26,6 +26,9 @@ public class RegepsVO extends CmmnDefaultVO {
 	private String errMsg;
 	@NotBlank(message = "정규표현식예시 : 필수 입력입니다.", groups = {insertCheck.class, updateCheck.class})
 	private String regepsExm;
+	private String regepsCount;
+	private String regrCheck;
+	private String regepsIdCheck;
 	
 	private String useYn;
 	private String regrSerno;
@@ -33,7 +36,31 @@ public class RegepsVO extends CmmnDefaultVO {
 	private String regrNm;
 	private String updrSerno;
 	private String updDt;
-	
+
+	public String getRegrCheck() {
+		return regrCheck;
+	}
+
+	public void setRegrCheck(String regrCheck) {
+		this.regrCheck = regrCheck;
+	}
+
+	public String getRegepsCount() {
+		return regepsCount;
+	}
+
+	public void setRegepsCount(String regepsCount) {
+		this.regepsCount = regepsCount;
+	}
+
+	public String getRegepsIdCheck() {
+		return regepsIdCheck;
+	}
+
+	public void setRegepsIdCheck(String regepsIdCheck) {
+		this.regepsIdCheck = regepsIdCheck;
+	}
+
 	public String getRegepsSerno() {
 		return regepsSerno;
 	}
@@ -112,6 +139,27 @@ public class RegepsVO extends CmmnDefaultVO {
 	public void setRegrNm(String regrNm) {
 		this.regrNm = regrNm;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "RegepsVO{" +
+				"regepsSerno='" + regepsSerno + '\'' +
+				", regepsId='" + regepsId + '\'' +
+				", regepsNm='" + regepsNm + '\'' +
+				", regepsTxt='" + regepsTxt + '\'' +
+				", placeholderTxt='" + placeholderTxt + '\'' +
+				", errMsg='" + errMsg + '\'' +
+				", regepsExm='" + regepsExm + '\'' +
+				", regepsCount='" + regepsCount + '\'' +
+				", regrCheck='" + regrCheck + '\'' +
+				", regepsIdCheck='" + regepsIdCheck + '\'' +
+				", useYn='" + useYn + '\'' +
+				", regrSerno='" + regrSerno + '\'' +
+				", regDt='" + regDt + '\'' +
+				", regrNm='" + regrNm + '\'' +
+				", updrSerno='" + updrSerno + '\'' +
+				", updDt='" + updDt + '\'' +
+				'}';
+	}
 }
 

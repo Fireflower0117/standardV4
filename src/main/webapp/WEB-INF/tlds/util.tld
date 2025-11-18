@@ -8,7 +8,7 @@
 	<uri>/WEB-INF/tlds/util.tld</uri>
 	<function>
 		<name>getDecryptAES256</name>
-		<function-class>kr.or.rapa.playground.common.service.EncryptService</function-class>
+		<function-class>kr.or.standard.basic.module.EncryptUtil</function-class>
 		<function-signature>java.lang.String getDecryptAES256(java.lang.String)</function-signature>
 		<example>
 			util:getDecryptAES256('암호문') 
@@ -17,7 +17,7 @@
 	</function>
 	<function>
 		<name>getDecryptAES256HyPhen</name>
-		<function-class>kr.or.rapa.playground.common.service.EncryptService</function-class>
+		<function-class>kr.or.standard.basic.module.EncryptUtil</function-class>
 		<function-signature>java.lang.String getDecryptAES256HyPhen(java.lang.String)</function-signature>
 		<example>
 			util:getDecryptAES256('암호문') 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="opnt.basic.mapper.UserMngMapper">
+<mapper namespace="com.opennote.standard.mapper.basic.UserMngMapper">
 
 	<!-- 검색 조건 -->
 	<sql id="Where">
@@ -23,8 +23,8 @@
 	</sql>
 
 	<!-- 사용자 목록 수 조회 -->
-	<select id="selectList" parameterType="userVO" resultType="userVO">
-		/* UserMngMapper.selectList */
+	<select id="selectUsertList" parameterType="userVO" resultType="userVO">
+		/* com.opennote.standard.mapper.basic.UserMngMapper.selectUsertList */
 		SELECT A.USER_SERNO			userSerno
 			 , A.USER_ID			userId
 			 , A.USER_NM			userNm
@@ -49,9 +49,9 @@
 	</select>
 
 	<!-- 사용자 목록 조회 -->
-	<select id="selectCount" parameterType="userVO" resultType="int">
-		/* UserMngMapper.selectCount */
-		SELECT COUNT(1)
+	<select id="selectUserCount" parameterType="userVO" resultType="userVO">
+		/* com.opennote.standard.mapper.basic.UserMngMapper.selectUserCount */
+		SELECT COUNT(1) userCount
 		  FROM T_USER_MNG A
 		<where>
 			<include refid="Where"/>
@@ -61,7 +61,7 @@
 
 	<!-- 사용자 상세 조회 -->
 	<select id="selectContents" parameterType="userVO" resultType="userVO">
-		/* UserMngMapper.selectContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.selectContents */
 		SELECT USER_SERNO		userSerno
 			 , USER_ID			userId
 			 , USER_NM			userNm
@@ -84,7 +84,7 @@
 	</select>
 
 	<insert id="insertContents" parameterType="userVO">
-		/* UserMngMapper.insertContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.insertContents */
 		INSERT INTO T_USER_MNG
 			 ( USER_ID
 			 , USER_NM
@@ -121,7 +121,7 @@
 	
 	<!-- 사용자 수정 -->
 	<update id="updateContents" parameterType="userVO">
-		/* UserMngMapper.updateContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.updateContents */
 		UPDATE T_USER_MNG
 		   SET USER_NM 				= #{userNm}
 		   <if test='userPswd != null and userPswd != ""'>
@@ -143,7 +143,7 @@
 	
 	<!-- 사용자 삭제 -->
 	<update id="deleteContents" parameterType="userVO">
-		/* UserMngMapper."deleteContents" */
+		/* com.opennote.standard.mapper.basic.UserMngMapper."deleteContents" */
 		UPDATE T_USER_MNG
 		   SET USE_YN 	  = 'N'
 		 WHERE USER_SERNO = #{userSerno}
@@ -151,7 +151,7 @@
 	
 	<!-- 로그인 -->
 	<select id="getCont" parameterType="loginVO" resultType="loginVO">
-		/* UserMngMapper.getCont */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.getCont */
 		SELECT USER_SERNO 										userSerno
 			 , USER_ID 											userId
 			 , USER_NM 											userNm
@@ -178,7 +178,7 @@
 	
 	<!-- sns 계정 중복체크 -->
 	<select id="snsUserIdOverChk" parameterType="loginVO" resultType="boolean">
-		/* UserMngMapper.snsUserIdOverChk */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.snsUserIdOverChk */
 		SELECT CASE WHEN COUNT(SNS_USER_ID) > 0 THEN 1
 					ELSE 0
 			   END
@@ -189,7 +189,7 @@
 	
 	<!-- sns 로그인 -->
 	<select id="getSnsCont" parameterType="loginVO" resultType="loginVO">
-		/* UserMngMapper.getSnsCont */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.getSnsCont */
 		SELECT USER_SERNO 										userSerno
 			 , USER_ID 											userId
 			 , USER_NM 											userNm
@@ -213,7 +213,7 @@
 	
 	<!-- 아이디 중복체크 -->
 	<select id="userIdOverChk" parameterType="userVO" resultType="boolean">
-		/* UserMngMapper.userIdOverChk */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.userIdOverChk */
 		SELECT CASE WHEN COUNT(A.USER_ID) > 0 THEN 0
 					ELSE 1
 			   END
@@ -229,7 +229,7 @@
 	
 	<!-- 아이디 찾기 -->
 	<select id="findIdContents" parameterType="loginVO" resultType="loginVO">
-		/* UserMngMapper.findIdContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.findIdContents */
 		SELECT USER_SERNO		userSerno
 			 , USER_ID 			userId
 			 , USER_NM 			userNm
@@ -245,7 +245,7 @@
 	
 	<!-- 비밀번호 찾기 -->
 	<select id="findPswdContents" parameterType="loginVO" resultType="loginVO">
-		/* UserMngMapper.findPswdContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.findPswdContents */
 		SELECT USER_SERNO		userSerno
 			 , USER_ID 			userId
 			 , USER_NM 			userNm
@@ -262,7 +262,7 @@
 	
 	<!-- 사용자 계정 생성 -->
 	<update id="joinContents" parameterType="userVO" useGeneratedKeys="true" keyProperty="userSerno">
-		/* UserMngMapper.joinContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.joinContents */
 		INSERT INTO T_USER_MNG
 		     ( USER_ID
 			 , USER_PSWD
@@ -303,7 +303,7 @@
 	
 	<!-- 비밀번호 불일치 건수 증가 -->
 	<update id="pswdMsmtNocsUpdateContent" parameterType="loginVO">
-		/* UserMngMapper.pswdMsmtNocsUpdateContent */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.pswdMsmtNocsUpdateContent */
 		UPDATE T_USER_MNG
 		   SET PSWD_MSMT_NOCS = PSWD_MSMT_NOCS + 1
 		 WHERE USER_ID 		  = #{userId}
@@ -311,7 +311,7 @@
 	
 	<!-- 최종 접속 일시 갱신 -->
 	<update id="userLstAcsDtUpdateContent" parameterType="loginVO">
-		/* opnt.basic.mapper.UserMngMapper.userLstAcsDtUpdateContent */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.userLstAcsDtUpdateContent */
 		UPDATE T_USER_MNG
 		   SET LST_ACS_DT = NOW()
 		 WHERE USER_ID 	  = #{userId}
@@ -319,7 +319,7 @@
 	
 	<!-- 비밀번호 불일치 건수 초기화 -->
 	<update id="userPswdMsmtNocsClearContent" parameterType="loginVO">
-		/* UserMngMapper.userPswdMsmtNocsClearContent */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.userPswdMsmtNocsClearContent */
 		UPDATE T_USER_MNG
 		   SET PSWD_MSMT_NOCS = 0
 		 WHERE USER_ID 	  	  = #{userId}
@@ -327,7 +327,7 @@
 	
 	<!-- 잠금 해제 -->
 	<update id="userUnLock" parameterType="loginVO">
-		/* UserMngMapper.userUnLock */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.userUnLock */
 		UPDATE T_USER_MNG
 		   SET PSWD_MSMT_NOCS = 0
 		 WHERE USER_SERNO IN (<foreach collection="schEtc11" item="item" separator=",">#{item}</foreach>)
@@ -335,7 +335,7 @@
 	
 	<!-- 비밀번호 변경 -->
 	<update id="updateUserPswd" parameterType="loginVO">
-		/* UserMngMapper.updateUserPswd */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.updateUserPswd */
 		UPDATE T_USER_MNG
 		   SET USER_PSWD = #{userPswd}
 		 WHERE USER_ID 	 = #{userId}
@@ -343,7 +343,7 @@
 	
 	<!-- 최종 비밀번호 변경 일시 갱신 -->
 	<update id="updateLastPswdChgDt" parameterType="loginVO">
-		/* UserMngMapper.updateLastPswdChgDt */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.updateLastPswdChgDt */
 		UPDATE T_USER_MNG
 		   SET LST_PSWD_CHG_DT = NOW()
 		 WHERE USER_ID 		   = #{userId}
@@ -351,7 +351,7 @@
 	
 	<!-- 회원정보 수정 -->
 	<update id="updateUserContents" parameterType="userVO">
-		/* UserMngMapper.updateUserContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.updateUserContents */
 		UPDATE T_USER_MNG
 		   SET USER_NM 				= #{userNm}
 		   <if test='userPswd != null and userPswd != ""'>
@@ -369,15 +369,15 @@
 
 	<!-- 사용자 데이터 삭제 -->
 	<delete id="deleteUserContents" parameterType="userVO">
-		/* UserMngMapper.deleteUserContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.deleteUserContents */
 		DELETE FROM T_USER_MNG
 		 WHERE USER_SERNO = #{userSerno}
 	</delete>
 
 	<!-- ID 중복체크 -->
-	<select id="idOvlpSelectCount" parameterType="userVO" resultType="int">
-		/* UserMngMapper.idOvlpSelectCount */
-		SELECT COUNT(1)
+	<select id="idOvlpSelectCount" parameterType="userVO" resultType="userVO">
+		/* com.opennote.standard.mapper.basic.UserMngMapper.idOvlpSelectCount */
+		SELECT COUNT(1) userCount
 		  FROM (SELECT USER_ID
 				  FROM T_USER_MNG
 				 WHERE USER_ID = #{userId}
@@ -390,7 +390,7 @@
 
 	<!-- 탈퇴 유저 테이블로 이동 -->
 	<insert id="moveUserContents" parameterType="userVO">
-		/* UserMngMapper.moveUserContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.moveUserContents */
 		INSERT INTO T_USER_SCSS_MNG ( 
 			   USER_SERNO  
 			 , USER_ID
@@ -453,7 +453,7 @@
 	
 	<!-- sns 계정 연동 -->
 	<update id="updateSnsConnContents" parameterType="userVO">
-		/* UserMngMapper.updateSnsConnContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.updateSnsConnContents */
 		UPDATE T_USER_MNG
 		   SET SNS_SE_CD 	= #{snsSeCd}
 		   	 , SNS_USER_ID 	= #{snsUserId}
@@ -463,7 +463,7 @@
 	
 	<!-- 사용자 엑셀 목록 조회 -->
 	<select id="selectExcelList" parameterType="userVO" resultType="userVO">
-		/* UserMngMapper.selectExcelList */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.selectExcelList */
 		SELECT A.USER_ID									userId
 			 , A.USER_NM									userNm
 			 , B.GRP_AUTH_NM								grpAuthNm
@@ -499,7 +499,7 @@
 	
 	<!-- 사용자 비밀번호 조회 -->
 	<select id="getUserPswd" parameterType="userVO" resultType="userVO">
-		/* UserMngMapper.getUserPswd */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.getUserPswd */
 		SELECT USER_ID
 			 , USER_PSWD
 		  FROM T_USER_MNG 
@@ -508,8 +508,8 @@
 	</select>
 
 	<!-- 월별 가입추이(현재년도) -->
-	<select id="selectScrbUserMon" resultType="java.util.HashMap">
-		/* UserMngMapper.selectScrbUserMon */
+	<select id="selectScrbUserMon" resultType="CommonMap">
+		/* com.opennote.standard.mapper.basic.UserMngMapper.selectScrbUserMon */
 		SELECT DATE_FORMAT(REG_DT, '%m')        regDt
 			 , COUNT(1)                         cnt
 		FROM T_USER_MNG
@@ -518,8 +518,8 @@
 	</select>
 
 	<!-- 일별 가입추이 -->
-	<select id="selectScrbUserDay" parameterType="acsStatVO" resultType="java.util.HashMap">
-		/* UserMngMapper.selectScrbUserMon */
+	<select id="selectScrbUserDay" parameterType="acsStatVO" resultType="CommonMap">
+		/* com.opennote.standard.mapper.basic.UserMngMapper.selectScrbUserMon */
 		SELECT DATE_FORMAT(REG_DT, '%d')        regDt
 			 , COUNT(1)                         cnt
 		FROM T_USER_MNG
@@ -531,7 +531,7 @@
 
 	<!-- 가입회원 목록 -->
 	<select id="selectScrbUserList" parameterType="acsStatVO" resultType="userVO">
-		/* UserMngMapper.selectScrbUserList */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.selectScrbUserList */
 		SELECT A.USER_ID            userId
 			 , A.USER_NM            userNm
 			 , B.GRP_AUTH_NM        grpAuthNm
@@ -544,15 +544,15 @@
 	</select>
 
 	<!-- 가입회원 건수 -->
-	<select id="selectScrbUserCount" parameterType="acsStatVO" resultType="int">
-		/* UserMngMapper.selectScrbUserCount */
-		SELECT COUNT(1)
+	<select id="selectScrbUserCount" parameterType="acsStatVO" resultType="acsStatVO">
+		/* com.opennote.standard.mapper.basic.UserMngMapper.selectScrbUserCount */
+		SELECT COUNT(1) userCount
 		FROM T_USER_MNG
 		WHERE DATE_FORMAT(REG_DT, '%Y.%m.%d') = #{schEtc00}
 	</select>
 
 	<select id="selectHwpList" parameterType="userVO" resultType="userVO">
-		/* UserMngMapper.selectHwpList */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.selectHwpList */
 		SELECT A.USER_SERNO		 userSerno
 			 , A.USER_ID		 userId
 			 , A.USER_NM		 userNm
@@ -583,16 +583,16 @@
 	</select>
 
 	<!-- 본인글 여부 -->
-	<select id="regrCheck" parameterType="userVO" resultType="boolean">
-		/* UserMngMapper.regrCheck */
-		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1 ELSE 0 END
+	<select id="regrCheck" parameterType="userVO" resultType="userVO">
+		/* com.opennote.standard.mapper.basic.UserMngMapper.regrCheck */
+		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1 ELSE 0 END isRegrCheck
 		  FROM T_USER_MNG
 		 WHERE USER_SERNO = #{userSerno}
 	</select>
 
 	<!-- 회원가입 약관동의 등록 -->
 	<insert id="mergeUserTermsContents" parameterType="kr.or.standard.basic.term.vo.TermsVO$Terms">
-		/* UserMngMapper.mergeUserTermsContents */
+		/* com.opennote.standard.mapper.basic.UserMngMapper.mergeUserTermsContents */
 		INSERT INTO T_USER_TERMS_MNG (
 									   USER_SERNO
 									 , TERMS_SERNO

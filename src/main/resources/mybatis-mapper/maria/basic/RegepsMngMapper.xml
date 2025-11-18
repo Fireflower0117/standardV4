@@ -19,9 +19,9 @@
 	</sql>
 
 	<!-- 정규표현식 건수 조회 -->
-	<select id="selectCount" parameterType="regepsVO" resultType="int">
+	<select id="selectCount" parameterType="regepsVO" resultType="regepsVO">
 		/* com.opennote.standard.mapper.basic.RegepsMngMapper.selectCount */
-		SELECT COUNT(1)
+		SELECT COUNT(1) regepsCount
 		  FROM T_REGEPS_MNG
 		<where>
 			<include refid="Where"/>
@@ -150,21 +150,21 @@
 	</update>
 	
 	<!-- 정규표현식ID 중복체크 -->
-	<select id="regepsIdCheck" parameterType="regepsVO" resultType="boolean">
+	<select id="regepsIdCheck" parameterType="regepsVO" resultType="regepsVO">
 		/* com.opennote.standard.mapper.basic.RegepsMngMapper.regepsIdCheck */
 		SELECT CASE WHEN COUNT(REGEPS_ID) > 0 THEN 0
 					ELSE 1
-			   END
+			   END AS regepsIdCheck
 		  FROM T_REGEPS_MNG 
 		 WHERE REGEPS_ID = #{regepsId}
 	</select>
 
 	<!-- 정규표현식 본인글 여부 -->
-	<select id="regrCheck" parameterType="regepsVO" resultType="boolean">
+	<select id="regrCheck" parameterType="regepsVO" resultType="regepsVO">
 		/* com.opennote.standard.mapper.basic.RegepsMngMapper.regrCheck */
 		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
 					ELSE 0
-			   END
+			   END regrCheck
 		  FROM T_REGEPS_MNG 
 		 WHERE REGEPS_SERNO = #{regepsSerno}
 	</select>

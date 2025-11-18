@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.kps.partners.mapper.ErrLogMngMapper">
+<mapper namespace="com.opennote.standard.mapper.basic.ErrLogMngMapper">
 
 	<sql id="Where">
 			<if test="schEtc11 != null and schEtc11.length > 0">
@@ -76,9 +76,9 @@
 
 
     <!-- 에러로그 건수 조회 -->
-    <select id="selectCount" parameterType="errlogVO" resultType="int">
+    <select id="selectCount" parameterType="errlogVO" resultType="errlogVO">
 		/* ErrLogMngMapper.selectCount */
-        SELECT COUNT(1)
+        SELECT COUNT(1) errLogCnt
           FROM T_ERR_LOG_MNG A
 		  LEFT OUTER JOIN T_MENU_MNG B
 		    ON A.MENU_CG_NM = B.MENU_CD

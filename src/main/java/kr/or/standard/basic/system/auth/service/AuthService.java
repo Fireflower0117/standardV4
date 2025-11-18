@@ -1,17 +1,30 @@
 package kr.or.standard.basic.system.auth.service;
 
- 
+ import kr.or.standard.appinit.pagination.service.PaginationService;
 import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
 import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
-import kr.or.standard.basic.system.auth.vo.AuthVO;
-import lombok.RequiredArgsConstructor;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.springframework.stereotype.Service;
+ import kr.or.standard.basic.common.domain.CommonMap;
+ import kr.or.standard.basic.common.view.excel.ExcelView;
+ import kr.or.standard.basic.system.auth.vo.AuthVO;
+ import kr.or.standard.basic.system.menu.servie.MenuService;
+ import lombok.RequiredArgsConstructor;
+ import org.apache.commons.lang3.StringUtils;
+ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+ import org.springframework.context.MessageSource;
+ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import kr.or.standard.basic.login.vo.LoginVO;
+import org.springframework.ui.Model;
+ import org.springframework.validation.BindingResult;
+ import org.springframework.web.bind.annotation.PathVariable;
+ import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
+ import javax.servlet.http.HttpServletRequest;
+ import javax.servlet.http.HttpSession;
+ import java.util.ArrayList;
+ import java.util.HashMap;
+ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,28 +33,182 @@ public class AuthService  extends EgovAbstractServiceImpl {
 	
 	private final BasicCrudDao basicDao; 
 	private final CmmnDefaultDao defaultDao;
+	private final PaginationService paginationService;
+	private final MessageSource messageSource; 
+	private final ExcelView excelView;
+	//private final MenuService menuService;
 	
 	/*private final MenuAuthMngMapper menuAuthMngMapper; 
 	public MaAuthService(MenuAuthMngMapper menuAuthMngMapper) {
 		this.menuAuthMngMapper = menuAuthMngMapper;
 	}*/
 	
-	public int selectCount(AuthVO vo) {
+	public void addList(AuthVO searchVO, Model model) throws Exception{
+		
+		
+		AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectCount", searchVO);
+		int count = Integer.parseInt(rtnVo.getAuthCount()); 
+		
+		PaginationInfo paginationInfo = paginationService.procPagination(searchVO);
+		paginationInfo.setTotalRecordCount(count);
+		model.addAttribute("paginationInfo", paginationInfo);
+
+		List<AuthVO> resultList = (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectList", searchVO);  
+		model.addAttribute("resultList", resultList);
+		model.addAttribute("totalRecordCount", count);
+	} 
+	
+	public String insertUpdagteForm(AuthVO searchVO, Model model, String procType, HttpSession session){
+		
+		
+			AuthVO authVO = new AuthVO();
+	
+			if("update".equals(procType)) {
+	
+				// 일련번호 없는 경우
+				if(StringUtils.isEmpty(searchVO.getGrpAuthSerno())) {
+					return "redirect:list.do";
+				}
+	
+				// 관리자 또는 본인글인 경우
+				if ((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || regrCheck(searchVO)) {
+					authVO = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectContents", searchVO);
+				}else{
+					return "redirect:list.do";
+				}
+			}
+	
+			authVO.setMenuSeCd("MA");
+			List<AuthVO> maMenuAuthList = selectMenuList(authVO);
+	
+			authVO.setMenuSeCd("FT");
+			List<AuthVO> ftMenuAuthList = selectMenuList(authVO);
+	
+			authVO.setMenuSeCd("MY");
+			List<AuthVO> myMenuAuthList = selectMenuList(authVO);
+	
+			model.addAttribute("authVO", authVO);
+			model.addAttribute("maMenuAuthList", maMenuAuthList);
+			model.addAttribute("ftMenuAuthList", ftMenuAuthList);
+			model.addAttribute("myMenuAuthList", myMenuAuthList);
+			
+			return "";
+	}
+	
+	public CommonMap insertProc(AuthVO searchVO, HttpServletRequest request, MenuService menuService) throws Exception{
+		
+		
+		CommonMap returnMap = new CommonMap();
+
+		// 그룹권한ID 중복체크 
+		AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.idOvlpSelectCount", searchVO);
+		int ovlpCnt = Integer.parseInt( rtnVo.getAuthCount()); 
+		if(ovlpCnt > 0){
+			// message는 properties
+			returnMap.put("message", messageSource.getMessage("admin.message", null, null));
+		}
+
+		int resultCnt = insertContents(searchVO);
+
+		if(resultCnt > 0) {
+			// layout HTML 생성
+			menuService.makeLayoutHtml(request,null, searchVO,"/ma/sys/menu/","");
+			
+			returnMap.put("message", messageSource.getMessage("insert.message", null, null));
+		} else {
+			returnMap.put("message", messageSource.getMessage("insert.fail.message", null, null));
+		}
+
+		returnMap.put("returnUrl", "list.do");
+		return returnMap;
+	}
+	
+	public CommonMap updateProc(AuthVO searchVO, HttpSession session,HttpServletRequest request, MenuService menuService) throws Exception{
+		
+		CommonMap returnMap = new CommonMap(); 
+		// 관리자 또는 본인글인경우
+		if ((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || regrCheck(searchVO)) {
+			int resultCnt = updateContents(searchVO);
+
+			if(resultCnt > 0) {
+				// 생성된 layout HTML 삭제 후 재생성
+				menuService.delLayoutHtml(request,searchVO.getGrpAuthId());
+				menuService.makeLayoutHtml(request,null, searchVO,"/ma/sys/menu/","");
+				returnMap.put("message", messageSource.getMessage("update.message", null, null));
+			} else {
+				returnMap.put("message", messageSource.getMessage("update.fail.message", null, null));
+			}
+		} else {
+			returnMap.put("message", messageSource.getMessage("acs.error.message", null, null));
+		}
+
+		returnMap.put("returnUrl", "list.do");
+		return returnMap;
+	}
+	
+	public CommonMap deleteProc(AuthVO searchVO, HttpSession session,HttpServletRequest request, MenuService menuService) throws Exception{
+		
+		CommonMap returnMap = new CommonMap();
+
+		// 관리자 또는 본인글인경우
+		if ((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || regrCheck(searchVO)) {
+			int resultCnt = defaultDao.update("com.opennote.standard.mapper.basic.MenuAuthMngMapper.deleteContents", searchVO);
+
+			if(resultCnt > 0) {
+				// 생성된 layout HTML삭제
+				menuService.delLayoutHtml(request,searchVO.getGrpAuthId());
+				returnMap.put("message", messageSource.getMessage("delete.message", null, null));
+				returnMap.put("returnUrl", "list.do");
+			} else {
+				returnMap.put("message", messageSource.getMessage("delete.fail.message", null, null));
+				returnMap.put("returnUrl", "updateForm.do");
+			}
+		} else {
+			returnMap.put("message", messageSource.getMessage("acs.error.message", null, null));
+			returnMap.put("returnUrl", "list.do");
+		}
+		return returnMap;
+	}
+	
+	public ModelAndView excelDownload(AuthVO searchVO){
+		
+		ModelAndView mav = new ModelAndView(excelView);
+		String tit = "권한목록";
+		String url = "/standard/system/authList.xlsx"; 
+		
+		List<AuthVO> resultList = (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectExcelList" , searchVO);
+		  
+		mav.addObject("target", tit);
+		mav.addObject("source", url);
+		mav.addObject("resultList", resultList);
+		return mav; 
+	}
+	
+	public CommonMap idOvlpChk(AuthVO searchVO){
+		
+		CommonMap returnMap = new CommonMap();
+		AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.idOvlpSelectCount", searchVO);
+		int ovlpCnt = Integer.parseInt( rtnVo.getAuthCount()); 
+		returnMap.put("ovlpCnt", ovlpCnt);
+		return returnMap;
+	}
+	
+	/*public int selectCount(AuthVO vo) {
 		AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectCount", vo);
 		return Integer.parseInt(rtnVo.getAuthCount()); 
-	};
+	};*/
 	
-	public List<AuthVO> selectList(AuthVO vo) {
+	/*public List<AuthVO> selectList(AuthVO vo) {
 		return (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectList", vo); 
-	};
+	};*/
 
 	public List<AuthVO> selectAllList() {
 		return (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectAllList"); 
 	};
 
-	public AuthVO selectContents(AuthVO vo) {
+	/*public AuthVO selectContents(AuthVO vo) {
 		return (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectContents", vo); 
-	};
+	};*/
 
 	public boolean regrCheck(AuthVO vo) {
 		AuthVO rtnVo =  (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.regrCheck", vo); 
@@ -147,18 +314,18 @@ public class AuthService  extends EgovAbstractServiceImpl {
 		return result;
 	};
 
-	public int deleteContents(AuthVO vo) {
+	/*public int deleteContents(AuthVO vo) {
 		return defaultDao.update("com.opennote.standard.mapper.basic.MenuAuthMngMapper.deleteContents", vo); 
-	};
+	};*/
 
 	/*public int idOvlpSelectCount(AuthVO vo) {
-		 AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.deleteContents", vo);
+		 AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.idOvlpSelectCount", vo);
 		 return Integer.parseInt( rtnVo.getAuthCount());  
 	};*/
 
-	/*public List<AuthVO> selectMenuList(AuthVO vo) {
+	public List<AuthVO> selectMenuList(AuthVO vo) {
 		return (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectMenuList", vo); 
-	};*/
+	};
 
 
 	// 관리자 권한 취득

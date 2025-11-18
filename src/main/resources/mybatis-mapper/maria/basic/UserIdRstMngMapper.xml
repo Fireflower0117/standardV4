@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.kps.partners.mapper.UserIdRstMngMapper">
+<mapper namespace="com.opennote.standard.mapper.basic.UserIdRstMngMapper">
 
 	<sql id="Where">
 		<if test='searchKeyword !=null and searchKeyword !=""'>
@@ -20,7 +20,7 @@
 
 	<!-- 제한 사용자 목록 조회 -->
 	<select id="selectList" parameterType="rstMngVO" resultType="rstMngVO">
-		/* UserIdRstMngMapper.selectList */
+		/* com.opennote.standard.mapper.basic.UserIdRstMngMapper.selectList */
 		SELECT USER_SERNO			userSerno
 			 , USER_ID				userId
 			 , BRK_YN				brkYn
@@ -33,9 +33,9 @@
 	</select>
 
 	<!-- 제한 사용자 목록 수 조회 -->
-	<select id="selectCount" parameterType="rstMngVO" resultType="int">
-		/* UserIdRstMngMapper.selectCount */
-		SELECT COUNT(1)
+	<select id="selectCount" parameterType="rstMngVO" resultType="rstMngVO">
+		/* com.opennote.standard.mapper.basic.UserIdRstMngMapper.selectCount */
+		SELECT COUNT(1) userIdCount
 		  FROM T_USER_ID_RST_MNG
 		<where>
 			<include refid="Where"/>
@@ -44,24 +44,24 @@
 	</select>
 
 	<!-- 제한 ID 체크 -->
-	<select id="idRstSelectCount" parameterType="userVO" resultType="int">
-		/* UserIdRstMngMapper.idRstSelectCount */
-		SELECT COUNT(1)
+	<select id="idRstSelectCount" parameterType="userVO" resultType="userVO">
+		/* com.opennote.standard.mapper.basic.UserIdRstMngMapper.idRstSelectCount */
+		SELECT COUNT(1) userCount
 		  FROM T_USER_ID_RST_MNG
 		 WHERE USER_ID = #{userId}
 		   AND BRK_YN = 'Y'
 	</select>
 
-	<select id="idOvlpSelectCount" parameterType="rstMngVO" resultType="int">
-		/* UserIdRstMngMapper.idOvlpSelectCount */
-		SELECT COUNT(1)
+	<select id="idOvlpSelectCount" parameterType="rstMngVO" resultType="rstMngVO">
+		/* com.opennote.standard.mapper.basic.UserIdRstMngMapper.idOvlpSelectCount */
+		SELECT COUNT(1) userIdCount
 		  FROM T_USER_ID_RST_MNG
 		 WHERE USER_ID = #{userId}
 	</select>
 
 	<!-- 등록 -->
 	<insert id="insertContents" parameterType="rstMngVO">
-		/* UserIdRstMngMapper.insertContents */
+		/* com.opennote.standard.mapper.basic.UserIdRstMngMapper.insertContents */
 		INSERT INTO T_USER_ID_RST_MNG
 			 ( USER_SERNO
 			 , USER_ID
@@ -80,7 +80,7 @@
 
 	<!-- 삭제 -->
 	<delete id="deleteContents" parameterType="rstMngVO">
-		/* UserIdRstMngMapper.deleteContents */
+		/* com.opennote.standard.mapper.basic.UserIdRstMngMapper.deleteContents */
 		UPDATE T_USER_ID_RST_MNG
 		   SET USE_YN 	   = 'N'
 		 WHERE USER_SERNO  = #{userSerno}
@@ -88,7 +88,7 @@
 
 	<!-- 일괄 제한-->
 	<update id="allBlock" parameterType="rstMngVO">
-		/* UserIdRstMngMapper.allBlock */
+		/* com.opennote.standard.mapper.basic.UserIdRstMngMapper.allBlock */
 		UPDATE T_USER_ID_RST_MNG
 		   SET BRK_YN = 'Y'
 		 WHERE USER_SERNO IN (<foreach collection="schEtc12" item="item" separator=",">#{item}</foreach>)
@@ -96,14 +96,14 @@
 
 	<!-- 일괄 제한 해제-->
 	<update id="allClear" parameterType="rstMngVO">
-		/* UserIdRstMngMapper.allClear */
+		/* com.opennote.standard.mapper.basic.UserIdRstMngMapper.allClear */
 		UPDATE T_USER_ID_RST_MNG
 		   SET BRK_YN = 'N'
 		 WHERE USER_SERNO IN (<foreach collection="schEtc11" item="item" separator=",">#{item}</foreach>)
 	</update>
 
 	<select id="selectExcelList" parameterType="rstMngVO" resultType="rstMngVO">
-		/* UserIdRstMngMapper.selectExcelList */
+		/* com.opennote.standard.mapper.basic.UserIdRstMngMapper.selectExcelList */
 		SELECT USER_SERNO			userSerno
 			, USER_ID				userId
 			, BRK_YN				brkYn

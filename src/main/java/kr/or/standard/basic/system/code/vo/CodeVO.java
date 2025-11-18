@@ -221,5 +221,35 @@ public class CodeVO extends CmmnDefaultVO {
 	public void setRequired(String required) {
 		this.required = required;
 	}
+
+
+	@Override
+	public String toString() {
+		return "CodeVO{" +
+				"cdVal='" + cdVal + '\'' +
+				", cdNm='" + cdNm + '\'' +
+				", cdSerno='" + cdSerno + '\'' +
+				", cdUppoVal='" + cdUppoVal + '\'' +
+				", cdLvlVal='" + cdLvlVal + '\'' +
+				", cdSortSeqo='" + cdSortSeqo + '\'' +
+				", cdDtlsExpl='" + cdDtlsExpl + '\'' +
+				", regrSerno='" + regrSerno + '\'' +
+				", regDt='" + regDt + '\'' +
+				", updrSerno='" + updrSerno + '\'' +
+				", updDt='" + updDt + '\'' +
+				", useYn='" + useYn + '\'' +
+				", chldCnt='" + chldCnt + '\'' +
+				", cdNextSerno='" + cdNextSerno + '\'' +
+				", codeType='" + codeType + '\'' +
+				", defVal='" + defVal + '\'' +
+				", selVal='" + selVal + '\'' +
+				", name='" + name + '\'' +
+				", idKey='" + idKey + '\'' +
+				", sort='" + sort + '\'' +
+				", title='" + title + '\'' +
+				", required='" + required + '\'' +
+				", rowCnt='" + rowCnt + '\'' +
+				'}';
+	}
 }
 

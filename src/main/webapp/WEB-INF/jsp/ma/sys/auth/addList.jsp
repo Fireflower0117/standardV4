@@ -90,8 +90,8 @@ $(document).ready(function(){
 		<ui:pagination paginationInfo="${paginationInfo}" type="manage" jsFunction="fncPageBoard"/>
 	</ul>
 	<div class="btn_right">
-		<c:if test="${sessionscope.session_write_btn_key}">
+		<!-- c:if test="${sessionscope.session_write_btn_key}" -->
 			<button id="btn_write" class="btn blue">등록</button>
-		</c:if>
+		<!-- /c:if -->
 	</div>
 </div>

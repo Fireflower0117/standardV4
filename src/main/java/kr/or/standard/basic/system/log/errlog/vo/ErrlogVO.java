@@ -17,6 +17,11 @@ public class ErrlogVO extends CmmnDefaultVO {
 	private String errOccrIpAddr;			// 오류발생IP주소
 	private String errOccrDt;				// 오류발생일시
 	private String useYn;					// 사용여부
+    private String errLogCnt;  			    // 에러로그 수
+
+	public String getErrLogCnt() { return errLogCnt; }
+
+	public void setErrLogCnt(String errLogCnt) { this.errLogCnt = errLogCnt; }
 
 	public String getErrLogSerno() {
 		return errLogSerno;

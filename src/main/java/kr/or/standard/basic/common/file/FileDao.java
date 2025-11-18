@@ -89,7 +89,7 @@ public class FileDao {
     }
 
     public int insertFile(String qid, FileVO filevo) { 
-        log.info("[DAO-INSERT FILE] " + qid + ", " + filevo);
+        log.info("[DAO-INSERT FILE] " + qid );
         int effCnt = sqlsession.insert(qid, filevo);
         filevo.setEffCnt(effCnt); 
         return effCnt;

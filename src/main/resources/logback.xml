@@ -36,7 +36,7 @@
     <logger name="jdbc" level="OFF" additive="false">
         <appender-ref ref="ROLLING_LOG_FILE"/>
     </logger>
-    <logger name="jdbc.sqlonly" level="ERROR"> 
+    <logger name="jdbc.sqlonly" level="DEBUG"> 
         <appender-ref ref="ROLLING_LOG_FILE"/>
     </logger>
     <logger name="jdbc.sqltiming" level="OFF" additive="false" >
@@ -46,7 +46,7 @@
         <appender-ref ref="ROLLING_LOG_FILE"/>
     </logger>   
     
-    <logger name="jdbc.resultsettable" level="ERROR" >  
+    <logger name="jdbc.resultsettable" level="DEBUG" >  
         <appender-ref ref="ROLLING_LOG_FILE"/>
     </logger>  
      

@@ -1,9 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="opnt.atchFileMng">
+<mapper namespace="com.opennote.standard.mapper.basic.atchFileMng">
 
 	<!-- 파일생성 -->
 	<insert id="putAtchFile" parameterType="fileVO">
+		/* com.opennote.standard.mapper.basic.atchFileMng.putAtchFile */
+		<selectKey keyProperty="fileSeqo" order="BEFORE" resultType="java.lang.String">
+			SELECT IFNULL(CAST(MAX(D.FILE_SEQO) AS INT) + 1, 0) FROM T_ATCH_FILE_MNG D WHERE D.ATCH_FILE_ID = #{atchFileId}
+		</selectKey>
+
+		INSERT INTO T_ATCH_FILE_MNG (
+			ATCH_FILE_ID
+			, FILE_SEQO
+			, PHCL_FILE_PTH_NM
+			, PHCL_FILE_NM
+			, RL_FILE_NM
+			, FILE_EXTN_NM
+			, FILE_SZ_VAL
+			, FILE_TP_NM
+			, IMG_WDTH_SZ_VAL
+			, IMG_HGHT_SZ_VAL
+			, FILE_BYTE										   
+			, REGR_SERNO
+			, REG_DT
+			, DEL_YN
+		) VALUES (
+			#{atchFileId}
+			, #{fileSeqo}
+			, #{phclFilePthNm}
+			, #{fileNmPhclFileNm}
+			, #{fileRlNm}
+			, #{fileFextNm}
+			, #{fileSizeVal}
+			, #{fileTpNm}
+			, #{imgSqrVal}
+			, #{imgHghtVal}
+			, #{fileByte}
+		    , #{loginSerno}
+			, NOW()
+			, 'N'
+		)
+	</insert>
+	
+	<insert id="putAtchFile_old" parameterType="fileVO">
+		/* com.opennote.standard.mapper.basic.atchFileMng.putAtchFile_old */
 		<selectKey keyProperty="fileSeqo" order="BEFORE" resultType="java.lang.String">
 			SELECT IFNULL(CAST(MAX(D.FILE_SEQO) AS INT) + 1, 0) FROM T_ATCH_FILE_MNG D WHERE D.ATCH_FILE_ID = #{atchFileId}
 		</selectKey>
@@ -20,7 +60,7 @@
 			, IMG_WDTH_SZ_VAL
 			, IMG_HGHT_SZ_VAL
 			, FILE_BYTE
-		<if test="ftLoginSerno != null and ftLoginSerno != ''">										   
+		<if test="loginSerno != null and loginSerno != ''">										   
 			, REGR_SERNO
 		</if>
 		<if test="loginSerno == null and loginSerno == ''">
@@ -40,8 +80,8 @@
 			, #{imgSqrVal}
 			, #{imgHghtVal}
 			, #{fileByte}
-		<if test="ftLoginSerno != null and ftLoginSerno != ''">
-		    , #{ftLoginSerno}										   
+		<if test="loginSerno != null and loginSerno != ''">
+		    , #{loginSerno}										   
 		</if>
 		<if test="loginSerno == null and loginSerno == ''">
 		    , #{loginSerno}										   
@@ -53,6 +93,7 @@
 
 	<!-- 파일 삭제 -->
 	<update id="delAtchFile" parameterType="fileVO">
+		/* com.opennote.standard.mapper.basic.atchFileMng.delAtchFile */
 		UPDATE T_ATCH_FILE_MNG
 		SET DEL_YN = 'Y'
 		WHERE ATCH_FILE_ID = #{atchFileId}
@@ -64,6 +105,7 @@
 
 	<!-- 파일 List 조회 -->
 	<select id="getAtchFileList" parameterType="fileVO" resultType="fileVO">
+		/* com.opennote.standard.mapper.basic.atchFileMng.getAtchFileList */
 		SELECT ATCH_FILE_ID 		atchFileId
 			 , FILE_SEQO 			fileSeqo
 			 , PHCL_FILE_PTH_NM 	phclFilePthNm
@@ -88,7 +130,7 @@
 	
 	<!-- 파일 단건 조회 -->
 	<select id="getAtchFile" parameterType="fileVO" resultType="fileVO">
-		/* kr.or.kps.partners.mapper.AtchFileMngMapper.getAtchFile  */
+		/* com.opennote.standard.mapper.basic.atchFileMng.getAtchFile  */
 		SELECT ATCH_FILE_ID 		atchFileId
 			 , FILE_SEQO 			fileSeqo
 			 , PHCL_FILE_PTH_NM 	phclFilePthNm
@@ -116,6 +158,7 @@
 
 	<!-- 파일 일련번호 생성 -->
 	<select id="getAtchFileId" resultType="java.lang.String">
+		/* com.opennote.standard.mapper.basic.atchFileMng.getAtchFileId  */
 		SELECT IFNULL(MAX(CAST(ATCH_FILE_ID  AS UNSIGNED)),0)+1 
 		  FROM T_ATCH_FILE_MNG
 	</select>

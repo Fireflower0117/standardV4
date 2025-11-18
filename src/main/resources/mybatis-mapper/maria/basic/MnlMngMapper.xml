@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.mapper.basic.MnlMngMapper">
+
+	<!-- 검색 조건 -->
+	<sql id="Where">
+		<if test='searchKeyword !=null and searchKeyword !=""'>
+			<if test='searchCondition == null or searchCondition == ""'>
+				AND (UPPER(MENU_CL_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+				 OR UPPER(TCHGR_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+			</if>
+			<if test='searchCondition != null and searchCondition != "" and searchCondition == 1'>
+				AND UPPER(MENU_CL_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test='searchCondition != null and searchCondition != "" and searchCondition == 2'>
+				AND UPPER(TCHGR_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+		</if>
+	</sql>
+
+	<!-- 메뉴얼 목록 건수 조회 -->
+	<select id="selectCount" parameterType="cmMnlVO" resultType="cmMnlVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.selectCount */
+		SELECT COUNT(1) mnlCnt
+		  FROM T_MNL_MNG 
+		<where>
+			<include refid="Where"/>
+		   AND USE_YN = 'Y'	
+		</where>
+		
+	</select>
+
+	<!-- 메뉴얼 목록 조회 -->
+	<select id="selectList" parameterType="cmMnlVO" resultType="cmMnlVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.selectList */
+		SELECT MNL_SERNO						mnlSerno
+			 , MENU_CL_NM						menuClNm
+			 , TCHGR_NM							tchgrNm
+			 , MENU_EXPL						menuExpl
+			 , ATCH_FILE_ID						atchFileId
+			 , REGR_SERNO						regrSerno
+			 , FNC_USER_NM(REGR_SERNO)			regrNm
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d')	regDt
+		  FROM T_MNL_MNG 
+		<where>
+			<include refid="Where"/>
+		   AND USE_YN = 'Y'	
+		</where>
+	  ORDER BY MNL_SERNO DESC
+		 LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+	</select>
+	
+	<!-- 메뉴얼 상세 조회 -->
+	<select id="selectContents" parameterType="cmMnlVO" resultType="cmMnlVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.selectContents */
+		SELECT A.MNL_SERNO							mnlSerno
+			 , A.MENU_CL_NM							menuClNm
+			 , A.TCHGR_NM							tchgrNm
+			 , A.MENU_EXPL							menuExpl
+			 , A.ATCH_FILE_ID						atchFileId
+			 , A.REGR_SERNO							regrSerno
+			 , FNC_USER_NM(A.REGR_SERNO)			regrNm
+			 , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')	regDt
+		  FROM T_MNL_MNG A
+		 WHERE A.MNL_SERNO 	= #{mnlSerno}
+		   AND A.USE_YN 		= 'Y'
+	</select>
+	
+	<!-- 매뉴얼 본인글 여부 -->
+	<select id="regrCheck" parameterType="cmMnlVO" resultType="cmMnlVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.regrCheck */
+		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
+					ELSE 0
+			   END isRegrCheck
+		  FROM T_MNL_MNG 
+		 WHERE MNL_SERNO = #{mnlSerno}
+	</select>
+	
+	<!-- 메뉴얼 등록 -->
+	<insert id="insertContents" parameterType="cmMnlVO" useGeneratedKeys="true" keyProperty="mnlSerno">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.insertContents */
+		INSERT INTO T_MNL_MNG
+			 ( MENU_CL_NM
+			 , TCHGR_NM
+			 , MENU_EXPL
+			 , ATCH_FILE_ID
+			 , REGR_SERNO
+			 , REG_DT
+			 )
+		VALUES
+		     ( #{menuClNm}
+		     , #{tchgrNm}
+			 , #{menuExpl}
+			 , NULLIF(#{atchFileId}, '')
+			 , #{loginSerno}
+			 , NOW()
+			 )
+	</insert>
+	
+	<!-- 메뉴얼 수정 -->
+	<update id="updateContents" parameterType="cmMnlVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.updateContents */
+		UPDATE T_MNL_MNG
+		   SET MENU_CL_NM 	= #{menuClNm}
+		   	 , TCHGR_NM 	= #{tchgrNm}
+		   	 , MENU_EXPL 	= #{menuExpl}
+		   	 , ATCH_FILE_ID = NULLIF(#{atchFileId}, '')
+		   	 , UPDR_SERNO 	= #{loginSerno}
+		   	 , UPD_DT 		= NOW()
+		 WHERE MNL_SERNO 	= #{mnlSerno}
+	</update>
+	
+	<!-- 메뉴얼 삭제 -->
+	<update id="deleteContents" parameterType="cmMnlVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.deleteContents */
+		UPDATE T_MNL_MNG
+		   SET USE_YN = 'N'
+		 WHERE MNL_SERNO = #{mnlSerno}
+	</update>
+	
+	<!-- 메뉴얼 항목 목록 조회 -->
+	<select id="selectItemList" parameterType="cmMnlItmVO" resultType="cmMnlItmVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.selectItemList */
+		SELECT MNL_ITM_SERNO					mnlItmSerno
+			 , MNL_SERNO						mnlSerno
+			 , MNL_ITM_CL_CD					mnlItmClCd
+			 , MNL_ITM_SEQO						mnlItmSeqo
+			 , TITL_NM							titlNm
+			 , SUB_TITL_NM						subTitlNm
+			 , DTLS_CTT							dtlsCtt
+			 , ATCH_FILE_ID						atchFileId
+			 , URL_ADDR							urlAddr
+			 , HTML_SRCD_CTT					htmlSrcdCtt
+			 , CSS_SRCD_CTT						cssSrcdCtt
+			 , JS_SRCD_CTT						jsSrcdCtt
+			 , JAVA_SRCD_CTT					javaSrcdCtt
+			 , XML_SRCD_CTT						xmlSrcdCtt
+			 , REGR_SERNO						regrSerno
+			 , FNC_USER_NM(REGR_SERNO)			regrNm
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d')	regDt
+		  FROM T_MNL_ITM_MNG 
+		 WHERE MNL_SERNO = #{mnlSerno}
+		   AND USE_YN = 'Y'
+	  ORDER BY MNL_ITM_SEQO
+	</select>
+	
+	<!-- 메뉴얼 항목 등록 -->
+	<insert id="insertItemContents" parameterType="cmMnlItmVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.insertItemContents */
+		INSERT INTO T_MNL_ITM_MNG
+			 ( MNL_SERNO
+			 , MNL_ITM_CL_CD
+			 , MNL_ITM_SEQO
+			 , TITL_NM
+			 , SUB_TITL_NM
+			 , DTLS_CTT
+			 , ATCH_FILE_ID
+			 , URL_ADDR
+			 , HTML_SRCD_CTT
+			 , CSS_SRCD_CTT
+			 , JS_SRCD_CTT
+			 , JAVA_SRCD_CTT
+			 , XML_SRCD_CTT
+			 , REGR_SERNO
+			 , REG_DT
+			 )
+		VALUES
+		     ( #{mnlSerno}
+		     , #{mnlItmClCd}
+			 , #{mnlItmSeqo}
+			 , #{titlNm}
+			 , #{subTitlNm}
+			 , #{dtlsCtt}
+			 , #{atchFileId}
+			 , #{urlAddr}
+			 , #{htmlSrcdCtt}
+			 , #{cssSrcdCtt}
+			 , #{jsSrcdCtt}
+			 , #{javaSrcdCtt}
+			 , #{xmlSrcdCtt}
+			 , #{loginSerno}
+			 , NOW()
+			 )
+	</insert>
+	
+	<!-- 메뉴얼 항목 전체 삭제 -->
+	<update id="deleteAllItemContents" parameterType="cmMnlItmVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.deleteAllItemContents */
+		UPDATE T_MNL_ITM_MNG
+		   SET USE_YN = 'N'
+		 WHERE MNL_SERNO = #{mnlSerno}
+	</update>
+	
+	<!-- 메뉴얼 항목 수정 -->
+	<update id="updateItemContents" parameterType="cmMnlItmVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.updateItemContents */
+		UPDATE T_MNL_ITM_MNG
+		   SET MNL_ITM_CL_CD 	= #{mnlItmClCd}
+		     , MNL_ITM_SEQO 	= #{mnlItmSeqo}
+		     , TITL_NM 			= #{titlNm}
+		     , SUB_TITL_NM 		= #{subTitlNm}
+		     , DTLS_CTT 		= #{dtlsCtt}
+		     , ATCH_FILE_ID 	= #{atchFileId}
+		     , URL_ADDR 		= #{urlAddr}
+		     , HTML_SRCD_CTT 	= #{htmlSrcdCtt}
+		     , CSS_SRCD_CTT 	= #{cssSrcdCtt}
+		     , JS_SRCD_CTT 		= #{jsSrcdCtt}
+		     , JAVA_SRCD_CTT 	= #{javaSrcdCtt}
+		     , XML_SRCD_CTT 	= #{xmlSrcdCtt}
+		     , UPDR_SERNO 		= #{loginSerno}
+		     , UPD_DT 			= NOW()
+		     , USE_YN			= 'Y'
+		 WHERE MNL_ITM_SERNO 	= #{mnlItmSerno}
+	</update>
+	
+	<!-- 메뉴얼 엑셀 목록 조회 -->
+	<select id="selectExcelList" parameterType="cmMnlVO" resultType="cmMnlVO">
+		/* com.opennote.standard.mapper.basic.MnlMngMapper.selectExcelList */
+		SELECT MNL_SERNO						mnlSerno
+			 , MENU_CL_NM						menuClNm
+			 , TCHGR_NM							tchgrNm
+			 , MENU_EXPL						menuExpl
+			 , REGR_SERNO						regrSerno
+			 , FNC_USER_NM(REGR_SERNO)			regrNm
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d')	regDt
+		  FROM T_MNL_MNG 
+		<where>
+			<include refid="Where"/>
+		   AND USE_YN = 'Y'	
+		</where>
+	</select>
+</mapper>

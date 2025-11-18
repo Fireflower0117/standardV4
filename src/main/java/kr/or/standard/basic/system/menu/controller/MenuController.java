@@ -362,7 +362,7 @@ public class MenuController {
 		
 		ModelAndView mav = new ModelAndView(excelView);
 		String tit = "메뉴목록";
-		String url = "/standard/menuList.xlsx";
+		String url = "/standard/system/menuList.xlsx";
 		
 		List<MenuVO> resultList = menuService.selectExcelList(searchVO);
 		

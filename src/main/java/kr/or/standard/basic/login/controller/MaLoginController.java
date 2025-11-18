@@ -3,7 +3,7 @@ package kr.or.standard.basic.login.controller;
 import kr.or.standard.basic.login.service.MaLoginService;
 import kr.or.standard.basic.system.auth.service.AuthService;
 import kr.or.standard.basic.system.auth.vo.AuthVO;
-import kr.or.standard.basic.system.log.acs.service.MaAcsService;
+import kr.or.standard.basic.system.log.acs.service.AcsService;
 import kr.or.standard.basic.system.log.acs.vo.AcsVO;
 import kr.or.standard.basic.system.menu.servie.MenuService;
 import kr.or.standard.basic.system.menu.vo.MenuVO;
@@ -41,7 +41,7 @@ public class MaLoginController {
 	
 	private final MessageSource messageSource;
 	private final MaLoginService maLoginService;
-	private final MaAcsService maAcsService;
+	private final AcsService maAcsService;
 	
 	private final AuthService authService;
 	private final MenuService menuService;

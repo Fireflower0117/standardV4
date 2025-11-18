@@ -5,9 +5,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import kr.or.standard.basic.login.vo.LoginVO;
+import lombok.Data;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.web.context.request.RequestContextHolder;
-   
+
 public class CmmnDefaultVO {
 	
 	// 현재 페이지 번호.

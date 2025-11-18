@@ -12,6 +12,12 @@ public class AcsStatVO extends CmmnDefaultVO {
     private String menuCd;                      // 메뉴코드
     private String regrSerno;                   // 등록자일련번호
     private String regDt;                       // 등록일시
+    private String userCount;                   // 사용자 Count
+
+
+    public String getUserCount() { return userCount; }
+
+    public void setUserCount(String userCount) { this.userCount = userCount; }
 
     public String getMenuLogSerno() {
         return menuLogSerno;

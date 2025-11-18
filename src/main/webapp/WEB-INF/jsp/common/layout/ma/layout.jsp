@@ -44,6 +44,7 @@
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/ckeditor/ckeditor.js?ver=2"></script>
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/html2canvas/html2canvas.js"></script>
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/clipboard/clipboard.min.js"></script>
+	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/clientbase.js"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 		<%-- 단위테스트용 함수 호출 --%>

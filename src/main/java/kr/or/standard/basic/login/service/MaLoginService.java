@@ -24,13 +24,13 @@ public class MaLoginService extends EgovAbstractServiceImpl  {
 	
 	// 로그인
 	public LoginVO getCont(LoginVO vo) {
-		vo.setAuthAreaCd("MA");
-		return (LoginVO)defaultDao.selectOne("opnt.basic.mapper.UserMngMapper.getCont",vo); 
+		vo.setAuthAreaCd("MA"); 
+		return (LoginVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserMngMapper.getCont",vo); 
 	}
 	
 	// 비밀번호 불일치 건수 증가
 	public int pswdMsmtNocsUpdateContent(LoginVO vo) {
-		return defaultDao.update("opnt.basic.mapper.UserMngMapper.pswdMsmtNocsUpdateContent",vo); 
+		return defaultDao.update("com.opennote.standard.mapper.basic.UserMngMapper.pswdMsmtNocsUpdateContent",vo); 
 	}
 
 	// 접근가능 IP대역 여부 체크
@@ -39,25 +39,25 @@ public class MaLoginService extends EgovAbstractServiceImpl  {
 		UserIpVO userIpVO = new UserIpVO();
 		userIpVO.setUserSerno(userSerno);
 		userIpVO.setSchEtc00(clientIp);
-		UserIpVO rtnVo = (UserIpVO)defaultDao.selectOne("opnt.basic.mapper.UserIpMngMapper.userIpBrkYn",userIpVO);
+		UserIpVO rtnVo = (UserIpVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserIpMngMapper.userIpBrkYn",userIpVO);
 		return rtnVo.getIpBrkYn() == 0 ? false : true; 
 	}
 
 	// 최종 접속 일시 갱신
 	public int userLstAcsDtUpdateContent(LoginVO vo) {
 		log.info("defaultDao : {}", defaultDao);
-		return defaultDao.update("opnt.basic.mapper.UserMngMapper.userLstAcsDtUpdateContent",vo); 
+		return defaultDao.update("com.opennote.standard.mapper.basic.UserMngMapper.userLstAcsDtUpdateContent",vo); 
 	}
 
 	// 비밀번호 불일치 건수 초기화
 	public int userPswdMsmtNocsClearContent(LoginVO vo) {
-		return defaultDao.update("opnt.basic.mapper.UserMngMapper.userPswdMsmtNocsClearContent",vo); 
+		return defaultDao.update("com.opennote.standard.mapper.basic.UserMngMapper.userPswdMsmtNocsClearContent",vo); 
 	}
 	
 	// 비밀번호 일치여부 검사
 	public boolean matchUserPswd(LoginVO vo) {
 		// 비밀번호 조회
-		UserVO userVO = (UserVO)defaultDao.selectOne("opnt.basic.mapper.UserMngMapper.getUserPswd",vo); 
+		UserVO userVO = (UserVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserMngMapper.getUserPswd",vo); 
 		  
 		// 비밀번호 일치여부 판단
 		return encryptUtil.matchBCrypt(vo.getUserPswd(), userVO.getUserPswd());

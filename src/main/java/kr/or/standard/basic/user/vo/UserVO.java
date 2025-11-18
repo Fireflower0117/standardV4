@@ -64,6 +64,8 @@ public class UserVO extends CmmnDefaultVO {
 	private String grpAuthNm;	// 그룹권한명
 	private String authAreaNm;	// 권한영역명
 	private String lockYn;		// 잠금여부
+	private String userCount;	// 사용자수
+	private String isRegrCheck;	// 등록자==로그인사용자 비교판단
 
 	/* ip 관련 */
 	private String ipSerno;	// ip 일련번호
@@ -85,6 +87,10 @@ public class UserVO extends CmmnDefaultVO {
 	/* 회원가입 관련 */
 	private List<Terms> termsList;	// 약관 목록
 
+	public String getIsRegrCheck() { return isRegrCheck; } 
+	public void setIsRegrCheck(String isRegrCheck) { this.isRegrCheck = isRegrCheck; } 
+	public String getUserCount() { return userCount; } 
+	public void setUserCount(String userCount) { this.userCount = userCount; } 
 	public String getUserSerno() {
 		return userSerno;
 	}
@@ -365,5 +371,54 @@ public class UserVO extends CmmnDefaultVO {
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "UserVO{" +
+				"userSerno='" + userSerno + '\'' +
+				", userId='" + userId + '\'' +
+				", userPswd='" + userPswd + '\'' +
+				", userNm='" + userNm + '\'' +
+				", grpAuthId='" + grpAuthId + '\'' +
+				", userTelNo='" + userTelNo + '\'' +
+				", userEmailAddr='" + userEmailAddr + '\'' +
+				", pswdMsmtNocs='" + pswdMsmtNocs + '\'' +
+				", brkYn='" + brkYn + '\'' +
+				", lstAcsDt='" + lstAcsDt + '\'' +
+				", lstPswdChgDt='" + lstPswdChgDt + '\'' +
+				", authAreaCd='" + authAreaCd + '\'' +
+				", snsSeCd='" + snsSeCd + '\'' +
+				", snsUserId='" + snsUserId + '\'' +
+				", snsEmail='" + snsEmail + '\'' +
+				", intgYn='" + intgYn + '\'' +
+				", postNo='" + postNo + '\'' +
+				", homeAddr='" + homeAddr + '\'' +
+				", homeAddrDtls='" + homeAddrDtls + '\'' +
+				", blonNm='" + blonNm + '\'' +
+				", faxNo='" + faxNo + '\'' +
+				", inlnNo='" + inlnNo + '\'' +
+				", jrnkCd='" + jrnkCd + '\'' +
+				", useYn='" + useYn + '\'' +
+				", grpAuthNm='" + grpAuthNm + '\'' +
+				", authAreaNm='" + authAreaNm + '\'' +
+				", lockYn='" + lockYn + '\'' +
+				", userCount='" + userCount + '\'' +
+				", isRegrCheck='" + isRegrCheck + '\'' +
+				", ipSerno='" + ipSerno + '\'' +
+				", strtIp='" + strtIp + '\'' +
+				", endIp='" + endIp + '\'' +
+				", bawdYn='" + bawdYn + '\'' +
+				", seqo='" + seqo + '\'' +
+				", strtIp1='" + strtIp1 + '\'' +
+				", strtIp2='" + strtIp2 + '\'' +
+				", strtIp3='" + strtIp3 + '\'' +
+				", strtIp4='" + strtIp4 + '\'' +
+				", endIp1='" + endIp1 + '\'' +
+				", endIp2='" + endIp2 + '\'' +
+				", endIp3='" + endIp3 + '\'' +
+				", endIp4='" + endIp4 + '\'' +
+				", ipList=" + ipList +
+				", termsList=" + termsList +
+				'}';
+	}
 }

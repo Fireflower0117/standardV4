@@ -14,9 +14,9 @@ public class RstMngVO extends CmmnDefaultVO {
 
 	@NotBlank(message = "아이디 : 필수 입력입니다.", groups = {insertCheck.class})
 	private String userId;	// 사용자 아이디
-	private String brkYn;	// 제한여부
-
+	private String brkYn;	// 제한여부 
 	private String userSerno;	// 제한여부
+	private String userIdCount;	// 제한여부
 
 	public String getUserId() {
 		return userId;
@@ -41,4 +41,8 @@ public class RstMngVO extends CmmnDefaultVO {
 	public void setUserSerno(String userSerno) {
 		this.userSerno = userSerno;
 	}
+
+	public String getUserIdCount() { return userIdCount; }
+
+	public void setUserIdCount(String userIdCount) { this.userIdCount = userIdCount; }
 }

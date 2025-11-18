@@ -23,15 +23,18 @@ public class AuthVO extends CmmnDefaultVO {
 
 	@NotBlank(message = "사용여부 : 필수 입력입니다.", groups = {updateCheck.class, insertCheck.class})
 	private String useYn;
+	private String useYnNm;
 
 	private String grpAuthSerno;	/* 그룹 권한 일련번호 */
 	private String authCount;	/* 그룹 권한 일련번호 */
-	private String grpAuthExpl;		/* 그룹 권한 설명 */
+	private String grpAuthExpl;		/* 그룹 권한 설명 */ 
 	private String delYn;			/* 삭제 여부 */
 	private String isMyRegr;        /* 로그인사용자 = 등록자 여부 */ 
 	private String regrSerno;		/* 등록자 일련번호 */
+	private String regrSerNm;		/* 등록자 일련번호 */
 	private String regDt;			/* 등록 일시 */
 	private String updrSerno;		/* 수정자 일련번호 */
+	private String updrSerNm;		/* 수정자 일련번호 */
 	private String updDt;			/* 수정일시 */
 
 	private List<AuthVO> maAuthList; /* 관리자 메뉴 권한 */
@@ -49,6 +52,18 @@ public class AuthVO extends CmmnDefaultVO {
 	private String authExst;		/* 메뉴 권한 등록 여부  */
 	private String menuSeCd;		/* 메뉴 구분 코드 ex) MA, FT */
 	private String isleaf;			/* 하위메뉴 존재여부 */
+
+	public String getUseYnNm() { return useYnNm; }
+
+	public void setUseYnNm(String useYnNm) { this.useYnNm = useYnNm; }
+
+	public String getRegrSerNm() { return regrSerNm; }
+
+	public void setRegrSerNm(String regrSerNm) { this.regrSerNm = regrSerNm; }
+
+	public String getUpdrSerNm() { return updrSerNm; }
+
+	public void setUpdrSerNm(String updrSerNm) { this.updrSerNm = updrSerNm; }
 
 	public String getIsMyRegr() { return isMyRegr; }
 

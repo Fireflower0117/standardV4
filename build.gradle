@@ -103,6 +103,9 @@ dependencies {
      // xml Bind
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
+    
+    // Cache
+    implementation 'net.sf.ehcache:ehcache:2.10.9.2'
 }
 
 configurations.all {

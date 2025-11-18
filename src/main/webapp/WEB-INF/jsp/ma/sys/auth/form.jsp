@@ -107,15 +107,15 @@
 				fncAuthChange(menuSe, menuCd, menuLvl);
 			} else{
 				fncMenuChange(menuSe, menuCd, menuLvl);
-			}
-
-
+			} 
 		});
 
 		fncFirstAction('ma');
 		fncFirstAction('ft');
 		fncFirstAction('my');
-
+		
+		// 사용여부 세팅
+		$.opnt.html.setEleVal({ele : "input[name='useYn']", val :'${authVO.useYn}'}); 
 	});
 
 	<%-- 최대 레벨 --%>
@@ -286,8 +286,8 @@
 			<th scope="row"><span class="asterisk">*</span>사용여부</th>
 			<td colspan="3">
 				<span class="chk">
-					<span class="radio"><form:radiobutton path="useYn" id="useYn_Y" title="사용여부" value="Y" required="true" checked="true"/><label for="useYn_Y">사용</label></span>
-					<span class="radio"><form:radiobutton path="useYn" id="useYn_N" title="사용여부" value="N" required="true" checked="true"/><label for="useYn_N">미사용</label></span>
+					<span class="radio"><form:radiobutton path="useYn" id="useYn_Y" title="사용여부" value="Y" required="true"/><label for="useYn_Y">사용</label></span>
+					<span class="radio"><form:radiobutton path="useYn" id="useYn_N" title="사용여부" value="N" required="true"/><label for="useYn_N">미사용</label></span>
 				</span>
 			</td>
 		</tr>

@@ -2,7 +2,8 @@
 <jsp:directive.include file="/WEB-INF/jsp/common/incTagLib.jsp"/>
 <script type="text/javascript">
 $(document).ready(function(){
-
+	
+	
 	<%-- no_data colspan 자동 셋팅 --%>
 	fncColLength();
 

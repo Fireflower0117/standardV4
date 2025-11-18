@@ -66,9 +66,9 @@
     </insert>
 
     <!-- 접속 로그 건수 조회 -->
-    <select id="selectCount" parameterType="acsVO" resultType="int">
+    <select id="selectCount" parameterType="acsVO" resultType="acsVO">
         /* AcsLogMngMapper.selectCount */
-        SELECT COUNT(1)
+        SELECT COUNT(1) acsLogCnt
           FROM T_ACS_LOG_MNG A
         <where>
             <include refid="Where"/>

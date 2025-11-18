@@ -21,7 +21,7 @@ public class TermsVO extends CmmnDefaultVO {
 	@NotEmpty(groups = {insertCheck.class, updateCheck.class})
 	private List<@Valid Terms> termsList;
 
-	public static class Terms {
+	public static class Terms extends CmmnDefaultVO  {
 		@NotBlank(groups = updateCheck.class)
 		private String termsSerno;
 		private String termsClCd;
