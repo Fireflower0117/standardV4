@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/content.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/content.js"></script>
+    <!-- swiper -->
+    <link rel="stylesheet" href="lib/swiper/swiper-bundle.min.css">
+    <script src="lib/swiper/swiper-bundle.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">타이틀 & 로케이션</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">타이틀</li>
+                <li id="tab02">로케이션</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt class="important">※ 타이틀 + 필수 입력/버튼 등 테이블 상단 타이틀 정렬은 <span class="impact">버튼 & 태그 > 버튼 정렬 sidebyside 참고</span></dt>
+                    </dl>
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. UI 요소에서 사용되는 css, js는 각 메뉴의 샘플코드에서 복사해서 추가, img파일 개별 다운로드 후 경로에 맞게 넣어야 함.</dt>
+                    </dl>
+                </section>
+                <h2 class="section_main_ttl">페이지</h2>
+                <div class="ui_sample">
+                    <h2 class="page_tit">타이틀</h2>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">html</li>
+                        <li id="code01_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre><code class="line-numbers language-html">&lt;h2 class="page_tit"&gt;타이틀&lt;/h2&gt;</code></pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** title **/
+.page_tit {position: relative;margin-bottom: 40px;font-size: 36px;font-weight: 500;line-height: 1;text-align: center;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">대분류</h2>
+                <div class="ui_sample">
+                    <h3 class="lg_tit">타이틀</h3>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                        <li id="code01_2_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre><code class="line-numbers language-html">&lt;h3 class="lg_tit"&gt;타이틀&lt;/h3&gt;</code></pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** title **/
+.lg_tit {position: relative;margin-bottom: 15px;padding-top: 16px;font-size: 22px;line-height: 30px;}
+.lg_tit::before,
+.lg_tit::after {content: '';position: absolute;top: 0;width: 10px;height: 10px;border-radius: 5px;}
+.lg_tit::before {left: 0;background: #d40281;}
+.lg_tit::after {left: 12px;background: #4b8dca;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">중분류</h2>
+                <div class="ui_sample">
+                    <h4 class="md_tit">타이틀</h4>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_3_1" class="on">html</li>
+                        <li id="code01_3_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_3_1">
+                        <pre><code class="line-numbers language-html">&lt;h4 class="md_tit"&gt;타이틀&lt;/h4&gt;</code></pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_3_2">
+                        <pre>
+<code class="line-numbers language-css">/** title **/
+.md_tit {position: relative;margin-bottom: 20px;font-size: 20px;line-height: 1;color: var(--blue);}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">소분류</h2>
+                <div class="ui_sample">
+                    <h5 class="sm_tit">타이틀</h5>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_4_1" class="on">html</li>
+                        <li id="code01_4_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_4_1">
+                        <pre><code class="line-numbers language-html">&lt;h5 class="sm_tit"&gt;타이틀&lt;/h5&gt;</code></pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_4_2">
+                        <pre>
+<code class="line-numbers language-css">/** title **/
+.sm_tit {position: relative;margin-bottom: 10px;padding-left: 10px;font-size: 16px;line-height: 1;}
+.sm_tit::before {content: '';position: absolute;left: 0;top: 6px;width: 5px;height: 5px;border-radius: 3px;background: var(--dark);}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">로케이션</h2>
+                <div class="ui_sample">
+                    <div class="breadcrumb simple">
+                        <ul class="path">
+                            <li class="home">메인 <i class="xi-home"></i></li>
+                            <li>1depth</li>
+                            <li class="on">2depth</li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">img</li>
+                        <li id="code02_1_4">file</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="breadcrumb simple"&gt;
+    &lt;ul class="path"&gt;
+        &lt;li class="home"&gt;메인 &lt;i class="xi-home"&gt;&lt;/i&gt;&lt;/li&gt;
+        &lt;li&gt;1depth&lt;/li&gt;
+        &lt;li class="on"&gt;2depth&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** breadcrumb **/
+/* breadcrumb - simple */
+.breadcrumb.simple li {display: inline-block;padding-left: 33px;font-size: 14px;font-weight: 400;background: url(../images/content/i_breadcrumb_arrow.png) no-repeat left 15px top 7px;vertical-align: top;}
+.breadcrumb.simple li.home {font-size: 0;padding: 0;background: none;}
+.breadcrumb.simple li.home i {font-size: 17px;}
+.breadcrumb.simple li.on {font-weight: 500;color: var(--blue);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_1_3">
+                        <ul>
+                            <li><a href="images/content/i_breadcrumb_arrow.png" title="Download" download>i_breadcrumb_arrow.png</a></li>
+                        </ul>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_1_4">
+                        <ul>
+                            <li><a href="file/xeicon.zip" title="Download" download>xeicon.zip</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">로케이션 (상단 고정 가능)</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>페이지 스크롤 상단 고정 js 연결 <span class="impact">id="js_fixLoc"</span></dt>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <div class="breadcrumb_area">
+                        <div class="path">
+                            <a href="" class="home xi-home-o" title="home">home</a>
+                            <div class="path_sel">
+                                <button type="button" class="my_value">지원신청</button>
+                                <ul>
+                                    <li class="hover"><a href="">지원신청</a></li>
+                                    <li class=""><a href="">교부/변경신청</a></li>
+                                    <li class=""><a href="">정산/사업실적</a></li>
+                                    <li class=""><a href="">커뮤니티</a></li>
+                                    <li class=""><a href="">고객센터</a></li>
+                                </ul>
+                            </div>
+                            <div class="path_sel">
+                                <button type="button" class="my_value">지원관리</button>
+                                <ul>
+                                    <li class="hover"><a href="">지원관리</a></li>
+                                    <li class=""><a href="">지원신청취소내역</a></li>
+                                    <li class=""><a href="">지원신청현황</a></li>
+                                </ul>
+                            </div>
+                            <div class="path_sel">
+                                <button type="button" class="my_value">지원가능사업</button>
+                                <ul>
+                                    <li class="hover"><a href="">지원가능사업</a></li>
+                                    <li class=""><a href="">나의 지원신청 현황</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_2_1" class="on">html</li>
+                        <li id="code02_2_2">css</li>
+                        <li id="code02_2_3">js</li>
+                        <li id="code02_2_4">img</li>
+                        <li id="code02_2_5">file</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="breadcrumb_area" id="js_fixLoc"&gt;
+    &lt;div class="path"&gt;
+        &lt;a href="" class="home xi-home-o" title="home"&gt;home&lt;/a&gt;
+        &lt;div class="path_sel"&gt;
+            &lt;button type="button" class="my_value"&gt;메뉴명&lt;/button&gt;
+            &lt;ul&gt;
+                &lt;li class="hover"&gt;&lt;a href=""&gt;메뉴명&lt;/a&gt;&lt;/li&gt;
+                &lt;li class=""&gt;&lt;a href=""&gt;메뉴명&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;div class="path_sel"&gt;
+            &lt;button type="button" class="my_value"&gt;메뉴명&lt;/button&gt;
+            &lt;ul&gt;
+                &lt;li class="hover"&gt;&lt;a href=""&gt;메뉴명&lt;/a&gt;&lt;/li&gt;
+                &lt;li class=""&gt;&lt;a href=""&gt;메뉴명&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** breadcrumb **/
+/* fixable breadcrumb */
+#js_fixLoc {position: absolute;left: 0;top: 0;width: 100%;z-index: 100;}
+.breadcrumb_area {background: #2c96f9;}
+.path {position: relative;width: 90%;max-width: 1280px;margin: 0 auto;z-index: 10;}
+.path::after {content: '';display: block;clear: both;}
+.path .home {display: block;float: left;position: relative;width: 73px;height: 53px;padding-right: 20px;font-size: 0;line-height: 55px;color: #fff;text-align: center;}
+.path .home::before {font-size: 20px;}
+.path .path_sel {float: left;position: relative;min-width: 230px;height: 53px;vertical-align: middle;}
+.path .home::after,
+.path .path_sel:not(:last-child)::after {content: '';position: absolute;right: 0;top: 0;width: 13px;height: 100%;background: url(../images/icon/i_loc_next.png) no-repeat 0 50%;z-index: 2;}
+.path .path_sel * {margin: 0;padding: 0;cursor: pointer;font-size: 14px;}
+.path .path_sel .my_value {overflow: visible;position: relative;left: 0;top: 0;width: 100%;height: 53px;padding: 0 40px 0 30px;border: 0;font-size: 16px;line-height: 53px;color: #fff;letter-spacing: -0.8px;text-align: left;background: transparent;z-index: 2;}
+.path .path_sel .my_value::before {content: '\e935';font-family: 'xeicon';position: absolute;right: 22px;top: 0;font-size: 10px;line-height: 53px;}
+.path .path_sel ul {display: none;overflow: hidden;position: absolute;left: 0;top: 53px;width: 100%;border-top: 1px solid #d8d8d8;border-bottom: 1px solid #d8d8d8;background: #2c96f9;}
+.path .path_sel:hover ul {display: block;}
+.path .path_sel li {overflow: hidden;position: relative;height: 38px;border-right: 1px solid #d8d8d8;border-left: 1px solid #d8d8d8;white-space: nowrap;}
+.path .path_sel li a {display: block;height: 38px;padding: 0 30px;line-height: 38px;color: #fff;}
+.path .path_sel li.hover a {color: #666;background: #fff;}
+.path .path_sel li:not(.hover):hover a {background: rgba(255, 255, 255, 0.15);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_2_3">
+                        <pre>
+<code class="line-numbers language-js">// breadcrumb
+$(document).ready(function () {
+	var locTop = $('#js_fixLoc').offset().top;
+	$(document).scroll(function () {
+		if (locTop < $(document).scrollTop()) {
+			$('#js_fixLoc').css({ 'position': 'fixed', 'top': '0', 'bottom': 'auto' });
+		} else {
+			$('#js_fixLoc').css({ 'position': 'absolute', 'top': 'auto', 'bottom': '0' });
+		}
+	});
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_2_4">
+                        <ul>
+                            <li><a href="images/icon/i_loc_next.png" title="Download" download>i_loc_next.png</a></li>
+                        </ul>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_2_5">
+                        <ul>
+                            <li><a href="file/xeicon.zip" title="Download" download>xeicon.zip</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">로케이션 (반응형)</h2>
+                <h3 class="section_sub_ttl">PC</h3>
+                <div class="ui_sample">
+                    <div class="breadcrumb pc typeB">
+                        <ul class="path">
+                            <li class="home"><a href="">메인화면</a></li>
+                            <li>
+                                <div class="selbox">
+                                    <a href="" class="selected">1depth-3</a>
+                                    <ul class="selectoptions">
+                                        <li class="option"><a href="">1depth-1</a></li>
+                                        <li class="option"><a href="">1depth-2</a></li>
+                                        <li class="option on"><a href="">1depth-3</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="selbox">
+                                    <a href="" class="selected">2depth-1</a>
+                                    <ul class="selectoptions">
+                                        <li class="option on"><a href="">2depth-1</a></li>
+                                        <li class="option"><a href="">2depth-2</a></li>
+                                        <li class="option"><a href="">2depth-3</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">모바일</h3>
+                <div class="ui_sample" style="width: 500px;">
+                    <div class="breadcrumb mobile typeB">
+                        <ul class="path">
+                            <li class="home"><a href="">메인화면</a></li>
+                            <li>
+                                <div class="selbox">
+                                    <a href="" class="selected">1depth-3</a>
+                                    <ul class="selectoptions">
+                                        <li class="option"><a href="">1depth-1</a></li>
+                                        <li class="option"><a href="">1depth-2</a></li>
+                                        <li class="option on"><a href="">1depth-3</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="selbox">
+                                    <a href="" class="selected">2depth-1</a>
+                                    <ul class="selectoptions">
+                                        <li class="option on"><a href="">2depth-1</a></li>
+                                        <li class="option"><a href="">2depth-2</a></li>
+                                        <li class="option"><a href="">2depth-3</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_3_1" class="on">html</li>
+                        <li id="code02_3_2">css</li>
+                        <li id="code02_3_3">js</li>
+                        <li id="code02_3_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="breadcrumb"&gt;
+    &lt;ul class="path"&gt;
+        &lt;li class="home"&gt;&lt;a href=""&gt;메인화면&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;
+            &lt;div class="selbox"&gt;
+                &lt;a href="" class="selected"&gt;1depth-3&lt;/a&gt;
+                &lt;ul class="selectoptions"&gt;
+                    &lt;li class="option"&gt;&lt;a href=""&gt;1depth-1&lt;/a&gt;&lt;/li&gt;
+                    &lt;li class="option"&gt;&lt;a href=""&gt;1depth-2&lt;/a&gt;&lt;/li&gt;
+                    &lt;li class="option on"&gt;&lt;a href=""&gt;1depth-3&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;div class="selbox"&gt;
+                &lt;a href="" class="selected"&gt;2depth-1&lt;/a&gt;
+                &lt;ul class="selectoptions"&gt;
+                    &lt;li class="option on"&gt;&lt;a href=""&gt;2depth-1&lt;/a&gt;&lt;/li&gt;
+                    &lt;li class="option"&gt;&lt;a href=""&gt;2depth-2&lt;/a&gt;&lt;/li&gt;
+                    &lt;li class="option"&gt;&lt;a href=""&gt;2depth-3&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_3_2">
+                        <pre>
+<code class="line-numbers language-css">/** breadcrumb **/
+/** breadcrumb 반응형 **/
+.breadcrumb {width: 100%;max-width: 1280px;height: 80px;margin: 0 auto;margin-bottom: 60px;border-radius: 10px;background: #eff0f2;}
+.breadcrumb ul li {float: left;}
+.breadcrumb ul li a {line-height: 80px;}
+.breadcrumb .path > li {position: relative;min-width: 250px;}
+.breadcrumb .path > li::before {content: '';display: block;position: absolute;right: 0;top: 30px;width: 1px;height: 22px;background: #c2c2c2;z-index: 9;}
+.breadcrumb .path > li a {display: block;}
+.breadcrumb .path > li.home {width: auto;min-width: 0;}
+.breadcrumb .path > li.home a {width: 80px;text-indent: -9999px;background: url(../images/content/i_home.svg) no-repeat 50% / 15px;}
+.breadcrumb .path div.selbox {position: relative;height: calc(100% - 10px);padding: 0;border: 1px solid #eff0f2;text-align: left;}
+.breadcrumb .path div.selbox.on {border: 1px solid #d9d9d9;background: #fff;}
+.breadcrumb .path div.selbox .selected {display: block;position: relative;width: 100%;height: 100%;padding: 0 20px;padding-right: 50px;font-size: 18px;font-weight: 400;line-height: 78px;color: #000;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.breadcrumb .path div.selbox .selected::after {content: '';display: block;position: absolute;right: 20px;top: 50%;width: 12px;height: 7px;margin-top: -4px;background: url(../images/content/i_select_arrow.png) no-repeat center center / 12px;transition: all 0.2s;}
+.breadcrumb .path div.selbox.on .selected::after {transform: rotate(180deg);}
+.breadcrumb .path div.selbox .selectoptions {display: none;overflow-y: auto;position: absolute;left: -1px;top: 77px;width: calc(100% + 2px);max-height: 400px;border: 1px solid #d9d9d9;border-top: 0;background: #fff;z-index: 99;}
+.breadcrumb .path div.selbox .selectoptions li {float: none;margin-bottom: 10px;}
+.breadcrumb .path div.selbox .selectoptions li:last-of-type {margin-bottom: 20px;}
+.breadcrumb .path div.selbox .selectoptions li a {display: block;padding: 10px 20px;font-size: 18px;font-weight: 300;line-height: 1;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.breadcrumb .path div.selbox .selectoptions li:first-of-type a {padding-top: 0;}
+.breadcrumb .path div.selbox .selectoptions li a:hover, .breadcrumb  .path div.selbox .selectoptions li.on a {font-weight: 500;color: #f36018;text-decoration: underline;}
+
+@media all and (max-width: 1024px) {
+    .breadcrumb {position: absolute;left: 0;top: 0;height: 35px;padding: 0 20px;border-radius: 0;z-index: 99;}
+    .breadcrumb .path {display: flex;float: left;max-width: calc(100% - 30px);}
+    .breadcrumb .path > li {max-width: 30vw;}
+    .breadcrumb .path > li.home, .breadcrumb .utils li.btn_print {display: none;}
+    .breadcrumb .path > li {position: relative;min-width: 0;width: auto;padding-right: 16px;}
+    .breadcrumb .path > li::before, .breadcrumb .utils li::before {display: none;}
+    .breadcrumb .path > li:not(:last-of-type)::after {content: '';display: block;position: absolute;right: 6px;top: 14px;width: 4px;height: 6px;background: url(../images/content/i_arrow_breadcrumb.png) no-repeat center / 4px;}
+    .breadcrumb .path > li:last-of-type {padding-right: 0;}
+    .breadcrumb ul li a, .breadcrumb .path div.selbox .selected a {line-height: 35px;}
+    .breadcrumb .path div.selbox {border: 0;}
+    .breadcrumb .path div.selbox .selected {padding: 0;font-size: 12px;line-height: 35px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;background: none;}
+    .breadcrumb .path div.selbox .selected::after {display: none;} 
+}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_3_3">
+                        <pre>
+<code class="line-numbers language-js">// breadcrumb 반응형
+$(document).ready(function () {
+    function selectbox() {
+        $(".breadcrumb.pc .selbox").each(function () {
+            var $this = $(this);
+            var firstVal = $this.find(".option.on").text();
+            $this.find(".selected").text(firstVal);
+            $this.find(".selected").click(function () {
+                $(".selectoptions").slideUp(100);
+                $(".selbox").removeClass("on");
+                if (!$this.find(".selectoptions").is(":visible")) {
+                    $(this).parent().addClass("on");
+                    $this.find(".selectoptions").slideDown(100);
+                } else {
+                    $(this).parent().removeClass("on");
+                    $this.find(".selectoptions").slideUp(100);
+                }
+                return false;
+            });
+        });
+    }
+    var vwidth = $(window).width();
+    if (vwidth > 1023) {
+        selectbox();
+    }
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_3_4">
+                        <ul>
+                            <li><a href="images/content/i_home.svg" title="Download" download>i_home.svg</a></li>
+                            <li><a href="images/content/i_select_arrow.png" title="Download" download>i_select_arrow.png</a></li>
+                            <li><a href="images/content/i_arrow_breadcrumb.png" title="Download" download>i_arrow_breadcrumb.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">타이틀 + 로케이션</h2>
+                <div class="ui_sample">
+                    <div class="page_top">
+                        <h2 class="page_title">공지사항</h2>
+                        <ul class="breadcrumb">
+                            <li class="home"><i class="xi-home"></i></li>
+                            <li>센터소개</li>
+                            <li class="last">공지사항</li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_4_1" class="on">html</li>
+                        <li id="code02_4_2">css</li>
+                        <li id="code02_4_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_4_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="page_top"&gt;
+    &lt;h2 class="page_title"&gt;공지사항&lt;/h2&gt;
+    &lt;ul class="breadcrumb"&gt;
+        &lt;li class="home"&gt;&lt;i class="xi-home"&gt;&lt;/i&gt;&lt;/li&gt;
+        &lt;li&gt;센터소개&lt;/li&gt;
+        &lt;li class="last"&gt;공지사항&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+
+                    </div>
+                    <div class="js_tcont" data-tab="code02_4_2">
+                        <pre>
+<code class="line-numbers language-css">/** breadcrumb **/
+/* title + breadcrumb */
+.page_top {position: relative;margin-top: 20px;padding-bottom: 15px;background: url(../images/common/bg_tit_loc.jpg) repeat-x 100% 100%;}
+.page_title {display: inline-block;font-size: 30px;font-weight: 700;line-height: 1.2;color: #000;}
+.page_txt {margin-top: 10px;font-size: 14px;color: #828282;}
+.page_top .breadcrumb {position: absolute;right: 0;bottom: 15px;height: 20px;}
+.page_top .breadcrumb li {float: left;padding: 0 12px 0 7px;line-height: 20px;background: url(../images/icon/i_tit_loc_arrow.png) no-repeat 100% 50%;}
+.page_top .breadcrumb li.home i {width: 20px;height: 20px;font-size: 14px;line-height: 20px;color: #fff;text-align: center;background: #4ca8fb;}
+.page_top .breadcrumb li.last {padding: 0 0 0 7px;font-weight: 700;background: none;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_4_3">
+                        <ul>
+                            <li><a href="images/common/bg_tit_loc.jpg" title="Download" download>bg_tit_loc.jpg</a></li>
+                            <li><a href="images/icon/i_tit_loc_arrow.png" title="Download"
+                                    download>i_tit_loc_arrow.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">히스토리형</h2>
+                <div class="ui_sample">
+                    <div class="page_history">
+                        <div class="his_slider">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide on">
+                                    <a href="">메뉴1</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴2</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">이름이많이긴메뉴3</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴4</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴5</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴6</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴7</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴7</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴7</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴7</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴7</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴7</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="">메뉴7</a>
+                                    <button class="btn_del">닫기</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="his_btns">
+                            <button class="his_slider_prev"><i class="xi-angle-left"></i></button>
+                            <div class="bg"></div>
+                            <button class="his_slider_next"><i class="xi-angle-right"></i></button>
+                            <div class="bg"></div>
+                        </div>
+                        <div class="utils">
+                            <button class="btn_all_close" title="전체닫기">페이지 전체닫기</button>
+                        </div>
+                    </div>
+                    <script>
+                        $(function () {
+                            var hisSlider = new Swiper(".his_slider", {
+                                slidesPerView: 'auto', // 한 번에 보이는 슬라이드 개수 (기본 1)
+                                spaceBetween: 0, // 슬라이드 사이 거리 (기본 0(px))
+                                navigation: {
+                                    nextEl: ".his_slider_next",
+                                    prevEl: ".his_slider_prev",
+                                },
+                            });
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_5_1" class="on">html</li>
+                        <li id="code02_5_2">css</li>
+                        <li id="code02_5_3">js</li>
+                        <li id="code02_5_4">img</li>
+                        <li id="code02_5_5">file</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_5_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="page_history"&gt;
+    &lt;div class="his_slider"&gt;
+        &lt;div class="swiper-wrapper"&gt;
+            &lt;div class="swiper-slide on"&gt;
+                &lt;a href=""&gt;메뉴1&lt;/a&gt;
+                &lt;button class="btn_del"&gt;닫기&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;
+                &lt;a href=""&gt;메뉴2&lt;/a&gt;
+                &lt;button class="btn_del"&gt;닫기&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="his_btns"&gt;
+        &lt;button class="his_slider_prev"&gt;&lt;i class="xi-angle-left"&gt;&lt;/i&gt;&lt;/button&gt;
+        &lt;div class="bg"&gt;&lt;/div&gt;
+        &lt;button class="his_slider_next"&gt;&lt;i class="xi-angle-right"&gt;&lt;/i&gt;&lt;/button&gt;
+        &lt;div class="bg"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="utils"&gt;
+        &lt;button class="btn_all_close" title="전체닫기"&gt;페이지 전체닫기&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+
+                    </div>
+                    <div class="js_tcont" data-tab="code02_5_2">
+                        <pre>
+<code class="line-numbers language-css">/** breadcrumb **/
+/* breadcrumb - history */
+.page_history {position: relative;height: 41px;margin-bottom: 20px;border-bottom: 1px solid #000;}
+.page_history .his_slider {overflow: hidden;position: absolute;left: 0;bottom: -1px;max-width: calc(100% - 60px);height: 41px;padding-right: 10px;}
+.page_history .his_slider .swiper-slide {display: inline-block;position: relative;min-width: 130px;width: auto;height: 40px;padding: 10px 25px;border: 1px solid #ddd;border-bottom: 0;border-radius: 10px 10px 0 0;line-height: 18px;letter-spacing: 0;text-align: center;background: #f6f6f6;}
+.page_history .his_slider .swiper-slide + .swiper-slide {margin-left: 3px;}
+.page_history .his_slider .swiper-slide a {display: inline-block;font-size: 14px;font-weight: 400;color: #333;letter-spacing: 0;}
+.page_history .his_slider .swiper-slide .btn_del {position: absolute;right: 8px;top: 16px;width: 8px;height: 8px;border: 0;font-size: 0;background: url(../images/content/i_close_page_on.png) no-repeat center;}
+.page_history .his_slider .swiper-slide.on {border: 1px solid #333;border-bottom: 0;background: #fff;}
+.page_history .his_slider .swiper-slide.on::after {content: '';display: block;position: absolute;left: 0;bottom: -1px;width: 100%;height: 1px;background: #fff;}
+.page_history .his_slider .swiper-slide.on a {font-weight: 500;color: #000;}
+.page_history .his_btns button {display: block;position: absolute;top: 7px;width: 25px;height: 25px;border: 0;border-radius: 100px;font-size: 10px;line-height: 23px;text-align: center;background: #fff;box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);z-index: 998;}
+.page_history .his_btns .his_slider_prev {left: 0;}
+.page_history .his_btns .his_slider_next {right: 60px;}
+.page_history .his_btns .swiper-button-disabled {display: none;}
+.page_history .his_btns .bg {display: block;position: absolute;bottom: 0px;width: 65px;height: 40px;z-index: 99;}
+.page_history .his_btns .swiper-button-disabled + .bg {display: none;}
+.page_history .his_btns .his_slider_prev + .bg {left: 0;background: rgb(255, 255, 255);background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);}
+.page_history .his_btns .his_slider_next + .bg {right: 60px;background: rgb(255, 255, 255);background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);}
+.page_history .utils {float: right;}
+.page_history .btn_all_close {display: inline-block;width: 30px;height: 30px;margin-top: 3px;border: 0;border-radius: 5px;font-size: 0;background: #aeaeae url(../images/content/i_close_allpage.png) no-repeat center;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_5_3">
+                        <pre>
+<code class="line-numbers language-js">$(function() {
+    var hisSlider = new Swiper(".his_slider", {
+        slidesPerView: 'auto', // 한 번에 보이는 슬라이드 개수 (기본 1)
+        spaceBetween: 0, // 슬라이드 사이 거리 (기본 0(px))
+        navigation: {
+            nextEl: ".his_slider_next",
+            prevEl: ".his_slider_prev",
+        },
+    });
+});</code>
+            </pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_5_4">
+                        <ul>
+                            <li><a href="images/content/i_close_page_off.png" title="Download" download>i_close_page_off.png</a></li>
+                            <li><a href="images/content/i_close_page_on.png" title="Download" download>i_close_page_on.png</a></li>
+                            <li><a href="images/content/i_close_allpage.png" title="Download" download>i_close_allpage.png</a></li>
+                        </ul>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_5_5">
+                        <ul>
+                            <li><a href="file/xeicon.zip" title="Download" download>xeicon.zip</a></li>
+                            <li><a href="file/swiper.zip" title="Download" download>swiper.zip</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

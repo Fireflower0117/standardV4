@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">버튼 & 태그</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01">버튼 종류</li>
+                <li id="tab02">버튼 정렬</li>
+                <li id="tab03">태그 (상태표시)</li>
+                <li id="tab04">첨부파일 이미지</li>
+                <li id="tab05" class="on">표준안 개발용</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont" data-tab="tab01">
+
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. button 공통 적용 css, img</dt>
+                    </dl>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_1_1" class="on">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_1_1">
+                            <pre>
+<code class="line-numbers language-css">/*** button ***/
+.btn_area {margin-top: 20px;text-align: right;}
+.btn_area.left {text-align: left;}
+.btn_area.center {text-align: center;}
+.btn_area .btn + .btn {margin-left: 3px;}
+
+/* button size */
+.btn {display: inline-block;min-width: 80px;height: 36px;margin: 0;padding: 0 12px;border: 1px solid var(--dark);border-radius: 5px;font-size: 14px;line-height: 34px;color: var(--dark);text-align: center;background-color: #fff;cursor: pointer;transition: 0.1s color, 0.1s border-color, 0.1s background-color;}
+.btn:hover, .btn:focus {background-color: var(--btn-hover);}
+.btn.sml {min-width: 46px;height: 30px;padding: 0 10px;font-size: 12px;line-height: 28px;}
+.btn_sns {min-width: 100px;height: 33px;padding: 0 8px;font-size: 13px;line-height: 31px;}
+
+/* only icon button */
+.btn.ic {min-width: 30px;width: 30px;height: 30px;padding: 0;border: 1px solid var(--bdr);border-radius: 4px;font-family: 'xeicon';font-size: 0;line-height: 28px;color: var(--dark);letter-spacing: 0;}
+.btn.ic:hover, .btn.ic:focus {background-color: var(--basic-bg);}
+.btn.ic i {bottom: 0;font-size: 16px;line-height: 28px;}
+.btn.ic + .btn.ic {margin-left: 5px;}
+
+/** set button color **/
+/* blue */
+.btn.blue, .btn.btn_save, .btn.btn_write, .btn.btn_rewrite {border-color: var(--blue);color: #FFFFFF;background-color: var(--blue);}
+.btn.blue:hover, .btn.btn_save:hover, .btn.btn_write:hover, .btn.btn_rewrite:hover,
+.btn.blue:focus, .btn.btn_save:focus, .btn.btn_write:focus, .btn.btn_rewrite:focus {border-color: var(--btn-blue-hover);background-color: var(--btn-blue-hover);}
+
+/* red */
+.btn.red, .btn.btn_del {border-color: var(--red);color: #FFFFFF;background-color: var(--red);}
+.btn.red:hover, .btn.btn_del:hover,
+.btn.red:focus, .btn.btn_del:focus {border-color: var(--btn-red-hover);background-color: var(--btn-red-hover);}
+
+/* green */
+.btn.green {border-color: var(--green);color: #FFFFFF;background-color: var(--green);}
+.btn.green:hover, .btn.green:focus {border-color: var(--btn-green-hover);background-color: var(--btn-green-hover);}
+
+/* gray */
+.btn.gray, .btn.btn_cancel, .btn.btn_list {border-color: var(--gray);color: #FFFFFF;background-color: var(--gray);}
+.btn.gray:hover, .btn.btn_cancel:hover, .btn.btn_list:hover,
+.btn.gray:focus, .btn.btn_cancel:focus, .btn.btn_list:focus {border-color: var(--btn-gray-hover);background-color: var(--btn-gray-hover);}
+
+/* gray light */
+.btn.gray.light {border-color: var(--gray-light);color: var(--dark);background-color: var(--gray-light);}
+.btn.gray.light:hover, .btn.gray.light:focus {border-color: var(--btn-gray-light-hover);background-color: var(--btn-gray-light-hover);}
+
+/* dark */
+.btn.black {color: #FFFFFF;background-color: var(--black);}
+.btn.black:hover, .btn.black:focus {background-color: var(--dark);}
+
+/* function button */
+.btn.btn_excel {padding-left: 32px;background: url(../images/icon/file_excel.svg) no-repeat 10px 50% / auto 16px;}
+.btn.btn_excel:hover, .btn.btn_excel:focus {background-color: var(--btn-hover);}
+
+/* button border */
+.btn.bd {background-color: transparent;}
+.btn.bd.red {border-color: var(--red);color: var(--red);}
+.btn.bd.red:hover, .btn.bd.red:focus {background-color: var(--btn-bd-red-hover);}
+.btn.bd.green {border-color: var(--green);color: var(--green);}
+.btn.bd.green:hover, .btn.bd.green:focus {background-color: var(--btn-bd-green-hover);}
+.btn.bd.blue {border-color: var(--blue);color: var(--blue);}
+.btn.bd.blue:hover, .btn.bd.blue:focus {background-color: var(--btn-bd-blue-hover);}
+.btn.bd.gray {border-color: var(--gray);color: var(--gray);}
+.btn.bd.gray:hover, .btn.bd.gray:focus {background-color: var(--btn-bd-gray-hover);}
+/** // set button color **/
+
+/* icon button */
+.btn i {position: relative;bottom: -1px;font-size: 15px;color: inherit;}
+.btn.sml i {font-size: 13px;}
+.btn.icl i {margin-right: 3px;}
+.btn.icr i {margin-left: 3px;}
+.btn.sml.icl, .btn.sml.icr {padding: 0 10px;}
+
+/* disabled */
+.btn:disabled, .btn.disabled {border: 1px solid var(--btn-disabled-bg) !important;color: var(--btn-disabled-font) !important;background-color: var(--btn-disabled-bg) !important;cursor: default !important;}
+.btn.bd:disabled, .btn.bd.disabled {border: 1px solid var(--btn-bd-disabled) !important;color: var(--btn-bd-disabled) !important;background-color: transparent !important;cursor: default !important;}</code>
+</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui_basic_info" style="padding-top: 40px;">
+                    <h2 class="section_main_ttl">기본 설명</h2>
+                    <dl>
+                        <dt>1. 버튼의 기본 클래스는 btn이고 사이즈는 sml로 구분한다.</dt>
+                        <dd>
+                            기본 형식: <span class="impact">&lt;button type="button" class="btn"&gt;&lt;/button&gt;</span><br>
+                            a 버튼 형식: <span class="impact">&lt;a href="" class="btn"&gt;&lt;/a&gt;</span>
+                        </dd>
+                        <dt>2. &lt;button&gt; 태그를 기본으로 하되 기능 상 어쩔 수 없이 필요한 경우에만 &lt;a&gt; 태그를 쓴다.</dt>
+                        <dd>
+                            - 팝업 호출 버튼도 button 태그 사용 (팝업 > 레이어팝업 참고)
+                        </dd>
+                        <dt>3. 버튼은 색상, 크기로 구분한다. 또한 <span class="impact">class="bd"</span>을 붙이면 border형 버튼이 된다.</dt>
+                        <dt>
+                            4. 버튼 안에 아이콘이 필요한 경우, <a href="https://xpressengine.github.io/XEIcon/library-2.3.3.html" target="_blank" style="text-decoration: underline;">https://xpressengine.github.io/XEIcon/library-2.3.3.html</a>의 클래스 이름(xi-?)을 복사해 적용한다.
+                        </dt>
+                        <dd>
+                            왼쪽 아이콘: &lt;button type="button" class="btn <span class="impact">icl</span>"&gt;&lt;i class="xi-?"&gt;&lt;/i&gt;버튼&lt;/button&gt;<br>
+                            오른쪽 아이콘: &lt;button type="button" class="btn <span class="impact">icr</span>"&gt;버튼&lt;i class="xi-?"&gt;&lt;/i&gt;&lt;/button&gt;
+                        </dd>
+                        <dt>5. sidebyside 안의 버튼은 반드시 btn_area로 감싸야 한다.</dt>
+                        <dt>6. 테이블 안, 테이블 위 버튼은 sml을 사용하고, 테이블 안의 버튼은 btn_area로 감싸지 않는다.</dt>
+                    </dl>
+                </section>
+
+                <h2 class="section_main_ttl">기본 버튼</h2>
+                <div class="ui_sample">
+                    <button type="button" class="btn">btn</button>
+                    <button type="button" class="btn red">red</button>
+                    <button type="button" class="btn green">green</button>
+                    <button type="button" class="btn blue">blue</button>
+                    <button type="button" class="btn gray light">gray light</button>
+                    <button type="button" class="btn gray">gray</button>
+                    <button type="button" class="btn black">black</button>
+                    <button type="button" class="btn" disabled>비활성화</button>
+                    <a href="" class="btn disabled">비활성화 (a 태그)</a>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;button type="button" class="btn"&gt;btn&lt;/button&gt;
+&lt;button type="button" class="btn red"&gt;red&lt;/button&gt;
+&lt;button type="button" class="btn green"&gt;green&lt;/button&gt;
+&lt;button type="button" class="btn blue"&gt;blue&lt;/button&gt;
+&lt;button type="button" class="btn gray light"&gt;gray light&lt;/button&gt;
+&lt;button type="button" class="btn gray"&gt;gray&lt;/button&gt;
+&lt;button type="button" class="btn black"&gt;black&lt;/button&gt;
+&lt;button type="button" class="btn" disabled&gt;비활성화&lt;/button&gt;
+&lt;a href="" class="btn disabled"&gt;비활성화 (a 태그)&lt;/a&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">작은 버튼</h2>
+                <div class="ui_sample">
+                    <p>테이블 위 (타이틀과 같이 오는 경우), 테이블 안 버튼</p><br>
+                    <button type="button" class="btn sml">small btn</button>
+                    <button type="button" class="btn sml red">small btn</button>
+                    <button type="button" class="btn sml green">small btn</button>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_3_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;button type="button" class="btn sml"&gt;small btn&lt;/button&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">기본 버튼 border형</h2>
+                <div class="ui_sample">
+                    <button type="button" class="btn bd red">red</button>
+                    <button type="button" class="btn bd green">green</button>
+                    <button type="button" class="btn bd blue">blue</button>
+                    <button type="button" class="btn bd gray">gray</button>
+                    <button type="button" class="btn bd" disabled>비활성화</button>
+                    <a href="" class="btn bd disabled">비활성화 (a 태그)</a>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_4_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_4_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;button type="button" class="btn bd red"&gt;red&lt;/button&gt;
+&lt;button type="button" class="btn bd green"&gt;green&lt;/button&gt;
+&lt;button type="button" class="btn bd blue"&gt;blue&lt;/button&gt;
+&lt;button type="button" class="btn bd gray"&gt;gray&lt;/button&gt;
+&lt;button type="button" class="btn bd" disabled&gt;비활성화&lt;/button&gt;
+&lt;a href="" class="btn bd disabled"&gt;비활성화 (a 태그)&lt;/a&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">아이콘 버튼</h2>
+                <div class="ui_sample">
+                    <p>1. 단일 아이콘 버튼 : ...class="btn ic"&gt;<span class="red_txt">&lt;i class="xi-?"&gt;&lt;/i&gt;</span>&lt;/...</p><br>
+                    <button type="button" class="btn ic"><i class="xi-home"></i>버튼</button>
+                    <button type="button" class="btn ic red"><i class="xi-home"></i>버튼</button>
+                    <button type="button" class="btn ic bd red"><i class="xi-home"></i>버튼</button>
+                    <p><br>2. 좌측/우측 아이콘 버튼</p><br>
+                    <button type="button" class="btn icl"><i class="xi-arrow-bottom"></i>아이콘 좌측</button>
+                    <button type="button" class="btn icr">아이콘 우측<i class="xi-arrow-bottom"></i></button>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_5_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_5_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;button type="button" class="btn ic"&gt;&lt;i class="xi-home"&gt;&lt;/i&gt;버튼&lt;/button&gt;
+&lt;button type="button" class="btn ic red"&gt;&lt;i class="xi-home"&gt;&lt;/i&gt;버튼&lt;/button&gt;
+&lt;button type="button" class="btn ic bd red"&gt;&lt;i class="xi-home"&gt;&lt;/i&gt;버튼&lt;/button&gt;
+&lt;button type="button" class="btn icl"&gt;&lt;i class="xi-arrow-bottom"&gt;&lt;/i&gt;아이콘 좌측&lt;/button&gt;
+&lt;button type="button" class="btn icr"&gt;아이콘 우측&lt;i class="xi-arrow-bottom"&gt;&lt;/i&gt;&lt;/button&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">스타일 고정 버튼</h2>
+                <div class="ui_sample">
+                    <p>게시판 하단 우측에 버튼이 들어갈때 적용</p><br>
+                    <button type="button" class="btn btn_write">등록</button>
+                    <button type="button" class="btn btn_save">저장</button>
+                    <button type="button" class="btn btn_rewrite">수정</button>
+                    <button type="button" class="btn btn_del">삭제</button>
+                    <button type="button" class="btn btn_cancel">취소</button>
+                    <button type="button" class="btn btn_list">목록</button>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_6_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_6_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;button type="button" class="btn btn_write"&gt;등록&lt;/button&gt;
+&lt;button type="button" class="btn btn_save"&gt;저장&lt;/button&gt;
+&lt;button type="button" class="btn btn_rewrite"&gt;수정&lt;/button&gt;
+&lt;button type="button" class="btn btn_del"&gt;삭제&lt;/button&gt;
+&lt;button type="button" class="btn btn_cancel"&gt;취소&lt;/button&gt;
+&lt;button type="button" class="btn btn_list"&gt;목록&lt;/button&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">기능 버튼</h2>
+                <div class="ui_sample">
+                    <p>출력하기, 엑셀다운로드, 미리보기, 가져오기 등</p><br>
+                    <button type="button" class="btn btn_excel">엑셀다운로드</button>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_7_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_7_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;button type="button" class="btn btn_excel"&gt;엑셀다운로드&lt;/button&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">기본 정렬</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>1. 버튼은 기본 왼쪽 정렬이고, 클래스 옆에 <span class="impact">center, right</span> 클래스를 붙여 가운데, 오른쪽 정렬을 한다.</dt>
+                        <dd>ex) &lt;div class="btn_area <span class="impact">center</span>"&gt;</dd>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <div class="btn_area left">
+                        <button type="button" class="btn">좌측 정렬</button>
+                    </div>
+                    <div class="btn_area center">
+                        <button type="button" class="btn">중앙 정렬</button>
+                    </div>
+                    <div class="btn_area">
+                        <button type="button" class="btn">우측 정렬</button>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="btn_area left"&gt;
+    &lt;button type="button" class="btn"&gt;좌측 정렬&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="btn_area center"&gt;
+    &lt;button type="button" class="btn"&gt;중앙 정렬&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="btn_area"&gt;
+    &lt;button type="button" class="btn"&gt;우측 정렬&lt;/button&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">sidebyside</h2>
+                <div class="ui_sample">
+                    <div class="sidebyside">
+                        <div class="left">
+                            <div class="btn_area">
+                                <button type="button" class="btn">btn</button>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="btn_area">
+                                <button type="button" class="btn">btn</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_2_1" class="on">html</li>
+                        <li id="code02_2_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;!-- 기본 --&gt;
+&lt;div class="sidebyside"&gt;
+    &lt;div class="left"&gt;
+        &lt;div class="btn_area"&gt;
+            &lt;button type="button" class="btn"&gt;btn&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="right"&gt;
+        &lt;div class="btn_area"&gt;
+            &lt;button type="button" class="btn"&gt;btn&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_2_2">
+                        <pre>
+<code class="line-numbers language-css">/* sidebyside */
+.sidebyside {display: flex;justify-content: space-between;align-items: center;position: relative;}
+.sidebyside > .left {display: flex;justify-content: flex-start;align-items: center;gap: 5px;}
+.sidebyside > .right {display: flex;justify-content: flex-end;align-items: center;gap: 5px;text-align: right;}
+.sidebyside .btn_area {display: inline-block;margin: 0;}</code>
+</pre>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">종류</h2>
+                <div class="ui_sample">
+                    <span class="state red">red</span>
+                    <span class="state green">green</span>
+                    <span class="state blue">blue</span>
+                    <span class="state gray">gray</span>
+                    <span class="state black">black</span>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;span class="state red"&gt;red&lt;/span&gt;
+&lt;span class="state green"&gt;green&lt;/span&gt;
+&lt;span class="state blue"&gt;blue&lt;/span&gt;
+&lt;span class="state gray"&gt;gray&lt;/span&gt;
+&lt;span class="state black"&gt;black&lt;/span&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/* tag */
+.state {display: inline-block;min-width: 50px;height: 24px;padding: 0 10px;border-radius: 4px;font-size: 12px;font-weight: 400;line-height: 24px;color: #FFFFFF;letter-spacing: -0.03em;text-align: center;}
+.state.red {background-color: var(--tag-red);}
+.state.green {background-color: var(--tag-green);}
+.state.blue {background-color: var(--tag-blue);}
+.state.gray {background-color: var(--tag-gray);}
+.state.black {background-color: var(--tag-black);}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab04">
+                <h2 class="section_main_ttl">종류</h2>
+                <div class="ui_sample">
+                    <table class="data_tbl">
+                        <colgroup>
+                            <col>
+                            <col>
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">유형</th>
+                                <th scope="col">예시</th>
+                                <th scope="col">이미지명</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>excel</td>
+                                <td><img src="images/icon/file_excel.svg" alt="excel"></td>
+                                <td>file_excel.svg</td>
+                            </tr>
+                            <tr>
+                                <td>hwp</td>
+                                <td><img src="images/icon/file_hwp.svg" alt="hwp"></td>
+                                <td>file_hwp.svg</td>
+                            </tr>
+                            <tr>
+                                <td>img</td>
+                                <td><img src="images/icon/file_img.svg" alt="img"></td>
+                                <td>file_img.svg</td>
+                            </tr>
+                            <tr>
+                                <td>pdf</td>
+                                <td><img src="images/icon/file_pdf.svg" alt="pdf"></td>
+                                <td>file_pdf.svg</td>
+                            </tr>
+                            <tr>
+                                <td>ppt</td>
+                                <td><img src="images/icon/file_ppt.svg" alt="ppt"></td>
+                                <td>file_ppt.svg</td>
+                            </tr>
+                            <tr>
+                                <td>word</td>
+                                <td><img src="images/icon/file_word.svg" alt="word"></td>
+                                <td>file_word.svg</td>
+                            </tr>
+                            <tr>
+                                <td>zip</td>
+                                <td><img src="images/icon/file_zip.svg" alt="zip"></td>
+                                <td>file_zip.svg</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code04_1_1" class="on">html</li>
+                        <li id="code04_1_2">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code04_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;img src="images/icon/file_excel.svg" alt="excel"&gt;
+&lt;img src="images/icon/file_hwp.svg" alt="hwp"&gt;
+&lt;img src="images/icon/file_img.svg" alt="img"&gt;
+&lt;img src="images/icon/file_pdf.svg" alt="pdf"&gt;
+&lt;img src="images/icon/file_ppt.svg" alt="ppt"&gt;
+&lt;img src="images/icon/file_word.svg" alt="word"&gt;
+&lt;img src="images/icon/file_zip.svg" alt="zip"&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code04_1_2">
+                        <ul>
+                            <li><a href="images/icon/file_excel.svg" title="Download" download>file_excel.svg</a></li>
+                            <li><a href="images/icon/file_hwp.svg" title="Download" download>file_hwp.svg</a></li>
+                            <li><a href="images/icon/file_img.svg" title="Download" download>file_img.svg</a></li>
+                            <li><a href="images/icon/file_pdf.svg" title="Download" download>file_pdf.svg</a></li>
+                            <li><a href="images/icon/file_ppt.svg" title="Download" download>file_ppt.svg</a></li>
+                            <li><a href="images/icon/file_word.svg" title="Download" download>file_word.svg</a></li>
+                            <li><a href="images/icon/file_zip.svg" title="Download" download>file_zip.svg</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        
+        	<section class="common_tab_content js_tcont on" data-tab="tab05">
+        		<h2 class="section_main_ttl">종류</h2>
+                <div class="ui_sample">
+                	<button type="button" class="btn_allclose btn_open">전체열기</button>
+                	<button type="button" class="btn_allclose btn_close">전체닫기</button>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code05_1_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code05_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;button type=&quot;button&quot; class=&quot;btn_allclose btn_open&quot;&gt;전체열기&lt;/button&gt;
+&lt;button type=&quot;button&quot; class=&quot;btn_allclose btn_close&quot;&gt;전체닫기&lt;/button&gt;</code></pre>
+					</div>
+        	</section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

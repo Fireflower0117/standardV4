@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.standard.mapper.usersupport.RelSiteMngMapper">
+
+	<!-- 관련사이트 건수 조회 -->
+	<select id="selectCount" resultType="int">
+		/* RelSiteMngMapper.selectCount */
+		SELECT COUNT(1)					 	
+		  FROM T_REL_SITE_MNG
+		 WHERE USE_YN = 'Y'
+	</select>
+
+	<!-- 관련사이트 목록 조회 -->
+	<select id="selectList" resultType="kr.or.standard.basic.usersupport.relsite.vo.RelSiteVO$RelSite">
+		/* RelSiteMngMapper.selectList */
+		SELECT REL_SITE_SERNO					relSiteSerno
+			 , REL_SITE_URL_ADDR				relSiteUrlAddr
+			 , REL_SITE_NM						relSiteNm
+			 , ATFL_SERNO						atflSerno
+			 , SEQO								seqo
+			 , REGR_SERNO						regrSerno
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d')	regDt
+		  FROM T_REL_SITE_MNG
+		 WHERE USE_YN = 'Y'
+	  ORDER BY SEQO
+	</select>
+
+	<!-- 관련사이트 전체 삭제 -->
+	<update id="deleteAllContents">
+		/* RelSiteMngMapper.deleteAllContents */
+		UPDATE T_REL_SITE_MNG
+		   SET USE_YN = 'N'
+	</update>
+	
+	<!-- 관련사이트 등록 -->
+	<insert id="insertContents" parameterType="kr.or.standard.basic.usersupport.relsite.vo.RelSiteVO$RelSite">
+		/* RelSiteMngMapper.insertContents */
+		INSERT INTO T_REL_SITE_MNG 
+			 ( REL_SITE_URL_ADDR					
+			 , REL_SITE_NM							
+			 , ATFL_SERNO							
+			 , SEQO									
+			 , REGR_SERNO						
+			 , REG_DT
+	   		 )
+	    VALUES 
+	    	 ( #{relSiteUrlAddr}  
+			 , #{relSiteNm}       
+			 , NULLIF(#{atflSerno}, '')       
+			 , #{seqo}            
+			 , #{loginSerno}
+			 , NOW()
+			 )
+	</insert>
+
+	<!-- 관련사이트 수정 -->
+	<update id="updateContents" parameterType="kr.or.standard.basic.usersupport.relsite.vo.RelSiteVO$RelSite">
+		/* RelSiteMngMapper.updateContents */
+		UPDATE T_REL_SITE_MNG
+		   SET REL_SITE_URL_ADDR	= #{relSiteUrlAddr}
+			 , REL_SITE_NM			= #{relSiteNm}
+			 , ATFL_SERNO			= NULLIF(#{atflSerno}, '')
+			 , SEQO					= #{seqo}
+			 , UPDR_SERNO			= #{loginSerno}
+			 , UPD_DT				= NOW()	
+			 , USE_YN				= 'Y'
+		 WHERE REL_SITE_SERNO 		= #{relSiteSerno}
+	</update>
+
+</mapper>

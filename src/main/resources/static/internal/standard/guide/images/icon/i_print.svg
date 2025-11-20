@@ -1,0 +1,26 @@
+<svg id="i_print" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="그룹_421" data-name="그룹 421" transform="translate(-944 -411)">
+    <rect id="사각형_742" data-name="사각형 742" width="14" height="1.5" rx="0.75" transform="translate(947 411)" fill="#333"/>
+    <rect id="사각형_743" data-name="사각형 743" width="14" height="1.5" rx="0.75" transform="translate(947 417.5)" fill="#333"/>
+    <rect id="사각형_744" data-name="사각형 744" width="1.5" height="6.5" transform="translate(947 411.75)" fill="#333"/>
+    <rect id="사각형_745" data-name="사각형 745" width="1.5" height="6.5" transform="translate(959.5 411.75)" fill="#333"/>
+  </g>
+  <g id="그룹_438" data-name="그룹 438" transform="translate(-126 -4012)">
+    <rect id="사각형_754" data-name="사각형 754" width="8" height="1" rx="0.5" transform="translate(132 4025.75)" fill="#333"/>
+    <rect id="사각형_755" data-name="사각형 755" width="8" height="1" rx="0.5" transform="translate(132 4027.75)" fill="#333"/>
+    <g id="그룹_422" data-name="그룹 422" transform="translate(-818 3612)">
+      <rect id="사각형_742-2" data-name="사각형 742" width="14" height="1.5" rx="0.75" transform="translate(947 411)" fill="#333"/>
+      <rect id="사각형_743-2" data-name="사각형 743" width="14" height="1.5" rx="0.75" transform="translate(947 418.5)" fill="#333"/>
+      <rect id="사각형_744-2" data-name="사각형 744" width="1.5" height="7.5" transform="translate(947 411.75)" fill="#333"/>
+      <rect id="사각형_745-2" data-name="사각형 745" width="1.5" height="7.5" transform="translate(959.5 411.75)" fill="#333"/>
+    </g>
+  </g>
+  <g id="그룹_440" data-name="그룹 440" transform="translate(-126 -4012)">
+    <g id="그룹_439" data-name="그룹 439">
+      <rect id="사각형_753" data-name="사각형 753" width="4" height="12" rx="1" transform="translate(126 4016)" fill="#333"/>
+      <rect id="사각형_751" data-name="사각형 751" width="4" height="12" rx="1" transform="translate(142 4016)" fill="#333"/>
+      <rect id="사각형_752" data-name="사각형 752" width="14" height="5" transform="translate(129 4019)" fill="#333"/>
+    </g>
+    <line id="선_237" data-name="선 237" transform="translate(144 4018)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+  </g>
+</svg>

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/board.css">
+    <link rel="stylesheet" href="css/content.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+    <script src="js/content.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">설문조사</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">설문 리스트</li>
+                <li id="tab02">설문 등록</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. basic.css를 반드시 먼저 import 해야함. (basic.zip 구성요소 모두 필수)</dt>
+                        <dt>2. UI 요소에서 사용되는 css, js는 각 메뉴의 샘플코드에서 복사해서 추가, img파일 개별 다운로드 후 경로에 맞게 넣어야 함.</dt>
+                    </dl>
+                </section>
+
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">설문리스트형</h2>
+                    <dl>
+                        <dt>1. class="state"에는 <span class="impact">설문상태</span>에 따라 해당되는 색상 클래스를 넣어준다.</dt>
+                        <dd>
+                            &lt;span class=<span class="impact">"state blue"</span>&gt;진행중&lt;/span&gt;<br>
+                            &lt;span class=<span class="impact">"state gray"</span>&gt;설문종료&lt;/span&gt;
+                        </dd>
+                        <dt>2. 설문참여율에 따른 프로그레스바 표시는 <span class="impact">progress 안에 있는 &lt;em&gt;</span>에 추가한다.</dt>
+                        <dd>&lt;span class="progress"&gt;&lt;em class=<span class="impact">"w50p"</span>&gt;&lt;/em&gt;&lt;/span&gt;</dd>
+                    </dl>
+                </section>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample">
+                    <ul class="survey_list">
+                        <li>
+                            <a href="">
+                                <div class="survey_top">
+                                    <span class="state blue">진행중</span>
+                                    <p class="tit">여가활동 설문조사</p>
+                                    <p class="exp">평소 업무 이외의 시간에 자신이 하는 여가활동에 대하여 설문해주세요.</p>
+                                </div>
+                                <div class="survey_mdl">
+                                    <span class="info">
+                                        <i class="xi-profile-o"></i>전직원
+                                        <i class="xi-message-o"></i>50/3480 (50%)
+                                    </span>
+                                    <span class="progress"><em class="w50p"></em></span>
+                                </div>
+                                <div class="survey_btm">
+                                    <span class="date"><i class="xi-calendar"></i>2021.09.01 ~ 2021.09.17</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <div class="survey_top">
+                                    <span class="state gray">설문종료</span>
+                                    <p class="tit">여가활동 설문조사</p>
+                                    <p class="exp">평소 업무 이외의 시간에 자신이 하는 여가활동에 대하여 설문해주세요.</p>
+                                </div>
+                                <div class="survey_mdl">
+                                    <span class="info">
+                                        <i class="xi-profile-o"></i>전직원
+                                        <i class="xi-message-o"></i>50/3480 (50%)
+                                    </span>
+                                    <span class="progress"><em class="w50p"></em></span>
+                                </div>
+                                <div class="survey_btm">
+                                    <span class="date"><i class="xi-calendar"></i>2021.09.01 ~ 2021.09.17</span>
+                                    <button type="button" class="btn sml btn_rewrite">수정</button>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <div class="survey_top">
+                                    <span class="state blue">진행중</span>
+                                    <p class="tit">여가활동 설문조사</p>
+                                    <p class="exp">평소 업무 이외의 시간에 자신이 하는 여가활동에 대하여 설문해주세요.</p>
+                                </div>
+                                <div class="survey_mdl">
+                                    <span class="info">
+                                        <i class="xi-profile-o"></i>전직원
+                                        <i class="xi-message-o"></i>50/3480 (50%)
+                                    </span>
+                                    <span class="progress"><em class="w50p"></em></span>
+                                </div>
+                                <div class="survey_btm">
+                                    <span class="date"><i class="xi-calendar"></i>2021.09.01 ~ 2021.09.17</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <div class="survey_top">
+                                    <span class="state gray">설문종료</span>
+                                    <p class="tit">여가활동 설문조사</p>
+                                    <p class="exp">평소 업무 이외의 시간에 자신이 하는 여가활동에 대하여 설문해주세요.</p>
+                                </div>
+                                <div class="survey_mdl">
+                                    <span class="info">
+                                        <i class="xi-profile-o"></i>전직원
+                                        <i class="xi-message-o"></i>50/3480 (50%)
+                                    </span>
+                                    <span class="progress"><em class="w50p"></em></span>
+                                </div>
+                                <div class="survey_btm">
+                                    <span class="date"><i class="xi-calendar"></i>2021.09.01 ~ 2021.09.17</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <div class="survey_top">
+                                    <span class="state blue">진행중</span>
+                                    <p class="tit">여가활동 설문조사</p>
+                                    <p class="exp">평소 업무 이외의 시간에 자신이 하는 여가활동에 대하여 설문해주세요.</p>
+                                </div>
+                                <div class="survey_mdl">
+                                    <span class="info">
+                                        <i class="xi-profile-o"></i>전직원
+                                        <i class="xi-message-o"></i>50/3480 (50%)
+                                    </span>
+                                    <span class="progress"><em class="w50p"></em></span>
+                                </div>
+                                <div class="survey_btm">
+                                    <span class="date"><i class="xi-calendar"></i>2021.09.01 ~ 2021.09.17</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <div class="survey_top">
+                                    <span class="state gray">설문종료</span>
+                                    <p class="tit">여가활동 설문조사</p>
+                                    <p class="exp">평소 업무 이외의 시간에 자신이 하는 여가활동에 대하여 설문해주세요.</p>
+                                </div>
+                                <div class="survey_mdl">
+                                    <span class="info">
+                                        <i class="xi-profile-o"></i>전직원
+                                        <i class="xi-message-o"></i>50/3480 (50%)
+                                    </span>
+                                    <span class="progress"><em class="w50p"></em></span>
+                                </div>
+                                <div class="survey_btm">
+                                    <span class="date"><i class="xi-calendar"></i>2021.09.01 ~ 2021.09.17</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">html</li>
+                        <li id="code01_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;ul class="survey_list"&gt;
+    &lt;li&gt;
+        &lt;a href=""&gt;
+            &lt;div class="survey_top"&gt;
+                &lt;span class="state blue"&gt;진행중&lt;/span&gt;
+                &lt;p class="tit"&gt;여가활동 설문조사&lt;/p&gt;
+                &lt;p class="exp"&gt;평소 업무 이외의 시간에 자신이 하는 여가활동에 대하여 설문해주세요.&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="survey_mdl"&gt;
+                &lt;span class="info"&gt;
+                    &lt;i class="xi-profile-o"&gt;&lt;/i&gt;전직원
+                    &lt;i class="xi-message-o"&gt;&lt;/i&gt;50/3480 (50%)
+                &lt;/span&gt;
+                &lt;span class="progress"&gt;&lt;em class="w50p"&gt;&lt;/em&gt;&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="survey_btm"&gt;
+                &lt;span class="date"&gt;&lt;i class="xi-calendar"&gt;&lt;/i&gt;2021.09.01 ~ 2021.09.17&lt;/span&gt;
+                &lt;button type="button" class="btn sml btn_rewrite"&gt;수정&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/a&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** survey **/
+.survey_list {display: flex;flex-wrap: wrap;justify-content: space-between;}
+.survey_list li {width: 33%;margin-bottom: 10px;border: 1px solid #e9e9e9;border-radius: 4px;box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);}
+.survey_list li a {display: block;padding: 25px;}
+.survey_list .tit {margin: 10px 0;font-size: 20px;font-weight: 500;}
+.survey_list .exp {height: 40px;margin-bottom: 30px;font-size: 13px;font-weight: 400;line-height: 20px;color: #a2a2a2;display: -webkit-box;overflow: hidden;-webkit-line-clamp: 2;-webkit-box-orient: vertical;}
+.survey_list span i[class^="xi-"] {display: inline-block;position: relative;top: -2px;margin-right: 5px;font-size: 17px;color: #c5c5c5;vertical-align: middle;}
+.survey_mdl {margin-bottom: 15px;padding-bottom: 15px;border-bottom: 1px dashed #ddd;}
+.survey_mdl .info {display: inline-block;font-size: 14px;font-weight: 300;color: #a2a2a2;letter-spacing: -0.4px;}
+.survey_mdl .info i + i {margin-left: 10px;}
+.survey_mdl .progress {display: inline-block;position: relative;width: 100px;height: 10px;margin-left: 12px;border-radius: 5px;background: #ECECEC;}
+.survey_mdl .progress em {display: block;width: 0;height: 100%;border-radius: 5px;background: #429BCF;}
+.survey_btm .date {font-size: 14px;font-weight: 300;color: #666;}
+.survey_btm .btn_rewrite {float: right;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">설문 등록</h2>
+                <div class="ui_sample">
+                    <div class="board_top">
+                        <!-- <div class="board_left"></div> -->
+                        <div class="board_right">
+                            <div class="form_guide"><span class="asterisk">*</span>필수입력</div>
+                        </div>
+                    </div>
+                    <table class="board_write">
+                        <colgroup>
+                            <col style="width: 20%;">
+                            <col style="width: 30%;">
+                            <col style="width: 20%;">
+                            <col style="width: 30%;">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row"><span class="asterisk">*</span> 설문제목</th>
+                                <td colspan="3"><input type="text" class="w100p"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><span class="asterisk">*</span> 설문기간</th>
+                                <td>
+                                    <span class="calendar_input"><input type="text" id="StartDate"></span>
+                                    <span class="gap">~</span>
+                                    <span class="calendar_input"><input type="text" id="EndDate"></span>
+                                    <script>
+                                        $(document).ready(function () {
+                                            fncDate("StartDate", "EndDate");
+                                        });
+                                    </script>
+                                </td>
+                                <th scope="row"><span class="asterisk">*</span> 게시여부</th>
+                                <td>
+                                    <span class="chk">
+                                        <span class="radio"><input type="radio" name="srvy01" id="srvy01_1"><label for="srvy01_1">미게시</label></span>
+                                        <span class="radio"><input type="radio" name="srvy01" id="srvy01_2"><label for="srvy01_2">게시</label></span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><span class="asterisk">*</span> 문항등록</th>
+                                <td>
+                                    <span class="chk">
+                                        <span class="radio"><input type="radio" name="srvy02" id="srvy02_1"><label for="srvy02_1">직접등록</label></span>
+                                        <span class="radio"><input type="radio" name="srvy02" id="srvy02_2"><label for="srvy02_2">템플릿 사용</label></span>
+                                    </span>
+                                </td>
+                                <th scope="row">템플릿 선택</th>
+                                <td>
+                                    <select class="auto">
+                                        <option>선택</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><span class="asterisk">*</span> 설문대상</th>
+                                <td>
+                                    <span class="chk">
+                                        <span class="radio"><input type="radio" name="srvy03" id="srvy03_1"><label for="srvy03_1">직접선택</label></span>
+                                        <span class="radio"><input type="radio" name="srvy03" id="srvy03_2"><label for="srvy03_2">부서</label></span>
+                                        <span class="radio"><input type="radio" name="srvy03" id="srvy03_3"><label for="srvy03_3">전직원</label></span>
+                                    </span>
+                                </td>
+                                <th scope="row"><span class="asterisk">*</span> 대상선택</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><span class="asterisk">*</span> 설문설명</th>
+                                <td colspan="3"><textarea rows="5"></textarea></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="srvy_add_wrap">
+                        <div class="sidebyside">
+                            <div class="left">
+                                <h4 class="md_tit">1중 1섹션</h4>
+                            </div>
+                            <div class="right">
+                                <div class="btn_area">
+                                    <button type="button" class="btn sml">섹션추가</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="srvy_section">
+                            <table class="board_write">
+                                <caption>내용(제목, 작성자, 작성일 등으로 구성)</caption>
+                                <colgroup>
+                                    <col style="width: 20%;">
+                                    <col>
+                                    <col style="width: 90px;">
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><span class="asterisk">*</span> 섹션제목</th>
+                                        <td><input type="text" class="w100p"></td>
+                                        <td rowspan="3" class="c">
+                                            <button type="button" class="btn sml red">삭제</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">섹션내용</th>
+                                        <td><textarea></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">진행 섹션</th>
+                                        <td>
+                                            <select class="auto">
+                                                <option>다음 섹션으로 이동</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="srvy_entry">
+                                <table class="board_write">
+                                    <caption>내용(제목, 작성자, 작성일 등으로 구성)</caption>
+                                    <colgroup>
+                                        <col style="width: 20%;">
+                                        <col>
+                                        <col style="width: 90px;">
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row"><span class="asterisk">*</span> 항목제목</th>
+                                            <td><input type="text" class="w100p"></td>
+                                            <td rowspan="5" class="c">
+                                                <button type="button" class="btn sml blue">추가</button>
+                                                <button type="button" class="btn sml red">삭제</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">필수여부</th>
+                                            <td>
+                                                <span class="chk">
+                                                    <span class="cbx"><input type="checkbox" name="srvy04_1" id="srvy04_1"><label for="srvy04_1">필수항목</label></span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">항목설명</th>
+                                            <td><input type="text" placeholder="항목에 대한 자세한 설명을 입력해주세요." class="w100p"></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"><span class="asterisk">*</span> 유형</th>
+                                            <td>
+                                                <select class="auto">
+                                                    <option>선택</option>
+                                                    <option value="1">단답형</option>
+                                                    <option value="2">장문형</option>
+                                                    <option value="3">객관식</option>
+                                                    <option value="4">체크박스</option>
+                                                    <option value="5">파일</option>
+                                                    <option value="6">이미지</option>
+                                                    <option value="9">동영상</option>
+                                                    <option value="7">선호도 점수</option>
+                                                    <option value="8">날짜/시간</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">옵션</th>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn_area">
+                        <button type="button" class="btn btn_write">등록</button>
+                        <button type="button" class="btn btn_cancel">취소</button>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="board_top"&gt;
+    &lt;!-- &lt;div class="board_left"&gt;&lt;/div&gt; --&gt;
+    &lt;div class="board_right"&gt;
+        &lt;div class="form_guide"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt;필수입력&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;table class="board_write"&gt;
+    &lt;colgroup&gt;
+        &lt;col style="width: 20%;"&gt;
+        &lt;col style="width: 30%;"&gt;
+        &lt;col style="width: 20%;"&gt;
+        &lt;col style="width: 30%;"&gt;
+    &lt;/colgroup&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 설문제목&lt;/th&gt;
+            &lt;td colspan="3"&gt;&lt;input type="text" class="w100p"&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 설문기간&lt;/th&gt;
+            &lt;td&gt;
+                &lt;span class="calendar_input"&gt;&lt;input type="text" id="StartDate"&gt;&lt;/span&gt;
+                &lt;span class="gap"&gt;~&lt;/span&gt;
+                &lt;span class="calendar_input"&gt;&lt;input type="text" id="EndDate"&gt;&lt;/span&gt;
+                &lt;script&gt;
+                    $(document).ready(function () {
+                        fncDate("StartDate", "EndDate");
+                    });
+                &lt;/script&gt;
+            &lt;/td&gt;
+            &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 게시여부&lt;/th&gt;
+            &lt;td&gt;
+                &lt;span class="chk"&gt;
+                    &lt;span class="radio"&gt;&lt;input type="radio" name="srvy01" id="srvy01_1"&gt;&lt;label for="srvy01_1"&gt;미게시&lt;/label&gt;&lt;/span&gt;
+                    &lt;span class="radio"&gt;&lt;input type="radio" name="srvy01" id="srvy01_2"&gt;&lt;label for="srvy01_2"&gt;게시&lt;/label&gt;&lt;/span&gt;
+                &lt;/span&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 문항등록&lt;/th&gt;
+            &lt;td&gt;
+                &lt;span class="chk"&gt;
+                    &lt;span class="radio"&gt;&lt;input type="radio" name="srvy02" id="srvy02_1"&gt;&lt;label for="srvy02_1"&gt;직접등록&lt;/label&gt;&lt;/span&gt;
+                    &lt;span class="radio"&gt;&lt;input type="radio" name="srvy02" id="srvy02_2"&gt;&lt;label for="srvy02_2"&gt;템플릿 사용&lt;/label&gt;&lt;/span&gt;
+                &lt;/span&gt;
+            &lt;/td&gt;
+            &lt;th scope="row"&gt;템플릿 선택&lt;/th&gt;
+            &lt;td&gt;
+                &lt;select class="auto"&gt;
+                    &lt;option&gt;선택&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 설문대상&lt;/th&gt;
+            &lt;td&gt;
+                &lt;span class="chk"&gt;
+                    &lt;span class="radio"&gt;&lt;input type="radio" name="srvy03" id="srvy03_1"&gt;&lt;label for="srvy03_1"&gt;직접선택&lt;/label&gt;&lt;/span&gt;
+                    &lt;span class="radio"&gt;&lt;input type="radio" name="srvy03" id="srvy03_2"&gt;&lt;label for="srvy03_2"&gt;부서&lt;/label&gt;&lt;/span&gt;
+                    &lt;span class="radio"&gt;&lt;input type="radio" name="srvy03" id="srvy03_3"&gt;&lt;label for="srvy03_3"&gt;전직원&lt;/label&gt;&lt;/span&gt;
+                &lt;/span&gt;
+            &lt;/td&gt;
+            &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 대상선택&lt;/th&gt;
+            &lt;td&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 설문설명&lt;/th&gt;
+            &lt;td colspan="3"&gt;&lt;textarea rows="5"&gt;&lt;/textarea&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div class="srvy_add_wrap"&gt;
+    &lt;div class="sidebyside"&gt;
+        &lt;div class="left"&gt;
+            &lt;h4 class="md_tit"&gt;1중 1섹션&lt;/h4&gt;
+        &lt;/div&gt;
+        &lt;div class="right"&gt;
+            &lt;div class="btn_area"&gt;
+                &lt;button type="button" class="btn sml"&gt;섹션추가&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="srvy_section"&gt;
+        &lt;table class="board_write"&gt;
+            &lt;caption&gt;내용(제목, 작성자, 작성일 등으로 구성)&lt;/caption&gt;
+            &lt;colgroup&gt;
+                &lt;col style="width: 20%;"&gt;
+                &lt;col&gt;
+                &lt;col style="width: 90px;"&gt;
+            &lt;/colgroup&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 섹션제목&lt;/th&gt;
+                    &lt;td&gt;&lt;input type="text" class="w100p"&gt;&lt;/td&gt;
+                    &lt;td rowspan="3" class="c"&gt;
+                        &lt;button type="button" class="btn sml red"&gt;삭제&lt;/button&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th scope="row"&gt;섹션내용&lt;/th&gt;
+                    &lt;td&gt;&lt;textarea&gt;&lt;/textarea&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th scope="row"&gt;진행 섹션&lt;/th&gt;
+                    &lt;td&gt;
+                        &lt;select class="auto"&gt;
+                            &lt;option&gt;다음 섹션으로 이동&lt;/option&gt;
+                        &lt;/select&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;div class="srvy_entry"&gt;
+            &lt;table class="board_write"&gt;
+                &lt;caption&gt;내용(제목, 작성자, 작성일 등으로 구성)&lt;/caption&gt;
+                &lt;colgroup&gt;
+                    &lt;col style="width: 20%;"&gt;
+                    &lt;col&gt;
+                    &lt;col style="width: 90px;"&gt;
+                &lt;/colgroup&gt;
+                &lt;tbody&gt;
+                    &lt;tr&gt;
+                        &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 항목제목&lt;/th&gt;
+                        &lt;td&gt;&lt;input type="text" class="w100p"&gt;&lt;/td&gt;
+                        &lt;td rowspan="5" class="c"&gt;
+                            &lt;button type="button" class="btn sml blue"&gt;추가&lt;/button&gt;
+                            &lt;button type="button" class="btn sml red"&gt;삭제&lt;/button&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;th scope="row"&gt;필수여부&lt;/th&gt;
+                        &lt;td&gt;
+                            &lt;span class="chk"&gt;
+                                &lt;span class="cbx"&gt;&lt;input type="checkbox" name="srvy04_1" id="srvy04_1"&gt;&lt;label for="srvy04_1"&gt;필수항목&lt;/label&gt;&lt;/span&gt;
+                            &lt;/span&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;th scope="row"&gt;항목설명&lt;/th&gt;
+                        &lt;td&gt;&lt;input type="text" placeholder="항목에 대한 자세한 설명을 입력해주세요." class="w100p"&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 유형&lt;/th&gt;
+                        &lt;td&gt;
+                            &lt;select class="auto"&gt;
+                                &lt;option&gt;선택&lt;/option&gt;
+                                &lt;option value="1"&gt;단답형&lt;/option&gt;
+                                &lt;option value="2"&gt;장문형&lt;/option&gt;
+                                &lt;option value="3"&gt;객관식&lt;/option&gt;
+                                &lt;option value="4"&gt;체크박스&lt;/option&gt;
+                                &lt;option value="5"&gt;파일&lt;/option&gt;
+                                &lt;option value="6"&gt;이미지&lt;/option&gt;
+                                &lt;option value="9"&gt;동영상&lt;/option&gt;
+                                &lt;option value="7"&gt;선호도 점수&lt;/option&gt;
+                                &lt;option value="8"&gt;날짜/시간&lt;/option&gt;
+                            &lt;/select&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;th scope="row"&gt;옵션&lt;/th&gt;
+                        &lt;td&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="btn_area"&gt;
+    &lt;button type="button" class="btn btn_write"&gt;등록&lt;/button&gt;
+    &lt;button type="button" class="btn btn_cancel"&gt;취소&lt;/button&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** survey **/
+/* 관리폼 */
+.srvy_add_wrap,
+.srvy_section {margin-top: 10px;}
+.srvy_entry {margin-top: 30px;}
+.srvy_add_wrap .md_tit {margin-bottom: 0;}
+.srvy_add_wrap .btn.sml + .btn {margin-left: 0 !important;margin-top: 5px;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_3">
+                        <pre>
+<code class="line-numbers language-js">// datepicker
+var fncDate = function () {
+    var setDate = arguments;
+    var getId;
+    var fmt = "yy.mm.dd";
+    switch (setDate.length) {
+        case 1:
+            getId = "#" + setDate[0]; break;
+        case 2:
+            if (setDate[1] != '') { getId = "#" + setDate[0] + ", #" + setDate[1]; break; }
+            else { getId = "#" + setDate[0]; break; }
+        case 3:
+            if (setDate[1] != '') { getId = "#" + setDate[0] + ", #" + setDate[1]; fmt = setDate[2]; break; }
+            else { getId = "#" + setDate[0]; fmt = setDate[2]; break; }
+    }
+
+    var dates = $(getId).datepicker({
+        changeMonth: true,
+        changeYear: true,
+        showOn: "button",
+        buttonImage: "images/icon/i_cal.svg",
+        buttonImageOnly: true,
+        dateFormat: fmt,
+        onSelect: function (selectedDate) {
+            var option = this.id == setDate[0] ? "minDate" : "maxDate",
+                instance = $(this).data("datepicker"),
+                date = (fmt == 'yy.mm' ? new Date(instance.selectedYear, instance.selectedMonth, 1) : $.datepicker.parseDate($.datepicker._defaults.dateFormat, selectedDate, instance.settings))
+            dates.not(this).datepicker("option", option, date);
+            $(this).trigger("change");
+        }
+    });
+}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

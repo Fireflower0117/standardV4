@@ -1,0 +1,12 @@
+@charset "utf-8";
+/* 시스템 사이트의 경우 :  메인+서브에 공통 적용되는 common.css 파일 추가해 메인+서브 공통부분, 서브에 적용되는 css 기재 /  메인에만 적용되는 main.css 추가해 메인 css 기재 */
+/* 일반 사이트의 경우 : 메인+서브에 공통 적용되는 common.css 파일 추가해 메인+서브 공통부분 css / 메인에만 적용되는 main.css 추가해 메인 css 기재 / 서브에만 적용되는 sub.css 추가해 서브 css 기재 */
+/* 시스템, 일반 사이트 공통 : 멤버십, 에러 등이 필요한 경우 퍼블 가이드 UI 요소에서 원하는 부분만 복사해서 common.css에 기재 */
+/* basic.css, board.css에서 수정해서 사용할 것들은 common.css에 수정 css 적기 (basic, board 수정 X) */
+
+/** button **/
+.btn_allclose {display: inline-block;border: 1px solid #a8aec0;font-size: 12px;padding: 2px 5px;border-radius: 5px;margin-left: 10px;cursor: pointer;background: #d9deea;font-weight: 400;}
+
+/** icon **/
+.ic.code{display:inline-block; background: url(/ma/images/icon/i_id.png) no-repeat;width: 27px;height: 26px;}
+.ic.power{display:inline-block; background: url(/ma/images/icon/i_func.png) no-repeat;width: 27px;height: 26px;}

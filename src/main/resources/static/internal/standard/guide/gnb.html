@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/content.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/content.js"></script>
+    <style>
+        html {font-size: 10px;}
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">대메뉴 & 서브메뉴</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">전체 슬라이드</li>
+                <li id="tab02">고정형</li>
+                <li id="tab03">와이드 꾸밈형</li>
+                <li id="tab04">반응형</li>
+                <li id="tab05">단일메뉴</li>
+                <li id="tab06">대메뉴 left 고정형</li>
+                <li id="tab07">서브메뉴</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. UI 요소에서 사용되는 css, js는 각 메뉴의 샘플코드에서 복사해서 추가, img파일 개별 다운로드 후 경로에 맞게 넣어야 함.</dt>
+                    </dl>
+                </section>
+                <h2 class="section_main_ttl">타입A</h2>
+                <div class="ui_sample">
+                    <header id="header01">
+                        <div class="gnb_bg"></div>
+                        <div class="hd_top">
+                            <div class="wrap">
+                                <h1 class="logo"><a href=""><img src="images/guide_logo.png" alt="logo"></a></h1>
+                                <div class="utils">
+                                    <ul>
+                                        <li><a href="">로그인</a></li>
+                                        <li><a href="">회원가입</a></li>
+                                        <li><a href="">마이페이지</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gnb_area">
+                            <div class="wrap">
+                                <nav id="gnb">
+                                    <ul class="gnb">
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">html</li>
+                        <li id="code01_1_2">css</li>
+                        <li id="code01_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;header id="header"&gt;
+    &lt;div class="gnb_bg"&gt;&lt;/div&gt;
+    &lt;div class="hd_top"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;h1 class="logo"&gt;&lt;a href=""&gt;&lt;img src="images/guide_logo.png" alt="logo"&gt;&lt;/a&gt;&lt;/h1&gt;
+            &lt;div class="utils"&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href=""&gt;로그인&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;회원가입&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;마이페이지&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="gnb_area"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;nav id="gnb"&gt;
+                &lt;ul class="gnb"&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/nav&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/header&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** header **/
+#header {position: relative;height: 120px;border-bottom: 1px solid #e4e4e4;background: #fff;z-index: 9000;}
+#header .wrap {max-width: 1280px;margin: 0 auto;}
+#header .hd_top {height: 60px;border-bottom: 1px solid #e5e5e5;background: #fff;}
+#header .hd_top .wrap {display: flex;justify-content: space-between;align-items: center;height: 100%;}
+#header .hd_top .logo * {display: block;}
+#header .utils ul {display: flex;align-items: center;}
+#header .utils li + li {margin-left: 30px;}
+#header .utils a {display: inline-block;font-size: 14px;font-weight: 400;line-height: 21px;color: #2c2d2d;background: url(../images/common/i_login.png) no-repeat 0 50%;}
+#header .gnb_bg {display: none;position: absolute;left: 0;width: 100%;border-top: 1px solid #dedede;background: #fff;box-shadow: 4px 14px 10px 0px rgba(0, 0, 0, 0.05);}
+#header .gnb_area {overflow: hidden;position: relative;}
+/* gnb */
+#header {z-index: 9999;}
+#header .gnb {display: flex;}
+#header .gnb > li {width: 100%;height: 60px;text-align: center;}
+#header .gnb > li > a {display: flex;justify-content: center;align-items: center;height: 100%;font-size: 18px;font-weight: 700;letter-spacing: -0.02em;text-align: center;}
+#header .gnb > li.on > a {color: #0a66d3;}
+#header .gnb .dp2 {position: relative;padding: 20px 0;background: #fff;z-index: 5500;}
+#header .gnb > li.on .dp2 {background: #f0f2f4;}
+#header .gnb .dp2 li {display: flex;align-items: center;min-height: 40px;}
+#header .gnb .dp2 li a {display: block;width: 100%;padding: 5px 20px;font-size: 16px;font-weight: 400;line-height: 24px;color: #2c2c2c;letter-spacing: -0.04em;text-align: left;word-break: break-word;}
+#header .gnb .dp2 li a:hover,
+#header .gnb .dp2 li a:focus {font-weight: 500;color: #001386;text-decoration: underline;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_3">
+                        <pre>
+<code class="line-numbers language-js">// header
+$(document).ready(function () {
+    var hGnb = [];
+    var hHeader = $('#header .gnb > li').innerHeight();
+    $('#header .dp2').each(function () {
+        hGnb.push($(this).innerHeight());
+    });
+    hGnb = Math.max.apply(null, hGnb);
+    $('#header .gnb_bg').css({ 'top': $('#header').innerHeight(), 'height': hGnb });
+    $('#header .dp2').css('height', hGnb);
+    
+    $('#header .gnb > li, #header .gnb_bg').on({
+        'mouseenter focusin': function () {
+            $(this).addClass('on');
+            $('#header .gnb_bg').stop().slideDown(350);
+            $('#header .gnb_area').stop().animate({ height: hHeader + hGnb }, 350);
+        },
+        'mouseleave focusout': function () {
+            $(this).removeClass('on');
+            $('#header .gnb_bg').stop().slideUp(350);
+            $('#header .gnb_area').stop().animate({ height: hHeader }, 350);
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">타입B</h2>
+                <div class="ui_sample">
+                    <header id="header02">
+                        <div class="gnb_bg"></div>
+                        <div class="hd_top">
+                            <div class="wrap">
+                                <div class="utils">
+                                    <ul>
+                                        <li><a href="">로그인</a></li>
+                                        <li><a href="">회원가입</a></li>
+                                        <li><a href="">마이페이지</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gnb_area">
+                            <div class="wrap">
+                                <h1 class="logo"><a href=""><img src="images/guide_logo.png" alt="logo"></a></h1>
+                                <nav id="gnb">
+                                    <ul class="gnb">
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <div class="gnb_txt"><strong>메뉴1</strong>형사피해자는</div>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <div class="gnb_txt"><strong>메뉴2</strong>형사피해자는 법률이 정하는 바에 의하여</div>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <div class="gnb_txt"><strong>메뉴3</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서</div>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <div class="gnb_txt"><strong>메뉴4</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌</div>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <div class="gnb_txt"><strong>메뉴5</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌 친족의 행위로 인하여 불이익한 처우를 받지 아니한다.</div>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                        <li id="code01_2_2">css</li>
+                        <li id="code01_2_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;header id="header"&gt;
+    &lt;div class="gnb_bg"&gt;&lt;/div&gt;
+    &lt;div class="hd_top"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;div class="utils"&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href=""&gt;로그인&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;회원가입&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;마이페이지&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="gnb_area"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;h1 class="logo"&gt;&lt;a href=""&gt;&lt;img src="images/guide_logo.png" alt="logo"&gt;&lt;/a&gt;&lt;/h1&gt;
+            &lt;nav id="gnb"&gt;
+                &lt;ul class="gnb"&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴1&lt;/strong&gt;형사피해자는&lt;/div&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴2&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여&lt;/div&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴3&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서&lt;/div&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴4&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌&lt;/div&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴5&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌 친족의 행위로 인하여 불이익한 처우를 받지 아니한다.&lt;/div&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/nav&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/header&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** header **/
+#header {position: relative;height: 120px;border-bottom: 1px solid #e4e4e4;background: #fff;z-index: 9000;}
+#header .wrap {max-width: 1280px;margin: 0 auto;}
+#header .hd_top {height: 60px;border-bottom: 1px solid #e5e5e5;background: #fff;}
+#header .hd_top .wrap {display: flex;justify-content: space-between;align-items: center;height: 100%;}
+#header .hd_top .logo * {display: block;}
+#header .utils ul {display: flex;align-items: center;}
+#header .utils li + li {margin-left: 30px;}
+#header .utils a {display: inline-block;font-size: 14px;font-weight: 400;line-height: 21px;color: #2c2d2d;background: url(../images/common/i_login.png) no-repeat 0 50%;}
+#header .gnb_bg {display: none;position: absolute;left: 0;width: 100%;border-top: 1px solid #dedede;background: #fff;box-shadow: 4px 14px 10px 0px rgba(0, 0, 0, 0.05);}
+#header .gnb_area {overflow: hidden;position: relative;}
+/* gnb */
+#header .hd_top .wrap {justify-content: flex-end;}
+#header .gnb_area .wrap {display: flex;justify-content: center;align-items: center;}
+#header .gnb_area .wrap .logo {min-width: 280px;width: 280px;}
+#header #gnb {width: calc(100% - 280px);margin: 0 auto;}
+#header .gnb {display: flex;position: relative;width: 100%;}
+#header .gnb > li {width: 100%;height: 60px;text-align: center;}
+#header .gnb > li > a {display: flex;justify-content: center;align-items: center;height: 100%;font-size: 18px;font-weight: 700;letter-spacing: -0.02em;text-align: center;}
+#header .gnb > li.on > a {color: #0a66d3;}
+#header .gnb .gnb_txt {display: none;position: absolute;top: 60px;padding: 30px 0;font-size: 16px;text-align: left;}
+#header .gnb .gnb_txt strong {display: block;padding-bottom: 5px;font-size: 24px;}
+#header .gnb > li.on .gnb_txt {display: block;}
+#header .gnb .dp2 {position: relative;padding: 15px 0;font-size: 16px;}
+#header .gnb > li.on .dp2 {background: #f0f2f4;}
+#header .gnb .dp2 li {display: flex;align-items: center;min-height: 40px;}
+#header .gnb .dp2 li a {display: block;width: 100%;padding: 5px 20px;font-size: 16px;font-weight: 400;line-height: 24px;color: #2c2c2c;letter-spacing: -0.04em;text-align: left;word-break: break-word;}
+#header .gnb .dp2 li a:hover,
+#header .gnb .dp2 li a:focus {font-weight: 500;color: #001386;text-decoration: underline;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_2_3">
+                        <pre>
+<code class="line-numbers language-js">// header
+$(document).ready(function () {
+    var wGnb = parseInt($('#header .gnb_area .logo').css('width'));
+    var hGnb = [];
+    var hHeader = $('#header .gnb > li').innerHeight();
+    $('#header .gnb > li').each(function () {
+        hGnb.push($(this).children('.gnb_txt').innerHeight());
+        hGnb.push($(this).children('.dp2').innerHeight());
+    });
+    hGnb = Math.max.apply(null, hGnb);
+    $('#header .gnb_bg').css({ 'top': $('#header').innerHeight(), 'height': hGnb });
+    $('#header .dp2').css('height', hGnb);
+    $('#header .gnb_txt').css({ 'left': -wGnb, 'width': wGnb, 'height': hGnb });
+    
+    $('#header .gnb > li').on({
+        'mouseenter focusin': function () {
+            $(this).addClass('on');
+            $('#header .gnb_bg').stop().slideDown(350);
+            $('#header .gnb_area').stop().animate({ height: hHeader + hGnb }, 350);
+        },
+        'mouseleave focusout': function () {
+            $(this).removeClass('on');
+            $('#header .gnb_bg').stop().slideUp(350);
+            $('#header .gnb_area').stop().animate({ height: hHeader }, 350);
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">고정형</h2>
+                <div class="ui_sample">
+                    <header id="header03">
+                        <div class="hd_top">
+                            <div class="wrap">
+                                <h1 class="logo"><a href=""><img src="images/guide_logo.png" alt="logo"></a></h1>
+                                <div class="utils">
+                                    <ul>
+                                        <li><a href="">로그인</a></li>
+                                        <li><a href="">회원가입</a></li>
+                                        <li><a href="">마이페이지</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gnb_area">
+                            <div class="wrap">
+                                <nav id="gnb">
+                                    <ul class="gnb">
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="gnb_bg"></div>
+                    </header>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;header id="header"&gt;
+    &lt;div class="hd_top"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;h1 class="logo"&gt;&lt;a href=""&gt;&lt;img src="images/guide_logo.png" alt="logo"&gt;&lt;/a&gt;&lt;/h1&gt;
+            &lt;div class="utils"&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href=""&gt;로그인&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;회원가입&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;마이페이지&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="gnb_area"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;nav id="gnb"&gt;
+                &lt;ul class="gnb"&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/nav&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="gnb_bg"&gt;&lt;/div&gt;
+&lt;/header&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** header **/
+#header {position: relative;height: 120px;border-bottom: 1px solid #e4e4e4;background: #fff;z-index: 9000;}
+#header .wrap {max-width: 1280px;margin: 0 auto;}
+#header .hd_top {height: 60px;border-bottom: 1px solid #e5e5e5;background: #fff;}
+#header .hd_top .wrap {display: flex;justify-content: space-between;align-items: center;height: 100%;}
+#header .hd_top .logo * {display: block;}
+#header .utils ul {display: flex;align-items: center;}
+#header .utils li + li {margin-left: 30px;}
+#header .utils a {display: inline-block;font-size: 14px;font-weight: 400;line-height: 21px;color: #2c2d2d;background: url(../images/common/i_login.png) no-repeat 0 50%;}
+/* gnb */
+#header {height: auto;border-bottom: 0;}
+#header .gnb_bg {width: 100%;height: 35px;border-top: 1px solid #dedede;border-bottom: 1px solid #dedede;background: #fafafa;}
+#header .gnb {display: flex;}
+#header .gnb > li {overflow: hidden;position: relative;width: 100%;height: 60px;text-align: center;}
+#header .gnb > li.this {overflow: visible;}
+#header .gnb > li.on {overflow: visible;}
+#header .gnb > li > a {display: flex;justify-content: center;align-items: center;height: 100%;font-size: 18px;font-weight: 700;letter-spacing: -0.02em;text-align: center;}
+#header .gnb > li:hover > a,
+#header .gnb > li > a:focus,
+#header .gnb > li.on > a {color: #0a66d3;}
+#header .gnb > li:not(.this):not(.on) .dp2 {overflow: hidden;height: 0;}
+#header .gnb > li:hover .dp2::before,
+#header .gnb > li:focus .dp2::before {background: #64aaf7;}
+#header .gnb .dp2 li {display: inline-block;}
+#header .gnb .dp2 li a {display: block;width: 100%;padding: 0 10px;font-size: 16px;font-weight: 400;line-height: 35px;color: #2c2c2c;letter-spacing: -0.04em;text-align: left;word-break: keep-all;}
+#header .gnb .dp2 li a:hover,
+#header .gnb .dp2 li a:focus {font-weight: 500;color: #001386;text-decoration: underline;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_3">
+                        <pre>
+<code class="line-numbers language-js">// header
+$(document).ready(function () {
+    $('#header .gnb > li:first-child').addClass('this');
+    $('#header .gnb > li').on({
+        'mouseenter focusin': function () {
+            $(this).addClass('on');
+            if (!$(this).hasClass('this')) {
+                $('#header .gnb > li.this').removeClass('this');
+            }
+        },
+        'mouseleave focusout': function () {
+            $(this).removeClass('on');
+            $('#header .gnb > li:first-child').addClass('this');
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">와이드 꾸밈형</h2>
+                <div class="ui_sample" style="height: 200px;">
+                    <header id="header04">
+                        <div class="hd_top">
+                            <div class="wrap">
+                                <h1 class="logo"><a href=""><img src="images/guide_logo.png" alt="logo"></a></h1>
+                                <div class="utils">
+                                    <ul>
+                                        <li><a href="">로그인</a></li>
+                                        <li><a href="">회원가입</a></li>
+                                        <li><a href="">마이페이지</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gnb_area">
+                            <div class="wrap">
+                                <nav id="gnb">
+                                    <ul class="gnb">
+                                        <li>
+                                            <a href=""><span>메뉴</span></a>
+                                            <div class="gnb_bg">
+                                                <div class="dpbox">
+                                                    <div class="gnb_txt"><strong>메뉴1</strong>형사피해자는</div>
+                                                    <ul class="dp2">
+                                                        <li><a href="">메뉴</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href=""><span>메뉴</span></a>
+                                            <div class="gnb_bg">
+                                                <div class="dpbox">
+                                                    <div class="gnb_txt"><strong>메뉴2</strong>형사피해자는 법률이 정하는 바에 의하여</div>
+                                                    <ul class="dp2">
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href=""><span>메뉴</span></a>
+                                            <div class="gnb_bg">
+                                                <div class="dpbox">
+                                                    <div class="gnb_txt"><strong>메뉴3</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서</div>
+                                                    <ul class="dp2">
+                                                        <li>
+                                                            <a href="">메뉴</a>
+                                                            <ul class="dp3">
+                                                                <li><a href="">메뉴</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <a href="">메뉴</a>
+                                                            <ul class="dp3">
+                                                                <li><a href="">메뉴</a></li>
+                                                                <li><a href="">메뉴</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <a href="">메뉴</a>
+                                                            <ul class="dp3">
+                                                                <li><a href="">메뉴</a></li>
+                                                                <li><a href="">메뉴</a></li>
+                                                                <li><a href="">메뉴</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href=""><span>메뉴</span></a>
+                                            <div class="gnb_bg">
+                                                <div class="dpbox">
+                                                    <div class="gnb_txt"><strong>메뉴4</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌</div>
+                                                    <ul class="dp2">
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href=""><span>메뉴</span></a>
+                                            <div class="gnb_bg">
+                                                <div class="dpbox">
+                                                    <div class="gnb_txt"><strong>메뉴5</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌 친족의 행위로 인하여 불이익한 처우를 받지 아니한다.</div>
+                                                    <ul class="dp2">
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                        <li id="code03_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;header id="header"&gt;
+    &lt;div class="hd_top"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;h1 class="logo"&gt;&lt;a href=""&gt;&lt;img src="images/guide_logo.png" alt="logo"&gt;&lt;/a&gt;&lt;/h1&gt;
+            &lt;div class="utils"&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href=""&gt;로그인&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;회원가입&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;마이페이지&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="gnb_area"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;nav id="gnb"&gt;
+                &lt;ul class="gnb"&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;&lt;span&gt;메뉴&lt;/span&gt;&lt;/a&gt;
+                        &lt;div class="gnb_bg"&gt;
+                            &lt;div class="dpbox"&gt;
+                                &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴1&lt;/strong&gt;형사피해자는&lt;/div&gt;
+                                &lt;ul class="dp2"&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;&lt;span&gt;메뉴&lt;/span&gt;&lt;/a&gt;
+                        &lt;div class="gnb_bg"&gt;
+                            &lt;div class="dpbox"&gt;
+                                &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴2&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여&lt;/div&gt;
+                                &lt;ul class="dp2"&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;&lt;span&gt;메뉴&lt;/span&gt;&lt;/a&gt;
+                        &lt;div class="gnb_bg"&gt;
+                            &lt;div class="dpbox"&gt;
+                                &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴3&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서&lt;/div&gt;
+                                &lt;ul class="dp2"&gt;
+                                    &lt;li&gt;
+                                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                                        &lt;ul class="dp3"&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                    &lt;/li&gt;
+                                    &lt;li&gt;
+                                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                                        &lt;ul class="dp3"&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                    &lt;/li&gt;
+                                    &lt;li&gt;
+                                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                                        &lt;ul class="dp3"&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                    &lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;&lt;span&gt;메뉴&lt;/span&gt;&lt;/a&gt;
+                        &lt;div class="gnb_bg"&gt;
+                            &lt;div class="dpbox"&gt;
+                                &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴4&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌&lt;/div&gt;
+                                &lt;ul class="dp2"&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;&lt;span&gt;메뉴&lt;/span&gt;&lt;/a&gt;
+                        &lt;div class="gnb_bg"&gt;
+                            &lt;div class="dpbox"&gt;
+                                &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴5&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌 친족의 행위로 인하여 불이익한 처우를 받지 아니한다.&lt;/div&gt;
+                                &lt;ul class="dp2"&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/nav&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/header&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** header **/
+#header {position: relative;height: 120px;border-bottom: 1px solid #e4e4e4;background: #fff;z-index: 9000;}
+#header .wrap {max-width: 1280px;margin: 0 auto;}
+#header .hd_top {height: 60px;border-bottom: 1px solid #e5e5e5;background: #fff;}
+#header .hd_top .wrap {display: flex;justify-content: space-between;align-items: center;height: 100%;}
+#header .hd_top .logo * {display: block;}
+#header .utils ul {display: flex;align-items: center;}
+#header .utils li + li {margin-left: 30px;}
+#header .utils a {display: inline-block;font-size: 14px;font-weight: 400;line-height: 21px;color: #2c2d2d;background: url(../images/common/i_login.png) no-repeat 0 50%;}
+/* gnb */
+#header {overflow: hidden;position: absolute;width: 100%;}
+#header .gnb_area {position: relative;}
+#header .gnb {display: flex;}
+#header .gnb > li {display: flex;justify-content: center;align-items: center;width: 100%;height: 60px;text-align: center;}
+#header .gnb > li > a {display: block;position: relative;width: 100%;height: 100%;font-size: 18px;font-weight: 700;line-height: 60px;letter-spacing: -0.02em;text-align: center;}
+#header .gnb > li > a > span {position: relative;}
+#header .gnb > li.on > a > span::after {content: '';display: block;position: absolute;right: -12px;top: 0;width: 6px;height: 6px;border-radius: 10px;background: #0a66d3;}
+/* type04 - depth2 */
+#header .gnb_bg {display: none;position: absolute;left: 0;top: 59px;width: 100%;border-top: 1px solid #dedede;}
+#header .dpbox {display: flex;max-width: 1280px;margin: 0 auto;}
+#header .gnb_txt {width: 280px;padding: 30px 0;font-size: 16px;text-align: left;}
+#header .gnb_txt strong {display: block;padding-bottom: 5px;font-size: 24px;}
+#header .dp2 {display: flex;flex-wrap: wrap;width: calc(100% - 280px);padding: 30px 20px 40px;}
+#header .dp2 > li {min-width: calc((100% - 80px) / 3);width: calc((100% - 80px) / 3);max-width: 300px;}
+#header .dp2 > li:not(:nth-child(3n)):not(:last-child) {margin-right: 40px;}
+#header .dp2 > li:nth-child(n+4) {margin-top: 20px;}
+#header .dp2 > li > a {display: flex;align-items: center;position: relative;min-height: 50px;padding: 8px 30px;border: 1px solid #e5e5e5;border-radius: 100px;font-size: 18px;font-weight: 400;line-height: 24px;color: #2c2c2c;letter-spacing: -0.04em;word-break: break-word;}
+#header .dp2 > li:hover > a,
+#header .dp2 > li > a:focus {border-color: #0a66d3;font-weight: 500;color: #fff;background: #0a66d3;}
+/* type04 - depth3 */
+#header .dp3 {padding: 20px 10px 0 20px;}
+#header .dp3 li {text-align: left;}
+#header .dp3 li + li {margin-top: 15px;}
+#header .dp3 li a {display: block;position: relative;padding-left: 10px;font-size: 17px;font-weight: 400;line-height: 24px;color: #2c2c2c;letter-spacing: -0.04em;word-break: break-word;}
+#header .dp3 li a::before {content: '';display: block;position: absolute;left: 0;top: 10px;width: 3px;height: 3px;border-radius: 100%;background: #322f31;}
+#header .dp3 li:hover a,
+#header .dp3 li a:focus {font-weight: 500;color: #0a66d3;text-decoration: underline;}
+#header .dp3 li:hover a::before,
+#header .dp3 li a:focus::before {background: #0a66d3;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_3">
+                        <pre>
+<code class="line-numbers language-js">// header
+$(document).ready(function () {
+    var hHeader = $('#header .hd_top').outerHeight() + $('#header .gnb > li').innerHeight();
+    $('#header .gnb > li').on({
+        'mouseenter focusin': function () {
+            var hGnb = hHeader + $(this).children('.gnb_bg').innerHeight();
+            $(this).addClass('on').children('.gnb_bg').show();
+            $('#header').stop().animate({ height: hGnb }, 350);
+            $('#header .gnb > li').not(this).children('.gnb_bg').hide();
+        },
+        'mouseleave focusout': function () {
+            $(this).removeClass('on');
+            $('#header').stop().animate({ height: hHeader }, 350);
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab04">
+                <h2 class="section_main_ttl">반응형</h2>
+                <h3 class="section_sub_ttl">PC</h3>
+                <div class="ui_sample">
+                    <header id="header05" style="top: 90px;">
+                        <div class="hd_top">
+                            <div class="wrap">
+                                <h1 class="logo"><a href=""><img src="images/guide_logo.png" alt="logo"></a></h1>
+                                <div class="utils">
+                                    <ul>
+                                        <li><a href="">로그인</a></li>
+                                        <li><a href="">회원가입</a></li>
+                                        <li><a href="">마이페이지</a></li>
+                                    </ul>
+                                </div>
+                                <button type="button" class="gnb_open">열기</button>
+                            </div>
+                        </div>
+                        <div class="gnb_area">
+                            <div class="wrap">
+                                <div class="mo_utils">
+                                    <ul>
+                                        <li><a href="">로그인</a></li>
+                                        <li><a href="">회원가입</a></li>
+                                        <li><a href="">마이페이지</a></li>
+                                    </ul>
+                                    <button type="button" class="gnb_close">닫기</button>
+                                </div>
+                                <nav id="gnb">
+                                    <ul class="gnb">
+                                        <li>
+                                            <a href=""><span>메뉴</span></a>
+                                            <div class="gnb_bg">
+                                                <div class="dpbox">
+                                                    <div class="gnb_txt"><strong>메뉴1</strong>형사피해자는</div>
+                                                    <ul class="dp2">
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li>
+                                                            <a href="">메뉴</a>
+                                                            <ul class="dp3">
+                                                                <li><a href="">메뉴</a></li>
+                                                                <li><a href="">메뉴</a></li>
+                                                                <li><a href="">메뉴</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href=""><span>메뉴</span></a>
+                                            <div class="gnb_bg">
+                                                <div class="dpbox">
+                                                    <div class="gnb_txt"><strong>메뉴2</strong>형사피해자는 법률이 정하는 바에 의하여</div>
+                                                    <ul class="dp2">
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href=""><span>메뉴</span></a>
+                                            <div class="gnb_bg">
+                                                <div class="dpbox">
+                                                    <div class="gnb_txt"><strong>메뉴3</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서</div>
+                                                    <ul class="dp2">
+                                                        <li>
+                                                            <a href="">메뉴</a>
+                                                            <ul class="dp3">
+                                                                <li><a href="">메뉴</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <a href="">메뉴</a>
+                                                            <ul class="dp3">
+                                                                <li><a href="">메뉴</a></li>
+                                                                <li><a href="">메뉴</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href=""><span>메뉴</span></a>
+                                            <div class="gnb_bg">
+                                                <div class="dpbox">
+                                                    <div class="gnb_txt"><strong>메뉴4</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌</div>
+                                                    <ul class="dp2">
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href=""><span>메뉴</span></a>
+                                            <div class="gnb_bg">
+                                                <div class="dpbox">
+                                                    <div class="gnb_txt"><strong>메뉴5</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌 친족의 행위로 인하여 불이익한 처우를 받지 아니한다.</div>
+                                                    <ul class="dp2">
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                        <li><a href="">메뉴</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </header>
+
+                    <h3 class="section_sub_ttl" style="margin-top: 200px;">모바일 - 1024px 이하로 화면 줄인 후 새로고침</h3>
+                    <div style="width: 360px;">
+                        <header id="header05" class="mo" style="position: static;">
+                            <div class="hd_top">
+                                <div class="wrap">
+                                    <h1 class="logo"><a href=""><img src="images/guide_logo.png" alt="logo"></a></h1>
+                                    <div class="utils">
+                                        <ul>
+                                            <li><a href="">로그인</a></li>
+                                            <li><a href="">회원가입</a></li>
+                                            <li><a href="">마이페이지</a></li>
+                                        </ul>
+                                    </div>
+                                    <button type="button" class="gnb_open">열기</button>
+                                </div>
+                            </div>
+                            <div class="gnb_area">
+                                <div class="wrap">
+                                    <div class="mo_utils">
+                                        <ul>
+                                            <li><a href="">로그인</a></li>
+                                            <li><a href="">회원가입</a></li>
+                                            <li><a href="">마이페이지</a></li>
+                                        </ul>
+                                        <button type="button" class="gnb_close">닫기</button>
+                                    </div>
+                                    <nav id="gnb">
+                                        <ul class="gnb">
+                                            <li>
+                                                <a href=""><span>메뉴</span></a>
+                                                <div class="gnb_bg">
+                                                    <div class="dpbox">
+                                                        <div class="gnb_txt"><strong>메뉴1</strong>형사피해자는</div>
+                                                        <ul class="dp2">
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li>
+                                                                <a href="">메뉴</a>
+                                                                <ul class="dp3">
+                                                                    <li><a href="">메뉴</a></li>
+                                                                    <li><a href="">메뉴</a></li>
+                                                                    <li><a href="">메뉴</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <a href=""><span>메뉴</span></a>
+                                                <div class="gnb_bg">
+                                                    <div class="dpbox">
+                                                        <div class="gnb_txt"><strong>메뉴2</strong>형사피해자는 법률이 정하는 바에 의하여</div>
+                                                        <ul class="dp2">
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li><a href="">메뉴</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <a href=""><span>메뉴</span></a>
+                                                <div class="gnb_bg">
+                                                    <div class="dpbox">
+                                                        <div class="gnb_txt"><strong>메뉴3</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서</div>
+                                                        <ul class="dp2">
+                                                            <li>
+                                                                <a href="">메뉴</a>
+                                                                <ul class="dp3">
+                                                                    <li><a href="">메뉴</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="">메뉴</a>
+                                                                <ul class="dp3">
+                                                                    <li><a href="">메뉴</a></li>
+                                                                    <li><a href="">메뉴</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <a href=""><span>메뉴</span></a>
+                                                <div class="gnb_bg">
+                                                    <div class="dpbox">
+                                                        <div class="gnb_txt"><strong>메뉴4</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌</div>
+                                                        <ul class="dp2">
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li><a href="">메뉴</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <a href=""><span>메뉴</span></a>
+                                                <div class="gnb_bg">
+                                                    <div class="dpbox">
+                                                        <div class="gnb_txt"><strong>메뉴5</strong>형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌 친족의 행위로 인하여 불이익한 처우를 받지 아니한다.</div>
+                                                        <ul class="dp2">
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li><a href="">메뉴</a></li>
+                                                            <li><a href="">메뉴</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </header>
+                    </div>
+
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code04_1_1" class="on">html</li>
+                        <li id="code04_1_2">css</li>
+                        <li id="code04_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code04_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;header id="header"&gt;
+    &lt;div class="hd_top"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;h1 class="logo"&gt;&lt;a href=""&gt;&lt;img src="images/guide_logo.png" alt="logo"&gt;&lt;/a&gt;&lt;/h1&gt;
+            &lt;div class="utils"&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href=""&gt;로그인&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;회원가입&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;마이페이지&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+            &lt;button type="button" class="gnb_open"&gt;열기&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="gnb_area"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;div class="mo_utils"&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href=""&gt;로그인&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;회원가입&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;마이페이지&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+                &lt;button type="button" class="gnb_close"&gt;닫기&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;nav id="gnb"&gt;
+                &lt;ul class="gnb"&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;&lt;span&gt;메뉴&lt;/span&gt;&lt;/a&gt;
+                        &lt;div class="gnb_bg"&gt;
+                            &lt;div class="dpbox"&gt;
+                                &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴1&lt;/strong&gt;형사피해자는&lt;/div&gt;
+                                &lt;ul class="dp2"&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;
+                                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                                        &lt;ul class="dp3"&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                    &lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;&lt;span&gt;메뉴&lt;/span&gt;&lt;/a&gt;
+                        &lt;div class="gnb_bg"&gt;
+                            &lt;div class="dpbox"&gt;
+                                &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴2&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여&lt;/div&gt;
+                                &lt;ul class="dp2"&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;&lt;span&gt;메뉴&lt;/span&gt;&lt;/a&gt;
+                        &lt;div class="gnb_bg"&gt;
+                            &lt;div class="dpbox"&gt;
+                                &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴3&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서&lt;/div&gt;
+                                &lt;ul class="dp2"&gt;
+                                    &lt;li&gt;
+                                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                                        &lt;ul class="dp3"&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                    &lt;/li&gt;
+                                    &lt;li&gt;
+                                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                                        &lt;ul class="dp3"&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                    &lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;&lt;span&gt;메뉴&lt;/span&gt;&lt;/a&gt;
+                        &lt;div class="gnb_bg"&gt;
+                            &lt;div class="dpbox"&gt;
+                                &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴4&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌&lt;/div&gt;
+                                &lt;ul class="dp2"&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;&lt;span&gt;메뉴&lt;/span&gt;&lt;/a&gt;
+                        &lt;div class="gnb_bg"&gt;
+                            &lt;div class="dpbox"&gt;
+                                &lt;div class="gnb_txt"&gt;&lt;strong&gt;메뉴5&lt;/strong&gt;형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 모든 국민은 자기의 행위가 아닌 친족의 행위로 인하여 불이익한 처우를 받지 아니한다.&lt;/div&gt;
+                                &lt;ul class="dp2"&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/nav&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/header&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code04_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** header **/
+#header {position: relative;height: 120px;border-bottom: 1px solid #e4e4e4;background: #fff;z-index: 9000;}
+#header .wrap {max-width: 1280px;margin: 0 auto;}
+#header .hd_top {height: 60px;border-bottom: 1px solid #e5e5e5;background: #fff;}
+#header .hd_top .wrap {display: flex;justify-content: space-between;align-items: center;height: 100%;}
+#header .hd_top .logo * {display: block;}
+#header .utils ul {display: flex;align-items: center;}
+#header .utils li + li {margin-left: 30px;}
+#header .utils a {display: inline-block;font-size: 14px;font-weight: 400;line-height: 21px;color: #2c2d2d;background: url(../images/common/i_login.png) no-repeat 0 50%;}
+/* gnb */
+#header {overflow: hidden;position: absolute;width: 100%;}
+#header .hd_top .gnb_open {display: none;}
+#header .hd_top .gnb_close {display: none;}
+#header .gnb_area {position: relative;}
+#header .mo_utils {display: none;}
+#header .gnb {display: flex;}
+#header .gnb > li {display: flex;justify-content: center;align-items: center;width: 100%;height: 60px;text-align: center;}
+#header .gnb > li > a {display: block;position: relative;width: 100%;height: 100%;font-size: 18px;font-weight: 700;line-height: 60px;letter-spacing: -0.02em;text-align: center;}
+#header .gnb > li > a > span {position: relative;}
+#header .gnb > li.on > a > span::after {content: '';display: block;position: absolute;right: -12px;top: 0;width: 6px;height: 6px;border-radius: 10px;background: #0a66d3;}
+/* depth2 */
+#header .gnb_bg {display: none;position: absolute;left: 0;top: 59px;width: 100%;border-top: 1px solid #dedede;}
+#header .dpbox {display: flex;max-width: 1280px;margin: 0 auto;}
+#header .gnb_txt {width: 280px;padding: 30px 0;font-size: 16px;text-align: left;}
+#header .gnb_txt strong {display: block;padding-bottom: 5px;font-size: 24px;}
+#header .dp2 {display: flex;flex-wrap: wrap;width: calc(100% - 280px);padding: 30px 20px 40px;}
+#header .dp2 > li {min-width: calc((100% - 80px) / 3);width: calc((100% - 80px) / 3);max-width: 300px;}
+#header .dp2 > li:not(:nth-child(3n)):not(:last-child) {margin-right: 40px;}
+#header .dp2 > li:nth-child(n+4) {margin-top: 20px;}
+#header .dp2 > li > a {display: flex;align-items: center;position: relative;min-height: 50px;padding: 8px 30px;border: 1px solid #e5e5e5;border-radius: 100px;font-size: 18px;font-weight: 400;line-height: 24px;color: #2c2c2c;letter-spacing: -0.04em;word-break: break-word;}
+#header .dp2 > li:hover > a,
+#header .dp2 > li > a:focus {border-color: #0a66d3;font-weight: 500;color: #fff;background: #0a66d3;}
+/* depth3 */
+#header .dp3 {padding: 20px 10px 0 20px;}
+#header .dp3 li {text-align: left;}
+#header .dp3 li + li {margin-top: 15px;}
+#header .dp3 li a {display: block;position: relative;padding-left: 10px;font-size: 17px;font-weight: 400;line-height: 24px;color: #2c2c2c;letter-spacing: -0.04em;word-break: break-word;}
+#header .dp3 li a::before {content: '';display: block;position: absolute;left: 0;top: 10px;width: 3px;height: 3px;border-radius: 100%;background: #322f31;}
+#header .dp3 li:hover a,
+#header .dp3 li a:focus {font-weight: 500;color: #0a66d3;text-decoration: underline;}
+#header .dp3 li:hover a::before,
+#header .dp3 li a:focus::before {background: #0a66d3;}
+@media all and (max-width: 1023px) {
+    html {font-size: 10px;}
+    
+    /* header mobile */
+    #header {height: auto;border-bottom: 0;box-shadow: none;}
+    #header .wrap {max-width: none;height: 100%;}
+    #header .hd_top {height: 6rem;padding: 0 1.5rem;}
+    #header .utils {display: none;}
+    #header .gnb_area {position: fixed;right: -100%;top: 0;width: 100%;height: 100%;background-image: linear-gradient(to right, #efefef 17rem, #fff 17rem);box-shadow: none;z-index: 9100;transition: 0.2s;}
+    #header.open .gnb_area {right: 0;}
+    #header .gnb_open,
+    #header .gnb_close {display: block;font-size: 0;border: 0;background: none;}
+    #header .gnb_open::before {content: '\e91c';font-family: 'xeicon';display: inline-block;font-size: 2.4rem;}
+    #header .gnb_close::before {content: '\e921';font-family: 'xeicon';display: inline-block;font-size: 2.4rem;}
+    #header .mo_utils {display: flex;justify-content: space-between;align-items: center;height: 6rem;padding: 0 1.5rem;border-bottom: 1px solid #e5e5e5;background: #fff;}
+    #header .mo_utils ul {display: flex;align-items: center;}
+    #header .mo_utils ul li + li {margin-left: 1.2rem;}
+    #header .mo_utils ul a {font-size: 1.4rem;}
+    /* depth1 */
+    #header .gnb {display: block;overflow-y: auto;position: relative;height: calc(100% - 4rem);padding: 1.5rem 0;}
+    #header .gnb > li {display: block;width: 17rem;height: auto;padding: 0 1.2rem;text-align: left;}
+    #header .gnb > li + li {margin-top: 1.5rem;}
+    #header .gnb > li > a {padding: 1rem 0;border-radius: 10rem;font-size: 1.6rem;line-height: 1;text-align: left;}
+    #header .gnb > li.on > a {padding: 1.2rem 1.5rem;color: #fff;background: #0a66d3;}
+    #header .gnb > li.on > a::after {display: none;}
+    /* depth2 */
+    #header .gnb_bg {left: 17rem;top: 0;width: calc(100% - 17rem);border: 0;}
+    #header .dpbox {display: block;max-width: none;}
+    #header .gnb > li.on .gnb_bg {display: block;}
+    #header .gnb_txt {display: none;}
+    #header .dp2 {display: block;width: auto;padding: 0;}
+    #header .dp2 > li {min-width: auto;width: auto;max-width: none;border-bottom: 1px solid #e5e5e5;}
+    #header .dp2 > li:not(:nth-child(3n)):not(:last-child) {margin-right: 0;}
+    #header .dp2 > li:nth-child(n+4) {margin-top: 0;}
+    #header .dp2 > li > a {justify-content: space-between;min-height: auto;padding: 1.2rem 1rem;border: 0;border-radius: 0;font-size: 1.4rem;font-weight: 600;line-height: normal;}
+    #header .dp2 > li:hover > a,
+    #header .dp2 > li > a:focus,
+    #header .dp2 > li.open > a {font-weight: 600;color: #0a66d3;background: none;}
+    #header .dp2 > li.has_dp3 > a::after {content: '\e941';font-family: 'xeicon';position: relative;font-size: 1.3rem;line-height: 1;transition: 0.3s;}
+    #header .dp2 > li.open > a::after {transform: rotate(180deg);}
+    /* depth3 */
+    #header .dp3 {display: none;padding: 1rem 2rem 1rem;}
+    #header .dp3 li + li {margin-top: 1rem;}
+    #header .dp3 li a {padding: 0;font-size: 1.4rem;line-height: normal;}
+    #header .dp3 li a::before {display: none;}
+}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code04_1_3">
+                        <pre>
+<code class="line-numbers language-js">// header
+$(document).ready(function () {
+    if ($(window).width() > 1023) {
+        pheader();
+    } else {
+        mheader();
+    }
+});
+function pheader() {
+    var hHeader = $('#header .hd_top').outerHeight() + $('#header .gnb > li').innerHeight();
+    $('#header .gnb > li').on({
+        'mouseenter focusin': function () {
+            var hGnb = hHeader + $(this).children('.gnb_bg').innerHeight();
+            $(this).addClass('on').children('.gnb_bg').show();
+            $('#header').stop().animate({ height: hGnb }, 350);
+            $('#header .gnb > li').not(this).children('.gnb_bg').hide();
+        },
+        'mouseleave focusout': function () {
+            $(this).removeClass('on');
+            $('#header').stop().animate({ height: hHeader }, 350);
+        }
+    });
+}
+function mheader() {
+    $('#header .gnb_open').click(function () {
+        $('#header').addClass('open');
+    });
+    $('#header .gnb_close').click(function () {
+        $('#header').removeClass('open');
+    });
+
+    $('#header .dp2 > li').each(function () {
+        if ($(this).children('.dp3').length > 0) {
+            $(this).addClass('has_dp3');
+        }
+    });
+    $('#header .gnb > li:first-child').addClass('on');
+    $('#header .gnb > li').click(function () {
+        $(this).addClass('on').siblings().removeClass('on');
+    });
+    $('#header .dp2 > li.has_dp3 > a').click(function () {
+        $(this).parent().toggleClass('open').siblings().removeClass('open');
+        $('#header .dp3').stop().slideUp(300);
+        $(this).siblings('.dp3').stop().slideToggle(300);
+    });
+}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab05">
+                <h2 class="section_main_ttl">단일메뉴</h2>
+                <div class="ui_sample">
+                    <header id="header06">
+                        <div class="hd_top">
+                            <div class="wrap">
+                                <h1 class="logo"><a href=""><img src="images/guide_logo.png" alt="logo"></a></h1>
+                                <div class="utils">
+                                    <ul>
+                                        <li><a href="">로그인</a></li>
+                                        <li><a href="">회원가입</a></li>
+                                        <li><a href="">마이페이지</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gnb_area">
+                            <div class="wrap">
+                                <nav id="gnb">
+                                    <ul class="gnb">
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="">메뉴</a>
+                                            <ul class="dp2">
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                                <li><a href="">메뉴</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code05_1_1" class="on">html</li>
+                        <li id="code05_1_2">css</li>
+                        <li id="code05_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code05_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;header id="header"&gt;
+    &lt;div class="hd_top"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;h1 class="logo"&gt;&lt;a href=""&gt;&lt;img src="images/guide_logo.png" alt="logo"&gt;&lt;/a&gt;&lt;/h1&gt;
+            &lt;div class="utils"&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href=""&gt;로그인&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;회원가입&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;마이페이지&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="gnb_area"&gt;
+        &lt;div class="wrap"&gt;
+            &lt;nav id="gnb"&gt;
+                &lt;ul class="gnb"&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=""&gt;메뉴&lt;/a&gt;
+                        &lt;ul class="dp2"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;메뉴&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/nav&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/header&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code05_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** header **/
+#header {position: relative;height: 120px;border-bottom: 1px solid #e4e4e4;background: #fff;z-index: 9000;}
+#header .wrap {max-width: 1280px;margin: 0 auto;}
+#header .hd_top {height: 60px;border-bottom: 1px solid #e5e5e5;background: #fff;}
+#header .hd_top .wrap {display: flex;justify-content: space-between;align-items: center;height: 100%;}
+#header .hd_top .logo * {display: block;}
+#header .utils ul {display: flex;align-items: center;}
+#header .utils li + li {margin-left: 30px;}
+#header .utils a {display: inline-block;font-size: 14px;font-weight: 400;line-height: 21px;color: #2c2d2d;background: url(../images/common/i_login.png) no-repeat 0 50%;}
+#header .gnb_bg {display: none;position: absolute;left: 0;width: 100%;border-top: 1px solid #dedede;background: #fff;box-shadow: 4px 14px 10px 0px rgba(0, 0, 0, 0.05);}
+#header .gnb_area {overflow: hidden;position: relative;}
+/* gnb */
+#header .gnb {display: flex;align-items: flex-start;}
+#header .gnb > li {width: 100%;text-align: center;}
+#header .gnb > li > a {display: flex;justify-content: center;align-items: center;position: relative;height: 60px;font-size: 18px;font-weight: 700;letter-spacing: -0.02em;text-align: center;}
+#header .gnb > li > a::before,
+#header .gnb > li > a::after {content: '';display: none;position: absolute;left: 50%;transform: translateX(-50%);width: 0;height: 0;z-index: 1;}
+#header .gnb > li > a::before {bottom: -1px;border-left: 8px solid transparent;border-right: 8px solid transparent;border-bottom: 10px solid #cbcbcb;}
+#header .gnb > li > a::after {bottom: -1px;border-left: 7px solid transparent;border-right: 7px solid transparent;border-bottom: 9px solid #fff;}
+#header .gnb > li.on a {color: #0a66d3;}
+#header .gnb > li.on a::before,
+#header .gnb > li.on a::after {display: block;}
+#header .gnb .dp2 {display: none;position: relative;top: -1px;padding: 10px 0;border: 1px solid #ccc;background-color: #fff;}
+#header .gnb .dp2 li a {display: block;width: 100%;padding: 5px 20px;font-size: 16px;font-weight: 400;line-height: 24px;color: #2c2c2c;letter-spacing: -0.04em;text-align: left;word-break: break-word;}
+#header .gnb .dp2 li a:hover,
+#header .gnb .dp2 li a:focus {font-weight: 500;color: #001386;text-decoration: underline;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code05_1_3">
+                        <pre>
+<code class="line-numbers language-js">// header
+$(document).ready(function () {
+    $('#header .gnb > li').on({
+        'mouseenter focusin': function () {
+            $(this).addClass('on');
+            $(this).children('#header .dp2').stop().slideDown(200);
+        },
+        'mouseleave focusout': function () {
+            $(this).removeClass('on');
+            $(this).children('#header .dp2').stop().slideUp(200);
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab06">
+                <h2 class="section_main_ttl">left 고정</h2>
+                <h3 class="section_sub_ttl">메인화면</h3>
+                <div class="ui_sample" style="overflow: hidden;position: relative;height: 500px;border: 1px solid #ddd;">
+                    <header class="header_leftfix" style="display: flex;justify-content: center;align-items: center;color: #fff;">
+                        <span style="font-size: 15px;">헤더</span>
+                    </header>
+                    <nav id="gnb" class="main_type leftfix">
+                        <ul class="gnb js_gnb">
+                            <li>
+                                <a href=""><span class="gnb_i01"></span>1depth</a>
+                                <div class="subwrap js_subwrap">
+                                    <ul class="deps2">
+                                        <li><a href="">2depth_1</a></li>
+                                        <li class="has_sub"><a href="">2depth_1</a>
+                                            <ul class="deps3">
+                                                <li><a href="">3depth</a></li>
+                                                <li><a href="">3depth</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="">2depth_1</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <a href=""><span class="gnb_i02"></span>1depth</a>
+                                <div class="subwrap js_subwrap">
+                                    <ul class="deps2">
+                                        <li><a href="">2depth_2</a></li>
+                                        <li class="has_sub"><a href="">2depth_2</a>
+                                            <ul class="deps3">
+                                                <li><a href="">3depth</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="">2depth_2</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <a href=""><span class="gnb_i03"></span>1depth</a>
+                                <div class="subwrap js_subwrap">
+                                    <ul class="deps2">
+                                        <li><a href="">2depth_3</a></li>
+                                        <li class="has_sub"><a href="">2depth_3</a>
+                                            <ul class="deps3">
+                                                <li><a href="">3depth</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="">2depth_3</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div id="main_container" style="font-size: 15px;">
+                        컨텐츠
+                    </div>
+
+                </div>
+                <h3 class="section_sub_ttl">서브화면</h3>
+                <div class="ui_sample" style="overflow: hidden;position: relative;height: 500px;border: 1px solid #ddd;">
+                    <div class="header_leftfix" style="display: flex;justify-content: center;align-items: center;color: #fff;">
+                        <span style="font-size: 15px;">헤더</span>
+                    </div>
+                    <nav id="gnb" class="sub_type leftfix">
+                        <ul class="gnb js_gnb">
+                            <li class="visible">
+                                <a href=""><span class="gnb_i01"></span>1depth</a>
+                                <div class="subwrap js_subwrap">
+                                    <ul class="deps2">
+                                        <li><a href="">2depth_1</a></li>
+                                        <li class="has_sub active open"><a href="">2depth_1</a>
+                                            <ul class="deps3">
+                                                <li class="on"><a href="">3depth</a></li>
+                                                <li><a href="">3depth</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="">2depth_1</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <a href=""><span class="gnb_i02"></span>1depth</a>
+                                <div class="subwrap js_subwrap">
+                                    <ul class="deps2">
+                                        <li><a href="">2depth_2</a></li>
+                                        <li class="has_sub"><a href="">2depth_2</a>
+                                            <ul class="deps3">
+                                                <li><a href="">3depth</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="">2depth_2</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <a href=""><span class="gnb_i03"></span>1depth</a>
+                                <div class="subwrap js_subwrap">
+                                    <ul class="deps2">
+                                        <li><a href="">2depth_3</a></li>
+                                        <li class="has_sub"><a href="">2depth_3</a>
+                                            <ul class="deps3">
+                                                <li><a href="">3depth</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="">2depth_3</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div id="main_container" style="font-size: 15px;">
+                        컨텐츠
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code06_1_1" class="on">html</li>
+                        <li id="code06_1_2">css</li>
+                        <li id="code06_1_3">js</li>
+                        <li id="code06_1_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code06_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;header id="header"&gt;&lt;span&gt;헤더&lt;/span&gt;&lt;/header&gt;
+&lt;nav id="gnb" class="main_type"&gt;&lt;!-- 서브화면에서는 class="sub_type" --&gt;
+    &lt;ul class="gnb js_gnb"&gt;
+        &lt;li&gt;&lt;!-- 서브화면에서 열려 있는 화면의 1depth인 경우 class="visible" --&gt;
+            &lt;a href=""&gt;&lt;span class="gnb_i01"&gt;&lt;/span&gt;1depth&lt;/a&gt;
+            &lt;div class="subwrap js_subwrap"&gt;
+                &lt;ul class="deps2"&gt;
+                    &lt;li&gt;&lt;!-- 서브화면에서 열려 있는 화면의 2depth인 경우 class="active open" --&gt;
+                        &lt;a href=""&gt;2depth_1&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li class="has_sub"&gt;&lt;a href=""&gt;2depth_1&lt;/a&gt;
+                        &lt;ul class="deps3"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;3depth&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href=""&gt;3depth&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;2depth_1&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;&lt;span class="gnb_i02"&gt;&lt;/span&gt;1depth&lt;/a&gt;
+            &lt;div class="subwrap js_subwrap"&gt;
+                &lt;ul class="deps2"&gt;
+                    &lt;li&gt;&lt;a href=""&gt;2depth_2&lt;/a&gt;&lt;/li&gt;
+                    &lt;li class="has_sub"&gt;&lt;a href=""&gt;2depth_2&lt;/a&gt;
+                        &lt;ul class="deps3"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;3depth&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;2depth_2&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;&lt;span class="gnb_i03"&gt;&lt;/span&gt;1depth&lt;/a&gt;
+            &lt;div class="subwrap js_subwrap"&gt;
+                &lt;ul class="deps2"&gt;
+                    &lt;li&gt;&lt;a href=""&gt;2depth_3&lt;/a&gt;&lt;/li&gt;
+                    &lt;li class="has_sub"&gt;&lt;a href=""&gt;2depth_3&lt;/a&gt;
+                        &lt;ul class="deps3"&gt;
+                            &lt;li&gt;&lt;a href=""&gt;3depth&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;2depth_3&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;div id="main_container"&gt;
+    컨텐츠
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code06_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** gnb left 고정형 **/
+.header_leftfix {overflow: hidden;position: absolute;left: 0;top: 0;width: 100%;height: 60px;background: #44b6a0;z-index: 99;}
+#gnb.leftfix {position: absolute;left: 0;top: 60px;height: 100%;background: #326c73;z-index: 99;}
+#main_container{position: relative;min-width: 1200px;min-height: 100%;margin-left: 77px;padding: 30px;padding-top: 90px;}
+#gnb.leftfix.sub_type + #main_container {margin-left: 297px;}
+#gnb.leftfix.main_type + #container {margin-left: 77px !important;}
+.leftfix .gnb {position: relative;width: 100%;height: 100%;}
+.leftfix .gnb > li {border-bottom: 1px solid rgba(255, 255, 255, 0.15);}
+.leftfix .gnb > li > a {display: block;width: 77px;height: 74px;padding-top: 9px;font-size: 14px;font-weight: 600;color: #fff;text-align: center;}
+.leftfix .gnb > li.visible > a, .leftfix .gnb > li > a:hover, .leftfix .gnb > li.on>a {background: #1e565b;}
+.leftfix .gnb > li > a span {display: block;width: 100%;height: 30px;margin-bottom: 7px;}
+.leftfix .gnb .gnb_i01 {background: url(../images/content/i_gnb01.png) no-repeat center;}
+.leftfix .gnb .gnb_i02 {background: url(../images/content/i_gnb02.png) no-repeat center;}
+.leftfix .gnb .gnb_i03 {background: url(../images/content/i_gnb03.png) no-repeat center;}
+.leftfix .gnb .gnb_i04 {background: url(../images/content/i_gnb04.png) no-repeat center;}
+.leftfix .gnb .gnb_i05 {background: url(../images/content/i_gnb05.png) no-repeat center;}
+.leftfix .gnb .subwrap {display: none;overflow-y: auto;position: absolute;left: 77px;top: 0;bottom: 0;width: 219px;height: 100vh;border-right: 1px solid #d3d9db;background-color: #fff;}
+.leftfix .gnb .subwrap.on {z-index: 9999;}
+.leftfix .gnb .subwrap::-webkit-scrollbar-track {width: 5px;border: 1px solid #e4e5ec;border-radius: 10px;background: none;}
+.leftfix .gnb .subwrap::-webkit-scrollbar {width: 5px;background-color: #fff;}
+.leftfix .gnb .subwrap::-webkit-scrollbar-thumb {border-radius: 10px;background-color: #ddd;}
+.leftfix .gnb > li.visible .subwrap {display: block !important;}
+.leftfix .gnb > li.visible.off .subwrap {display: none !important;}
+.leftfix .gnb > li.visible.off > a {background: inherit;}
+.leftfix .gnb > li .subwrap.on {display: block !important;z-index: 9999;}
+.leftfix .gnb .deps2, .leftfix .gnb .deps2 ul, .leftfix .gnb .deps2 li, .leftfix .gnb .deps2 a {display: block;position: relative;line-height: 1;}
+.leftfix .gnb .deps2 li.active > .deps3 {display: block;}
+/* no sub */
+.leftfix .gnb .deps2 > li > a {padding: 16px 19px;border-bottom: 1px solid #d3d9db;font-size: 15px;color: #333;background: #fff;z-index: 2;cursor: pointer;-webkit-transition: color .2s ease;-o-transition: color .2s ease;transition: color .2s ease;}
+.leftfix .gnb .deps2 > li.active > a, .leftfix .gnb .deps2 > li.on > a, .leftfix .gnb .deps2 > li > a:hover {background-color: #f1f8fb;}
+.leftfix .gnb .deps2 > li > a::before, .leftfix .gnb .deps2 > li.active > a::before {content: '';position: absolute;right: 20px;top: 18px;width: 8px;height: 8px;border: 1px solid #d6d6d6;border-width: 2px 2px 0 0;transform: rotate(45deg);transition: all 0.1s ease-out;}
+.leftfix .gnb .deps2 > li > a::before {opacity: 0;}
+.leftfix .gnb .deps2 > li > a:hover::before, .leftfix .gnb .deps2 > li.active > a::before {opacity: 1;border-color: #137581;}
+/* has_sub */
+.leftfix .gnb .deps2 > li.has_sub > a::before {content: '';opacity: 1;position: absolute;right: 20px;top: 18px;width: 8px;height: 8px;border: 1px solid #d6d6d6;border-width: 2px 2px 0 0;transform: rotate(135deg);transition: all 0.1s ease-out;}
+.leftfix .gnb .deps2 > li.has_sub > a:hover::before {border-color: #137581;}
+.leftfix .gnb .deps2 > li.has_sub.on > a::before, .leftfix .gnb .deps2 > li.has_sub.active a::before {border-color: #137581;transform: rotate(45deg);}
+/* deps3 */
+.leftfix .gnb .deps2 .deps3 {display: none;padding: 17px 0;}
+.leftfix .gnb .deps2 li.has_sub.on .deps3, .leftfix .gnb .deps2 li.has_sub.active .deps3 {display: block;border-bottom: 1px solid #d3d9db;}
+.leftfix .gnb .deps2 .deps3 li a {padding: 0 14px 15px 30px;font-size: 14px;color: #444444;z-index: 2;cursor: pointer;transition: color .2s ease;}
+.leftfix .gnb .deps2 .deps3 li:last-child a {padding: 0 14px 0 30px;}
+.leftfix .gnb .deps2 .deps3 li a::before {content: "";position: absolute;left: 20px;top: 6px;width: 2px;height: 2px;background: #bababa;}
+.leftfix .gnb .deps2 .deps3 li a:hover {color: #0a62c6;}
+.leftfix .gnb .deps2 .deps3 li.on a {font-weight: 600;color: #0a62c6;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code06_1_3">
+                        <pre>
+<code class="line-numbers language-js">// gnb left 고정
+$(document).ready(function () {
+    if ($("#gnb.leftfix").hasClass("main_type")) {
+        $(".js_subwrap").hide();
+    }
+    $(".gnb > li").on("mouseenter", function () {
+        if ($(this).hasClass("visible")) {
+            $(this).addClass("on").children(".subwrap").addClass("on");
+            $(".subwrap").removeClass("on");
+        } else {
+            $(this).addClass("on").children(".subwrap").addClass("on");
+            $(".subwrap").removeClass("on");
+            $(".gnb > li.visible").addClass("off");
+        }
+    });
+    $(".gnb > li").on("mouseleave", function () {
+        $(this).removeClass("on");
+        $(".gnb > li.visible").removeClass("off");
+        $(".subwrap").removeClass("on");
+    });
+
+    // 2뎁스 클릭 이벤트
+    $('.deps2 > li > a').on('click', function () {
+        if ($(this).parent().hasClass("has_sub")) {
+            if ($(this).parent().hasClass("on")) {
+                $(this).parent().removeClass("on");
+                return false;
+            } else {
+                $('.deps2 > li').removeClass("on");
+                $(this).parent().addClass("on");
+                return false;
+            }
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code06_1_4">
+                        <ul>
+                            <li><a href="images/content/i_gnb01.png" title="Download" download>i_gnb01.png</a></li>
+                            <li><a href="images/content/i_gnb02.png" title="Download" download>i_gnb02.png</a></li>
+                            <li><a href="images/content/i_gnb03.png" title="Download" download>i_gnb03.png</a></li>
+                            <li><a href="images/content/i_gnb04.png" title="Download" download>i_gnb04.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab07">
+                <h2 class="section_main_ttl">lnb</h2>
+                <div class="ui_sample">
+                    <aside id="lnb">
+                        <h3 class="lnb_title">주요사업</h3>
+                        <ul>
+                            <li class="has_sub"><a href="">2depth</a>
+                                <ul>
+                                    <li><a href="">3depth</a></li>
+                                    <li><a href="">3depth</a></li>
+                                    <li><a href="">3depth</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="">2depth</a></li>
+                            <li class="has_sub on"><a href="">2depth</a>
+                                <ul>
+                                    <li class="on"><a href="">3depth</a></li>
+                                    <li><a href="">3depth</a></li>
+                                    <li><a href="">3depth</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="">2depth</a></li>
+                            <li><a href="">2depth</a></li>
+                            <li><a href="">2depth</a></li>
+                        </ul>
+                    </aside>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code07_1_1" class="on">html</li>
+                        <li id="code07_1_2">css</li>
+                        <li id="code07_1_3">js</li>
+                        <li id="code07_1_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code07_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;aside id="lnb"&gt;
+    &lt;h3 class="lnb_title"&gt;주요사업&lt;/h3&gt;
+    &lt;ul&gt;
+        &lt;li class="has_sub"&gt;&lt;a href=""&gt;2depth&lt;/a&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href=""&gt;3depth&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=""&gt;3depth&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=""&gt;3depth&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;2depth&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="has_sub on"&gt;&lt;a href=""&gt;2depth&lt;/a&gt;
+            &lt;ul&gt;
+                &lt;li class="on"&gt;&lt;a href=""&gt;3depth&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=""&gt;3depth&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=""&gt;3depth&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;2depth&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;2depth&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;2depth&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/aside&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code07_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** lnb **/
+.lnb_title {padding: 22px 0 25px 20px;font-size: 28px;font-weight: 600;line-height: 24px;color: #333333;letter-spacing: -1px;}
+.lnb_title span {display: block;padding-bottom: 3px;font-size: 12px;color: #a5c3df;letter-spacing: 0;}
+#lnb ul {border-top: 2px solid #333333;background: #FFF;}
+#lnb, #lnb ul, #lnb ul li, #lnb ul li a {display: block;position: relative;line-height: 1;}
+#lnb {width: 220px;color: #ffffff;}
+#lnb ul ul {display: none;margin-bottom: 17px;border: 0;font-weight: 300;}
+#lnb > ul > li > a {padding: 16px 21px;border-bottom: 1px solid #c5c8ce;font-size: 16px;font-weight: 300;color: #3f3f3f;z-index: 2;cursor: pointer;}
+#lnb > ul > li > a:hover {color: #308cde;}
+#lnb ul > li.has_sub.on, #lnb > ul > li.on > a {color: #fff;background: #286ec3;}
+#lnb ul > li.has_sub > a {background: url(../images/content/i_lnb_on.png) 95% no-repeat;}
+#lnb ul > li.has_sub.on > a {color: #fff;background: url(../images/content/i_lnb_off.png) 95% no-repeat;}
+#lnb ul > li.has_sub li a {position: relative;padding: 16px 0 0 31px;font-size: 14px;color: #808695;}
+#lnb ul > li.has_sub li a::before {content: '';display: block;position: absolute;left: 24px;top: 22px;width: 3px;height: 3px;background: #7c7c7c;}
+#lnb ul > li.has_sub li a:hover, #lnb li.has_sub li.on a {font-weight: 500;color: #308cde;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code07_1_3">
+                        <pre>
+<code class="line-numbers language-js">// lnb
+$(document).ready(function () {
+    $("#lnb li.on").children("ul").show();
+    $("#lnb li.has_sub > a").click(function () {
+        if ($(this).parent().hasClass("on")) {
+            $(this).parent().removeClass("on");
+            $("#lnb li ul").stop().slideUp(200);
+        } else {
+            $("#lnb > ul > li").removeClass("on");
+            $("#lnb li ul").stop().slideUp(200);
+            $(this).parent().addClass("on");
+            $(this).next("ul").stop().slideDown(200);
+        }
+        return false;
+    });
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code07_1_4">
+                        <ul>
+                            <li><a href="images/content/i_lnb_off.png" title="Download" download>i_lnb_off.png</a></li>
+                            <li><a href="images/content/i_lnb_on.png" title="Download" download>i_lnb_on.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

@@ -41,10 +41,10 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 	public void addList(UserVO searchVO, Model model) throws Exception { 
 	
 		PaginationInfo paginationInfo = paginationService.procPagination(searchVO);
-		paginationInfo.setTotalRecordCount(userService.selectUserCount(searchVO));
+		paginationInfo.setTotalRecordCount(userService.selectCount(searchVO));
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		List<UserVO> resultList = userService.selectUserList(searchVO); 
+		List<UserVO> resultList = userService.selectList(searchVO); 
 		model.addAttribute("resultList", resultList);
 	}
 	

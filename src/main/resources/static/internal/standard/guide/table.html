@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+    <!-- simplebar -->
+    <link rel="stylesheet" href="lib/simplebar/simplebar.min.css">
+    <script src="lib/simplebar/simplebar.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">테이블</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">기본 테이블</li>
+                <li id="tab02">스크롤형</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. table 공통 적용 css</dt>
+                    </dl>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_1_1" class="on">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_1_1">
+                            <pre>
+<code class="line-numbers language-css">/*** table ***/
+table .no_data {text-align: center !important;}
+table tr:hover .no_data {background: inherit !important;}
+table .asterisk {margin-left: -10px;}
+td img {vertical-align: middle;}
+.ellipsis {overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+table a.ellipsis {display: inline-block;max-width: 95%;vertical-align: middle;}
+table a.ellipsis + i {vertical-align: middle;}
+
+/* asterisk(*) + form guide */
+.asterisk {margin-right: 3px;font-size: 14px;font-weight: 400;color: var(--red);}
+.form_guide {margin-bottom: 10px;font-size: 14px;font-weight: 400;text-align: right;}
+.tbl_top .form_guide {margin-bottom: 0;}
+
+/* table top */
+.tbl_top {display: table;table-layout: fixed;width: 100%;margin-bottom: 10px;}
+.tbl_left {display: table-cell;color: #666666;vertical-align: middle;}
+.tbl_right {display: table-cell;text-align: right;vertical-align: bottom;}
+.tbl_right select + select,
+.tbl_right .btn + select,
+.tbl_right .btn + .btn {margin-left: 5px;}
+
+/* table style */
+.data_tbl {border-top: 1px solid var(--black);}
+.data_tbl > * > tr > th,
+.data_tbl > * > tr > td {position: relative;height: 42px;padding: 8px 10px;border-bottom: 1px solid var(--tbl-bdr);font-size: 14px;font-weight: 400;color: var(--dark);text-align: center;background: #FFFFFF;}
+.data_tbl > * > tr > th {font-weight: 500;background: var(--tbl-th);}
+.data_tbl > * > tr > *:not(:last-child) {border-right: 1px solid var(--tbl-bdr);}
+.data_tbl:not(.form) > tbody > tr:hover > td:not(.no_data) {background: var(--form-tbl-hover-bg);}
+.data_tbl > tbody > tr > td + td[rowspan] {border-left: 1px solid var(--tbl-bdr);}
+
+/* table border */
+.data_tbl .bdt {border-top: 1px solid var(--tbl-bdr);}
+.data_tbl .bdr {border-right: 1px solid var(--tbl-bdr);}
+.data_tbl .bdb {border-bottom: 1px solid var(--tbl-bdr);}
+.data_tbl .bdl {border-left: 1px solid var(--tbl-bdr);}
+
+/* table form */
+.data_tbl.form > * > tr > th,
+.data_tbl.form > * > tr > td {height: 47px;}
+.data_tbl.form input[type="text"], .data_tbl.form input[type="password"], .data_tbl.form select {width: 100%;}
+.data_tbl.form .btn {min-width: 50px;}</code>
+</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui_basic_info" style="padding-top: 40px;">
+                    <h2 class="section_main_ttl">기본 설명</h2>
+                    <dl>
+                        <dt>1. 필수 입력</dt>
+                        <dd>
+                            └ 테이블 위: <span class="impact">&lt;div class="form_guide"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 필수입력&lt;/div&gt;</span><br>
+                            └ th 안: <span class="impact">&lt;span class="asterisk"&gt;*&lt;/span&gt; 타이틀</span>
+                        </dd>
+                        <dt>2. border 추가 클래스: <span class="impact">bdt, bdb, bdl, bdr</span></dt>
+                        <dt>3. 데이터가 없습니다: <span class="impact">no_data</span></dt>
+                    </dl>
+                </section>
+
+                <h2 class="section_main_ttl">기본형</h2>
+                <div class="ui_sample">
+                    <div class="tbl_wrap">
+                        <table class="data_tbl">
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">타이틀</th>
+                                    <th scope="col">타이틀</th>
+                                    <th scope="col">타이틀</th>
+                                    <th scope="col">타이틀</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">타이틀</th>
+                                    <td>내용</td>
+                                    <td>내용</td>
+                                    <td>내용</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">타이틀</th>
+                                    <td>내용</td>
+                                    <td>내용</td>
+                                    <td>내용</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="no_data">데이터가 없습니다</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tbl_wrap"&gt;
+    &lt;table class="data_tbl"&gt;
+        &lt;colgroup&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+        &lt;/colgroup&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th scope="col"&gt;타이틀&lt;/th&gt;
+                &lt;th scope="col"&gt;타이틀&lt;/th&gt;
+                &lt;th scope="col"&gt;타이틀&lt;/th&gt;
+                &lt;th scope="col"&gt;타이틀&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;th scope="row"&gt;타이틀&lt;/th&gt;
+                &lt;td&gt;내용&lt;/td&gt;
+                &lt;td&gt;내용&lt;/td&gt;
+                &lt;td&gt;내용&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td colspan="4" class="no_data"&gt;데이터가 없습니다&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">form 타입</h2>
+                <div class="ui_sample">
+                    <div class="tbl_top">
+                        <!-- <div class="tbl_left"></div> -->
+                        <div class="tbl_right">
+                            <div class="form_guide"><span class="asterisk">*</span>필수입력</div>
+                        </div>
+                    </div>
+                    <div class="tbl_wrap">
+                        <table class="data_tbl form">
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">타이틀</th>
+                                    <th scope="col">타이틀</th>
+                                    <th scope="col">타이틀</th>
+                                    <th scope="col">타이틀</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">타이틀</th>
+                                    <td>내용</td>
+                                    <td>내용</td>
+                                    <td>내용</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><span class="asterisk">*</span>타이틀</th>
+                                    <td><input type="text" placeholder="placeholder"></td>
+                                    <td><input type="text" placeholder="placeholder"></td>
+                                    <td><input type="text" placeholder="placeholder"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="no_data">데이터가 없습니다</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tbl_top"&gt;
+    &lt;!-- &lt;div class="tbl_left"&gt;&lt;/div&gt; --&gt;
+    &lt;div class="tbl_right"&gt;
+        &lt;div class="form_guide"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt;필수입력&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="tbl_wrap"&gt;
+    &lt;table class="data_tbl form"&gt;
+        &lt;colgroup&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+        &lt;/colgroup&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th scope="col"&gt;타이틀&lt;/th&gt;
+                &lt;th scope="col"&gt;타이틀&lt;/th&gt;
+                &lt;th scope="col"&gt;타이틀&lt;/th&gt;
+                &lt;th scope="col"&gt;타이틀&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt;타이틀&lt;/th&gt;
+                &lt;td&gt;&lt;input type="text"&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;input type="text"&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;input type="text"&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td colspan="4" class="no_data"&gt;데이터가 없습니다&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. 스크롤 플러그인은 <a href="scroll.html" style="color: var(--blue);text-decoration: underline;">플러그인 - 스크롤</a>의 simplebar.js를 적용한다.</dt>
+                    </dl>
+                </section>
+
+                <h2 class="section_main_ttl">가로 스크롤</h2>
+                <dl>
+                    <dt>1. 반드시 모든 열의 col width값을 정해주거나, tbl_scroll 하위 table에 min-width를 정해준다.</dt>
+                </dl>
+                <div class="ui_sample">
+                    <h3 class="section_sub_ttl">기본형</h3>
+                    <div class="tbl_scroll scr_h">
+                        <table class="data_tbl">
+                            <colgroup>
+                                <col style="width: 700px;">
+                                <col style="width: 700px;">
+                                <col style="width: 700px;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">-</th>
+                                    <th scope="col">-</th>
+                                    <th scope="col">-</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <h3 class="section_sub_ttl">스크롤 플러그인 적용 (simplebar.js)</h3>
+                    <div class="tbl_scroll scr_h" data-simplebar data-simplebar-auto-hide="false">
+                        <table class="data_tbl">
+                            <colgroup>
+                                <col style="width: 700px;">
+                                <col style="width: 700px;">
+                                <col style="width: 700px;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">-</th>
+                                    <th scope="col">-</th>
+                                    <th scope="col">-</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tbl_scroll scr_h"&gt;&lt;!-- 플러그인 적용시 data-simplebar data-simplebar-auto-hide="false" 추가 --&gt;
+    &lt;table class="data_tbl"&gt;
+        &lt;colgroup&gt;
+            &lt;col style="width: 700px;"&gt;
+            &lt;col style="width: 700px;"&gt;
+            &lt;col style="width: 700px;"&gt;
+        &lt;/colgroup&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th scope="col"&gt;-&lt;/th&gt;
+                &lt;th scope="col"&gt;-&lt;/th&gt;
+                &lt;th scope="col"&gt;-&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;-&lt;/td&gt;
+                &lt;td&gt;-&lt;/td&gt;
+                &lt;td&gt;-&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td colspan="3" class="no_data"&gt;데이터가 없습니다.&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+        &lt;tfoot&gt;
+            &lt;tr&gt;
+                &lt;td scope="col"&gt;-&lt;/td&gt;
+                &lt;td scope="col"&gt;-&lt;/td&gt;
+                &lt;td scope="col"&gt;-&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tfoot&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** table ***/
+/* horizontal scroll table */
+.tbl_scroll.scr_h {overflow-x: auto;position: relative;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">세로 스크롤 (테이블 중첩형)</h2>
+                <dl>
+                    <dt>1. 반드시 마지막 열을 제외한 col width 값을 정해주어야 한다. (스크롤로 인해 width 값이 달라지기 때문)</dt>
+                </dl>
+                <div class="ui_sample">
+                    <h3 class="section_sub_ttl">기본형</h3>
+                    <div class="tbl_scroll scr_v">
+                        <table class="data_tbl">
+                            <colgroup>
+                                <col style="width: 500px;">
+                                <col style="width: 500px;">
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">-</th>
+                                    <th scope="col">-</th>
+                                    <th scope="col">-</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="scr_box" style="max-height: 167px;">
+                            <table class="data_tbl">
+                                <colgroup>
+                                    <col style="width: 500px;">
+                                    <col style="width: 500px;">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="data_tbl scr_tfoot">
+                            <colgroup>
+                                <col style="width: 500px;">
+                                <col style="width: 500px;">
+                                <col>
+                            </colgroup>
+                            <tfoot>
+                                <tr>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <h3 class="section_sub_ttl">스크롤 플러그인 적용 (simplebar.js)</h3>
+                    <div class="tbl_scroll scr_v">
+                        <table class="data_tbl">
+                            <colgroup>
+                                <col style="width: 500px;">
+                                <col style="width: 500px;">
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">-</th>
+                                    <th scope="col">-</th>
+                                    <th scope="col">-</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="scr_box" data-simplebar data-simplebar-auto-hide="false" style="max-height: 167px;">
+                            <table class="data_tbl">
+                                <colgroup>
+                                    <col style="width: 500px;">
+                                    <col style="width: 500px;">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <table class="data_tbl scr_tfoot">
+                            <colgroup>
+                                <col style="width: 500px;">
+                                <col style="width: 500px;">
+                                <col>
+                            </colgroup>
+                            <tfoot>
+                                <tr>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_2_1" class="on">html</li>
+                        <li id="code02_2_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tbl_scroll scr_v"&gt;
+    &lt;table class="data_tbl"&gt;
+        &lt;colgroup&gt;
+            &lt;col style="width: 1000px;"&gt;
+            &lt;col&gt;
+        &lt;/colgroup&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th scope="col"&gt;-&lt;/th&gt;
+                &lt;th scope="col"&gt;-&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+    &lt;/table&gt;
+    &lt;div class="scr_box" style="max-height: 167px;"&gt;&lt;!-- 플러그인 적용시 data-simplebar data-simplebar-auto-hide="false" 추가 --&gt;
+        &lt;table class="data_tbl"&gt;
+            &lt;colgroup&gt;
+                &lt;col style="width: 1000px;"&gt;
+                &lt;col&gt;
+            &lt;/colgroup&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="2" class="no_data"&gt;데이터가 없습니다.&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;table class="data_tbl scr_tfoot"&gt;
+        &lt;colgroup&gt;
+            &lt;col style="width: 1000px;"&gt;
+            &lt;col&gt;
+        &lt;/colgroup&gt;
+        &lt;tfoot&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tfoot&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_2_2">
+                        <pre>
+<code class="line-numbers language-css">/*** table ***/
+/* vertical scroll table */
+.tbl_scroll.scr_v {border-bottom: 1px solid var(--tbl-bdr);}
+.tbl_scroll.scr_v .scr_box {overflow-y: auto;border-bottom: 0 !important;}
+.tbl_scroll.scr_v .scr_box .data_tbl {border-top: 0;}
+.tbl_scroll.scr_v .data_tbl.scr_tfoot {border-top: 1px solid var(--tbl-bdr);}
+.tbl_scroll.scr_v .data_tbl.scr_tfoot td:last-child {padding-right: 22px;}
+.tbl_scroll.scr_v .scr_box .data_tbl tbody tr:last-child td {border-bottom: 0;}
+.tbl_scroll.scr_v .data_tbl.scr_tfoot tr:last-child td {border-bottom: 0;}
+.tbl_scroll.scr_v .simplebar-scrollable-y + .data_tbl.scr_tfoot td:last-child {padding-right: 10px;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">세로 스크롤 (thead 고정형)</h2>
+                <dl>
+                    <dt>1. class="tbl_scroll scr_v02" 바로 밑에 &lt;div class="scr_box"&gt;로 감싼 table을 넣는다.</dt>
+                </dl>
+                <div class="ui_sample">
+                    <h3 class="section_sub_ttl">기본형</h3>
+                    <div class="tbl_scroll scr_v02">
+                        <div class="scr_box" style="max-height: 201px;">
+                            <table class="data_tbl">
+                                <colgroup>
+                                    <col>
+                                    <col>
+                                    <col>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <h3 class="section_sub_ttl">스크롤 플러그인 적용 (simplebar.js)</h3>
+                    <div class="tbl_scroll scr_v02">
+                        <div class="scr_box" style="max-height: 201px;" data-simplebar data-simplebar-auto-hide="false">
+                            <table class="data_tbl">
+                                <colgroup>
+                                    <col>
+                                    <col>
+                                    <col>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_3_1" class="on">html</li>
+                        <li id="code02_3_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tbl_scroll scr_v02"&gt;
+	&lt;div class="scr_box" style="max-height: 201px;"&gt;&lt;!-- 플러그인 적용시 data-simplebar data-simplebar-auto-hide="false" 추가 --&gt;
+        &lt;table class="data_tbl"&gt;
+            &lt;colgroup&gt;
+                &lt;col&gt;
+                &lt;col&gt;
+                &lt;col&gt;
+            &lt;/colgroup&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th scope="col"&gt;-&lt;/th&gt;
+                    &lt;th scope="col"&gt;-&lt;/th&gt;
+                    &lt;th scope="col"&gt;-&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="3" class="no_data"&gt;데이터가 없습니다.&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_3_2">
+                        <pre>
+<code class="line-numbers language-css">/*** table ***/
+/* vertical scroll table2 */
+.tbl_scroll.scr_v02 {overflow-y: auto;position: relative;border-bottom: 1px solid var(--tbl-bdr);}
+.tbl_scroll.scr_v02 table {border-collapse: separate;border-top: 0;}
+.tbl_scroll.scr_v02 thead {position: sticky;left: 0;top: 0;z-index: 1;}
+.tbl_scroll.scr_v02 thead tr:first-child th {border-top: 1px solid var(--black);}
+.tbl_scroll.scr_v02 tbody tr:last-child td {border-bottom: 0;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">가로 + 세로 스크롤 (기본형)</h2>
+                <dl>
+                    <dt>1. class="tbl_scroll scr_hv" 바로 밑에 &lt;div class="scr_box"&gt;로 감싼 table을 넣는다.</dt>
+                    <dt>2. 반드시 모든 열의 col width값을 정해주어야 한다.</dt>
+                </dl>
+                <div class="ui_sample">
+                    <h3 class="section_sub_ttl">기본형</h3>
+                    <div class="tbl_scroll scr_hv">
+                        <div class="scr_box" style="max-height: 210px;">
+                            <table class="data_tbl">
+                                <colgroup>
+                                    <col style="width: 700px;">
+                                    <col style="width: 700px;">
+                                    <col style="width: 700px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <h3 class="section_sub_ttl">스크롤 플러그인 적용 (simplebar.js)</h3>
+                    <div class="tbl_scroll scr_hv">
+                        <div class="scr_box" style="max-height: 210px;" data-simplebar data-simplebar-auto-hide="false">
+                            <table class="data_tbl">
+                                <colgroup>
+                                    <col style="width: 700px;">
+                                    <col style="width: 700px;">
+                                    <col style="width: 700px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_4_1" class="on">html</li>
+                        <li id="code02_4_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_4_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tbl_scroll scr_hv"&gt;
+    &lt;div class="scr_box" style="max-height: 210px;"&gt;&lt;!-- 플러그인 적용시 data-simplebar data-simplebar-auto-hide="false" 추가 --&gt;
+        &lt;table class="data_tbl"&gt;
+            &lt;colgroup&gt;
+                &lt;col style="width: 1000px;"&gt;
+                &lt;col style="width: 1000px;"&gt;
+            &lt;/colgroup&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th scope="col"&gt;-&lt;/th&gt;
+                    &lt;th scope="col"&gt;-&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="2" class="no_data"&gt;데이터가 없습니다.&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_4_2">
+                        <pre>
+<code class="line-numbers language-css">/*** table ***/
+/* horizontal + vertical scroll table */
+.tbl_scroll.scr_hv {overflow: auto;position: relative;}
+.tbl_scroll.scr_hv table {border-collapse: separate;border-top: 0;}
+.tbl_scroll.scr_hv thead {position: sticky;left: 0;top: 0;z-index: 1;}
+.tbl_scroll.scr_hv thead tr:first-child th {border-top: 1px solid var(--black);}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">가로 + 세로 스크롤 (고정형)</h2>
+                <div class="ui_sample">
+                    <h3 class="section_sub_ttl">기본형</h3>
+                    <div class="tbl_scroll scr_hv02">
+                        <div class="scr_box" style="max-height: 210px;">
+                            <table class="data_tbl">
+                                <colgroup>
+                                    <col style="width: 300px;">
+                                    <col style="width: 700px;">
+                                    <col style="width: 700px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <h3 class="section_sub_ttl">스크롤 플러그인 적용 (simplebar.js)</h3>
+                    <div class="tbl_scroll scr_hv02">
+                        <div class="scr_box" style="max-height: 210px;" data-simplebar data-simplebar-auto-hide="false">
+                            <table class="data_tbl">
+                                <colgroup>
+                                    <col style="width: 300px;">
+                                    <col style="width: 700px;">
+                                    <col style="width: 700px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                        <th scope="col">-</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_5_1" class="on">html</li>
+                        <li id="code02_5_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_5_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tbl_scroll scr_hv02"&gt;
+    &lt;div class="scr_box" style="max-height: 210px;"&gt;&lt;!-- 플러그인 적용시 data-simplebar data-simplebar-auto-hide="false" 추가 --&gt;
+        &lt;table class="data_tbl"&gt;
+            &lt;colgroup&gt;
+                &lt;col style="width: 1000px;"&gt;
+                &lt;col style="width: 1000px;"&gt;
+            &lt;/colgroup&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th scope="col"&gt;-&lt;/th&gt;
+                    &lt;th scope="col"&gt;-&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="2" class="no_data"&gt;데이터가 없습니다.&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_5_2">
+                        <pre>
+<code class="line-numbers language-css">/*** table ***/
+/* thead th + tbody th fix scroll table */
+.tbl_scroll.scr_hv02 {overflow: auto;position: relative;}
+.tbl_scroll.scr_hv02 table {border-collapse: separate;border-top: 0;}
+.tbl_scroll.scr_hv02 thead {position: sticky;left: 0;top: 0;z-index: 2;}
+.tbl_scroll.scr_hv02 thead th:first-child {z-index: 3;}
+.tbl_scroll.scr_hv02 th:first-child {position: sticky;left: 0;z-index: 1;}
+.tbl_scroll.scr_hv02 thead tr:first-child th {border-top: 1px solid var(--black);}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">간격 & font (js)</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01">코드</li>
+                <li id="tab02" class="on">margin</li>
+                <li id="tab03">padding</li>
+                <li id="tab04">width</li>
+                <li id="tab05">height</li>
+                <li id="tab06">font-size</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont" data-tab="tab01">
+                <h2 class="section_main_ttl">코드</h2>
+                <div class="ui_code" style="display: block;">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre>
+<code class="line-numbers language-js">// startsWith func
+String.prototype.startsWith = function (str) {
+    if (this.length < str.length) return false;
+    return this.indexOf(str) == 0;
+}
+// endsWith func
+String.prototype.endsWith = function (str) {
+    if (this.length < str.length) return false;
+    return this.lastIndexOf(str) + str.length == this.length;
+}
+// space (margin, padding, width, height, font-size)
+$(document).ready(function () {
+    let _pat = /[a-zA-Z]/;
+
+    let mar_ = $("[class*='mar_']");
+    if (mar_.length) {
+        $('body').find(mar_).each(function () {
+            let _this = $(this);
+            let _mar = _this.attr('class').split(' ');
+            for (var i = 0; i < _mar.length; i++) {
+                if (_mar[i].startsWith('mar_') == true || _mar[i].startsWith('mar_') && (_mar[i].endsWith('p') || _mar[i].endsWith('rem'))) {
+                    let position = '';
+                    let arr = _mar[i].split('');
+                    let sliceArr = _mar[i].slice(5);
+                    let num = sliceArr.replace(/[^0-9,_]/g, '');
+                    let underbar = sliceArr.replace(/[^_]/g, '');
+                    if ((arr[4] == 't' || arr[4] == 'r' || arr[4] == 'b' || arr[4] == 'l') && _pat.test(_mar[i].substr(5, 1)) == false) {
+                        if (underbar) num = sliceArr.replace('_', '.');
+                        num = num.replace(/[^0-9,.]/g, '');
+                        position = arr[4] === 't' ? 'margin-top' : arr[4] === 'r' ? 'margin-right' : arr[4] === 'b' ? 'margin-bottom' : arr[4] === 'l' ? 'margin-left' : '';
+                        let unit = _mar[i].startsWith('mar') === true && _mar[i].endsWith('p') ? '%' : _mar[i].startsWith('mar') === true && _mar[i].endsWith('rem') ? 'rem' : 'px';
+                        _this.css(position, num + unit);
+                    }
+                }
+            }
+        });
+    }
+
+    let pad_ = $("[class*='pad_']");
+    if (pad_.length) {
+        $('body').find(pad_).each(function () {
+            let _this = $(this);
+            let _pad = _this.attr('class').split(' ');
+            for (var i = 0; i < _pad.length; i++) {
+                if (_pad[i].startsWith('pad_') == true || _pad[i].startsWith('pad_') && (_pad[i].endsWith('p') || _pad[i].endsWith('rem'))) {
+                    let position = '';
+                    let arr = _pad[i].split('');
+                    let sliceArr = _pad[i].slice(5);
+                    let num = sliceArr.replace(/[^0-9,_]/g, '');
+                    let underbar = sliceArr.replace(/[^_]/g, '');
+                    if ((arr[4] == 't' || arr[4] == 'r' || arr[4] == 'b' || arr[4] == 'l') && _pat.test(_pad[i].substr(5, 1)) == false) {
+                        if (underbar) num = sliceArr.replace('_', '.');
+                        num = num.replace(/[^0-9,.]/g, '');
+                        position = arr[4] === 't' ? 'padding-top' : arr[4] === 'r' ? 'padding-right' : arr[4] === 'b' ? 'padding-bottom' : arr[4] === 'l' ? 'padding-left' : '';
+                        let unit = _pad[i].startsWith('pad') === true && _pad[i].endsWith('p') ? '%' : _pad[i].startsWith('pad') === true && _pad[i].endsWith('rem') ? 'rem' : 'px';
+                        _this.css(position, num + unit);
+                    }
+                }
+            }
+        });
+    }
+
+    let w = $("[class*='w']");
+    if (w.length) {
+        $('body').find(w).each(function () {
+            let _this = $(this);
+            let _w = _this.attr('class').split(' ');
+            for (var i = 0; i < _w.length; i++) {
+                if ((_w[i].startsWith('w') == true || _w[i].startsWith('w') && (_w[i].endsWith('p') || _w[i].endsWith('rem'))) && _pat.test(_w[i].substr(1, 1)) == false) {
+                    let num = _w[i].replace(/[^0-9,_]/g, '');
+                    let underbar = _w[i].replace(/[^_]/g, '');
+                    if (underbar) num = num.replace('_', '.');
+                    let unit = _w[i].startsWith('w') === true && _w[i].endsWith('p') ? '%' : _w[i].startsWith('w') === true && _w[i].endsWith('rem') ? 'rem' : 'px';
+                    _this.css('width', num + unit);
+                }
+            }
+        });
+    }
+
+    let ht = $("[class*='ht']");
+    if (ht.length) {
+        $('body').find(ht).each(function () {
+            let _this = $(this);
+            let _ht = _this.attr('class').split(' ');
+            for (var i = 0; i < _ht.length; i++) {
+                if ((_ht[i].startsWith('ht') == true || _ht[i].startsWith('ht') && (_ht[i].endsWith('p') || _ht[i].endsWith('rem'))) && _pat.test(_ht[i].substr(2, 1)) == false) {
+                    let num = _ht[i].replace(/[^0-9,_]/g, '');
+                    let underbar = _ht[i].replace(/[^_]/g, '');
+                    if (underbar) num = num.replace('_', '.');
+                    let unit = _ht[i].startsWith('ht') === true && _ht[i].endsWith('p') ? '%' : _ht[i].startsWith('ht') === true && _ht[i].endsWith('rem') ? 'rem' : 'px';
+                    _this.css('height', num + unit);
+                }
+            }
+        });
+    }
+
+    let fs = $("[class*='fs']");
+    if (fs.length) {
+        $('body').find(fs).each(function () {
+            let _this = $(this);
+            let _fs = _this.attr('class').split(' ');
+            for (var i = 0; i < _fs.length; i++) {
+                if ((_fs[i].startsWith('fs') == true || _fs[i].startsWith('fs') && (_fs[i].endsWith('p') || _fs[i].endsWith('rem'))) && _pat.test(_fs[i].substr(2, 1)) == false) {
+                    let num = _fs[i].replace(/[^0-9,_]/g, '');
+                    let underbar = _fs[i].replace(/[^_]/g, '');
+                    if (underbar) num = num.replace('_', '.');
+                    let unit = _fs[i].startsWith('fs') === true && _fs[i].endsWith('p') ? '%' : _fs[i].startsWith('fs') === true && _fs[i].endsWith('rem') ? 'rem' : 'px';
+                    _this.css('font-size', num + unit);
+                }
+            }
+        });
+    }
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab02">
+                <h2 class="section_main_ttl">margin</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt><strong>margin은 js 처리되어 자동으로 적용된다.</strong></dt>
+                        <dt>
+                            각 요소 margin 조절은 <span class="impact">mar_</span>로 시작하는 클래스를 활용한다.<br>
+                            방향은 <span class="impact">t(top), r(right), b(bottom), l(left)</span>로 구분하여 바로 뒤에 숫자를 붙인다.<br>
+                            단위는 <span class="impact">px, p(%), rem, _(소수점)</span>로 구분한다.
+                        </dt>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <table class="data_tbl">
+                        <caption>margin class의 활용</caption>
+                        <colgroup>
+                            <col style="width: 30%;">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">사용법</th>
+                                <th scope="col">적용된 속성</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="field impact">class="mar_l5"</div></td>
+                                <td><div class="field"><div class="mar_l5">margin-left: 5px;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="mar_r10"</div></td>
+                                <td><div class="field"><div class="mar_r10">margin-right: 10px;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="mar_t15"</div></td>
+                                <td><div class="field"><div class="mar_t15">margin-top: 15px;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="mar_b20"</div></td>
+                                <td><div class="field"><div class="mar_b20">margin-bottom: 20px;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="mar_t2p"</div></td>
+                                <td><div class="field"><div class="mar_t2p">margin-top: 2%;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="mar_t2rem"</div></td>
+                                <td><div class="field"><div class="mar_t2rem">margin-top: 2rem;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="mar_t2_5rem"</div></td>
+                                <td><div class="field"><div class="mar_t2_5rem">margin-top: 2.5rem;</div></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">padding</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt><strong>padding은 js 처리되어 자동으로 적용된다.</strong></dt>
+                        <dt>
+                            각 요소 padding 조절은 <span class="impact">pad_</span>로 시작하는 클래스를 활용한다.<br>
+                            방향은 <span class="impact">t(top), r(right), b(bottom), l(left)</span>로 구분하여 바로 뒤에 숫자를 붙인다.<br>
+                            단위는 <span class="impact">px, p(%), rem, _(소수점)</span>로 구분한다.
+                        </dt>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <table class="data_tbl">
+                        <caption>padding class의 활용</caption>
+                        <colgroup>
+                            <col style="width: 30%;">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">사용법</th>
+                                <th scope="col">적용된 속성</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="field impact">class="pad_l5"</div></td>
+                                <td><div class="field"><div class="pad_l5">padding-left: 5px;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="pad_r10"</div></td>
+                                <td><div class="field"><div class="pad_r10">padding-right: 10px;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="pad_t15"</div></td>
+                                <td><div class="field"><div class="pad_t15">padding-top: 15px;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="pad_b20"</div></td>
+                                <td><div class="field"><div class="pad_b20">padding-bottom: 20px;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="pad_t2p"</div></td>
+                                <td><div class="field"><div class="pad_t2p">padding-top: 2%;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="pad_t2rem"</div></td>
+                                <td><div class="field"><div class="pad_t2rem">padding-top: 2rem;</div></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="pad_t2_5rem"</div></td>
+                                <td><div class="field"><div class="pad_t2_5rem">padding-top: 2.5rem;</div></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab04">
+                <h2 class="section_main_ttl">width</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt><strong>width는 js 처리되어 자동으로 적용된다.</strong></dt>
+                        <dt>
+                            각 요소 width 조절은 <span class="impact">w</span>로 시작하는 클래스를 활용한다.<br>
+                            단위는 <span class="impact">px, p(%), rem, _(소수점)</span>로 구분한다.
+                        </dt>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <table class="data_tbl">
+                        <caption>width class의 활용</caption>
+                        <colgroup>
+                            <col style="width: 30%;">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">사용법</th>
+                                <th scope="col">적용 예시</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="field impact">class="w160"</div></td>
+                                <td><div class="field"><div class="w160" style="border: 1px solid #ddd;">width: 160px;</div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="w100p"</div></td>
+                                <td><div class="field"><div class="w100p" style="border: 1px solid #ddd;">width: 100%;</div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="w20rem"</div></td>
+                                <td><div class="field"><div class="w20rem" style="border: 1px solid #ddd;">width: 20rem;</div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="w15_5rem"</div></td>
+                                <td><div class="field"><div class="w15_5rem" style="border: 1px solid #ddd;">width: 15.5rem;</div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab05">
+                <h2 class="section_main_ttl">height</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt><strong>height js 처리되어 자동으로 적용된다.</strong></dt>
+                        <dt>
+                            각 요소 height 조절은 <span class="impact">ht</span>로 시작하는 클래스를 활용한다.<br>
+                            단위는 <span class="impact">px, p(%), rem, _(소수점)</span>로 구분한다.
+                        </dt>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <table class="data_tbl">
+                        <caption>height class의 활용</caption>
+                        <colgroup>
+                            <col style="width: 30%;">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">사용법</th>
+                                <th scope="col">적용 예시</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="field impact">class="ht100"</div></td>
+                                <td><div class="ht100" style="border: 1px solid #ddd;">ht100</div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="ht100p"</div></td>
+                                <td><div class="ht100p" style="border: 1px solid #ddd;">ht100p</div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="ht10rem"</div></td>
+                                <td><div class="ht10rem" style="border: 1px solid #ddd;">ht10rem</div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="ht5_5rem"</div></td>
+                                <td><div class="ht5_5rem" style="border: 1px solid #ddd;">ht5_5rem</div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab06">
+                <h2 class="section_main_ttl">font-size</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt><strong>font-size는 js 처리되어 자동으로 적용된다.</strong></dt>
+                        <dt>
+                            각 요소 font-size 조절은 <span class="impact">fs_</span>로 시작하는 클래스를 활용한다.<br>
+                            단위는 <span class="impact">px, p(%), rem, _(소수점)</span>로 구분한다.
+                        </dt>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <table class="data_tbl">
+                        <caption>font-size class의 활용</caption>
+                        <colgroup>
+                            <col style="width: 30%;">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">사용법</th>
+                                <th scope="col">적용 예시</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="field impact">class="fs25"</div></td>
+                                <td><div class="field"><span class="fs25">font-size: 25px;</span></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="fs90p"</div></td>
+                                <td><div class="field"><span class="fs90p">font-size: 90%;</span></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="fs1rem"</div></td>
+                                <td><div class="field"><span class="fs1rem">font-size: 1rem;</span></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="field impact">class="fs20_5px"</div></td>
+                                <td><div class="field"><span class="fs20_5px">font-size: 20.5px;</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

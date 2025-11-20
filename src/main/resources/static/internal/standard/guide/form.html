@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">form & text</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">form element</li>
+                <li id="tab02">form 예시</li>
+                <li id="tab03">text</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. form 요소 공통 적용 css, img</dt>
+                    </dl>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_1_1" class="on">css</li>
+                            <li id="code01_1_2">img</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_1_1">
+                            <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* select, input, textarea */
+select,
+input[type="text"],
+input[type="password"],
+textarea {width: auto;max-width: 100%;height: 36px;border: 1px solid var(--bdr);border-radius: 5px;font-family: inherit;font-size: 14px;line-height: inherit;color: var(--dark);letter-spacing: -0.3px;transition: 0.1s color, 0.1s border-color;}
+select::placeholder,
+input::placeholder,
+textarea::placeholder {color: var(--plholder-font);}
+select:focus,
+input:focus,
+textarea:focus {border: 1px solid var(--bdr-focus);transition: color .1s border-color .1s;}
+input:focus::placeholder,
+textarea:focus::placeholder {color: var(--plholder-focus-font);}
+select {min-width: 130px;padding: 0 32px 0 12px;background: #fff url(../images/icon/i_sel.png) no-repeat 100% 50%;appearance: none;}
+select:not(:disabled) {cursor: pointer;}
+input[type="text"],
+input[type="password"] {padding: 0 12px;}
+input[type="password"] {letter-spacing: 0;}
+input[readonly],
+textarea[readonly] {background-color: var(--disabled-bg);}
+select[disabled],
+input[disabled],
+textarea[disabled] {color: var(--disabled-font);background-color: var(--disabled-bg);}
+select[readonly] {background: #eaeaea url(../images/icon/i_sel.png) no-repeat 100% 50%;}
+textarea {display: block;width: 100%;min-height: 150px;height: auto;padding: 8px 12px;}
+select.auto,
+input.auto {width: auto !important;}
+select.err,
+input[type="text"].err,
+input[type="password"].err,
+textarea.err {border: 1px solid var(--err-bdr);color: var(--err-font);background-color: var(--err-bg);}
+select.err::placeholder,
+input[type="text"].err::placeholder,
+input[type="password"].err::placeholder,
+textarea.err::placeholder {color: var(--err-bdr);}</code>
+</pre>
+                        </div>
+                        <div class="js_tcont li_linenum" data-tab="code01_1_2">
+                            <ul>
+                                <li><a href="images/icon/i_sel.png" title="Download" download>i_sel.png</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </section>
+
+                <h2 class="section_main_ttl">input</h2>
+                <div class="ui_sample">
+                    <input type="text" placeholder="placeholder">
+                    <input type="text" value="readonly" readonly>
+                    <input type="text" value="disabled" disabled>
+                    <input type="text" class="err" placeholder="placeholder">
+                    <div class="mar_b10"></div><!-- 간격 띄우기용 -->
+                    <input type="text" placeholder="placeholder">
+                    <p class="error_txt disin">error txt (input과 나란히)</p>
+                    <div class="mar_b10"></div><!-- 간격 띄우기용 -->
+                    <input type="text" placeholder="placeholder">
+                    <p class="error_txt">error txt (input과 다른줄)</p>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;input type="text"&gt;
+&lt;p class="error_txt disin"&gt;error txt (input과 나란히)&lt;/p&gt;
+&lt;p class="error_txt"&gt;error txt (input과 다른줄)&lt;/p&gt;
+&lt;input type="text" value="readonly" readonly&gt;
+&lt;input type="text" value="disabled"&gt;
+&lt;input type="text" class="err"&gt;</code>  
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">select</h2>
+                <h3 class="section_sub_ttl">기본형</h3>
+                <div class="ui_sample">
+                    <select>
+                        <option>전체</option>
+                    </select>
+                    <select disabled>
+                        <option>disabled</option>
+                    </select>
+                    <select class="err">
+                        <option>에러</option>
+                    </select>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_3_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;select&gt;
+    &lt;option&gt;전체&lt;/option&gt;
+&lt;/select&gt;
+&lt;select disabled&gt;
+    &lt;option&gt;disabled&lt;/option&gt;
+&lt;/select&gt;
+&lt;select class="err"&gt;
+    &lt;option&gt;에러&lt;/option&gt;
+&lt;/select&gt;</code>
+</pre>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">커스텀</h3>
+                <div class="ui_sample">
+                    <div class="selectbox">
+                        <a href="" class="selected">전체</a>
+                        <div class="selectoptions">
+                            <ul>
+                                <li class="option default"><a href="">전체</a></li>
+                                <li class="option"><a href="">옵션1</a></li>
+                                <li class="option"><a href="">옵션2</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="selectbox disabled">
+                        <a href="" class="selected">disabled</a>
+                        <div class="selectoptions">
+                            <ul>
+                                <li class="option default"><a href="">disabled</a></li>
+                                <li class="option"><a href="">옵션1</a></li>
+                                <li class="option"><a href="">옵션2</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="selectbox err">
+                        <a href="" class="selected">에러</a>
+                        <div class="selectoptions">
+                            <ul>
+                                <li class="option default"><a href="">에러</a></li>
+                                <li class="option"><a href="">옵션1</a></li>
+                                <li class="option"><a href="">옵션2</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_4_1" class="on">html</li>
+                        <li id="code01_4_2">css</li>
+                        <li id="code01_4_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_4_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="selectbox"&gt;
+    &lt;a href="" class="selected"&gt;전체&lt;/a&gt;
+    &lt;div class="selectoptions"&gt;
+        &lt;ul&gt;
+            &lt;li class="option default"&gt;&lt;a href=""&gt;전체&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="option"&gt;&lt;a href=""&gt;옵션1&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="option"&gt;&lt;a href=""&gt;옵션2&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="selectbox disabled"&gt;
+    &lt;a href="" class="selected"&gt;disabled&lt;/a&gt;
+    &lt;div class="selectoptions"&gt;
+        &lt;ul&gt;
+            &lt;li class="option default"&gt;&lt;a href=""&gt;disabled&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="option"&gt;&lt;a href=""&gt;옵션1&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="option"&gt;&lt;a href=""&gt;옵션2&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="selectbox err"&gt;
+    &lt;a href="" class="selected"&gt;에러&lt;/a&gt;
+    &lt;div class="selectoptions"&gt;
+        &lt;ul&gt;
+            &lt;li class="option default"&gt;&lt;a href=""&gt;에러&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="option"&gt;&lt;a href=""&gt;옵션1&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="option"&gt;&lt;a href=""&gt;옵션2&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_4_2">
+                        <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* custom select */
+.selectbox {display: inline-block;position: relative;}
+.selectbox .selected {display: inline-block;min-width: 130px;width: auto;max-width: 100%;height: 36px;padding: 0 32px 0 12px;border: 1px solid var(--bdr);border-radius: 5px;font-family: inherit;font-size: 14px;line-height: 34px;color: var(--dark);letter-spacing: -0.3px;background: #fff;transition: 0.1s color, 0.1s border-color;}
+.selectbox .selected::after {content: '';display: block;position: absolute;right: 11px;top: 16px;width: 9px;height: 5px;background: url(../images/icon/i_sel2.png) no-repeat center;transition: all 0.1s;}
+.selectbox.on .selected::after {transform: rotate(180deg);}
+.selectbox.on .selected {border-color: var(--bdr-focus);}
+.selectbox .selectoptions {width: 100%;display: none;position: absolute;left: 0px;top: 32px;padding: 5px 0 3px;border: 1px solid var(--bdr-focus);border-top: 0;border-radius: 0px 0px 5px 5px;background: #fff;z-index: 99;}
+.selectbox .selectoptions .option a {display: block;width: 100%;height: 100%;padding: 6px 12px;font-size: 14px;color: var(--dark);}
+.selectbox .selectoptions .option a:hover,
+.selectbox .selectoptions .option.on {font-weight: bold;text-decoration: underline;}
+.selectbox.disabled .selected {opacity: 0.7;color: var(--disabled-font);background-color: var(--disabled-bg);}
+.selectbox.err .selected,
+.selectbox.err .selectoptions {border: 1px solid var(--err-bdr);color: var(--err-font);background-color: var(--err-bg);}
+.selectbox.err .selectoptions .option a {color: var(--err-font);}
+.selectbox.err .selectoptions {border-top: 0;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_4_3">
+                        <pre>
+<code class="line-numbers language-js">// custom select
+$(document).ready(function () {
+    $(".selectbox").each(function () {
+        var $this = $(this);
+        var firstVal = $this.find(".option.default").text();
+        if ($this.hasClass("disabled")) {
+            $this.find(".selected").click(function () {
+                return false;
+            });
+        } else {
+            $this.find(".selected").text(firstVal);
+            $this.find(".selected").click(function () {
+                $(".selectoptions").slideUp(100);
+                if (!$this.find(".selectoptions").is(":visible")) {
+                    $this.find(".selectoptions").slideDown(100);
+                    $this.addClass("on");
+                } else {
+                    $this.find(".selectoptions").slideUp(100);
+                    $this.removeClass("on");
+                }
+                return false;
+            });
+            $this.find(".option").click(function () {
+                val = $(this).text();
+                $this.find(".selected").text(val);
+                $this.find(".selectoptions").slideUp(100);
+                $this.find(".selected").removeClass("on");
+                $this.find(".option").removeClass("on");
+                $(this).addClass("on");
+                $this.removeClass("on");
+                return false;
+            });
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+
+                <h3 class="section_sub_ttl">checkbox</h3>
+                <div class="ui_sample">
+                    <script type="text/javaScript">
+                        $(document).ready(function () {
+                            var multiSelect = $(".multiSelect .multi_show");
+                            var html = '';
+                            var firstVal = $(".multiSelect .multi_option").find(".default").text();
+                            $(".multiSelect .multi_default").text(firstVal); // select의 초기값을 default값으로
+
+                            $(".multiSelect .multi_text").click(function () {
+                                $(".multiSelect .multi_option").slideToggle(150);
+                                $(".multiSelect").toggleClass("on");
+                            });
+
+                            $('.multiSelect input[type="checkbox"]').click(function () {
+                                if ($(this).is(':checked')) {
+                                    $(".multi_default").hide();
+                                    html = `<span class="multi_${this.id}">${this.value}</span>`;
+                                    multiSelect.append(html); // 클릭한 checkbox의 값을 select에 출력
+                                }
+                                else {
+                                    $(`span.multi_${this.id}`).remove();
+                                }
+
+                                if ($('.multi_show').children().length === 0) { // check된 것이 없다면 기본 텍스트로 변경
+                                    $(".multi_default").show();
+                                }
+                            });
+                        });
+                    </script>
+                    <div class="multiSelect">
+                        <span class="multi_text">
+                            <span class="multi_default"></span>
+                            <span class="multi_show"></span>
+                        </span>
+                        <ul class="multi_option">
+                            <li class="default">
+                                <input type="checkbox" id="group-0" value="Group 0">
+                                <label for="group-0" class="grouplist_id">Group 0</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="group-1" value="Group 1">
+                                <label for="group-1" class="grouplist_id">Group 1</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="group-2" value="Group 2">
+                                <label for="group-2" class="grouplist_id">Group 2</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_5_1" class="on">html</li>
+                            <li id="code01_5_2">css</li>
+                            <li id="code01_5_3">js</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_5_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;div class="multiSelect"&gt;
+    &lt;span class="multi_text"&gt;
+        &lt;span class="multi_default"&gt;&lt;/span&gt;
+        &lt;span class="multi_show"&gt;&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;ul class="multi_option"&gt;
+        &lt;li class="default"&gt;
+            &lt;input type="checkbox" id="group-0" value="Group 0"&gt;
+            &lt;label for="group-0" class="grouplist_id"&gt;Group 0&lt;/label&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;input type="checkbox" id="group-1" value="Group 1"&gt;
+            &lt;label for="group-1" class="grouplist_id"&gt;Group 1&lt;/label&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;input type="checkbox" id="group-2" value="Group 2"&gt;
+            &lt;label for="group-2" class="grouplist_id"&gt;Group 2&lt;/label&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_5_2">
+                            <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* multi select */
+.multiSelect {display: inline-block;position: relative;width: 180px;}
+.multiSelect .multi_text {display: inline-block;min-width: 130px;width: 180px;max-width: 180px;height: 36px;padding: 5.5px 32px 0 12px;border: 1px solid var(--bdr);border-radius: 5px;font-family: inherit;font-size: 14px;color: var(--dark);letter-spacing: -0.3px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;background: #fff;transition: 0.1s color, 0.1s border-color;}
+.multiSelect .multi_text::after {content: '';display: block;position: absolute;right: 11px;top: 16px;width: 9px;height: 5px;background: url(../images/icon/i_sel2.png) no-repeat center;transition: all 0.1s;}
+.multiSelect.on .multi_text {border-color: var(--bdr-focus);}
+.multiSelect.on .multi_text::after {transform: rotate(180deg);}
+.multiSelect .multi_option {display: none;position: absolute;left: 0px;top: 32px;width: 100%;padding: 5px 0 3px;border: 1px solid var(--bdr-focus);border-top: 0;border-radius: 0px 0px 5px 5px;background: #fff;z-index: 99;}
+.multiSelect .multi_option li {padding: 6px 12px;}
+.multiSelect .multi_option li label {font-size: 14px;color: var(--dark);word-wrap: break-word;word-break: break-all;cursor: pointer;}
+.multiSelect .multi_option li label:hover {font-weight: bold;text-decoration: underline;}
+.multiSelect .multi_text span[class^="multi_group"] {position: relative;margin-right: 7px;padding-right: 2px;}
+.multiSelect .multi_text span[class^="multi_group"]:last-child {margin-right: 0;padding-right: 0;}
+.multiSelect .multi_text span[class^="multi_group"]::after {content: ',';}
+.multiSelect .multi_text span[class^="multi_group"]:last-child:after {content: '';}</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_5_3">
+                            <pre>
+<code class="line-numbers language-js">// custom select - multi
+$(document).ready(function () {
+var multiSelect = $(".multiSelect .multi_show");
+var html = '';
+var firstVal = $(".multiSelect .multi_option").find(".default").text();
+$(".multiSelect .multi_default").text(firstVal); // select의 초기값을 default값으로
+
+$(".multiSelect .multi_text").click(function () {
+    $(".multiSelect .multi_option").slideToggle(150);
+    $(".multiSelect").toggleClass("on");
+});
+
+$('.multiSelect input[type="checkbox"]').click(function () {
+    if ($(this).is(':checked')) {
+        $(".multi_default").hide();
+        html = `&lt;span class="multi_${this.id}"&gt;${this.value}&lt;/span&gt;`;
+        multiSelect.append(html); // 클릭한 checkbox의 값을 select에 출력
+    }
+    else {
+        $(`span.multi_${this.id}`).remove();
+    }
+
+    if ($('.multi_show').children().length === 0) { // check된 것이 없다면 기본 텍스트로 변경
+        $(".multi_default").show();
+    }
+});
+});</code>
+</pre>
+                        </div>
+                    </div>
+                    <h2 class="section_main_ttl">textarea</h2>
+                    <section class="ui_basic_info">
+                        <dl>
+                            <dt>테이블 안 textarea 기본 rows="5"</dt>
+                        </dl>
+                    </section>
+                    <div class="ui_sample">
+                        <textarea rows="2" placeholder="0자 이내"></textarea>
+                        <br>
+                        <textarea rows="2" readonly>readonly</textarea>
+                        <br>
+                        <textarea rows="2" disabled>disabled</textarea>
+                        <br>
+                        <textarea rows="2" class="err" placeholder="error"></textarea>
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_6_1" class="on">html</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_6_1">
+                            <pre><code class="line-numbers language-html">&lt;textarea rows="2" placeholder="0자 이내"&gt;&lt;/textarea&gt;
+&lt;textarea rows="2" readonly&gt;readonly&lt;/textarea&gt;
+&lt;textarea rows="2" disabled&gt;disabled&lt;/textarea&gt;
+&lt;textarea rows="2" class="err" placeholder="error"&gt;&lt;/textarea&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <h2 class="section_main_ttl">calendar</h2>
+                    <div class="ui_sample">
+                        <span class="calendar_input"><input type="text" id="OneDate"></span>
+                        <span class="calendar_input"><input type="text" id="readDate" value="0000.00.00" readonly></span>
+                        <span class="calendar_input"><input type="text" id="disabledDate" value="0000.00.00" disabled></span>
+                        <span class="calendar_input"><input type="text" class="err" id="errDate" value="0000.00.00" disabled></span><br><br>
+                        <span class="calendar_input"><input type="text" id="StartDate"></span>
+                        <span class="gap">~</span>
+                        <span class="calendar_input"><input type="text" id="EndDate"></span>
+                        <script type="text/javaScript">
+                            $(document).ready(function() {
+                                fncDate("OneDate");
+                                fncDate("readDate");
+                                fncDate("disabledDate");
+                                fncDate("errDate");
+                                fncDate("StartDate", "EndDate");
+                            });
+                        </script>
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_7_1" class="on">html</li>
+                            <li id="code01_7_2">css</li>
+                            <li id="code01_7_3">js</li>
+                            <li id="code01_7_4">img</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_7_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;!-- calendar가 1개일 때 --&gt;
+&lt;span class="calendar_input"&gt;&lt;input type="text" id="OneDate"&gt;&lt;/span&gt;
+&lt;span class="calendar_input"&gt;&lt;input type="text" id="readDate" value="0000.00.00" readonly&gt;&lt;/span&gt;
+&lt;span class="calendar_input"&gt;&lt;input type="text" id="disabledDate" value="0000.00.00" disabled&gt;&lt;/span&gt;
+&lt;span class="calendar_input"&gt;&lt;input type="text" class="err" id="errDate" value="0000.00.00" disabled&gt;&lt;/span&gt;
+&lt;script&gt;
+	$(document).ready(function() {
+		fncDate("OneDate");
+	});
+&lt;/script&gt;
+
+&lt;!-- calendar가 2개일 때 --&gt;
+&lt;span class="calendar_input"&gt;&lt;input type="text" id="StartDate"&gt;&lt;/span&gt;
+&lt;span class="gap"&gt;~&lt;/span&gt;
+&lt;span class="calendar_input"&gt;&lt;input type="text" id="EndDate"&gt;&lt;/span&gt;
+&lt;script&gt;
+	$(document).ready(function() {
+		fncDate("StartDate", "EndDate");
+	});
+&lt;/script&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_7_2">
+                            <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* calendar */
+.calendar_input {display: inline-block;position: relative;width: 130px;}
+.calendar_input input {min-width: 130px;width: 100%;padding-right: 38px;background: #fff;}
+.calendar_input .ui-datepicker-trigger {position: absolute;right: 8px;top: 8px;width: 20px;height: 20px;background: url(../images/icon/i_cal.svg) no-repeat center / 20px;text-indent: -9999px;cursor: pointer;}</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_7_3">
+                            <pre>
+<code class="line-numbers language-js">// datepicker
+var fncDate = function () {
+    var setDate = arguments;
+    var getId;
+    var fmt = "yy.mm.dd";
+    switch (setDate.length) {
+        case 1:
+            getId = "#" + setDate[0]; break;
+        case 2:
+            if (setDate[1] != '') { getId = "#" + setDate[0] + ", #" + setDate[1]; break; }
+            else { getId = "#" + setDate[0]; break; }
+        case 3:
+            if (setDate[1] != '') { getId = "#" + setDate[0] + ", #" + setDate[1]; fmt = setDate[2]; break; }
+            else { getId = "#" + setDate[0]; fmt = setDate[2]; break; }
+    }
+
+    var dates = $(getId).datepicker({
+        changeMonth: true,
+        changeYear: true,
+        showOn: "button",
+        buttonImage: "images/icon/i_cal.svg",
+        buttonImageOnly: true,
+        dateFormat: fmt,
+        onSelect: function (selectedDate) {
+            var option = this.id == setDate[0] ? "minDate" : "maxDate",
+                instance = $(this).data("datepicker"),
+                date = (fmt == 'yy.mm' ? new Date(instance.selectedYear, instance.selectedMonth, 1) : $.datepicker.parseDate($.datepicker._defaults.dateFormat, selectedDate, instance.settings))
+            dates.not(this).datepicker("option", option, date);
+            $(this).trigger("change");
+        }
+    });
+}</code>
+</pre>
+                        </div>
+                        <div class="js_tcont li_linenum" data-tab="code01_7_4">
+                            <ul>
+                                <li><a href="images/icon/i_cal.png" title="Download" download>i_cal.png</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2 class="section_main_ttl">l/r side</h2>
+                    <div class="ui_sample">
+                        <span class="lside">lside</span>
+                        <input type="text" class="auto">
+                        <span class="gap">~</span>
+                        <input type="text" class="auto">
+                        <span class="rside">rside</span>
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_8_1" class="on">html</li>
+                            <li id="code01_8_2">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_8_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;span class="lside"&gt;lside&lt;/span&gt;
+&lt;input type="text" class="auto"&gt;
+&lt;span class="gap"&gt;~&lt;/span&gt;
+&lt;input type="text" class="auto"&gt;
+&lt;span class="rside"&gt;rside&lt;/span&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_8_2">
+                            <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* l/r side, gap(~) */
+.lside, .rside {font-size: 14px;color: var(--dark);letter-spacing: -0.9px;}
+.lside {margin-right: 5px;}
+.rside {margin-left: 5px;}
+.gap {margin: 0 2px;vertical-align: middle;}</code>
+</pre>
+                        </div>
+                    </div>
+
+                    <h2 class="section_main_ttl">checkbox</h2>
+                    <div class="ui_sample">
+                        <span class="chk">
+                            <span class="cbx"><input type="checkbox" name="cbx01" id="cbx01_1"><label for="cbx01_1">체크박스 cbx</label></span>
+                            <span class="cbx"><input type="checkbox" name="cbx01" id="cbx01_2" disabled><label for="cbx01_2">cbx disabled</label></span>
+                            <span class="cbx"><input type="checkbox" name="cbx01" id="cbx01_3" checked disabled><label for="cbx01_3">cbx checked disabled</label></span>
+                            <span class="cbx"><input type="checkbox" name="cbx01" id="cbx01_4" class="err"><label for="cbx01_4">cbx error</label></span>
+                            <span class="cbx"><input type="checkbox" name="cbx01" id="cbx01_5"><label for="cbx01_5"></label></span>
+                        </span>
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_9_1" class="on">html</li>
+                            <li id="code01_9_2">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_9_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;span class="chk"&gt;
+    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_1"&gt;&lt;label for="cbx01_1"&gt;체크박스 cbx&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_2" disabled&gt;&lt;label for="cbx01_2"&gt;cbx disabled&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_3" checked disabled&gt;&lt;label for="cbx01_3"&gt;cbx checked disabled&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_4" class="err"&gt;&lt;label for="cbx01_4"&gt;cbx error&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_5"&gt;&lt;label for="cbx01_5"&gt;&lt;/label&gt;&lt;/span&gt;
+&lt;/span&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_9_2">
+                            <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* chk checkbox */
+.chk .cbx label::before {content: '\e928';font-family: 'xeicon';display: inline-block;position: relative;width: 15px;height: 15px;border: 1px solid var(--bdr);border-radius: 4px;font-size: 0;font-weight: 900;line-height: 13px;color: var(--bdr);text-align: center;background: #FFFFFF;}
+.chk .cbx label:hover::before {border-color: var(--gray);}
+.chk .cbx input:focus + label::before {border-color: var(--bdr-focus);}
+.chk .cbx input:checked + label::before {border-color: var(--chk-bg);font-size: 11px;color: #FFFFFF;background: var(--chk-bg);}
+.chk .cbx input:disabled + label {color: var(--bdr);cursor: auto;}
+.chk .cbx input:disabled + label::before {border-color: var(--bdr);}
+.chk .cbx input:disabled[checked] + label::before {border-color: var(--disabled-bg);background: var(--disabled-bg);}
+.chk .cbx input.err + label::before {border-color: var(--err-bdr);}
+.chk .cbx input.err + label {color: var(--err-font);}</code>
+</pre>
+                        </div>
+                    </div>
+
+                    <h2 class="section_main_ttl">radio</h2>
+                    <div class="ui_sample">
+                        <span class="chk">
+                            <span class="radio"><input type="radio" name="radio01" id="radio01_1"><label for="radio01_1">라디오 radio</label></span>
+                            <span class="radio"><input type="radio" name="radio01" id="radio01_2" disabled><label for="radio01_2">radio disabled</label></span>
+                            <span class="radio"><input type="radio" name="radio01" id="radio01_3" checked disabled><label for="radio01_3">radio checked disabled</label></span>
+                            <span class="radio"><input type="radio" name="radio01" id="radio01_4" class="err"><label for="radio01_4">radio error</label></span>
+                        </span>
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_10_1" class="on">html</li>
+                            <li id="code01_10_2">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_10_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;span class="chk"&gt;
+    &lt;span class="radio"&gt;&lt;input type="radio" name="radio01" id="radio01_1"&gt;&lt;label for="radio01_1"&gt;라디오 radio&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="radio"&gt;&lt;input type="radio" name="radio01" id="radio01_2" disabled&gt;&lt;label for="radio01_2"&gt;radio disabled&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="radio"&gt;&lt;input type="radio" name="radio01" id="radio01_3" checked disabled&gt;&lt;label for="radio01_3"&gt;radio checked disabled&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="radio"&gt;&lt;input type="radio" name="radio01" id="radio01_4" class="err"&gt;&lt;label for="radio01_4"&gt;radio error&lt;/label&gt;&lt;/span&gt;
+&lt;/span&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_10_2">
+                            <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* chk radio */
+.chk .radio label::before {content: '';display: inline-block;position: relative;width: 15px;height: 15px;border: 1px solid var(--bdr);border-radius: 50%;background: #FFFFFF;}
+.chk .radio label::after {content: '';position: absolute;left: 4px;top: 5px;width: 7px;height: 7px;border-radius: 50%;}
+.chk .radio label:hover::before {border-color: var(--gray);}
+.chk .radio input:active + label::before {border-color: var(--bdr-focus);}
+.chk .radio input:checked + label::before {border-color: var(--chk-bg);background: var(--chk-bg);}
+.chk .radio input:checked + label::after {background: #FFFFFF;}
+.chk .radio input:disabled + label {color: var(--bdr);cursor: auto;}
+.chk .radio input:disabled + label::before {border-color: var(--bdr);}
+.chk .radio input:disabled + label::after {background: #FFFFFF;}
+.chk .radio input:disabled[checked] + label::before {background: var(--bdr);}
+.chk .radio input.err + label::before {border-color: var(--err-bdr);}
+.chk .radio input.err + label {color: var(--err-font);}</code>
+</pre>
+                        </div>
+                    </div>
+
+                    <h2 class="section_main_ttl">On/Off</h2>
+                    <div class="ui_sample">
+                        <span class="chk">
+                            <span class="tgl"><input type="checkbox" name="tgl01" id="tgl01_1"><label for="tgl01_1">토글 tgl</label></span>
+                            <span class="tgl"><input type="checkbox" name="tgl01" id="tgl01_2" disabled><label for="tgl01_2">disabled</label></span>
+                            <span class="tgl"><input type="checkbox" name="tgl01" id="tgl01_3" checked disabled><label for="tgl01_3">disabled+checked</label></span>
+                            <span class="tgl"><input type="checkbox" name="tgl01" id="tgl01_4" class="err"><label for="tgl01_4">error</label></span>
+                            <span class="tgl"><input type="checkbox" name="tgl01" id="tgl01_5"><label for="tgl01_5"></label></span>
+                        </span>
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_11_1" class="on">html</li>
+                            <li id="code01_11_2">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_11_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;span class="chk"&gt;
+    &lt;span class="tgl"&gt;&lt;input type="checkbox" name="tgl01" id="tgl01_1"&gt;&lt;label for="tgl01_1"&gt;토글 tgl&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="tgl"&gt;&lt;input type="checkbox" name="tgl01" id="tgl01_2" disabled&gt;&lt;label for="tgl01_2"&gt;disabled&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="tgl"&gt;&lt;input type="checkbox" name="tgl01" id="tgl01_3" checked disabled&gt;&lt;label for="tgl01_3"&gt;disabled+checked&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="tgl"&gt;&lt;input type="checkbox" name="tgl01" id="tgl01_4" class="err"&gt;&lt;label for="tgl01_4"&gt;error&lt;/label&gt;&lt;/span&gt;
+    &lt;span class="tgl"&gt;&lt;input type="checkbox" name="tgl01" id="tgl01_5"&gt;&lt;label for="tgl01_5"&gt;&lt;/label&gt;&lt;/span&gt;
+&lt;/span&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_11_2">
+                            <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* on/off */
+.chk .tgl label {font-size: 16px;color: var(--dark);}
+.chk .tgl label::before {content: '';display: inline-block;position: relative;width: 30px;height: 15px;border-radius: 8px;background: var(--bdr);}
+.chk .tgl label::after {content: '';position: absolute;left: 3px;top: 4px;width: 9px;height: 9px;border-radius: 5px;background: #FFFFFF;transition: 0.3s ease;}
+.chk .tgl label:hover::before,
+.chk .tgl input:focus + label::before {background: var(--plholder-font);}
+.chk .tgl input:checked + label::before {background: var(--chk-bg);}
+.chk .tgl input:checked + label::after {left: 18px;}
+.chk .tgl input:disabled + label {color: var(--bdr);cursor: auto;}
+.chk .tgl input:disabled + label::before {background: var(--disabled-bg);}
+.chk .tgl input.err + label {color: var(--err-font);}
+.chk .tgl input.err + label::before {background: var(--err-bdr);}</code>
+</pre>
+                        </div>
+                    </div>
+
+                    <h2 class="section_main_ttl">file</h2>
+                    <div class="ui_sample">
+                        <div class="filebox">
+                            <input class="upload_name" value="" placeholder="첨부파일">
+                            <label for="file" class="btn blue icl"><i class="xi-search"></i>파일찾기</label>
+                            <input type="file" id="file">
+                        </div>
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_12_1" class="on">html</li>
+                            <li id="code01_12_2">css</li>
+                            <li id="code01_12_3">js</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_12_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;div class="filebox"&gt;
+    &lt;input class="upload_name" value="" placeholder="첨부파일"&gt;
+    &lt;label for="file" class="btn blue icl"&gt;&lt;i class="xi-search"&gt;&lt;/i&gt;파일찾기&lt;/label&gt;
+    &lt;input type="file" id="file"&gt;
+&lt;/div&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_12_2">
+                            <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* custom file */
+.filebox input[type="file"] {overflow: hidden;position: absolute;width: 0;height: 0;padding: 0;border: 0;}
+.filebox .upload_name {min-width: 300px;width: auto;max-width: 100%;height: 36px;padding: 0 12px;border: 1px solid var(--bdr);border-radius: 5px;font-family: inherit;font-size: 14px;line-height: inherit;color: var(--dark);letter-spacing: -0.3px;vertical-align: 0;transition: 0.1s color, 0.1s border-color;}</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_12_3">
+                            <pre>
+<code class="line-numbers language-js">// custom file
+$(document).ready(function () {
+    $("#file").on('change', function () {
+        var fileName = $("#file").val();
+        $(".upload_name").val(fileName);
+    });
+});</code>
+</pre>
+                        </div>
+                    </div>
+
+                    <h2 class="section_main_ttl">첨부파일 업로드</h2>
+                    <div class="ui_sample">
+                        <div class="file_wrap">
+                            <button type="button" class="btn bd blue btn_file"><span class="fa_check">파일선택</span></button>
+                            <button type="button" class="btn bd red btn_fileDel"><span class="fa_remove">파일삭제</span></button>
+                            <span class="pad_l5">파일은 최대 5개까지 첨부 가능합니다. (개별 용량 10MB)</span>
+                            <table class="tbl_file">
+                                <caption>첨부파일 업로드 목록</caption>
+                                <colgroup>
+                                    <col style="width: 10%;">
+                                    <col>
+                                    <col style="width: 15%;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <span class="chk">
+                                                <span class="cbx"><input type="checkbox" name="selectFile" id="allFile" title="전체선택"><label for="allFile"></label></span>
+                                            </span>
+                                        </th>
+                                        <th scope="col">첨부파일명</th>
+                                        <th scope="col">용량</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="chk">
+                                                <span class="cbx"><input type="checkbox" name="file" id="file01"><label for="file01"></label></span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="file_tit">
+                                                <label for="file1"><span><img src="images/icon/file_hwp.svg" alt="hwp"></span>첨부파일1</label>
+                                            </div>
+                                        </td>
+                                        <td>4.43MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="no_data"> 첨부파일이 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="file_dragarea">
+                            <em class="file_txt">마우스로 드래그해서 첨부파일을 추가해 주세요.</em>
+                        </div>
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_13_1" class="on">html</li>
+                            <li id="code01_13_2">css</li>
+                            <li id="code01_13_3">img</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_13_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;div class="file_wrap"&gt;
+    &lt;button type="button" class="btn bd blue btn_file"&gt;&lt;span class="fa_check"&gt;파일선택&lt;/span&gt;&lt;/button&gt;
+    &lt;button type="button" class="btn bd red btn_fileDel"&gt;&lt;span class="fa_remove"&gt;파일삭제&lt;/span&gt;&lt;/button&gt;
+    &lt;span class="pad_l5"&gt;파일은 최대 5개까지 첨부 가능합니다. (개별 용량 10MB)&lt;/span&gt;
+    &lt;table class="tbl_file"&gt;
+        &lt;caption&gt;첨부파일 업로드 목록&lt;/caption&gt;
+        &lt;colgroup&gt;
+            &lt;col style="width: 10%;"/&gt;
+            &lt;col /&gt;
+            &lt;col style="width: 15%;"/&gt;
+        &lt;/colgroup&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th scope="col"&gt;
+                    &lt;span class="chk"&gt;
+                        &lt;span class="cbx"&gt;&lt;input type="checkbox" name="selectFile" id="allFile" title="전체선택"&gt;&lt;label for="allFile"&gt;&lt;/label&gt;&lt;/span&gt;
+					&lt;/span&gt;
+                &lt;/th&gt;
+                &lt;th scope="col"&gt;첨부파일명&lt;/th&gt;
+                &lt;th scope="col"&gt;용량&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;span class="chk"&gt;
+                        &lt;span class="cbx"&gt;&lt;input type="checkbox" name="file" id="file01"&gt;&lt;label for="file01"&gt;&lt;/label&gt;&lt;/span&gt;
+					&lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td&gt;
+                    &lt;div class="file_tit"&gt;
+                        &lt;label for="file1"&gt;&lt;span&gt;&lt;img src="images/icon/file_hwp.svg" alt="hwp"&gt;&lt;/span&gt;첨부파일1&lt;/label&gt;
+                    &lt;/div&gt;
+                &lt;/td&gt;
+                &lt;td&gt;4.43MB&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td colspan="3"&gt;첨부파일이 없습니다.&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="file_dragarea"&gt;
+    &lt;em class="file_txt"&gt;마우스로 드래그해서 첨부파일을 추가해 주세요.&lt;/em&gt;
+&lt;/div&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_13_2">
+                            <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* file */
+.file_wrap {position: relative;text-align: left;}
+.file_wrap .btn {display: inline-block;position: relative;height: 27px;border-radius: 4px;font-size: 13px;line-height: 25px;text-align: center;cursor: pointer;}
+.file_wrap > span {font-size: 14px;}
+.file_wrap .btn .fa_check {padding-left: 16px;background: url(../images/icon/fa_check.svg) no-repeat 0 50%;}
+.file_wrap .btn .fa_remove {padding-left: 16px;background: url(../images/icon/fa_remove.svg) no-repeat 0 50%;}
+.file_wrap .file_tit {position: relative;padding-right: 70px;text-align: left;}
+.file_wrap .file_tit span img {margin-right: 5px;vertical-align: sub;}
+.file_dragarea {overflow: hidden;position: relative;height: 134px;margin-top: 10px;border: 1px solid var(--tbl-bdr);background: #FDFDFD url(../images/icon/bg_drag_image.png) no-repeat 50% 50%;}
+.file_txt {position: absolute;font-size: 0;}
+.tbl_file {margin-top: 10px;border-top: 1px solid var(--tbl-bdr);}
+.tbl_file th, .tbl_file td {position: relative;height: 42px;padding: 8px 10px;border-bottom: 1px solid var(--tbl-bdr);font-size: 14px;font-weight: 400;color: var(--dark);text-align: center;background: #FFFFFF;}
+.tbl_file th {font-weight: 500;background: var(--tbl-th);}</code>
+</pre>
+                        </div>
+                        <div class="js_tcont li_linenum" data-tab="code01_13_3">
+                            <ul>
+                                <li><a href="images/icon/fa_check.svg" title="Download" download>fa_check.svg</a></li>
+                                <li><a href="images/icon/fa_remove.svg" title="Download" download>fa_remove.svg</a></li>
+                                <li><a href="images/icon/file_hwp.svg" title="Download" download>file_hwp.svg</a></li>
+                                <li><a href="images/icon/bg_drag_image.png" title="Download" download>bg_drag_image.png</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2 class="section_main_ttl">이미지 첨부파일 업로드</h2>
+                    <div class="ui_sample">
+                        <div class="file_wrap">
+                            <ul class="file_thum">
+                                <!-- 파일 업로드 안했을때 -->
+                                <li>
+                                    <div class="file_img">
+                                        <img src="images/common/no_img.png" alt="">
+                                    </div>
+                                    <div class="file_btns_box r">
+                                        <span class="fake_file">
+                                            <span class="btn fake_btn btn_file"></span>
+                                            <span class="btn btn_file_del" style="display: none;"></span>
+                                        </span>
+                                    </div>
+                                </li>
+                                <!-- 파일 업로드 했을때 -->
+                                <li>
+                                    <div class="file_img">
+                                        <img src="images/content/temp_img01.jpg" alt="">
+                                    </div>
+                                    <div class="file_btns_box r">
+                                        <span class="file_name">업로드한파일명_업로드한파일명.jpg</span>
+                                        <span class="fake_file">
+                                            <span class="btn fake_btn btn_file" style="display: none;"></span>
+                                            <span class="btn btn_file_del"></span>
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_14_1" class="on">html</li>
+                            <li id="code01_14_2">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_14_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;div class="file_wrap"&gt;
+    &lt;ul class="file_thum"&gt;
+        &lt;!-- 파일 업로드 안했을때 --&gt;
+        &lt;li&gt;
+            &lt;div class="file_img"&gt;
+                &lt;img src="images/common/no_img.png" alt=""&gt;
+            &lt;/div&gt;
+            &lt;div class="file_btns_box r"&gt;		
+                &lt;span class="fake_file"&gt;			
+                    &lt;span class="btn fake_btn btn_file"&gt;&lt;/span&gt;			
+                    &lt;span class="btn btn_file_del" style="display: none;"&gt;&lt;/span&gt;		
+                &lt;/span&gt;	
+            &lt;/div&gt;
+        &lt;/li&gt;
+        &lt;!-- 파일 업로드 했을때 --&gt;
+        &lt;li&gt;
+            &lt;div class="file_img"&gt;
+                &lt;img src="images/content/temp_img01.jpg" alt=""&gt;
+            &lt;/div&gt;
+            &lt;div class="file_btns_box r"&gt;			
+                &lt;span class="file_name"&gt;업로드한파일명_업로드한파일명.jpg&lt;/span&gt;		
+                &lt;span class="fake_file"&gt;			
+                    &lt;span class="btn fake_btn btn_file" style="display: none;"&gt;&lt;/span&gt;			
+                    &lt;span class="btn btn_file_del"&gt;&lt;/span&gt;		
+                &lt;/span&gt;	
+            &lt;/div&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_14_2">
+                            <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* file img */
+.file_thum::after {content: '';display: table;clear: both;}
+.file_thum li {float: left;position: relative;width: 200px;margin-right: 10px;margin-bottom: 10px;border: 1px solid #e1e1e1;}
+.file_thum li:nth-child(5n) {margin-right: 0;}
+.file_thum .file_img {width: 100%;height: 150px;}
+.file_thum .file_img img {width: 100%;height: 100%;}
+.file_thum .file_btns_box {height: 35px;padding: 5px;border-top: 1px solid #e1e1e1;}
+.file_thum .fr {text-align: right;vertical-align: baseline;}
+.file_thum .btn {min-width: 0;width: 24px;height: 24px;padding: 0;font-size: 17px;font-weight: 300;line-height: 24px;background: none;}
+.file_wrap .fake_btn::before {content: "\eb7e";font-family: 'xeicon';}
+.file_wrap .btn_file_del {border-color: var(--red);}
+.file_wrap .btn_file_del::before {content: "\e921";font-family: 'xeicon';font-size: 13px;font-weight: bold;color: var(--red);vertical-align: top;}
+.file_thum .fake_file {display: inline-block;position: relative;width: 24px;height: 24px;}
+.file_thum .fake_btn {width: 100%;height: 100%;text-indent: 0;cursor: pointer;}
+.file_thum .hidden_file {opacity: 0;position: absolute;left: 0;top: 0;width: 100%;height: 100%;border: 0;cursor: pointer;filter: alpha(opacity=0);-moz-opacity: 0;}
+.file_thum .file_btns_box .file_name {display: inline-block;max-width: 85%;padding-right: 6px;font-size: 14px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;vertical-align: -3px;}
+.file_thum .btn_file_del {margin-left: 0 !important;}</code>
+</pre>
+                        </div>
+                    </div>
+
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>1. 2줄 이상의 input을 넣을 시 <span class="impact">&lt;div class="field"&gt;&lt;/div&gt;</span>로
+                            감싼다. (간격 조정 / 밑의 field 예시 참고)</dt>
+                        <dt>2. 글자 정렬: <span class="impact">class="l/r"</span></dt>
+                        <dd>- 숫자(돈 등)는 오른쪽 정렬한다.</dd>
+                    </dl>
+                </section>
+
+
+                <!-- <h2 class="section_main_ttl">텍스트</h2>
+                <div class="ui_sample">
+                    텍스트 + 버튼
+                    <button type="button" class="btn sml mar_l5">버튼</button>
+                    <div class="info_txt"><span>텍스트와 버튼 사이 간격은 mar_ 클래스로 조정할 수 있다.</span></div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code10_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code10_1">
+                        <pre>
+<code class="line-numbers language-html">텍스트 + 버튼
+&lt;button type="button" class="btn sml mar_l5"&gt;버튼&lt;/button&gt;
+&lt;div class="info_txt"&gt;&lt;span&gt;info msg&lt;/span&gt;&lt;/div&gt;</code>
+</pre>
+                    </div>
+                </div> -->
+
+                <h2 class="section_main_ttl">field</h2>
+                <div class="ui_sample">
+                    <div class="field">
+                        <input type="text">
+                    </div>
+                    <div class="field">
+                        <select class="auto">
+                            <option>전체</option>
+                        </select>
+                        <input type="text" class="auto">
+                        <input type="text" class="auto">
+                        <button type="button" class="btn">버튼</button>
+                    </div>
+                    <div class="field">
+                        <textarea rows="5" placeholder="0자 이내"></textarea>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="field"&gt;
+    &lt;input type="text"&gt;
+&lt;/div&gt;
+&lt;div class="field"&gt;
+    &lt;select class="auto"&gt;
+        &lt;option&gt;전체&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;input type="text" class="auto"&gt;
+    &lt;input type="text" class="auto"&gt;
+    &lt;button type="button" class="btn"&gt;버튼&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="field"&gt;
+    &lt;textarea rows="5" placeholder="0자 이내"&gt;&lt;/textarea&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** form ***/
+/* field */
+.field {display: flex;flex-wrap: wrap;align-items: center;gap: 5px;word-break: break-word;max-width: 100%;}
+.field + .field {margin: 5px 0 0 0 !important;}
+.field > div:not(.selectbox) {width: 100%;}
+.field > *, .field .btn + .btn, .field .gap {margin: 0;}
+th .field {padding: 0;}
+/* phone & email & addr field style */
+.phone {flex-wrap: nowrap;}
+.phone input, .phone select,
+.email input, .email select {width: calc(100% / 3);max-width: min(calc(100% / 3), 130px);}
+.addr input {width: 100%;margin-top: 5px;}
+.addr span {display: flex;align-items: center;gap: 5px;max-width: 100%;word-break: break-word;}
+.addr span input {width: 150px;margin-top: 0;}
+.addr span .btn {min-width: 90px;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">주소 입력</h2>
+                <div class="ui_sample">
+                    <div class="field addr">
+                        <span>
+                            <input type="text">
+                            <button type="button" class="btn">주소 검색</button>
+                        </span>
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_2_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="field addr"&gt;
+    &lt;span&gt;
+        &lt;input type="text"&gt;
+        &lt;button type="button" class="btn"&gt;주소 검색&lt;/button&gt;
+    &lt;/span&gt;
+    &lt;input type="text"&gt;
+    &lt;input type="text"&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">전화번호</h2>
+                <div class="ui_sample">
+                    <div class="phone">
+                        <select name="" id="">
+                            <option value="">010</option>
+                            <option value="">011</option>
+                        </select>
+                        <span class="gap">-</span>
+                        <input type="text">
+                        <span class="gap">-</span>
+                        <input type="text">
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_3_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="phone"&gt;
+    &lt;select name="" id=""&gt;
+        &lt;option value=""&gt;010&lt;/option&gt;
+        &lt;option value=""&gt;011&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;span class="gap"&gt;-&lt;/span&gt;
+    &lt;input type="text"&gt;
+    &lt;span class="gap"&gt;-&lt;/span&gt;
+    &lt;input type="text"&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">이메일</h2>
+                <div class="ui_sample">
+                    <div class="email">
+                        <input type="text" title="이메일 계정입력">
+                        <span class="gap">@</span>
+                        <select title="이메일 도메인 선택">
+                            <option value="" selected="selected"></option>
+                            <option value=""></option>
+                        </select>
+                        <input type="text" title="이메일 도메인 직접입력" placeholder="직접입력">
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_4_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_4_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="email"&gt;
+    &lt;input type="text" title="이메일 계정입력"&gt;
+    &lt;span class="gap"&gt;@&lt;/span&gt;
+    &lt;select title="이메일 도메인 선택"&gt;
+        &lt;option value="" selected="selected"&gt;&lt;/option&gt;
+        &lt;option value=""&gt;&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;input type="text" title="이메일 도메인 직접입력" placeholder="직접입력"&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>text 공통 css</dt>
+                    </dl>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code03_1_1" class="on">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code03_1_1">
+                            <pre>
+<code class="line-numbers language-css">/*** text ***/
+/* h */
+h1 {font-size: 28px;font-weight: 700;}
+h2 {font-size: 24px;font-weight: 700;}
+h3 {font-size: 18px;font-weight: 700;}
+h4 {font-size: 15px;font-weight: 700;}
+h5 {font-size: 14px;font-weight: 700;}
+
+/* basic text */
+.ft_basic {font-size: 14px;font-weight: normal;}
+
+/* txt color */
+.red_txt {color: #ed2828 !important;}
+.green_txt {color: #62b399 !important;}
+
+/* error_txt */
+.error_txt {margin-top: 3px;font-size: 14px !important;color: #ed2828 !important;}
+.error_txt.disin {margin-left: 10px;margin-top: 0;}</code>
+</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <h2 class="section_main_ttl">basic text</h2>
+                <div class="ui_sample">
+                    <h1>h1 제목입니다.</h1>
+                    <h2>h2 제목입니다.</h2>
+                    <h3>h3 제목입니다.</h3>
+                    <h4>h4 제목입니다.</h4>
+                    <h5>h5 제목입니다.</h5>
+                    <br>
+                    <p class="ft_basic">기본 내용 입니다.</p>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_2_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;h1&gt;h1 제목입니다.&lt;/h1&gt;
+&lt;h2&gt;h2 제목입니다.&lt;/h2&gt;
+&lt;h3&gt;h3 제목입니다.&lt;/h3&gt;
+&lt;h4&gt;h4 제목입니다.&lt;/h4&gt;
+&lt;h5&gt;h5 제목입니다.&lt;/h5&gt;
+&lt;p class="ft_basic"&gt;기본 내용 입니다.&lt;/p&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">색 & 기능</h2>
+                <div class="ui_sample">
+                    <p class="red_txt">빨간색 글씨</p>
+                    <p class="green_txt">초록색 글씨</p>
+                    <p class="error_txt">error txt (form > form element 참고)</p>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_3_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;p class="red_txt"&gt;red_txt&lt;/p&gt;
+&lt;p class="green_txt"&gt;green_txt&lt;/p&gt;
+&lt;p class="error_txt"&gt;error txt&lt;/p&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

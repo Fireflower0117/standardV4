@@ -28,10 +28,12 @@ public class TermsService extends EgovAbstractServiceImpl  {
 	private final CmmnDefaultDao defaultDao; 
     private final MessageSource messageSource;
 	
+	private final String sqlNs = "com.opennote.standard.mapper.usersupport.TermsMngMapper.";
+	
 	public void form(Model model, String menuId) {
         TermsVO termsVO = new TermsVO();
 		termsVO.setSchEtc00(menuId);
-		List<TermsVO.Terms> termsList =  (List<TermsVO.Terms>)defaultDao.selectList("com.opennote.standard.mapper.usersupport.TermsMngMapper.selectList", termsVO); 
+		List<TermsVO.Terms> termsList =  (List<TermsVO.Terms>)defaultDao.selectList(sqlNs+"selectList", termsVO); 
 		model.addAttribute("termsList", termsList);
     } 
     
@@ -115,18 +117,18 @@ public class TermsService extends EgovAbstractServiceImpl  {
 	
 	// 약관 등록
 	public int insertContents(TermsVO.Terms vo) {
-	     return defaultDao.insert("com.opennote.standard.mapper.usersupport.TermsMngMapper.insertContents", vo); 
+	     return defaultDao.insert(sqlNs+"insertContents", vo); 
 	}
 	
 	
 	// 약관 수정
 	public int updateContents(TermsVO.Terms vo) {
-		return defaultDao.update("com.opennote.standard.mapper.usersupport.TermsMngMapper.updateContents", vo); 
+		return defaultDao.update(sqlNs+"updateContents", vo); 
 	}
 	
 	// 약관 삭제
 	public int deleteContents(TermsVO vo) {
-	    return defaultDao.update("com.opennote.standard.mapper.usersupport.TermsMngMapper.deleteContents", vo); 
+	    return defaultDao.update(sqlNs+"deleteContents", vo); 
 	}
      
 

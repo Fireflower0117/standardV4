@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/board.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+
+    <!-- index -->
+    <script src="https://unpkg.com/sheetrock@1.2.0/dist/sheetrock.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.2/handlebars.min.js"></script>
+    <script src="https://unpkg.com/datatables@1.10.18/media/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.semanticui.min.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+    <script type="text/javascript" src="js/index.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">Index</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01">버전 관리</li>
+                <li id="tab02" class="on">가이드 구조도</li>
+                <li id="tab03">보완사항</li>
+                <li id="tab04">퍼블 샘플</li>
+                <li id="tab05">유용한 사이트</li>
+            </ul>
+
+            <!-- uiGVCTbl -->
+            <section class="common_tab_content js_tcont" data-tab="tab01">
+                <table id="uiGVCTbl" class="data_tbl uig_tbl">
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 25%;">
+                        <col>
+                    </colgroup>
+                    <script id="uiGVCTbl-template" type="text/x-handlebars-template">
+                        <tr>
+                            <td>{{cells.버전}}</td>
+                            <td>{{cells.날짜}}</td>
+                            <td><span>{{cells.비고}}</span></td>
+                        </tr>
+                    </script>
+                </table>
+            </section>
+            <!-- // uiGVCTbl -->
+
+            <!-- uiGStrucTbl -->
+            <section class="common_tab_content js_tcont on" data-tab="tab02">
+                <div class="board_top">
+                    <div class="board_right">
+                        <span class="red_txt">* 3차 메뉴 클릭 시 해당 페이지로 이동</span>
+                    </div>
+                </div>
+                <table id="uiGStrucTbl" class="data_tbl">
+                    <colgroup>
+                        <col style="width: 8%;">
+                        <col style="width: 18%;">
+                        <col style="width: 18%;">
+                        <col style="width: 18%;">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">분류</th>
+                            <th scope="col">1차메뉴</th>
+                            <th scope="col">2차메뉴(탭)</th>
+                            <th scope="col">3차메뉴(타이틀)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </section>
+            <!-- // uiGStrucTbl -->
+
+            <!-- uiGEditTbl -->
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <table id="uiGEditTbl" class="data_tbl uig_tbl">
+                    <colgroup>
+                        <col style="width: 6%;">
+                        <col style="width: 7%;">
+                        <col style="width: 8%;">
+                        <col style="width: 9%;">
+                        <col style="width: 8%;">
+                        <col>
+                        <col>
+                    </colgroup>
+                    <script id="uiGEditTbl-template" type="text/x-handlebars-template">
+                        <tr>
+                            <td><span>{{cells.번호}}</span></td>
+                            <td class="uget_type" data-ugetType="{{cells.구분}}"><span>{{cells.구분}}</span></td>
+                            <td class="uget_name"><span>{{cells.작업자}}</span></td>
+                            <td><span>{{cells.완료일}}</span></td>
+                            <td class="uget_name"><span>{{cells.작성자}}</span></td>
+                            <td><span>{{cells.수정사항}}</span></td>
+                            <td class="uget_note"><span>{{cells.비고}}</span></td>
+                        </tr>
+                    </script>
+                </table>
+            </section>
+            <!-- // uiGEditTbl -->
+
+            <!-- uiGSmpl -->
+            <section class="common_tab_content js_tcont" data-tab="tab04">
+                <div class="gallery_wrap">
+                    <table id="uiGSmpl">
+                        <script id="uiGSmpl-template" type="text/x-handlebars-template">
+                            <tr tabindex="0" title="상세보기">
+                                <td class="smpl_num"><span>{{cells.번호}}</span></td>
+                                <td class="smpl_thum"><figure class="thum_img"><img src="{{cells.URL}}" onerror="this.onerror=null;this.src='images/common/no_img.png';"></figure></td>
+                                <td class="smpl_type"><span>{{cells.구분}}</span></td>
+                                <td class="smpl_detype"><span>{{cells.상세구분}}</span></td>
+                                <td class="smpl_point"><span>{{cells.특이사항}}</span></td>
+                                <td class="smpl_worker"><span>{{cells.작업자}}</span></td>
+                                <td class="smpl_pj"><span>{{cells.프로젝트명}}</span></td>
+                                <td class="smpl_path"><span>{{cells.폴더경로}}</span></td>
+                                <td class="smpl_detpath"><span>{{cells.세부정보}}</span></td>
+                            </tr>
+                        </script>
+                    </table>
+                </div>
+            </section>
+            <!-- // uiGSmpl -->
+
+            <!-- uiGRefTbl -->
+            <section class="common_tab_content js_tcont" data-tab="tab05">
+                <table id="uiGRefTbl" class="data_tbl uig_tbl">
+                    <colgroup>
+                        <col style="width: 8%;">
+                        <col style="width: 10%;">
+                        <col style="width: 25%;">
+                        <col>
+                    </colgroup>
+                    <script id="uiGRefTbl-template" type="text/x-handlebars-template">
+                        <tr>
+                            <td><span>{{cells.번호}}</span></td>
+                            <td class="ref_type" data-refType="{{cells.구분}}"><span>{{cells.구분}}</span></td>
+                            <td><span>{{cells.용도}}</span></td>
+                            <td class="ref_link"><span>{{cells.링크}}</span></td>
+                        </tr>
+                    </script>
+                </table>
+            </section>
+            <!-- // uiGRefTbl -->
+
+            <!-- uiGSmpl - popup -->
+            <div id="display_view_uiGSmpl" class="layer_pop js_popup w800px">
+                <div class="pop_header">
+                    <h2><span id="smplTypeV"></span><span id="smplDetypeV"></span></h2>
+                    <button type="button" class="pop_close" onclick="view_hide('_uiGSmpl');"><i class="xi-close-thin"></i>닫기</button>
+                </div>
+                <div class="pop_content" style="max-height: 800px;">
+                    <table class="board_write">
+                        <colgroup>
+                            <col style="width: 15%;">
+                            <col style="width: 25%;">
+                            <col style="width: 15%;">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row">작업자</th>
+                                <td id="smplWkV"></td>
+                                <th scope="row">프로젝트명</th>
+                                <td id="smplPjV"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">폴더경로</th>
+                                <td colspan="3">
+                                    <div>
+                                        <input type="text" id="smplPathV" class="w100p">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">상세경로</th>
+                                <td colspan="3" id="smplDetpV"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><figure><img src="" id="smplThumV" onerror="this.onerror=null;this.src='images/common/no_img.png';"></figure></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- // uiGSmpl - popup -->
+            <div class="popup_bg" id="js_popup_bg"></div>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

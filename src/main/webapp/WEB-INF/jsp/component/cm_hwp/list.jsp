@@ -89,10 +89,10 @@ const cmFncHwpDown = function(){
 
 const cmFncHwplibDown = function(){
 	$.ajax({
-		url      : "/ma/us/cm_hwp/hwplibDown",
+		url      : "/ma/us/hwp/hwplibDown",
 		type     : "post",
 		success  : function(data){
-			alert("c:/hwpDown에 hwplib 다운로드 완료");
+			alert("C:/hwpDown에 hwplib 다운로드 완료");
 		},
 		error   : function(error, status){
 			console.log(error);

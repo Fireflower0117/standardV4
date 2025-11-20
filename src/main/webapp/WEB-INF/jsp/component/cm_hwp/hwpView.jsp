@@ -4,8 +4,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <head><title>회원정보</title>
     <meta http_quiv="content-type" content="text/html; charset=utf-8">
-    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/ma/js/jquery.min.js"></script>
-    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/ma/js/jquery-ui-1.12.1.custom.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.js"></script>
 </head>
 <TITLE>결과보고서</TITLE>
 <style>
@@ -53,7 +53,7 @@
 </script>
 <c:if test="${downType eq '.do' }">
     <div style="text-align:right; margin-bottom:5px;">
-        <button class="btn_down btn hwp"><img src="/ma/images/icon/file_word.svg" alt="word" style="vertical-align: -5px;margin-right:3px;">hwp 다운로드</button>
+        <button class="btn_down btn hwp"><img src="/internal/standard/common/images/icon/file_word.svg" alt="word" style="vertical-align: -5px;margin-right:3px;">hwp 다운로드</button>
     </div>
 </c:if>
 

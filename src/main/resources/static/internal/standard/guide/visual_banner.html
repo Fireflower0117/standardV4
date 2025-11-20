@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/content.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/content.js"></script>
+    <!-- swiper -->
+    <link rel="stylesheet" href="lib/swiper/swiper-bundle.min.css">
+    <script src="lib/swiper/swiper.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">비쥬얼 & 배너존</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">메인비쥬얼1</li>
+                <li id="tab02">메인비쥬얼2</li>
+                <li id="tab03">배너존</li>
+            </ul>
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. swiper 사용. swiper를 반드시 먼저 import 해야함.</dt>
+                        <dt>2. UI 요소에서 사용되는 css, js는 각 메뉴의 샘플코드에서 복사해서 추가, img파일 개별 다운로드 후 경로에 맞게 넣어야 함.</dt>
+                    </dl>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_1_1" class="on">html</li>
+                            <li id="code01_1_2">file</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_1_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;head&gt;
+    ...
+    &lt;link rel="stylesheet" href="lib/swiper/swiper-bundle.min.css"&gt;
+    &lt;script src="lib/swiper/swiper.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont li_linenum" data-tab="code01_1_2">
+                            <ul>
+                                <li><a href="zip/swiper.zip" title="Download" download>swiper.zip</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <h2 class="section_main_ttl">fraction paging + autoplay progress</h2>
+                <div class="ui_sample">
+                    <div class="visual_slider typeA">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <a href="" class="slide-inner">
+                                        <img src="images/content/img_visual_sample1.png" alt="">
+                                        <div class="txt">
+                                            <b>OPENNOTE</b>
+                                            <p>
+                                                고객 만족을 위한<br>
+                                                최고의 가치를 제공하는<br>
+                                                디지털 마케팅 서비스<br>
+                                                시스템 설계구축 전문 그룹
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="" class="slide-inner">
+                                        <img src="images/content/img_visual_sample2.png" alt="">
+                                        <div class="txt">
+                                            <b>OPENNOTE</b>
+                                            <p>
+                                                고객 만족을 위한<br>
+                                                최고의 가치를 제공하는<br>
+                                                디지털 마케팅 서비스<br>
+                                                시스템 설계구축 전문 그룹
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="" class="slide-inner">
+                                        <img src="images/content/img_visual_sample3.png" alt="">
+                                        <div class="txt">
+                                            <b>OPENNOTE</b>
+                                            <p>
+                                                고객 만족을 위한<br>
+                                                최고의 가치를 제공하는<br>
+                                                디지털 마케팅 서비스<br>
+                                                시스템 설계구축 전문 그룹
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper_btn">
+                            <button type="button" class="btn_play_control active">
+                                <div class="btn_circle">
+                                    <div class="mask full"><div class="fill"></div></div>
+                                    <div class="mask half"><div class="fill"></div></div>
+                                </div>
+                                재생 / 멈춤
+                            </button>
+                            <div class="btns">
+                                <button class="btn_visual_prev">이전</button>
+                                <span class="pagination_fraction"></span>
+                                <button class="btn_visual_next">다음</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                        <li id="code01_2_2">css</li>
+                        <li id="code01_2_3">js</li>
+                        <li id="code01_2_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="visual_slider"&gt;
+    &lt;div class="swiper-container"&gt;
+        &lt;div class="swiper-wrapper"&gt;
+            &lt;div class="swiper-slide"&gt;
+                &lt;a href="" class="slide-inner"&gt;
+                    &lt;img src="images/content/img_visual_sample1.png" alt=""&gt;
+                    &lt;div class="txt"&gt;
+                        &lt;b&gt;OPENNOTE&lt;/b&gt;
+                        &lt;p&gt;
+                            고객 만족을 위한&lt;br&gt;
+                            최고의 가치를 제공하는&lt;br&gt;
+                            디지털 마케팅 서비스&lt;br&gt;
+                            시스템 설계구축 전문 그룹
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;
+                &lt;a href="" class="slide-inner"&gt;
+                    &lt;img src="images/content/img_visual_sample2.png" alt=""&gt;
+                    &lt;div class="txt"&gt;
+                        &lt;b&gt;OPENNOTE&lt;/b&gt;
+                        &lt;p&gt;
+                            고객 만족을 위한&lt;br&gt;
+                            최고의 가치를 제공하는&lt;br&gt;
+                            디지털 마케팅 서비스&lt;br&gt;
+                            시스템 설계구축 전문 그룹
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;
+                &lt;a href="" class="slide-inner"&gt;
+                    &lt;img src="images/content/img_visual_sample3.png" alt=""&gt;
+                    &lt;div class="txt"&gt;
+                        &lt;b&gt;OPENNOTE&lt;/b&gt;
+                        &lt;p&gt;
+                            고객 만족을 위한&lt;br&gt;
+                            최고의 가치를 제공하는&lt;br&gt;
+                            디지털 마케팅 서비스&lt;br&gt;
+                            시스템 설계구축 전문 그룹
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="swiper_btn"&gt;
+        &lt;button type="button" class="btn_play_control active"&gt;
+            &lt;div class="btn_circle"&gt;
+                &lt;div class="mask full"&gt;&lt;div class="fill"&gt;&lt;/div&gt;&lt;/div&gt;
+                &lt;div class="mask half"&gt;&lt;div class="fill"&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            재생 / 멈춤
+        &lt;/button&gt;
+        &lt;div class="btns"&gt;
+            &lt;button class="btn_visual_prev"&gt;이전&lt;/button&gt;
+            &lt;span class="pagination_fraction"&gt;&lt;/span&gt;
+            &lt;button class="btn_visual_next"&gt;다음&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** visual **/
+.visual_slider {overflow: hidden;position: relative;width: 100%;height: 500px;}
+.visual_slider .swiper-slide {overflow: hidden;position: relative;width: 100%;height: 500px;background: #000;}
+.visual_slider .swiper-slide .slide-inner {position: absolute;left: 0;top: 0;width: 100%;height: 100%;}
+.visual_slider .swiper-slide img {opacity: 0.8;width: 100%;height: 100%;object-fit: cover;object-position: 50% 50%;}
+.visual_slider .swiper-slide .txt {position: absolute;left: 30px;top: 50%;transform: translateY(-50%);}
+.visual_slider .swiper-slide .txt b {display: block;margin-bottom: 10px;font-size: 40px;font-weight: 900;color: #fff;}
+.visual_slider .swiper-slide .txt p {font-size: 15px;font-weight: 300;color: #fff;}
+.visual_slider .swiper-slide .txt b, .visual_slider .swiper-slide .txt p {opacity: 0;-webkit-transform: translateY(100%);transform: translateY(100%);}
+.visual_slider .swiper-slide.active .txt b, .visual_slider .swiper-slide.active .txt p {animation-name: moveText;animation-duration: 1s;animation-direction: normal;animation-iteration-count: 1;animation-timing-function: liner;animation-fill-mode: forwards;animation-delay: 0.5s;}
+.visual_slider .swiper-slide.active .txt p {animation-delay: 0.8s;}
+.visual_slider .swiper-slide.active.first .txt b {animation-delay: 0.2s;}
+.visual_slider .swiper-slide.active.first .txt p {animation-delay: 0.5s;}
+.visual_slider .swiper_btn {position: absolute;right: 10px;bottom: 20px;z-index: 99;}
+.visual_slider .swiper_btn .btn_play_control {display: block;position: absolute;left: -140px;bottom: -5px;width: 40px;height: 40px;padding: 0;text-align: left;text-indent: -9999em;background: none;}
+.visual_slider .swiper_btn .btn_play_control::after {content: '';position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%);width: 30px;height: 30px;background: url(../images/content/i_slide_pause.svg) no-repeat center / 7px;}
+.visual_slider .swiper_btn .btn_play_control .btn_circle {position: absolute;left: 0;top: 0;width: 100%;height: 100%;border-radius: 50%;background: rgba(255, 255, 255, 0.2);-webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #fff calc(100% - 1px));mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #fff calc(100% - 1px));}
+.visual_slider .swiper_btn .btn_play_control .btn_circle .mask, .visual_slider .swiper_btn .btn_play_control .btn_circle .fill {position: absolute;left: 0;top: 0;width: 40px;height: 40px;border-radius: 50%;}
+.visual_slider .swiper_btn .btn_play_control .btn_circle .mask {clip: rect(0px, 40px, 40px, 20px);}
+.visual_slider .swiper_btn .btn_play_control .btn_circle .mask .fill {background-color: white;clip: rect(0px, 20px, 40px, 0px);}
+.visual_slider .swiper_btn .btn_play_control.active .btn_circle .mask.full, .visual_slider .swiper_btn .btn_play_control.active .btn_circle .fill {transform: rotate(180deg);animation: home-visual-btn linear 4s /* animation duration이 swiper의 delay와 동일하게 */;}
+.visual_slider .swiper_btn .btn_play_control.play::after {background: url(../images/content/i_slide_play.svg) no-repeat center / 5px;}
+.visual_slider .btns {display: flex;justify-content: space-between;align-items: center;position: absolute;right: 0;bottom: 0;width: 100px;}
+.visual_slider .btns .pagination_fraction {display: inline-block;width: 40px;font-size: 12px;color: #fff;text-align: center;}
+.visual_slider .btns button {width: 30px;height: 30px;text-indent: -9999px;background: none;background-repeat: no-repeat;background-position: center;background-size: 11px;}
+.visual_slider .btns .btn_visual_prev {float: left;background-image: url(../images/content/i_slide_prev.svg);}
+.visual_slider .btns .btn_visual_next {float: right;background-image: url(../images/content/i_slide_next.svg);}
+@keyframes moveText {
+    0% {opacity: 0;-webkit-transform: translateY(100%);transform: translateY(100%);}
+    100% {opacity: 1;-webkit-transform: translateY(0);transform: translateY(0);}
+}
+@keyframes home-visual-btn {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(180deg);}
+}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_2_3">
+                        <pre>
+<code class="line-numbers language-js">// visual slider
+$(document).ready(function () {
+    var interleaveOffset = 0.5;
+    var visualslider = new Swiper('.visual_slider .swiper-container', {
+        slidesPerView: 1,
+        initialSlide: 0,
+        loop: true,
+        speed: 1000,
+        grabCursor: true,
+        watchSlidesProgress: true,
+        mousewheelControl: true,
+        keyboardControl: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: '.btn_visual_next',
+            prevEl: '.btn_visual_prev'
+        },
+        pagination: {
+            el: ".pagination_fraction",
+            type: 'fraction'
+        },
+        on: {
+            init: function () {
+                let idx = this.realIndex + 1;
+                $('.visual_slider .swiper-slide').eq(idx).addClass('active first');
+            },
+        },
+        observer: true,
+        observeParents: true
+    });
+    visualslider.on('slideChange', function () {
+        let idx = visualslider.activeIndex;
+        $('.visual_slider .swiper-slide').removeClass('active first');
+        if (!$('.visual_slider .btn_play_control').hasClass('play')) {
+            $('.visual_slider .btn_play_control').removeClass('play active');
+        }
+        $('.visual_slider .swiper-slide').eq(idx).addClass('active');
+        setTimeout(function () {
+            if (!$('.visual_slider .btn_play_control').hasClass('play')) {
+                $('.visual_slider .btn_play_control').addClass('active');
+            }
+        }, 100);
+    });
+    $('.visual_slider .btn_play_control').click(function () {
+        if ($(this).hasClass('active')) {
+            visualslider.autoplay.stop();
+            $(this).removeClass('active').addClass('play');
+        } else {
+            visualslider.autoplay.start();
+            $(this).addClass('active').removeClass('play');
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code01_2_4">
+                        <ul>
+                            <li><a href="images/content/i_slide_next.svg" title="Download" download>i_slide_next.svg</a></li>
+                            <li><a href="images/content/i_slide_prev.svg" title="Download" download>i_slide_prev.svg</a></li>
+                            <li><a href="images/content/i_slide_pause.svg" title="Download" download>i_slide_pause.svg</a></li>
+                            <li><a href="images/content/i_slide_play.svg" title="Download" download>i_slide_play.svg</a></li>
+                            <li><a href="images/content/img_visual_sample1.png" title="Download" download>img_visual_sample1.png</a></li>
+                            <li><a href="images/content/img_visual_sample2.png" title="Download" download>img_visual_sample2.png</a></li>
+                            <li><a href="images/content/img_visual_sample3.png" title="Download" download>img_visual_sample3.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">bullet paging</h2>
+                <div class="ui_sample">
+                    <div class="visual_slider typeB">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <a href="" class="slide-inner">
+                                        <img src="images/content/img_visual_sample1.png" alt="">
+                                        <div class="txt">
+                                            <b>OPENNOTE</b>
+                                            <p>
+                                                고객 만족을 위한<br>
+                                                최고의 가치를 제공하는<br>
+                                                디지털 마케팅 서비스<br>
+                                                시스템 설계구축 전문 그룹
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="" class="slide-inner">
+                                        <img src="images/content/img_visual_sample2.png" alt="">
+                                        <div class="txt">
+                                            <b>OPENNOTE</b>
+                                            <p>
+                                                고객 만족을 위한<br>
+                                                최고의 가치를 제공하는<br>
+                                                디지털 마케팅 서비스<br>
+                                                시스템 설계구축 전문 그룹
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="" class="slide-inner">
+                                        <img src="images/content/img_visual_sample3.png" alt="">
+                                        <div class="txt">
+                                            <b>OPENNOTE</b>
+                                            <p>
+                                                고객 만족을 위한<br>
+                                                최고의 가치를 제공하는<br>
+                                                디지털 마케팅 서비스<br>
+                                                시스템 설계구축 전문 그룹
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper_btn">
+                            <div class="pagination"></div>
+                            <button class="btn_visual_prev2">이전</button>
+                            <button class="btn_visual_next2">다음</button>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">js</li>
+                        <li id="code02_1_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="visual_slider"&gt;
+    &lt;div class="swiper-container"&gt;
+        &lt;div class="swiper-wrapper"&gt;
+            &lt;div class="swiper-slide"&gt;
+                &lt;a href="" class="slide-inner"&gt;
+                    &lt;img src="images/content/img_visual_sample1.png" alt=""&gt;
+                    &lt;div class="txt"&gt;
+                        &lt;b&gt;OPENNOTE&lt;/b&gt;
+                        &lt;p&gt;
+                            고객 만족을 위한&lt;br&gt;
+                            최고의 가치를 제공하는&lt;br&gt;
+                            디지털 마케팅 서비스&lt;br&gt;
+                            시스템 설계구축 전문 그룹
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;
+                &lt;a href="" class="slide-inner"&gt;
+                    &lt;img src="images/content/img_visual_sample2.png" alt=""&gt;
+                    &lt;div class="txt"&gt;
+                        &lt;b&gt;OPENNOTE&lt;/b&gt;
+                        &lt;p&gt;
+                            고객 만족을 위한&lt;br&gt;
+                            최고의 가치를 제공하는&lt;br&gt;
+                            디지털 마케팅 서비스&lt;br&gt;
+                            시스템 설계구축 전문 그룹
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;
+                &lt;a href="" class="slide-inner"&gt;
+                    &lt;img src="images/content/img_visual_sample3.png" alt=""&gt;
+                    &lt;div class="txt"&gt;
+                        &lt;b&gt;OPENNOTE&lt;/b&gt;
+                        &lt;p&gt;
+                            고객 만족을 위한&lt;br&gt;
+                            최고의 가치를 제공하는&lt;br&gt;
+                            디지털 마케팅 서비스&lt;br&gt;
+                            시스템 설계구축 전문 그룹
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="swiper_btn"&gt;
+        &lt;div class="pagination"&gt;&lt;/div&gt;
+        &lt;button class="btn_visual_prev"&gt;이전&lt;/button&gt;
+        &lt;button class="btn_visual_next"&gt;다음&lt;/button&gt;
+    &lt;/div&gt; 
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** visual **/
+.visual_slider {overflow: hidden;position: relative;width: 100%;height: 500px;}
+.visual_slider .swiper-slide {overflow: hidden;position: relative;width: 100%;height: 500px;background: #000;}
+.visual_slider .swiper-slide .slide-inner {position: absolute;left: 0;top: 0;width: 100%;height: 100%;}
+.visual_slider .swiper-slide img {opacity: 0.8;width: 100%;height: 100%;object-fit: cover;object-position: 50% 50%;}
+.visual_slider .swiper-slide .txt {position: absolute;left: 30px;top: 50%;transform: translateY(-50%);margin-top: -10px;}
+.visual_slider .swiper-slide .txt b {display: block;margin-bottom: 10px;font-size: 40px;font-weight: 900;color: #fff;}
+.visual_slider .swiper-slide .txt p {font-size: 15px;font-weight: 300;color: #fff;}
+.visual_slider .swiper-slide .txt b, .visual_slider .swiper-slide .txt p {opacity: 0;-webkit-transform: translateY(100%);transform: translateY(100%);}
+.visual_slider .swiper-slide.active .txt b, .visual_slider .swiper-slide.active .txt p {animation-name: moveText;animation-duration: 1s;animation-direction: normal;animation-iteration-count: 1;animation-timing-function: liner;animation-fill-mode: forwards;animation-delay: 0.5s;}
+.visual_slider .swiper-slide.active .txt p {animation-delay: 0.8s;}
+.visual_slider .swiper-slide.active.first .txt b {animation-delay: 0.2s;}
+.visual_slider .swiper-slide.active.first .txt p {animation-delay: 0.5s;}
+.visual_slider .swiper_btn {position: absolute;left: 30px;bottom: 140px;z-index: 99;}
+.visual_slider .swiper_btn .pagination {display: inline-block;margin-right: 10px;}
+.visual_slider .swiper_btn .pagination span {width: 8px;height: 8px;border-radius: 10px;background: #fff;transition: all 0.1s;}
+.visual_slider .swiper_btn .pagination span + span {margin-left: 7px;}
+.visual_slider .swiper_btn .pagination span.swiper-pagination-bullet-active {width: 25px;}
+.visual_slider button {display: inline-block;width: 30px;height: 30px;text-indent: -9999px;background: none;background-repeat: no-repeat;background-position: center;background-size: 11px;}
+.visual_slider .btn_visual_prev2 {background-image: url(../images/content/i_slide_prev.svg);}
+.visual_slider .btn_visual_next2 {background-image: url(../images/content/i_slide_next.svg);}
+@keyframes moveText {
+    0% {opacity: 0;-webkit-transform: translateY(100%);transform: translateY(100%);}
+    100% {opacity: 1;-webkit-transform: translateY(0);transform: translateY(0);}
+}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_3">
+                        <pre>
+<code class="line-numbers language-js">// visual slider
+$(document).ready(function () {
+    var visualslider2 = new Swiper('.visual_slider .swiper-container', {
+        slidesPerView: 1,
+        initialSlide: 0,
+        loop: true,
+        speed: 1000,
+        grabCursor: true,
+        watchSlidesProgress: true,
+        mousewheelControl: true,
+        keyboardControl: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: '.btn_visual_next2',
+            prevEl: '.btn_visual_prev2'
+        },
+        pagination: {
+            el: ".pagination",
+            clickable: true
+        },
+        on: {
+            init: function () {
+                let idx = this.realIndex + 1;
+                $('.visual_slider .swiper-slide').eq(idx).addClass('active first');
+            },
+        },
+        observer: true,
+        observeParents: true
+    });
+    visualslider2.on('slideChange', function () {
+        let idx = visualslider2.activeIndex;
+        $('.visual_slider .swiper-slide').removeClass('active first');
+        $('.visual_slider .swiper-slide').eq(idx).addClass('active');
+    });
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_1_4">
+                        <ul>
+                            <li><a href="images/content/i_slide_next.svg" title="Download" download>i_slide_next.svg</a></li>
+                            <li><a href="images/content/i_slide_prev.svg" title="Download" download>i_slide_prev.svg</a></li>
+                            <li><a href="images/content/img_visual_sample1.png" title="Download" download>img_visual_sample1.png</a></li>
+                            <li><a href="images/content/img_visual_sample2.png" title="Download" download>img_visual_sample2.png</a></li>
+                            <li><a href="images/content/img_visual_sample3.png" title="Download" download>img_visual_sample3.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h3 class="section_main_ttl">화면</h3>
+                <div class="ui_sample">
+                    <div class="banner_slider">
+                        <div class="top">
+                            <b>BANNER ZONE</b>
+                            <div class="swiper_btn">
+                                <button class="btn_banner_prev">이전</button>
+                                <button class="btn_play_control2 active">재생 / 멈춤</button>
+                                <button class="btn_banner_next">다음</button>
+                                <span class="pagination_fraction2"></span>
+                            </div>
+                        </div>
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><a href=""><img src="images/content/img_banner_sample1.png" alt=""></a></div>
+                                <div class="swiper-slide"><a href=""><img src="images/content/img_banner_sample2.png" alt=""></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                        <li id="code03_1_3">js</li>
+                        <li id="code03_1_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="banner_slider"&gt;
+    &lt;div class="top"&gt;
+        &lt;b&gt;BANNER ZONE&lt;/b&gt;
+        &lt;div class="swiper_btn"&gt;
+            &lt;button class="btn_banner_prev"&gt;이전&lt;/button&gt;
+            &lt;button class="btn_play_control active"&gt;재생 / 멈춤&lt;/button&gt;
+            &lt;button class="btn_banner_next"&gt;다음&lt;/button&gt;
+            &lt;span class="pagination_fraction"&gt;&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="swiper-container"&gt;
+        &lt;div class="swiper-wrapper"&gt;
+            &lt;div class="swiper-slide"&gt;&lt;a href=""&gt;&lt;img src="images/content/img_banner_sample1.png" alt=""&gt;&lt;/a&gt;&lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;&lt;a href=""&gt;&lt;img src="images/content/img_banner_sample2.png" alt=""&gt;&lt;/a&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** banner **/
+.banner_slider {overflow: hidden;width: 400px;border: 1px solid #ddd;}
+.banner_slider .top {position: relative;padding: 10px 20px;border-bottom: 1px solid #ddd;}
+.banner_slider .top b {display: block;font-size: 17px;}
+.banner_slider .top .swiper_btn {position: absolute;right: 20px;top: 9px;}
+.banner_slider .top .pagination_fraction2 {font-size: 15px;vertical-align: -1px;}
+.banner_slider .btn_banner_prev, .banner_slider .btn_banner_next, .banner_slider .btn_play_control2 {display: inline-block;width: 27px;height: 27px;border: 0;text-indent: -9999px;background: url(../images/content/btn_banner_controls.png) no-repeat;}
+.banner_slider .btn_banner_prev {background-position: -28px -1px;}
+.banner_slider .btn_banner_next {background-position: -81px -1px;}
+.banner_slider .btn_play_control2 {background-position: -54px -1px;}
+.banner_slider .btn_play_control2.active {background-position: -1px -1px;}
+.banner_slider .swiper-slide img {display: block;width: 100%;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_3">
+                        <pre>
+<code class="line-numbers language-js">// banner slider
+$(document).ready(function () {
+    var bnslider = new Swiper('.banner_slider .swiper-container', {
+        slidesPerView: 1,
+        loop: true,
+        speed: 500,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: '.btn_banner_next',
+            prevEl: '.btn_banner_prev'
+        },
+        pagination: {
+            el: ".pagination_fraction2",
+            type: 'fraction'
+        },
+        observer: true,
+        observeParents: true
+    });
+    $('.banner_slider .btn_play_control2').click(function () {
+        if ($(this).hasClass('active')) {
+            bnslider.autoplay.stop();
+            $(this).removeClass('active').addClass('play');
+        } else {
+            bnslider.autoplay.start();
+            $(this).addClass('active').removeClass('play');
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code03_1_4">
+                        <ul>
+                            <li><a href="images/content/btn_banner_controls.png" title="Download" download>btn_banner_controls.png</a></li>
+                            <li><a href="images/content/img_banner_sample1.png" title="Download" download>img_banner_sample1.png</a></li>
+                            <li><a href="images/content/img_banner_sample2.png" title="Download" download>img_banner_sample2.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.mapper.usersupport.TermMngMapper">
+
+    <!-- 검색 조건 -->
+    <sql id="Where">
+        <if test='searchKeyword !=null and searchKeyword !=""'>
+            <if test='searchCondition ==null or searchCondition == ""'>
+                AND (
+                       UPPER(TERM_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                    OR UPPER(TERM_ENG_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                )
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==1'>
+                AND UPPER(TERM_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==2'>
+                AND UPPER(TERM_ENG_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+        </if>
+        <if test='schEtc00 !=null and schEtc00 !=""'>
+            AND STD_YN = #{schEtc00}
+        </if>
+        <if test='schEtc01 !=null and schEtc01 !=""'>
+            AND DMN_GRP = #{schEtc01}
+        </if>
+        <if test='schEtc02 !=null and schEtc02 !=""'>
+            AND DATA_TP = #{schEtc02}
+        </if>
+    </sql>
+
+    <!-- 용어 건수 조회 -->
+    <select id="selectCount" parameterType="cmTermVO" resultType="cmTermVO">
+        /* TermMngMapper.selectCount */
+        SELECT COUNT(1) termCount
+          FROM T_TERM_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+        </where>
+    </select>
+
+    <!-- 용어 목록 조회 -->
+    <select id="selectList" parameterType="cmTermVO" resultType="cmTermVO">
+        /* TermMngMapper.selectList */
+        SELECT TERM_SERNO						 	termSerno
+             , TERM_NM						        termNm
+             , TERM_ENG_NM						 	termEngNm
+             , DMN_NM						 	    dmnNm
+             , STD_YN						 	    stdYn
+             , TERM_EXPL						 	termExpl
+             , PINF_YN						 	    pinfYn
+             , ENC_YN						 	    encYn
+             , DMN_GRP						 	    dmnGrp
+             , DATA_TP						 	    dataTp
+             , DATA_LEN						 	    dataLen
+             , DATA_LEN_DCPT                        dataLenDcpt
+             , REGR_SERNO						 	regrSerno
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	    regDt
+             , UPDR_SERNO						 	updrSerno
+             , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	    updDt
+          FROM T_TERM_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+        </where>
+      ORDER BY TERM_SERNO DESC
+         LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+    </select>
+
+    <!-- 용어 상세 조회 -->
+    <select id="selectContents" parameterType="cmTermVO" resultType="cmTermVO">
+        /* TermMngMapper.selectContents */
+        SELECT TERM_SERNO						 	termSerno
+             , TERM_NM						        termNm
+             , TERM_ENG_NM						 	termEngNm
+             , DMN_NM						 	    dmnNm
+             , STD_YN						 	    stdYn
+             , TERM_EXPL						 	termExpl
+             , PINF_YN						 	    pinfYn
+             , ENC_YN						 	    encYn
+             , DMN_GRP						 	    dmnGrp
+             , DATA_TP						 	    dataTp
+             , DATA_LEN						 	    dataLen
+             , DATA_LEN_DCPT                        dataLenDcpt
+             , (SELECT USER_NM
+                  FROM T_USER_MNG B
+                 WHERE B.USER_SERNO = A.REGR_SERNO) regrNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	    regDt
+             , (SELECT USER_NM
+                FROM T_USER_MNG B
+                WHERE B.USER_SERNO = A.UPDR_SERNO)  updrNm
+             , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	    updDt
+          FROM T_TERM_MNG A
+         WHERE TERM_SERNO = #{termSerno}
+    </select>
+
+    <!-- 용어영문명 중복체크 -->
+    <select id="termEngNmDuplChk" parameterType="cmTermVO" resultType="cmTermVO">
+        /* TermMngMapper.termEngNmDuplChk */
+        SELECT COUNT(1) termCount
+          FROM T_TERM_MNG
+         WHERE TERM_ENG_NM = #{termEngNm}
+           AND TERM_SERNO != #{termSerno}
+    </select>
+
+    <!-- 용어 등록 -->
+    <insert id="insertContents" parameterType="cmTermVO">
+        /* TermMngMapper.insertContents */
+        INSERT INTO T_TERM_MNG(
+                     TERM_NM
+                   , TERM_ENG_NM
+                   , DMN_NM
+                   , STD_YN
+                   , TERM_EXPL
+                   , PINF_YN
+                   , ENC_YN
+                   , DMN_GRP
+                   , DATA_TP
+                   , DATA_LEN
+                   , DATA_LEN_DCPT
+                   , REGR_SERNO
+                   , UPDR_SERNO
+        )
+        VALUES (
+                  #{termNm}
+                , #{termEngNm}
+                , #{dmnNm}
+                , #{stdYn}
+                , #{termExpl}
+                , #{pinfYn}
+                , #{encYn}
+                , #{dmnGrp}
+                , #{dataTp}
+                , NULLIF(#{dataLen}, '')
+                , NULLIF(#{dataLenDcpt}, '')
+                , #{loginSerno}
+                , #{loginSerno}
+        )
+        ON DUPLICATE KEY UPDATE
+                  TERM_NM           = #{termNm}
+                , DMN_NM            = #{dmnNm}
+                , STD_YN            = #{stdYn}
+                , TERM_EXPL         = #{termExpl}
+                , PINF_YN           = #{pinfYn}
+                , ENC_YN            = #{encYn}
+                , DMN_GRP           = #{dmnGrp}
+                , DATA_TP           = #{dataTp}
+                , DATA_LEN          = NULLIF(#{dataLen}, '')
+                , DATA_LEN_DCPT     = NULLIF(#{dataLenDcpt}, '')
+                , UPDR_SERNO 	    = #{loginSerno}
+                , UPD_DT 	        = NOW()
+    </insert>
+
+    <!-- 용어 수정 -->
+    <update id="updateContents" parameterType="cmTermVO">
+        /* TermMngMapper.updateContents */
+        UPDATE T_TERM_MNG
+           SET TERM_NM 	        = #{termNm}
+             , TERM_ENG_NM 	    = #{termEngNm}
+             , DMN_NM 	        = #{dmnNm}
+             , STD_YN 	        = #{stdYn}
+             , TERM_EXPL 	    = #{termExpl}
+             , PINF_YN 	        = #{pinfYn}
+             , ENC_YN 	        = #{encYn}
+             , DMN_GRP 	        = #{dmnGrp}
+             , DATA_TP 	        = #{dataTp}
+             , DATA_LEN 	    = NULLIF(#{dataLen}, '')
+             , DATA_LEN_DCPT    = NULLIF(#{dataLenDcpt}, '')
+             , UPDR_SERNO 	    = #{loginSerno}
+             , UPD_DT 	        = NOW()
+         WHERE TERM_SERNO       = #{termSerno}
+    </update>
+
+    <!-- 용어 삭제 -->
+    <delete id="deleteContents" parameterType="cmTermVO">
+        /* TermMngMapper.deleteContents */
+        DELETE FROM T_TERM_MNG
+         WHERE TERM_SERNO = #{termSerno}
+    </delete>
+
+    <!-- 용어 목록 엑셀 조회 -->
+    <select id="selectExcleList" parameterType="cmTermVO" resultType="cmTermVO">
+        /* TermMngMapper.selectExcleList */
+        SELECT TERM_SERNO						 	termSerno
+             , TERM_NM						        termNm
+             , TERM_ENG_NM						 	termEngNm
+             , DMN_NM						 	    dmnNm
+             , STD_YN						 	    stdYn
+             , TERM_EXPL						 	termExpl
+             , PINF_YN						 	    pinfYn
+             , ENC_YN						 	    encYn
+             , DMN_GRP						 	    dmnGrp
+             , DATA_TP						 	    dataTp
+             , DATA_LEN						 	    dataLen
+             , DATA_LEN_DCPT                        dataLenDcpt
+             , REGR_SERNO						 	regrSerno
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	    regDt
+             , UPDR_SERNO						 	updrSerno
+             , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	    updDt
+          FROM T_TERM_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+        </where>
+      ORDER BY TERM_SERNO DESC
+    </select>
+
+    <!-- 용어 일괄 등록 -->
+    <insert id="insertList" parameterType="java.util.List">
+        /* TermMngMapper.insertList */
+        INSERT INTO T_TERM_MNG(
+                       TERM_NM
+                     , TERM_ENG_NM
+                     , DMN_NM
+                     , STD_YN
+                     , TERM_EXPL
+                     , PINF_YN
+                     , ENC_YN
+                     , DMN_GRP
+                     , DATA_TP
+                     , DATA_LEN
+                     , DATA_LEN_DCPT
+                     , REGR_SERNO
+                     , UPDR_SERNO
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                  #{item.termNm}
+                , #{item.termEngNm}
+                , #{item.dmnNm}
+                , #{item.stdYn}
+                , #{item.termExpl}
+                , #{item.pinfYn}
+                , #{item.encYn}
+                , #{item.dmnGrp}
+                , #{item.dataTp}
+                , NULLIF(#{item.dataLen}, '')
+                , NULLIF(#{item.dataLenDcpt}, '')
+                , #{item.loginSerno}
+                , #{item.loginSerno}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+                  TERM_NM       = VALUES(TERM_NM)
+                , DMN_NM        = VALUES(DMN_NM)
+                , STD_YN        = VALUES(STD_YN)
+                , TERM_EXPL     = VALUES(TERM_EXPL)
+                , PINF_YN       = VALUES(PINF_YN)
+                , ENC_YN        = VALUES(ENC_YN)
+                , DMN_GRP       = VALUES(DMN_GRP)
+                , DATA_TP       = VALUES(DATA_TP)
+                , DATA_LEN      = VALUES(DATA_LEN)
+                , DATA_LEN_DCPT = VALUES(DATA_LEN_DCPT)
+                , UPDR_SERNO    = VALUES(UPDR_SERNO)
+                , UPD_DT        = NOW()
+    </insert>
+
+    <!-- 용어명 조회 -->
+    <select id="selectTermContents" parameterType="String" resultType="cmTermVO">
+        /* TermMngMapper.selectTermContents */
+        SELECT TERM_SERNO						 	termSerno
+             , TERM_NM						        termNm
+             , TERM_ENG_NM						 	termEngNm
+             , DMN_NM						 	    dmnNm
+             , STD_YN						 	    stdYn
+             , TERM_EXPL						 	termExpl
+             , PINF_YN						 	    pinfYn
+             , ENC_YN						 	    encYn
+             , DMN_GRP						 	    dmnGrp
+             , DATA_TP						 	    dataTp
+             , DATA_LEN						 	    dataLen
+             , DATA_LEN_DCPT                        dataLenDcpt
+          FROM T_TERM_MNG
+         WHERE TERM_ENG_NM = #{termEngNm}
+           AND USE_YN = 'Y'
+    </select>
+
+</mapper>

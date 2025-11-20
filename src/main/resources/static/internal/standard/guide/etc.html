@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">기타</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">안내 메시지</li>
+                <li id="tab02">메세지 박스</li>
+                <li id="tab03">skip menu</li>
+                <li id="tab04">숫자 카운팅 script</li>
+                <li id="tab05">accordion</li>
+                <li id="tab06">아이콘</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <h2 class="section_main_ttl">기본형</h2>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample">
+                    <div class="info_txt"><span>개인의 경우 등록 법상의 주소지를 기준으로 입력하셔야 하며, 단체의 경우 등록증 (사업자 등록증, 법인등기부등본, 고유번호증 등 해당사항)의 주소지를 기준으로 등록하셔야 합니다.</span></div>
+                    <div class="info_txt">
+                        <span>info_txt + <span class="red_txt">button</span></span>
+                        <button type="button" class="btn">버튼</button>
+                        <a href="" class="btn">a 버튼</a>
+                        <button type="button" class="btn icl"><i class="xi-arrow-bottom"></i>버튼</button>
+                        <button type="button" class="btn icr">버튼<i class="xi-arrow-bottom"></i></button>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">html</li>
+                        <li id="code01_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;!-- 기본 구성 --&gt;
+&lt;div class="info_txt"&gt;&lt;span&gt;info msg&lt;/span&gt;&lt;/div&gt;
+&lt;div class="info_txt red_txt"&gt;&lt;span&gt;info msg red&lt;/span&gt;&lt;/div&gt;
+&lt;!-- 텍스트 옆 버튼 --&gt;
+&lt;div class="info_txt"&gt;
+    &lt;span&gt;info_txt + button&lt;/span&gt;
+    &lt;button type="button" class="btn"&gt;버튼&lt;/button&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** text ***/
+/* info text */
+table .info_txt {margin-top: 3px;}
+.info_txt {font-size: 14px;letter-spacing: -0.9px;text-align: left;}
+.info_txt + .info_txt {margin-top: 2px;}
+.info_txt > span {position: relative;padding-left: 20px;}
+.info_txt > span::before {content: '\e9a7';font-family: 'xeicon';position: absolute;left: 0;top: 1px;color: var(--gray);}
+.info_txt .btn {min-width: auto;height: 24px;margin-left: 5px;padding: 0 5px;font-size: 13px;line-height: 22px;}
+.info_txt .btn + .btn {margin-left: 2px;}
+.info_txt .btn i {font-size: 14px;}
+.info_txt .btn.icl {padding-left: 3px;}
+.info_txt .btn.icr {padding-right: 3px;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">박스형</h2>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample">
+                    <div class="warn_box">
+                        <div class="tit">유의사항</div>
+                        <ul>
+                            <li>
+                                공식 연락처는 본 사업의 진행과 관련 우편물 등 중요한 내용을 연락하기 위한 사항입니다. 반드시 연락 및 우편물 수령이 가능한 연락처를 입력하여 주시기 바랍니다.<br>
+                                만일 잘못된 연락처로 인해 발생하는 불이익에 대한 책임은 신청자 본인에게 있습니다.
+                                <button type="button" class="btn">버튼</button>
+                                <a href="" class="btn">a 버튼</a>
+                                <button type="button" class="btn icl"><i class="xi-arrow-bottom"></i>버튼</button>
+                                <button type="button" class="btn icr">버튼<i class="xi-arrow-bottom"></i></button>
+                            </li>
+                            <li class="red_txt">국적 등 지원 신청 자격요건을 확인하여 주시기 바랍니다. 잘못된 개인 정보로 인해 발생하는 불이익에 대한 책임은 신청자 본인에게 있습니다.</li>
+                            <li>국적 등 지원 신청 자격요건을 확인하여 주시기 바랍니다. 잘못된 개인 정보로 인해 발생하는 불이익에 대한 책임은 신청자 본인에게 있습니다.</li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                        <li id="code01_2_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="warn_box"&gt;
+    &lt;div class="tit"&gt;타이틀&lt;/div&gt;
+    &lt;ul&gt;
+        &lt;li&gt;내용&lt;/li&gt;
+        &lt;li&gt;
+            내용 + 버튼
+            &lt;button type="button" class="btn"&gt;버튼&lt;/button&gt;
+        &lt;/li&gt;
+        &lt;li class="red_txt"&gt;내용 red&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_2_2">
+                        <pre>
+<code class="line-numbers language-css">/*** text ***/
+/* warnning box */
+.warn_box {padding: 15px;border: 1px solid var(--bdr);font-size: 14px;color: var(--dark);letter-spacing: -0.9px;background: var(--basic-bg);}
+.warn_box .tit {position: relative;margin-bottom: 10px;padding-left: 20px;font-size: 15px;font-weight: 500;color: #285094;}
+.warn_box .tit::before {content: '\ea2d';font-family: 'xeicon';position: absolute;left: 0;top: 0;color: #2d5294;}
+.warn_box ul {padding-left: 15px;}
+.warn_box ul li {position: relative;padding-left: 7px;line-height: 24px;}
+.warn_box ul li:not(:last-child) {margin-bottom: 3px;}
+.warn_box ul li::before {content: '';position: absolute;left: 0;top: 10px;width: 3px;height: 3px;background: var(--dark);}
+.warn_box li .btn {min-width: auto;height: 24px;margin-left: 5px;padding: 0 5px;font-size: 13px;line-height: 22px;}
+.warn_box li .btn + .btn {margin-left: 0px;}
+.warn_box li .btn i {font-size: 14px;}
+.warn_box li .btn.icl {padding-left: 3px;}
+.warn_box li .btn.icr {padding-right: 3px;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">메세지 박스</h2>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample">
+
+                    <div class="msg_box">
+                        <button class="btn_close"><i class="xi-close-min"></i></button>
+                        <div class="title"> 타이틀</div>
+                        <p>내용</p>
+                    </div>
+
+                    <div class="msg_box red">
+                        <button class="btn_close"><i class="xi-close-min"></i></button>
+                        <div class="title"> 타이틀</div>
+                        <p>내용</p>
+                    </div>
+
+                    <div class="msg_box yellow">
+                        <button class="btn_close"><i class="xi-close-min"></i></button>
+                        <div class="title"> 타이틀</div>
+                        <p>내용</p>
+                    </div>
+
+                    <div class="msg_box green">
+                        <button class="btn_close"><i class="xi-close-min"></i></button>
+                        <div class="title"> 타이틀</div>
+                        <p>내용</p>
+                    </div>
+
+                    <div class="msg_box blue">
+                        <button class="btn_close"><i class="xi-close-min"></i></button>
+                        <div class="title"> 타이틀</div>
+                        <p>내용</p>
+                    </div>
+
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="msg_box"&gt;&lt;!-- 여기에 필요한경우 red, yellow, green, blue 클래스 추가 --&gt;
+    &lt;button class="btn_close"&gt;&lt;i class="xi-close-min"&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;div class="title"&gt;타이틀&lt;/div&gt;
+    &lt;p&gt;내용&lt;/p&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** text ***/
+/* message box */
+.msg_box {margin-bottom: 20px;}
+.msg_box {position: relative;padding: 15px 40px 15px 20px;border: 1px solid var(--msg-bdr);border-radius: 5px;color: var(--dark);background: var(--msg-bg);}
+.msg_box .title {font-size: 16px;font-weight: 500;line-height: 1.3;}
+.msg_box p {padding-top: 5px;font-size: 14px;font-weight: 400;line-height: 1.3;word-break: break-all;}
+.msg_box .btn_close {position: absolute;right: 5px;top: 0px;width: 24px;height: 24px;border: 0;font-size: 24px;color: inherit;background: none;opacity: 0.7;transition: .1s;}
+.msg_box .btn_close:hover {opacity: 1;}
+.msg_box.red {border-color: var(--msg-red-bdr);color: var(--msg-red-font);background: var(--msg-red-bg);}
+.msg_box.yellow {border-color: var(--msg-yellow-bdr);color: var(--msg-yellow-font);background: var(--msg-yellow-bg);}
+.msg_box.green {border-color: var(--msg-green-bdr);color: var(--msg-green-font);background: var(--msg-green-bg);}
+.msg_box.blue {border-color: var(--msg-blue-bdr);color: var(--msg-blue-font);background: var(--msg-blue-bg);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_3">
+                        <pre class="language-js line-numbers">
+<code class="language-js">// message box
+$(document).ready(function () {
+    $('.msg_box .btn_close').click(function () {
+        $(this).parent().hide();
+        return false;
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+
+            </section>
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">기본형</h2>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample">
+                    tab 키를 누르면 확인 가능합니다.
+                    <div class="skip" id="skipnavi">
+                        <ul>
+                            <li><a href="#gnb">메뉴바로가기</a></li>
+                            <li><a href="#container">본문바로가기</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;!-- &lt;body&gt; 바로 아래 삽입 --&gt;
+&lt;!-- skip menu --&gt;
+&lt;div class="skip" id="skipnavi"&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="#gnb"&gt;메뉴바로가기&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#container"&gt;본문바로가기&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+&lt;!-- // skip menu --&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** skip ***/
+#skipnavi {overflow: hidden;position: relative;width: 100%;z-index: 2;}
+#skipnavi a {display: block;overflow: hidden;width: 0px;height: 0px;margin: 0 -1px -1px 0;font-size: 0;line-height: 0;text-align: center;}
+#skipnavi:focus {overflow: hidden;height: 100px;font-size: 14px;font-weight: 700;background: #0d2f51;}
+#skipnavi a:focus, #skipnavi a:hover, #skipnavi a:active {width: auto;height: 30px;margin: 0;padding: 8px 0 0 15px;font-size: 14px;font-weight: bold;line-height: 1;color: #fff;background: #0d2f51;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+            <section class="common_tab_content js_tcont" data-tab="tab04">
+                <h2 class="section_main_ttl">숫자 카운팅 script</h2>
+                <section class="ui_basic_info">
+                    <dt>1. 페이지 로딩 시 숫자 카운팅 효과 적용됨.</dt>
+                </section>
+
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample">
+                    <button class="btn btn_sample_counting">숫자 카운팅 확인</button><br><br>
+                    <b class="timer count_number" data-to="81.54" data-speed="100"></b>
+                </div>
+
+                <table class="data_tbl mar_t30">
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th><b>옵션</b></th>
+                            <th><b>설명</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>data-from</th>
+                            <td class="l"><span>카운팅 시작할 값 (기본값 : 0)</span></td>
+                        </tr>
+                        <tr>
+                            <th>data-to</th>
+                            <td class="l"><span>카운팅 목표 값</span></td>
+                        </tr>
+                        <tr>
+                            <th>data-speed</th>
+                            <td class="l"><span>카운팅 속도 (기본값 : 1000)</span></span></td>
+                        </tr>
+                        <tr>
+                            <th>data-decimals</th>
+                            <td class="l"><span>카운팅 소수점 표시 자리값 (기본값 : 2)(ex. data-decimals="1" 일 경우, 소수점 첫째 자리까지 나타난다.)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code04_1_1" class="on">html</li>
+                        <li id="code04_1_2">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code04_1_1">
+                        <pre><code class="line-numbers language-html">&lt;b class="timer count_number" data-to="81.54" data-speed="100" data-decimals="1"&gt;&lt;/b&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code04_1_2">
+                        <pre>
+<code class="line-numbers language-js">// counting
+$(document).ready(function () {
+    $.fn.countTo = function (options) {
+        options = options || {};
+        return $(this).each(function () {
+            // set options for current element
+            var settings = $.extend({}, $.fn.countTo.defaults, {
+                from: $(this).data('from'),
+                to: $(this).data('to'),
+                speed: $(this).data('speed'),
+                refreshInterval: $(this).data('refresh-interval'),
+                decimals: $(this).data('decimals')
+            }, options);
+            // how many times to update the value, and how much to increment the value on each update
+            var loops = Math.ceil(settings.speed / settings.refreshInterval),
+                increment = (settings.to - settings.from) / loops;
+            // references & variables that will change with each update
+            var self = this,
+                $self = $(this),
+                loopCount = 0,
+                value = settings.from,
+                data = $self.data('countTo') || {};
+            $self.data('countTo', data);
+
+            // if an existing interval can be found, clear it first
+            if (data.interval) {
+                clearInterval(data.interval);
+            }
+            data.interval = setInterval(updateTimer, settings.refreshInterval);
+            // initialize the element with the starting value
+            render(value);
+
+            function updateTimer() {
+                value += increment;
+                loopCount++;
+                render(value);
+                if (typeof (settings.onUpdate) == 'function') {
+                    settings.onUpdate.call(self, value);
+                }
+                if (loopCount >= loops) {
+                    // remove the interval
+                    $self.removeData('countTo');
+                    clearInterval(data.interval);
+                    value = settings.to;
+
+                    if (typeof (settings.onComplete) == 'function') {
+                        settings.onComplete.call(self, value);
+                    }
+                }
+            }
+            function render(value) {
+                var formattedValue = settings.formatter.call(self, value, settings);
+                $self.html(formattedValue);
+            }
+        });
+    };
+    $.fn.countTo.defaults = {
+        from: 0,               // the number the element should start at
+        to: 0,                 // the number the element should end at
+        speed: 1000,           // how long it should take to count between the target numbers
+        refreshInterval: 1,    // how often the element should be updated
+        decimals: 2,           // the number of decimal places to show(기본 소수점 자리수 수정하고 싶으면 여기를 수정)
+        formatter: formatter,  // handler for formatting the value before rendering
+        onUpdate: null,        // callback method for every time the element is updated
+        onComplete: null       // callback method for when the element finishes updating
+    };
+    function formatter(value, settings) {
+        return value.toFixed(settings.decimals);
+    }
+
+    // custom formatting example
+    $('.count_number').data('countToOptions', {
+        formatter: function (value, options) {
+            return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',');
+        }
+    });
+    // start all the timers
+    $('.timer').each(count);
+    function count(options) {
+        var $this = $(this);
+        options = $.extend({}, options || {}, $this.data('countToOptions') || {});
+        $this.countTo(options);
+    }
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+            <section class="common_tab_content js_tcont" data-tab="tab05">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dt>사용 예: 게시판 > FAQ 참고</dt>
+
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code05_1_1" class="on">html</li>
+                            <li id="code05_1_2">js</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code05_1_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;!-- 전체 오픈 > o - js_accWrap / x - js_accWrap_each --&gt;
+&lt;div class="js_accWrap"&gt;
+    &lt;div class="js_accBox"&gt;
+        &lt;div class="js_accHead"&gt;accHead1&lt;/div&gt;
+        &lt;div class="js_accCont"&gt;accCont1&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="js_accBox"&gt;
+        &lt;div class="js_accHead"&gt;accHead2&lt;/div&gt;
+        &lt;div class="js_accCont"&gt;accCont2&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="js_accBox"&gt;
+        &lt;div class="js_accHead"&gt;accHead3&lt;/div&gt;
+        &lt;div class="js_accCont"&gt;accCont3&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 버튼 클릭형 --&gt;
+&lt;div class="js_accWrap"&gt;
+    &lt;div class="js_accBox"&gt;
+        &lt;div&gt;accHead1&lt;button type="button" class="btn ic js_accHead"&gt;&lt;i class="xi-angle-down"&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;
+        &lt;div class="js_accCont"&gt;accCont1&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="js_accBox"&gt;
+        &lt;div&gt;accHead2&lt;button type="button" class="btn ic js_accHead"&gt;&lt;i class="xi-angle-down"&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;
+        &lt;div class="js_accCont"&gt;accCont2&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="js_accBox"&gt;
+        &lt;div&gt;accHead3&lt;button type="button" class="btn ic js_accHead"&gt;&lt;i class="xi-angle-down"&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;
+        &lt;div class="js_accCont"&gt;accCont3&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code05_1_2">
+                            <pre>
+<code class="line-numbers language-js">// accordion (ex faq)
+$(document).ready(function () {
+    $('.js_accCont').hide();
+    if ($('[class*="js_accWrap"]').length) {
+        $('.js_accHead').click(function () {
+            // if each
+            if ($(this).parents('[class*="js_accWrap"]').hasClass('js_accWrap_each')) {
+                $(this).parents('.js_accBox').siblings('.js_accBox').removeClass('open');
+                $(this).parents('.js_accBox').siblings('.js_accBox').find('.js_accCont').stop().slideUp(200);
+            }
+
+            // open
+            if ($(this).parents('.js_accBox').hasClass('open')) {
+                $(this).parents('.js_accBox').removeClass('open').find('.js_accCont').stop().slideUp(200);
+            } else {
+                $(this).parents('.js_accBox').addClass('open').find('.js_accCont').stop().slideDown(200);
+            }
+            return false;
+        });
+    }
+});</code>
+</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">기본 구조</h2>
+                    <dt>
+                        <div style="padding: 10px 15px;border: 1px solid #ccc;background: rgba(0, 0, 0, 0.03);"><span class="impact">js_accWrap</span> (전체 오픈 o) / <span class="impact">js_accWrap_each</span> (전체 오픈 x)
+                            <div style="margin-top: 10px;padding: 10px 15px;border: 1px solid #ccc;background: rgba(0, 0, 0, 0.03);"><span class="impact">js_accBox</span> (타이틀 & 컨텐츠 감싸는 박스)
+                                <div style="margin-top: 10px;padding: 10px 15px;border: 1px solid #ccc;background: rgba(0, 0, 0, 0.03);"><span class="impact">js_accHead</span> & <span class="impact">js_accCont</span> (타이틀 & 컨텐츠 영역)</div>
+                            </div>
+                        </div>
+                    </dt>
+                </section>
+                <h3 class="section_sub_ttl">전체 오픈 o (accHead 박스 클릭)</h3>
+                <div class="ui_sample">
+                    <div class="ui_acc js_accWrap">
+                        <div class="js_accBox">
+                            <div class="js_accHead">accHead1<i class="xi-angle-down"></i></div>
+                            <div class="js_accCont">accCont1</div>
+                        </div>
+                        <div class="js_accBox">
+                            <div class="js_accHead">accHead2<i class="xi-angle-down"></i></div>
+                            <div class="js_accCont">accCont2</div>
+                        </div>
+                        <div class="js_accBox">
+                            <div class="js_accHead">accHead3<i class="xi-angle-down"></i></div>
+                            <div class="js_accCont">accCont3</div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">전체 오픈 o (버튼 클릭)</h3>
+                <div class="ui_sample">
+                    <div class="ui_acc js_accWrap">
+                        <div class="js_accBox">
+                            <div>title<button type="button" class="btn icr js_accHead">accHead1<i class="xi-angle-down"></i></button></div>
+                            <div class="js_accCont">accCont1</div>
+                        </div>
+                        <div class="js_accBox">
+                            <div>title<button type="button" class="btn icr js_accHead">accHead2<i class="xi-angle-down"></i></button></div>
+                            <div class="js_accCont">accCont2</div>
+                        </div>
+                        <div class="js_accBox">
+                            <div>title<button type="button" class="btn icr js_accHead">accHead3<i class="xi-angle-down"></i></button></div>
+                            <div class="js_accCont">accCont3</div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">전체 오픈 x (accHead 박스 클릭)</h3>
+                <div class="ui_sample">
+                    <div class="ui_acc js_accWrap_each">
+                        <div class="js_accBox">
+                            <div class="js_accHead">accHead1<i class="xi-angle-down"></i></div>
+                            <div class="js_accCont">accCont1</div>
+                        </div>
+                        <div class="js_accBox">
+                            <div class="js_accHead">accHead2<i class="xi-angle-down"></i></div>
+                            <div class="js_accCont">accCont2</div>
+                        </div>
+                        <div class="js_accBox">
+                            <div class="js_accHead">accHead3<i class="xi-angle-down"></i></div>
+                            <div class="js_accCont">accCont3</div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">전체 오픈 x (버튼 클릭)</h3>
+                <div class="ui_sample">
+                    <div class="ui_acc js_accWrap_each">
+                        <div class="js_accBox">
+                            <div>title<button type="button" class="btn icr js_accHead">accHead1<i class="xi-angle-down"></i></button></div>
+                            <div class="js_accCont">accCont1</div>
+                        </div>
+                        <div class="js_accBox">
+                            <div>title<button type="button" class="btn icr js_accHead">accHead2<i class="xi-angle-down"></i></button></div>
+                            <div class="js_accCont">accCont2</div>
+                        </div>
+                        <div class="js_accBox">
+                            <div>title<button type="button" class="btn icr js_accHead">accHead3<i class="xi-angle-down"></i></button></div>
+                            <div class="js_accCont">accCont3</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        	<section class="common_tab_content js_tcont" data-tab="tab06">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">아이콘 이미지</h2>
+                    <div class="ui_sample">
+                    	<i class="ic code"></i>
+                    	<i class="ic power"></i>
+                    </div>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code05_1_1" class="on">html</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code06_1_1">
+                            <pre><code class="line-numbers language-html">&lt;i class=&quot;ic code&quot;&gt;&lt;/i&gt;
+&lt;i class=&quot;ic power&quot;&gt;&lt;/i&gt;</code></pre>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/mobile.js"></script>
+    <script>
+        $(function () {
+            $("body > header > nav").scrollTop(450);
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">에러</h3>
+            <h2 class="section_main_ttl">기본형</h2>
+
+            <h3 class="section_sub_ttl">404 타입</h3>
+            <div class="ui_sample" style="width: 360px;">
+                <div class="error_wrap">
+                    <h1><img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"></h1>
+                    <div class="error_box">
+                        <div class="error_info">
+                            <p class="tit"><strong>404 Error</strong>페이지를 찾을 수 없습니다.</p>
+                            <p class="txt">입력하신 주소가 정확한지 다시한번 확인해 주세요. <br>문의사항이 있을 경우 관리자에게 문의하시기 바랍니다.</p>
+                            <div class="error_btns">
+                                <a href="" class="btn btn_main">메인페이지로 이동</a>
+                                <a href="" class="btn btn_prev">이전페이지로 이동</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <h3 class="section_sub_ttl">500 타입</h3>
+            <div class="ui_sample" style="width: 360px;">
+                <div class="error_wrap">
+                    <h1><img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"></h1>
+                    <div class="error_box">
+                        <div class="error_info">
+                            <p class="tit"><strong>500 Error</strong>서비스가 일시적으로 원활하지 않습니다.</p>
+                            <p class="txt">이용에 불편을 드려 죄송합니다.<br>잠시 후 다시 시도해주시기 바랍니다.</p>
+                            <div class="error_btns">
+                                <a href="" class="btn btn_main">메인페이지로 이동</a>
+                                <a href="" class="btn btn_prev">이전페이지로 이동</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+            <div class="ui_code">
+                <ul class="js_tmenu">
+                    <li id="code01_1_1" class="on">html</li>
+                    <li id="code01_1_2">css</li>
+                    <li id="code01_1_3">img</li>
+                </ul>
+                <div class="js_tcont on" data-tab="code01_1_1">
+                    <pre>
+<code class="line-numbers language-html">&lt;div class="error_wrap"&gt;
+    &lt;h1&gt;&lt;img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"&gt;&lt;/h1&gt;
+    &lt;div class="error_box"&gt;
+        &lt;div class="error_info"&gt;
+            &lt;p class="tit"&gt;&lt;strong&gt;404 Error&lt;/strong&gt;페이지를 찾을 수 없습니다.&lt;/p&gt;
+            &lt;p class="txt"&gt;입력하신 주소가 정확한지 다시한번 확인해 주세요. &lt;br /&gt;문의사항이 있을 경우 관리자에게 문의하시기 바랍니다.&lt;/p&gt;
+            &lt;!-- 500 타입 --&gt;
+            &lt;!-- &lt;p class="tit"&gt;&lt;strong&gt;500 Error&lt;/strong&gt;서비스가 일시적으로 원활하지 않습니다.&lt;/p&gt;
+            &lt;p class="txt"&gt;이용에 불편을 드려 죄송합니다.&lt;br&gt;잠시 후 다시 시도해주시기 바랍니다.&lt;/p&gt; --&gt;
+            &lt;div class="error_btns"&gt;
+                &lt;a href="" class="btn btn_main"&gt;메인페이지로 이동&lt;/a&gt;
+                &lt;a href="" class="btn btn_prev"&gt;이전페이지로 이동&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                </div>
+                <div class="js_tcont" data-tab="code01_1_2">
+                    <pre>
+<code class="line-numbers language-css">/** error **/
+.error_wrap {position: relative;width: 100%;margin: 0 auto;}
+.error_wrap h1 {position: relative;margin-bottom: 2rem;border-bottom: 1px solid #e5e5e5;font-size: 2.5rem;}
+.error_wrap .error_box {display: flex;justify-content: center;position: relative;}
+.error_wrap .error_info {position: relative;padding-top: 14rem;background: url(../images/mobile/bg_error404b.jpg) no-repeat center top / 13rem;}
+.error_wrap .error_info .tit {font-size: 1.5rem;color: #000;letter-spacing: -0.05em;text-align: center;}
+.error_wrap .error_info .tit strong {display: block;font-size: 2rem;color: #333;}
+.error_wrap .error_info .txt {margin-top: 1rem;font-size: 1.4rem;line-height: 1.5;color: #808080;text-align: center;}
+.error_wrap .error_btns {margin-top: 2rem;}
+.error_wrap .error_btns a {display: inline-block;width: 14rem;height: 4rem;font-size: 1.3rem;line-height: 3.8rem;}
+.error_wrap .error_btns a + a {margin-left: 0.5rem;}
+.error_btns .btn_main {border: 1px solid transparent;border-color: #000;color: #000;background-color: #fff;}
+.error_btns .btn_prev {color: #fff;background-color: #282828;}</code>
+</pre>
+                </div>
+                <div class="js_tcont li_linenum" data-tab="code01_1_3">
+                    <ul>
+                        <li><a href="images/mobile/bg_error404b.jpg" title="Download" download>bg_error404b.jpg</a></li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

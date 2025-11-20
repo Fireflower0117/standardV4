@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+    <!-- simplebar -->
+    <link rel="stylesheet" href="lib/simplebar/simplebar.min.css">
+    <script src="lib/simplebar/simplebar.min.js"></script>
+    <script>
+        $(function () {
+            $("body > header > nav").scrollTop(450);
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">스크롤</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">스크립트 정보</li>
+                <li id="tab02">사용방법, 예시</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>사이트: <a href="https://www.cssscript.com/performant-custom-scrollbar-javascript-library-simplebar/" target="_blank" class="impact" style="text-decoration: underline;">https://www.cssscript.com/performant-custom-scrollbar-javascript-library-simplebar/</a></dt>
+                        <dt>1. <span class="impact">simplebar.min.css</span> : 기본적인 scroll 디자인을 담은 css</dt>
+                        <dt>2. <span class="impact">simplebar.min.js</span> : 기본적인 scroll 기능을 담은 js</dt>
+                    </dl>
+                </section>
+                <div class="ui_sample" style="margin-bottom: 10px;">
+                    ↓ download
+                </div>
+                <div class="ui_code" style="display: block;">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">down</li>
+                    </ul>
+                    <div class="js_tcont li_linenum on" data-tab="code01_1_1">
+                        <ul>
+                            <li><a href="lib/simplebar/simplebar.min.css" title="Download" download>simplebar.min.css</a></li>
+                            <li><a href="lib/simplebar/simplebar.min.js" title="Download" download>simplebar.min.js</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt class="impact">* 방향키로 스크롤 조작 가능, shift키로 가로 스크롤 동작 불가</dt>
+                        <dt>- <span class="impact">data-simplebar</span> 속성을 사용하면 따로 js를 추가하지 않아도 스크롤이 적용된다.</dt>
+                        <dt>- 가상의 dom을 만들어 구조가 바뀌는 플러그인 이므로, ul, table 등과 같이 태그 바로 하위에 div가 오면 안 되는 태그들은 div로 감싸서 사용한다.</dt>
+                        <dd>ex) &lt;div data-simplebar style="max-height: 150px;"&gt;<span class="impact">&lt;ul&gt;&lt;/ul&gt;</span>&lt;/div&gt;</dd>
+                        <dt>- 기본 속성이 auto hide(스크롤 영역에 마우스가 없을때 스크롤바가 투명해짐) 이므로, 스크롤이 항상 보이게 하려면 <span class="impact">data-simplebar-auto-hide="false" </span> 속성을 추가한다.</dt>
+                    </dl>
+                </section>
+                <h2 class="section_main_ttl">기본형, data-simplebar-auto-hide="false" 적용 샘플</h2>
+                <div class="ui_sample">
+                    <div class="scrboxsample" style="max-height: 100px;" data-simplebar>
+                        <b>기본형입니다.</b>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                    </div>
+
+                    <div class="scrboxsample" style="max-height: 100px;margin-top: 10px;" data-simplebar data-simplebar-auto-hide="false">
+                        <b>data-simplebar-auto-hide="false" 적용된 스크롤 박스입니다.</b>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div style="max-height: 100px;" data-simplebar data-simplebar-auto-hide="false"&gt;상하스크롤 (컨텐츠가 max-height 보다 길어질때 스크롤이 생김)&lt;/div&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">(css 적용) 상하 스크롤, 가로 스크롤</h2>
+                <div class="ui_sample">
+
+                    <div class="scrboxsample csscumtom" style="max-height: 150px;" data-simplebar data-simplebar-auto-hide="false">
+                        <b>상하스크롤</b>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                    </div>
+
+                    <div class="scrboxsample csscumtom" style="max-width: 500px;height: auto;margin-top: 20px;" data-simplebar data-simplebar-auto-hide="false">
+                        <div style="width: 1000px;">
+                            <b>가로스크롤</b>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        </div>
+                    </div>
+
+                    <div class="scrboxsample csscumtom" style="max-width: 500px;max-height: 160px;margin-top: 20px;" data-simplebar data-simplebar-auto-hide="false">
+                        <div style="width: 1000px;">
+                            <b>상하 + 가로스크롤</b>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        </div>
+                    </div>
+
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_2_1" class="on">html</li>
+                        <li id="code02_2_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div style="max-height: 150px;" data-simplebar data-simplebar-auto-hide="false"&gt;상하스크롤 (컨텐츠가 max-height 보다 길어질때 스크롤이 생김)&lt;/div&gt;
+
+&lt;div style="max-width: 500px;height: auto;" data-simplebar data-simplebar-auto-hide="false"&gt;
+    &lt;div style="width: 1000px;"&gt;가로스크롤 (컨텐츠의 width값을 지정해야함, 부모 요소의 max-width보다 컨텐츠의 width값이 길어질때 스크롤이 생김)&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div style="max-width: 500px;max-height: 160px;" data-simplebar data-simplebar-auto-hide="false"&gt;
+    &lt;div style="width: 1000px;"&gt;상하 + 가로스크롤&lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** simplebar csscustom **/
+.simplebar-scrollable-y .simplebar-offset {padding-right: 20px;} /* 세로 스크롤이 생기면 padding-right값 주기 */
+.simplebar-scrollable-x {padding-bottom: 15px;} /* 가로 스크롤이 생기면 padding-bottom값 주기 */
+.simplebar-scrollable-y.simplebar-scrollable-x {padding-bottom: 0;} /* 상하좌우 스크롤이 생기면 padding-bottom값 빼기 */
+.simplebar-scrollable-y.simplebar-scrollable-x .simplebar-offset {padding-bottom: 15px !important;} /* 상하좌우 스크롤이 생기면 simplebar-offset에 padding-bottom값 주기 */ 
+.simplebar-scrollable-y.simplebar-scrollable-x .simplebar-track.simplebar-horizontal {right: 20px;} /* 상하좌우 스크롤이 생기면 가로 스크롤을 오른쪽에서 더 띄우기 */
+.simplebar-track {opacity: 0.8;transition: opacity .1s linear;}
+.simplebar-scrollable-y:hover .simplebar-track,
+.simplebar-scrollable-x:hover .simplebar-track {opacity: 1;}
+.simplebar-track.simplebar-vertical {right: 7px;top: 7px;bottom: 7px;width: 5px;border-radius: 10px;background: #cfcfcf;}
+.simplebar-track.simplebar-vertical .simplebar-scrollbar::before {left: 0;right: 0;top: 0;bottom: 0;width: 5px;}
+.simplebar-track.simplebar-horizontal {left: 7px;right: 7px;bottom: 7px;height: 5px;border-radius: 10px;background: #cfcfcf;}
+.simplebar-track.simplebar-horizontal .simplebar-scrollbar::before {left: 0;right: 0;top: 0;bottom: 0;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">상하 버튼 추가</h2>
+                <div class="ui_sample">
+                    <div class="scrboxsample csscumtom scrwrap" style="max-height: 150px;">
+                        <button class="scroll_up_button"><i class="xi-angle-up-min"></i></button>
+                        <button class="scroll_down_button"><i class="xi-angle-down-min"></i></button>
+                        <div style="max-height: 150px;" data-simplebar data-simplebar-auto-hide="false">
+                            <b>상하버튼 추가</b>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                        </div>
+                    </div>
+
+                    <div class="scrboxsample csscumtom scrwrap" style="max-width: 500px;max-height: 150px;margin-top: 20px;">
+                        <button class="scroll_up_button"><i class="xi-angle-up-min"></i></button>
+                        <button class="scroll_down_button"><i class="xi-angle-down-min"></i></button>
+                        <div style="max-width: 500px;max-height: 150px;" data-simplebar data-simplebar-auto-hide="false">
+                            <div style="width: 1000px;">
+                                <b>상하버튼 추가 + 가로스크롤</b>
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla repellendus reprehenderit dolorum non, suscipit impedit, voluptatibus sint accusamus fuga voluptas eius unde! Velit atque deserunt a beatae error unde tempora!
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var scrollwrappers = document.querySelectorAll('.scrwrap');
+                            scrollwrappers.forEach(function (wrapper) {
+                                var scrollUpButton = wrapper.querySelector('.scroll_up_button');
+                                var scrollDownButton = wrapper.querySelector('.scroll_down_button');
+                                var scrollInterval;
+                                if (scrollUpButton && scrollDownButton) {
+                                    scrollUpButton.addEventListener('mousedown', function () {
+                                        scrollInterval = setInterval(function () {
+                                            wrapper.querySelector('.simplebar-content-wrapper').scrollTop -= 5; // 스크롤을 위로 이동시키는 값 조절
+                                        }, 10); // 스크롤 속도 조절
+                                    });
+                                    scrollDownButton.addEventListener('mousedown', function () {
+                                        scrollInterval = setInterval(function () {
+                                            wrapper.querySelector('.simplebar-content-wrapper').scrollTop += 5; // 스크롤을 아래로 이동시키는 값 조절
+                                        }, 10); // 스크롤 속도 조절
+                                    });
+                                    // 마우스 버튼을 놓으면 스크롤 중지
+                                    document.addEventListener('mouseup', function () {
+                                        clearInterval(scrollInterval);
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_3_1" class="on">html</li>
+                        <li id="code02_3_2">css</li>
+                        <li id="code02_3_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="scrwrap" style="max-height: 150px;"&gt;
+    &lt;button class="scroll_up_button"&gt;&lt;i class="xi-angle-up-min"&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;button class="scroll_down_button"&gt;&lt;i class="xi-angle-down-min"&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;div style="max-height: 150px;" data-simplebar data-simplebar-auto-hide="false"&gt;상하버튼 추가&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="scrwrap" style="max-height:150px; max-width:500px;"&gt;
+    &lt;button class="scroll_up_button"&gt;&lt;i class="xi-angle-up-min"&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;button class="scroll_down_button"&gt;&lt;i class="xi-angle-down-min"&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;div style="max-width: 500px;max-height: 150px;" data-simplebar data-simplebar-auto-hide="false"&gt;
+        &lt;div style="width: 1000px;"&gt;상하버튼 추가 + 가로스크롤&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_3_2">
+                        <pre>
+<code class="line-numbers language-css">/** simplebar csscustom **/
+/* 상하버튼추가 */
+.scrwrap {position: relative;}
+.scrwrap .simplebar-scrollable-y .simplebar-offset {padding-right: 20px;} /* 세로 스크롤이 생기면 padding-right값 주기 */
+.scrwrap .simplebar-scrollable-y.simplebar-scrollable-x .simplebar-offset {padding-bottom: 15px !important;} /* 가로 스크롤이 생기면 padding-bottom값 주기 */
+.scrwrap .simplebar-scrollable-y.simplebar-scrollable-x {padding-bottom: 0;} /* 상하좌우 스크롤이 생기면 padding-bottom값 빼기 */
+.scrwrap .simplebar-scrollable-y.simplebar-scrollable-x .simplebar-track.simplebar-horizontal {right: 20px;} /* 상하좌우 스크롤이 생기면 가로 스크롤을 오른쪽에서 더 띄우기 */ 
+.scrwrap .simplebar-track.simplebar-vertical {top: 20px;bottom: 20px;}
+.scrwrap .scroll_up_button, 
+.scrwrap .scroll_down_button {opacity: 0.8;position: absolute;right: 0;height: 16px;padding: 0;color: #000;background: none;z-index: 99;transition: opacity .1s linear;}
+.scrwrap .scroll_up_button:hover, 
+.scrwrap .scroll_down_button:hover {opacity: 1;}
+.scrwrap .scroll_up_button i, 
+.scrwrap .scroll_down_button i {font-size: 16px;vertical-align: top;}
+.scrwrap .scroll_up_button {top: 0px;}
+.scrwrap .scroll_down_button {bottom: 3px;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_3_3">
+                        <pre>
+<code class="line-numbers language-js">document.addEventListener('DOMContentLoaded', function () {
+    var scrollwrappers = document.querySelectorAll('.scrwrap');
+    scrollwrappers.forEach(function (wrapper) {
+        var scrollUpButton = wrapper.querySelector('.scroll_up_button');
+        var scrollDownButton = wrapper.querySelector('.scroll_down_button');
+        var scrollInterval;
+        if (scrollUpButton && scrollDownButton) {
+            scrollUpButton.addEventListener('mousedown', function () {
+                scrollInterval = setInterval(function () {
+                    wrapper.querySelector('.simplebar-content-wrapper').scrollTop -= 5; // 스크롤을 위로 이동시키는 값 조절
+                }, 10); // 스크롤 속도 조절
+            });
+            scrollDownButton.addEventListener('mousedown', function () {
+                scrollInterval = setInterval(function () {
+                    wrapper.querySelector('.simplebar-content-wrapper').scrollTop += 5; // 스크롤을 아래로 이동시키는 값 조절
+                }, 10); // 스크롤 속도 조절
+            });
+            // 마우스 버튼을 놓으면 스크롤 중지
+            document.addEventListener('mouseup', function () {
+                clearInterval(scrollInterval);
+            });
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

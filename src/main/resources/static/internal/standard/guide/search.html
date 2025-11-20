@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/board.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">검색 & 페이징</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">일반 검색</li>
+                <li id="tab02">상세 검색</li>
+                <li id="tab03">페이징</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">기본 검색</h2>
+                    <dl>
+                        <dt>1. 검색항목은 기본 <span class="impact">4개</span> 기준으로 배열하고 width에 따라 2~4열로 수정한다.</dt>
+                        <dt>2. colgroup은 <span class="impact">col w90px / col / col w120px / col / col w120px / col / col w120px / col</span> 8개로 동일하게 적용한다.</dt>
+                        <dt>3. input은 기본 100%로 적용된다.</dt>
+                        <dt>4. 검색폼 상하단 여백은 12px (4, 8의배수로 활용)</dt>
+                        <dt>5. input과 버튼크기는 height : 32px, font-size : 13px로 공통이고, 버튼너비는 80px로 통일한다.</dt>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <div class="search_basic">
+                        <table>
+                            <colgroup>
+                                <col style="width: 90px;">
+                                <col>
+                                <col style="width: 120px;">
+                                <col>
+                                <col style="width: 120px;">
+                                <col>
+                                <col style="width: 120px;">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td><label>글자수 다섯</label></td>
+                                    <td>
+                                        <select>
+                                            <option>전체</option>
+                                        </select>
+                                    </td>
+                                    <td><label>글자수다섯</label></td>
+                                    <td>
+                                        <select>
+                                            <option>전체</option>
+                                        </select>
+                                    </td>
+                                    <td><label>글자수다섯</label></td>
+                                    <td>
+                                        <select>
+                                            <option>전체</option>
+                                        </select>
+                                    </td>
+                                    <td><label>글자수</label></td>
+                                    <td><input type="text"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn_reset" id="btn_reset"><i class="xi-refresh"></i>초기화</button>
+                        <button type="button" class="btn btn_search" id="btn_search"><i class="xi-search"></i>검색</button>
+                    </div>
+                    <div class="search_basic">
+                        <table>
+                            <colgroup>
+                                <col style="width: 90px;">
+                                <col>
+                                <col style="width: 120px;">
+                                <col>
+                                <col style="width: 120px;">
+                                <col>
+                                <col style="width: 120px;">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td><label>글자수다섯</label></td>
+                                    <td>
+                                        <select>
+                                            <option>전체</option>
+                                        </select>
+                                    </td>
+                                    <td><label>글자수</label></td>
+                                    <td><input type="text"></td>
+                                    <td><label>글자수 다섯</label></td>
+                                    <td colspan="3">
+                                        <span class="calendar_input"><input type="text" id="StartDate"></span>
+                                        <span class="gap">~</span>
+                                        <span class="calendar_input"><input type="text" id="EndDate"></span>
+                                        <script>
+                                            $(document).ready(function () {
+                                                fncDate("StartDate", "EndDate");
+                                            });
+                                        </script>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn_reset" id="btn_reset"><i class="xi-refresh"></i>초기화</button>
+                        <button type="button" class="btn btn_search" id="btn_search"><i class="xi-search"></i>검색</button>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">html</li>
+                        <li id="code01_1_2">css</li>
+                        <li id="code01_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;script&gt;
+	$(document).ready(function() {
+		fncDate("StartDate", "EndDate");
+	});
+&lt;/script&gt;
+&lt;div class="search_basic"&gt;
+    &lt;table&gt;
+        &lt;colgroup&gt;
+            &lt;col style="width: 90px;"&gt;
+            &lt;col&gt;
+            &lt;col style="width: 120px;"&gt;
+            &lt;col&gt;
+            &lt;col style="width: 120px;"&gt;
+            &lt;col&gt;
+            &lt;col style="width: 120px;"&gt;
+            &lt;col&gt;
+        &lt;/colgroup&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;label&gt;글자수다섯&lt;/label&gt;&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;select&gt;
+                        &lt;option&gt;전체&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/td&gt;
+                &lt;td&gt;&lt;label&gt;글자수&lt;/label&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;input type="text"&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;label&gt;글자수 다섯&lt;/label&gt;&lt;/td&gt;
+                &lt;td colspan="3"&gt;
+                    &lt;span class="calendar_input"&gt;&lt;input type="text" id="StartDate"&gt;&lt;/span&gt;
+                    &lt;span class="gap"&gt;~&lt;/span&gt;
+                    &lt;span class="calendar_input"&gt;&lt;input type="text" id="EndDate"&gt;&lt;/span&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;button type="button" class="btn btn_reset" id="btn_reset"&gt;&lt;i class="xi-refresh"&gt;&lt;/i&gt;초기화&lt;/button&gt;
+    &lt;button type="button" class="btn btn_search" id="btn_search"&gt;&lt;i class="xi-search"&gt;&lt;/i&gt;검색&lt;/button&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** search ***/
+/* input, select reset */
+.search_basic input[type="text"],
+.search_basic select {min-width: 0;width: 100%;}
+.search_basic .chk {vertical-align: middle;}
+.search_basic .chk label {font-size: 15px;}
+.search_basic .calendar_input {width: 125px;}
+.search_basic .calendar_input input {min-width: auto;padding-right: 36px;}
+.search_basic td > *:not(.gap) ~ *:not(.gap) {margin-left: 3px;}
+
+/* search_basic style */
+.search_basic {position: relative;min-height: 60px;margin-bottom: 20px;padding: 10px 210px 10px 20px;border: 1px solid var(--tbl-bdr);border-radius: 5px;background: var(--basic-bg);}
+.search_basic tr:nth-child(n+2) td {padding-top: 12px;}
+.search_basic td {height: 32px;}
+.search_basic td:not(:last-child):nth-child(2n+3) {padding-left: 30px;}
+.search_basic td > label {display: inline-block;padding-left: 10px;font-size: 14px;font-weight: 400;color: var(--dark);letter-spacing: -0.75px;background: url(../images/icon/bg_search_label.png) no-repeat 0 50%;}
+.search_basic td > input {width: 100%;}
+.search_basic .btn {position: absolute;right: 20px;bottom: 11px;}
+.search_basic .btn i {margin-right: 5px;}
+.search_basic .btn_search {border: 0;color: #FFFFFF;background: var(--gray);}
+.search_basic .btn_search:hover,
+.search_basic .btn_search:focus {background: var(--btn-gray-hover);}
+.search_basic .btn_reset {right: 110px;}
+.search_basic .w150 + input[type="text"] {width: calc(100% - 159px);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code01_1_3">
+                        <ul>
+                            <li><a href="images/icon/bg_search_label.png" title="Download" download>bg_search_label.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">상세 검색</h2>
+                    <dl>
+                        <dt>1. 버튼위치는 최우측 하단에 적용한다.</dt>
+                        <dt>2. 항목과 항목사이의 <sapn class="impact">간격은 12px</sapn></dt>
+                        <dt>3. 그 외는 일반검색 조건과 동일하게 적용한다.</dt>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <div class="search_basic detail">
+                        <table>
+                            <colgroup>
+                                <col style="width: 90px;">
+                                <col>
+                                <col style="width: 120px;">
+                                <col>
+                                <col style="width: 120px;">
+                                <col>
+                                <col style="width: 120px;">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td><label>글자수</label></td>
+                                    <td>
+                                        <select>
+                                            <option>전체</option>
+                                        </select>
+                                    </td>
+                                    <td><label>글자수</label></td>
+                                    <td><input type="text"></td>
+                                    <td><label>글자수 다섯</label></td>
+                                    <td><input type="text"></td>
+                                    <td><label>글자수 다섯</label></td>
+                                    <td><input type="text"></td>
+                                </tr>
+                                <tr>
+                                    <td><label>글자수</label></td>
+                                    <td colspan="5">
+                                        <select class="w150">
+                                            <option>전체</option>
+                                        </select>
+                                        <input type="text">
+                                    </td>
+                                    <td><label>글자수</label></td>
+                                    <td>
+                                        <select>
+                                            <option>전체</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="js_srchDet">
+                            <table>
+                                <colgroup>
+                                    <col style="width: 90px;">
+                                    <col>
+                                    <col style="width: 120px;">
+                                    <col>
+                                    <col style="width: 120px;">
+                                    <col>
+                                    <col style="width: 120px;">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <td><label>글자수다섯</label></td>
+                                        <td><input type="text"></td>
+                                        <td><label>글자수</label></td>
+                                        <td colspan="3"><input type="text"></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button type="button" class="btn btn_search"><i class="xi-search"></i>검색</button>
+                        <button type="button" class="btn btn_detail">상세<i class="xi-angle-down-min"></i></button>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">js</li>
+                        <li id="code02_1_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="search_basic detail"&gt;
+    &lt;table&gt;
+        &lt;colgroup&gt;
+            &lt;col style="width: 90px;"&gt;
+            &lt;col&gt;
+            &lt;col style="width: 120px;"&gt;
+            &lt;col&gt;
+            &lt;col style="width: 120px;"&gt;
+            &lt;col&gt;
+            &lt;col style="width: 120px;"&gt;
+            &lt;col&gt;
+        &lt;/colgroup&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;label&gt;글자수&lt;/label&gt;&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;select&gt;
+                        &lt;option&gt;전체&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/td&gt;
+                &lt;td&gt;&lt;label&gt;글자수&lt;/label&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;input type="text"&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;label&gt;글자수 다섯&lt;/label&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;input type="text"&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;label&gt;글자수 다섯&lt;/label&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;input type="text"&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;label&gt;글자수&lt;/label&gt;&lt;/td&gt;
+                &lt;td colspan="5"&gt;
+                    &lt;select class="w150"&gt; 
+                        &lt;option&gt;전체&lt;/option&gt;
+                    &lt;/select&gt;
+                    &lt;input type="text"&gt;
+                &lt;/td&gt;
+                &lt;td&gt;&lt;label&gt;글자수&lt;/label&gt;&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;select&gt;
+                        &lt;option&gt;전체&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;div class="js_srchDet"&gt;
+        &lt;table&gt;
+            &lt;colgroup&gt;
+                &lt;col style="width: 90px;"&gt;
+                &lt;col&gt;
+                &lt;col style="width: 120px;"&gt;
+                &lt;col&gt;
+                &lt;col style="width: 120px;"&gt;
+                &lt;col&gt;
+                &lt;col style="width: 120px;"&gt;
+                &lt;col&gt;
+            &lt;/colgroup&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;label&gt;글자수다섯&lt;/label&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;input type="text"&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;label&gt;글자수&lt;/label&gt;&lt;/td&gt;
+                    &lt;td colspan="3"&gt;&lt;input type="text"&gt;&lt;/td&gt;
+                    &lt;td colspan="2"&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;button type="button" class="btn btn_search"&gt;&lt;i class="xi-search"&gt;&lt;/i&gt;검색&lt;/button&gt;
+    &lt;button type="button" class="btn btn_detail"&gt;상세&lt;i class="xi-angle-down-min"&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** search ***/
+/* detail */
+.search_basic.detail {padding-right: 195px;}
+.search_basic.detail .js_srchDet {display: none;}
+.search_basic.detail .js_srchDet td {padding-top: 12px;}
+.search_basic.detail td:not(:last-child):nth-child(2n+3) {padding-left: 20px;}
+.search_basic.detail td .calendar_input {width: 115px;}
+.search_basic.detail td .calendar_input input {letter-spacing: -.8px;}
+.search_basic.detail .btn {right: 100px;}
+.search_basic.detail .btn_detail {position: absolute;right: 15px;color: var(--dark);background: var(--gray-light);}
+.search_basic.detail .btn_detail:hover,
+.search_basic.detail .btn_detail:focus {background: var(--btn-gray-light-hover);}
+.search_basic.detail .btn_detail i {position: relative;bottom: -3px;margin-left: 3px;font-size: 19px;transition: .4s;}
+.search_basic.detail .btn_detail.on i {bottom: -2px;transform: rotateZ(180deg);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_3">
+                        <pre>
+<code class="line-numbers language-js">// search detail
+$(document).ready(function () {
+    $(".search_basic.detail .btn_detail").click(function () {
+        if ($(this).hasClass("on")) {
+            $(".search_basic.detail .btn_detail").removeClass("on");
+            $(".js_srchDet").stop().slideUp(200);
+        } else {
+            $(".search_basic.detail .btn_detail").removeClass("on");
+            $(".js_srchDet").stop().slideUp(200);
+            $(this).addClass("on").siblings(".js_srchDet").stop().slideDown(200);
+        }
+        return false;
+    });
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_1_4">
+                        <ul>
+                            <li><a href="images/icon/bg_search_label.png" title="Download" download>bg_search_label.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">기본형</h2>
+                <div class="ui_sample">
+                    <div class="paging_wrap">
+                        <!-- <div class="btn_left">
+                            <a href="" class="btn blue">등록</a>
+                        </div> -->
+                        <ul class="paging">
+                            <li class="btn_page first"><a href="">목록 처음으로 이동</a></li>
+                            <li class="btn_page prev"><a href="">이전 페이지로 이동</a></li>
+                            <li class="current"><a href="">1</a></li>
+                            <li><a href="">2</a></li>
+                            <li><a href="">3</a></li>
+                            <li><a href="">4</a></li>
+                            <li><a href="">5</a></li>
+                            <li class="btn_page next"><a href="">다음 페이지로 이동</a></li>
+                            <li class="btn_page last"><a href="">목록 마지막으로 이동</a></li>
+                        </ul>
+                        <div class="btn_right">
+                            <a href="" class="btn blue">등록</a>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="paging_wrap"&gt;
+    &lt;!-- &lt;div class="btn_left"&gt;
+        &lt;a href="" class="btn blue"&gt;등록&lt;/a&gt;
+    &lt;/div&gt; --&gt;
+	&lt;ul class="paging"&gt;
+		&lt;li class="btn_page first"&gt;&lt;a href=""&gt;목록 처음으로 이동&lt;/a&gt;&lt;/li&gt;
+		&lt;li class="btn_page prev"&gt;&lt;a href=""&gt;이전 페이지로 이동&lt;/a&gt;&lt;/li&gt;
+		&lt;li class="current"&gt;&lt;a href=""&gt;1&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href=""&gt;2&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href=""&gt;3&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href=""&gt;4&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href=""&gt;5&lt;/a&gt;&lt;/li&gt;
+		&lt;li class="btn_page next"&gt;&lt;a href=""&gt;다음 페이지로 이동&lt;/a&gt;&lt;/li&gt;
+		&lt;li class="btn_page last"&gt;&lt;a href=""&gt;목록 마지막으로 이동&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+    &lt;div class="btn_right"&gt;
+        &lt;a href="" class="btn blue"&gt;등록&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** paging **/
+.paging_wrap {position: relative;margin-top: 20px;}
+.paging_wrap .btn_left {position: absolute;left: 0;top: 0;}
+.paging_wrap .btn_left .btn + .btn {margin-right: 5px;}
+.paging_wrap .btn_right {position: absolute;right: 0;top: -2px;}
+.paging_wrap .btn_right .btn + .btn {margin-left: 5px;}
+.paging {font-size: 0;text-align: center;}
+.paging li {display: inline-block;position: relative;min-width: 36px;height: 36px;border: 1px solid var(--bdr);border-left: 0;font-size: 14px;line-height: 34px;color: var(--dark);background-color: #FFFFFF;vertical-align: middle;cursor: pointer;}
+.paging li a {display: block;height: 100%;padding: 0 5px;}
+.paging li:first-child {border-left: 1px solid var(--bdr);border-radius: 5px 0 0 5px;}
+.paging li:last-child {border-radius: 0 5px 5px 0;}
+.paging li:first-child:last-child {border-left: 0;border-radius: 5px;}
+.paging li.btn_page {font-size: 0;color: var(--black);}
+.paging li.btn_page a::before,
+.paging li.btn_page a::after {font-family: 'xeicon';font-size: 14px;}
+.paging li.btn_page a::after {margin-left: -8px;}
+.paging li.first a::before,
+.paging li.first a::after,
+.paging li.prev a::before {content: '\e93d';}
+.paging li.next a::before,
+.paging li.last a::after,
+.paging li.last a::before {content: '\e940';}
+.paging li:hover,
+.paging .current {border-color: var(--blue) !important;color: #FFFFFF;background-color: var(--blue);}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">input형</h2>
+                <div class="ui_sample">
+                    <div class="paging_wrap">
+                        <!-- <div class="btn_left">
+                            <a href="" class="btn blue">등록</a>
+                        </div> -->
+                        <ul class="paging typeB">
+                            <li class="btn_page first"><a href="">목록 처음으로 이동</a></li>
+                            <li class="btn_page prev"><a href="">이전 페이지로 이동</a></li>
+                            <li class="this"><input type="text" value="1"></li>
+                            <li><span>/</span></li>
+                            <li class="all"><input type="text" value="24,301"></li>
+                            <li class="btn_page next"><a href="">다음 페이지로 이동</a></li>
+                            <li class="btn_page last"><a href="">목록 마지막으로 이동</a></li>
+                        </ul>
+                        <div class="btn_right">
+                            <a href="" class="btn blue">등록</a>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_2_1" class="on">html</li>
+                        <li id="code03_2_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="paging_wrap"&gt;
+    &lt;!-- &lt;div class="btn_left"&gt;
+        &lt;a href="" class="btn blue"&gt;등록&lt;/a&gt;
+    &lt;/div&gt; --&gt;
+    &lt;ul class="paging typeB"&gt;
+        &lt;li class="btn_page first"&gt;&lt;a href=""&gt;목록 처음으로 이동&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="btn_page prev"&gt;&lt;a href=""&gt;이전 페이지로 이동&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="this"&gt;&lt;input type="text" value="1"&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;span&gt;/&lt;/span&gt;&lt;/li&gt;
+        &lt;li class="all"&gt;&lt;input type="text" value="24,301"&gt;&lt;/li&gt;
+        &lt;li class="btn_page next"&gt;&lt;a href=""&gt;다음 페이지로 이동&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="btn_page last"&gt;&lt;a href=""&gt;목록 마지막으로 이동&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class="btn_right"&gt;
+        &lt;a href="" class="btn blue"&gt;등록&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** paging **/
+/* typeB */
+.paging.typeB li {cursor: default;}
+.paging.typeB li:not(.btn_page) {border: none;}
+.paging.typeB li:not(.btn_page):hover {color: #000;background: transparent;}
+.paging.typeB li.this {width: 36px;margin-left: 20px;}
+.paging.typeB li.this input[type="text"],
+.paging.typeB li.all input[type="text"] {padding: 0 5px;text-align: center;}
+.paging.typeB li.all {width: 75px;margin-right: 20px;}
+.paging.typeB li.prev {border-right: 1px solid var(--bdr);border-radius: 0px 5px 5px 0;}
+.paging.typeB li.next {border-left: 1px solid var(--bdr);border-radius: 5px 0 0 5px;}
+.paging.typeB li.prev:first-child,
+.paging.typeB li.next:last-child {border-radius: 5px;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

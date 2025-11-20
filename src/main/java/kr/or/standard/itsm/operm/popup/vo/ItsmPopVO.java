@@ -1,7 +1,7 @@
 package kr.or.standard.itsm.operm.popup.vo;
 
-  
-import kr.or.standard.basic.system.popup.vo.PopupVO;
+   
+import kr.or.standard.basic.usersupport.popup.vo.PopupVO;
 import kr.or.standard.itsm.common.vo.ItsmCommonDefaultVO;
 import org.apache.ibatis.type.Alias;
 

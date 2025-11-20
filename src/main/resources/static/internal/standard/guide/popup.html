@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+    <!-- simplebar -->
+    <link rel="stylesheet" href="lib/simplebar/simplebar.min.css">
+    <script src="lib/simplebar/simplebar.min.js"></script>
+
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">팝업</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">레이어 팝업</li>
+                <li id="tab02">메인 팝업</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <h2 class="section_main_ttl">레이어 팝업</h2>
+                <section class="ui_basic_info">
+                    <dt>1. 닫기 버튼 or 배경을 클릭하면 팝업이 닫힌다.</dt>
+                    <dt>2. 팝업이 여러 개 생성될 경우 <span class="impact">view_show와 display_view의 숫자가 동일</span>해야 한다.</dt>
+                    <dt>3. popup_bg는 한 번만 넣어 처리한다.</dt>
+                    <dt>4. 팝업 넓이 조정: js_popup 옆 클래스 w(숫자)px, w(숫자)p 적용</dt>
+                    <dd>ex) ... js_popup <span class="impact">w500px</span>"&gt;</dd>
+                    <dt>5. 팝업의 컨텐츠 영역에는 max-height값을 지정해 일정 높이 이상일때 스크롤이 생기도록 한다. 이때, simplebar.js 플러그인이 자동 적용 되도록 한다. (기본 스크롤 스타일 적용시, 플러그인 적용 안해도 ok)</dt>
+                </section>
+                <div class="ui_sample">
+                    <button type="button" class="btn" onclick="view_show(1);">팝업 열기</button>
+                    <div id="display_view1" class="layer_pop js_popup w500px">
+                        <div class="pop_header">
+                            <h2>pop_header</h2>
+                            <button type="button" class="pop_close" onclick="view_hide(1);"><i class="xi-close-thin"></i>닫기</button>
+                        </div>
+                        <div class="pop_content" style="max-height: 300px;" data-simplebar data-simplebar-auto-hide="false">
+                            pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content
+                            pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content
+                            pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content
+                            pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content
+                            pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content
+                            pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content pop_content
+                        </div>
+                        <div class="pop_footer">
+                            <button type="button" class="btn" onclick="view_hide(1);">닫기</button>
+                        </div>
+                    </div>
+                    <div class="popup_bg" id="js_popup_bg"></div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">html</li>
+                        <li id="code01_1_2">css</li>
+                        <li id="code01_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;button type="button" class="btn" onclick="view_show(1);"&gt;팝업 열기&lt;/button&gt;
+&lt;div id="display_view1" class="layer_pop js_popup w500px"&gt;
+    &lt;div class="pop_header"&gt;
+        &lt;h2&gt;pop_header&lt;/h2&gt;
+        &lt;button type="button" class="pop_close" onclick="view_hide(1);"&gt;&lt;i class="xi-close-thin"&gt;&lt;/i&gt;닫기&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="pop_content" style="max-height: 300px;" data-simplebar data-simplebar-auto-hide="false"&gt;
+        pop_content
+    &lt;/div&gt;
+    &lt;div class="pop_footer"&gt;
+        &lt;button type="button" class="btn" onclick="view_hide(1);"&gt;닫기&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="popup_bg" id="js_popup_bg"&gt;&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** popup ***/
+.popup_bg {display: none;position: fixed;left: 0;top: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.2);z-index: 5000;}
+/* layer popup */
+.layer_pop {visibility: hidden;overflow: hidden;position: absolute;left: 0;top: 0;border-radius: 0 0 5px 5px;z-index: -1;}
+.layer_pop * {visibility: hidden;}
+.layer_pop.on * {visibility: visible;}
+.layer_pop .pop_header {display: flex;justify-content: space-between;align-items: center;position: relative;height: 62px;padding: 10px 20px;border-bottom: 1px solid var(--bdr);border-radius: 5px 5px 0 0;background: #FFFFFF;}
+.layer_pop .pop_header h2 {font-size: 20px;font-weight: 500;}
+.layer_pop .pop_close {height: 24px;margin: 0;border: 0;font-size: 0;background: transparent;}
+.layer_pop .pop_close i::before {font-size: 24px;color: var(--gray);}
+.layer_pop .pop_content {overflow-y: auto;position: relative;max-height: 300px;padding: 25px 20px;background: #FFFFFF;}
+.layer_pop .pop_footer {padding: 15px;text-align: right;background: var(--basic-bg);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_3">
+                        <pre>
+<code class="line-numbers language-js">/** popup **/
+// popup - layer
+function view_show(popName) {
+    let left = ($(window).width() - $("#display_view" + popName).width()) / 2;
+    let top = ($(window).height() - $("#display_view" + popName).height()) / 2;
+    $("#js_popup_bg").show();
+    $("#display_view" + popName).addClass("on").css({ 'visibility': 'visible', 'position': 'fixed', 'left': left, 'top': top, 'z-index': 5500 });
+    return false;
+}
+function view_hide(popName) {
+    $("#display_view" + popName).removeClass("on").css('visibility', 'hidden');
+    $("#js_popup_bg").hide();
+    return false;
+}
+$(function () {
+    $('#js_popup_bg').click(function () {
+        $('.js_popup').removeClass("on").css('visibility', 'hidden');
+        $(this).hide();
+    });
+});
+/** // popup **/</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">메인 팝업</h2>
+                <section class="ui_basic_info">
+                    <dt>1. 팝업 넓이 조정: js_popup 옆 클래스 w(숫자)px, w(숫자)p 적용</dt>
+                    <dd>ex) ... main-pop <span class="impact">w500px</span>"&gt;</dd>
+                    <dt>2. 팝업 드래그 가능</dt>
+                    <dt>3. 팝업의 컨텐츠 영역에는 max-height값을 지정해 일정 높이 이상일때 스크롤이 생기도록 한다. 이때, simplebar.js 플러그인이 자동 적용 되도록 한다. (기본 스크롤 스타일 적용시, 플러그인 적용 안해도 ok)</dt>
+                </section>
+                <div class="ui_sample" style="position: relative;height: 400px;">
+                    <div class="main_pop w500px">
+                        <div class="pop_header">
+                            <h2>메인 팝업 제목</h2>
+                            <button type="button" class="pop_close close"><i class="xi-close-thin"></i>닫기</button>
+                        </div>
+                        <div class="pop_content" style="max-height: 250px;" data-simplebar data-simplebar-auto-hide="false">
+                            메인 팝업 내용<br>메인 팝업 내용<br>메인 팝업 내용<br>메인 팝업 내용<br>메인 팝업 내용<br>메인 팝업 내용<br>메인 팝업 내용<br>
+                            메인 팝업 내용<br>메인 팝업 내용<br>메인 팝업 내용<br>메인 팝업 내용<br>메인 팝업 내용<br>메인 팝업 내용<br>메인 팝업 내용<br>
+                        </div>
+                        <div class="pop_footer">
+                            <span class="chk">
+                                <span class="cbx"><input type="checkbox" name="n_pop" id="no_today"><label for="no_today">오늘 하루 동안 열지 않음</label></span>
+                            </span>
+                            <button type="button" class="btn close">닫기</button>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="main_pop w500px"&gt;
+    &lt;div class="pop_header"&gt;
+        &lt;h2&gt;메인 팝업 제목&lt;/h2&gt;
+        &lt;button type="button" class="pop_close close"&gt;&lt;i class="xi-close-thin"&gt;&lt;/i&gt;닫기&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="pop_content" style="max-height: 250px;" data-simplebar data-simplebar-auto-hide="false"&gt;
+        메인 팝업 내용
+    &lt;/div&gt;
+    &lt;div class="pop_footer"&gt;
+        &lt;span class="chk"&gt;
+            &lt;span class="cbx"&gt;&lt;input type="checkbox" name="n_pop" id="no_today"&gt;&lt;label for="no_today"&gt;오늘 하루 동안 열지 않음&lt;/label&gt;&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;button type="button" class="btn close"&gt;닫기&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** popup ***/
+/* main popup */
+.main_pop {overflow: hidden;position: absolute;left: 0;top: 0;border-radius: 5px;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);z-index: 9999;}
+.main_pop .pop_header {display: flex;justify-content: space-between;align-items: center;position: relative;min-height: 62px;height: auto;padding: 10px 20px;line-height: 1.3;color: #fff;background: var(--blue);}
+.main_pop .pop_header h2 {font-size: 20px;font-weight: 500;}
+.main_pop .pop_close {height: 24px;margin: 0;border: 0;font-size: 0;background: transparent;}
+.main_pop .pop_close i::before {font-size: 24px;color: #fff;}
+.main_pop .pop_content {overflow-y: auto;position: relative;max-height: 300px;padding: 25px 20px;background: #FFFFFF;}
+.main_pop .pop_content .mCSB_scrollTools_vertical,
+.main_pop .pop_content .mCSB_dragger_bar,
+.main_pop .pop_content .mCSB_draggerRail {width: 5px !important;margin: 0 !important;}
+.main_pop .pop_content .mCSB_dragger_bar {background-color: #6B6B6B !important;}
+.main_pop .pop_content .mCSB_scrollTools .mCSB_draggerRail {background-color: #ECECEC !important;}
+.main_pop .pop_content .mCSB_container {margin-right: 15px !important;}
+.main_pop .pop_content .mCSB_container.mCS_y_hidden {margin-right: 0 !important;}
+.main_pop .pop_footer {display: flex;justify-content: space-between;align-items: center;padding: 10px 15px;font-size: 14px;background: var(--basic-bg);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_3">
+                        <pre>
+<code class="line-numbers language-js">/** popup **/
+// popup - main
+$(document).ready(function () {
+    $(".main_pop").draggable();
+    $(".main_pop .close").click(function () {
+        $(this).closest(".main_pop").hide();
+        return false;
+    });
+});
+/** // popup **/</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">탭</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">스타일</li>
+                <li id="tab02">1~3단형</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. tab 공통 적용 css , js</dt>
+                    </dl>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_1_1" class="on">css</li>
+                            <li id="code01_1_2">js</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_1_1">
+                            <pre>
+<code class="line-numbers language-css">/*** tab ***/
+.tab > .tab_menu {display: flex;}
+.tab > .tab_menu li {font-size: 16px;font-weight: 400;color: var(--dark);text-align: center;}
+.tab > .tab_menu li a {display: inline-block;height: 100%;}
+.tab > .tab_cont {margin-top: 30px;}</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code01_1_2">
+                            <pre>
+<code class="line-numbers language-js">// tab
+$(document).ready(function () {
+    if ($('.js_tmenu').length || $('.js_tcont').length) {
+        $('.js_tcont').stop().hide();
+        $('.js_tcont.on').stop().show();
+        $('.js_tmenu li a').click(function () {
+            let tabId = $(this).parent().attr('id');
+            let selTabId = $('.js_tmenu li[id="' + tabId + '"], .js_tcont[data-tab="' + tabId + '"]');
+            $(this).closest('.tab').find('.js_tmenu li, .js_tcont').not('.js_tmenu li.on').removeClass('on');
+            selTabId.addClass('on').fadeIn();
+            selTabId.siblings('.js_tcont').stop().hide();
+            selTabId.siblings().removeClass('on');
+            return false;
+        });
+    }
+});</code>
+</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui_basic_info" style="padding-top: 40px;">
+                    <h2 class="section_main_ttl">기본 설명</h2>
+                    <dl>
+                        <dt>1. 탭 js 연결 클래스: <span class="impact">js_tmenu, js_tcont</span></dt>
+                        <dd>└ 해당 클래스 제거시 js작동 안함 (페이지 이동 메뉴로 사용 가능) </dd>
+                        <dt>2. 탭 메뉴, 컨텐츠 연결: <span class="impact">id, data-tab</span></dt>
+                    </dl>
+                </section>
+
+                <h2 class="section_main_ttl">라인형</h2>
+                <div class="ui_sample">
+                    <div class="tab line">
+                        <ul class="tab_menu js_tmenu" role="tablist">
+                            <li id="tab1_01" class="on" role="tab" aria-selected="true"><a href="">탭메뉴01</a></li>
+                            <li id="tab1_02" role="tab" aria-selected="false"><a href="">탭메뉴02</a></li>
+                        </ul>
+                        <div class="tab_cont js_tcont on" data-tab="tab1_01" role="tabpanel" aria-labelledby="tab1_01">탭내용01</div>
+                        <div class="tab_cont js_tcont" data-tab="tab1_02" role="tabpanel" aria-labelledby="tab1_02">탭내용02</div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                        <li id="code01_2_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tab line"&gt;
+    &lt;ul class="tab_menu js_tmenu" role="tablist"&gt;
+        &lt;li id="tab1_01" class="on" role="tab" aria-selected="true"&gt;&lt;a href=""&gt;탭메뉴01&lt;/a&gt;&lt;/li&gt;
+        &lt;li id="tab1_02" role="tab" aria-selected="false"&gt;&lt;a href=""&gt;탭메뉴02&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class="tab_cont js_tcont on" data-tab="tab1_01" role="tabpanel" aria-labelledby="tab1_01"&gt;탭내용01&lt;/div&gt;
+    &lt;div class="tab_cont js_tcont" data-tab="tab1_02" role="tabpanel" aria-labelledby="tab1_02"&gt;탭내용02&lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_2_2">
+                        <pre>
+<code class="line-numbers language-css">/*** tab ***/
+/* line */
+.tab.line > .tab_menu {border-bottom: 2px solid var(--bdr);}
+.tab.line > .tab_menu li {position: relative;min-width: 80px;}
+.tab.line > .tab_menu li.on {font-weight: 500;}
+.tab.line > .tab_menu li.on::before {content: '';position: absolute;left: 0;bottom: -2px;width: 100%;height: 2px;background: var(--black);}
+.tab.line > .tab_menu li a {padding: 5px 10px;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">박스형</h2>
+                <div class="ui_sample">
+                    <div class="tab box">
+                        <ul class="tab_menu js_tmenu" role="tablist">
+                            <li id="tab2_01" class="on" role="tab" aria-selected="true"><a href="">탭메뉴01</a></li>
+                            <li id="tab2_02" role="tab" aria-selected="false"><a href="">탭메뉴02</a></li>
+                        </ul>
+                        <div class="tab_cont js_tcont on" data-tab="tab2_01" role="tabpanel" aria-labelledby="tab2_01">탭내용01</div>
+                        <div class="tab_cont js_tcont" data-tab="tab2_02" role="tabpanel" aria-labelledby="tab2_02">탭내용02</div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_3_1" class="on">html</li>
+                        <li id="code01_3_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tab box"&gt;
+    &lt;ul class="tab_menu js_tmenu" role="tablist"&gt;
+        &lt;li id="tab1_01" class="on" role="tab" aria-selected="true"&gt;&lt;a href=""&gt;탭메뉴01&lt;/a&gt;&lt;/li&gt;
+        &lt;li id="tab1_02" role="tab" aria-selected="false"&gt;&lt;a href=""&gt;탭메뉴02&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class="tab_cont js_tcont on" data-tab="tab1_01" role="tabpanel" aria-labelledby="tab1_01"&gt;탭내용01&lt;/div&gt;
+    &lt;div class="tab_cont js_tcont" data-tab="tab1_02" role="tabpanel" aria-labelledby="tab1_02"&gt;탭내용02&lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_3_2">
+                        <pre>
+<code class="line-numbers language-css">/*** tab ***/
+/* box */
+.tab.box > .tab_menu {border-bottom: 1px solid var(--bdr);}
+.tab.box > .tab_menu li {min-width: 80px;margin-bottom: -1px;}
+.tab.box > .tab_menu li.on {border: 1px solid var(--bdr);border-bottom: 1px solid #FFFFFF;border-radius: 4px 4px 0 0;font-weight: 500;}
+.tab.box > .tab_menu li a {padding: 10px 15px;}
+.tab.box > .tab_cont {margin-top: 0;padding: 20px;border: 1px solid var(--bdr);border-top: 0;border-radius: 0 4px 4px 4px;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">와이드형</h2>
+                <div class="ui_sample">
+                    <div class="tab wide">
+                        <ul class="tab_menu js_tmenu" role="tablist">
+                            <li id="tab3_01" class="on" role="tab" aria-selected="true"><a href="">탭메뉴01</a></li>
+                            <li id="tab3_02" role="tab" aria-selected="false"><a href="">탭메뉴02</a></li>
+                        </ul>
+                        <div class="tab_cont js_tcont on" data-tab="tab3_01" role="tabpanel" aria-labelledby="tab3_01">탭내용01</div>
+                        <div class="tab_cont js_tcont" data-tab="tab3_02" role="tabpanel" aria-labelledby="tab3_02">탭내용02</div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_4_1" class="on">html</li>
+                        <li id="code01_4_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_4_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tab wide"&gt;
+    &lt;ul class="tab_menu js_tmenu" role="tablist"&gt;
+        &lt;li id="tab1_01" class="on" role="tab" aria-selected="true"&gt;&lt;a href=""&gt;탭메뉴01&lt;/a&gt;&lt;/li&gt;
+        &lt;li id="tab1_02" role="tab" aria-selected="false"&gt;&lt;a href=""&gt;탭메뉴02&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class="tab_cont js_tcont on" data-tab="tab1_01" role="tabpanel" aria-labelledby="tab1_01"&gt;탭내용01&lt;/div&gt;
+    &lt;div class="tab_cont js_tcont" data-tab="tab1_02" role="tabpanel" aria-labelledby="tab1_02"&gt;탭내용02&lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_4_2">
+                        <pre>
+<code class="line-numbers language-css">/*** tab ***/
+/* wide */
+.tab.wide > .tab_menu {display: flex;}
+.tab.wide > .tab_menu li {width: 100%;height: 58px;border: 1px solid var(--bdr);border-left: 0;border-bottom-color: var(--black);font-size: 16px;color: #696969;letter-spacing: -0.9px;text-align: center;background: var(--basic-bg);}
+.tab.wide > .tab_menu li:first-child {border-left: 1px solid #e0e0e0;}
+.tab.wide > .tab_menu li.on {border-color: var(--dark);border-bottom-color: #FFFFFF;color: var(--dark);background: #FFFFFF;}
+.tab.wide > .tab_menu li.on:nth-child(n+2) {border-left: 1px solid var(--dark);}
+.tab.wide > .tab_menu li a {display: flex;justify-content: center;align-items: center;height: 100%;padding: 5px;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">풍선형</h2>
+                <div class="ui_sample">
+                    <div class="tab balloon">
+                        <ul class="tab_menu js_tmenu" role="tablist">
+                            <li id="tab4_01" class="on" role="tab" aria-selected="true"><a href="">탭메뉴01</a></li>
+                            <li id="tab4_02" role="tab" aria-selected="false"><a href="">탭메뉴02</a></li>
+                            <li id="tab4_03" role="tab" aria-selected="false"><a href="">탭메뉴03</a></li>
+                        </ul>
+                        <div class="tab_cont js_tcont on" data-tab="tab4_01" role="tabpanel" aria-labelledby="tab4_01">탭내용01</div>
+                        <div class="tab_cont js_tcont" data-tab="tab4_02" role="tabpanel" aria-labelledby="tab4_02">탭내용02</div>
+                        <div class="tab_cont js_tcont" data-tab="tab4_03" role="tabpanel" aria-labelledby="tab4_03">탭내용03</div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_5_1" class="on">html</li>
+                        <li id="code01_5_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_5_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tab balloon"&gt;
+    &lt;ul class="tab_menu js_tmenu" role="tablist"&gt;
+        &lt;li id="tab1_01" class="on" role="tab" aria-selected="true"&gt;&lt;a href=""&gt;탭메뉴01&lt;/a&gt;&lt;/li&gt;
+        &lt;li id="tab1_02" role="tab" aria-selected="false"&gt;&lt;a href=""&gt;탭메뉴02&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class="tab_cont js_tcont on" data-tab="tab1_01" role="tabpanel" aria-labelledby="tab1_01"&gt;탭내용01&lt;/div&gt;
+    &lt;div class="tab_cont js_tcont" data-tab="tab1_02" role="tabpanel" aria-labelledby="tab1_02"&gt;탭내용02&lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_5_2">
+                        <pre>
+<code class="line-numbers language-css">/*** tab ***/
+/* balloon tab */
+.tab.balloon > .tab_menu::after {content: '';display: block;clear: both;}
+.tab.balloon > .tab_menu li {position: relative;min-width: 100px;height: 35px;border: 1px solid var(--bdr);border-radius: 18px;line-height: 33px;}
+.tab.balloon > .tab_menu li:not(:last-child) {margin-right: 10px;}
+.tab.balloon > .tab_menu li.on {border: 0;line-height: 35px;color: #FFFFFF;background: var(--blue);}
+.tab.balloon > .tab_menu li.on::after {content: '';display: block;position: absolute;left: 50%;bottom: -5px;width: 0;height: 0;margin-left: -5px;border-left: 5px solid transparent;border-right: 5px solid transparent;border-top: 5px solid var(--blue);}
+.tab.balloon > .tab_menu li a {padding: 0 15px;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">1~3단형</h2>
+                <div class="ui_sample">
+                    <!-- first -->
+                    <div class="tab f_tab">
+                        <ul class="tab_menu js_tmenu" role="tablist">
+                            <li id="ftab_01" class="on" role="tab" aria-selected="true"><a href="">탭메뉴01</a></li>
+                            <li id="ftab_02" role="tab" aria-selected="false"><a href="">탭메뉴02</a></li>
+                        </ul>
+                        <div class="tab_cont js_tcont on" data-tab="ftab_01" role="tabpanel" aria-labelledby="ftab_01">
+
+                            <!-- second -->
+                            <div class="tab s_tab">
+                                <ul class="tab_menu js_tmenu" role="tablist">
+                                    <li id="stab_01" class="on" role="tab" aria-selected="true"><a href="">탭메뉴01</a></li>
+                                    <li id="stab_02" role="tab" aria-selected="false"><a href="">탭메뉴02</a></li>
+                                </ul>
+                                <div class="tab_cont js_tcont on" data-tab="stab_01" role="tabpanel" aria-labelledby="stab_01">
+
+                                    <!-- third -->
+                                    <div class="tab t_tab">
+                                        <ul class="tab_menu js_tmenu" role="tablist">
+                                            <li id="ttab_01" class="on" role="tab" aria-selected="true"><a href="">탭메뉴01</a></li>
+                                            <li id="ttab_02" role="tab" aria-selected="false"><a href="">탭메뉴02</a></li>
+                                        </ul>
+                                        <div class="tab_cont js_tcont on" data-tab="ttab_01" role="tabpanel" aria-labelledby="ttab_01">탭내용01</div>
+                                        <div class="tab_cont js_tcont" data-tab="ttab_02" role="tabpanel" aria-labelledby="ttab_02">탭내용02</div>
+                                    </div>
+                                    <!-- // third -->
+
+                                </div>
+                                <div class="tab_cont js_tcont" data-tab="stab_02" role="tabpanel" aria-labelledby="stab_02">탭내용02</div>
+                            </div>
+                            <!-- // second -->
+
+                        </div>
+                        <div class="tab_cont js_tcont" data-tab="ftab_02" role="tabpanel" aria-labelledby="ftab_02">탭내용02</div>
+                    </div>
+                    <!-- // first -->
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code02_1_1" class="on">html</li>
+                            <li id="code02_1_2">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code02_1_1">
+                            <pre>
+<code class="line-numbers language-html">&lt;!-- first --&gt;
+&lt;div class="tab f_tab"&gt;
+    &lt;ul class="tab_menu js_tmenu" role="tablist"&gt;
+        &lt;li id="tab1_01" class="on" role="tab" aria-selected="true"&gt;&lt;a href=""&gt;탭메뉴01&lt;/a&gt;&lt;/li&gt;
+        &lt;li id="tab1_02" role="tab" aria-selected="false"&gt;&lt;a href=""&gt;탭메뉴02&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class="tab_cont js_tcont on" data-tab="tab1_01" role="tab" aria-labelledby="tab1_01"&gt;
+        &lt;!-- second --&gt;
+        &lt;div class="tab s_tab"&gt;
+            &lt;ul class="tab_menu js_tmenu" role="tablist"&gt;
+                &lt;li id="tab2_01" class="on" role="tab" aria-selected="true"&gt;&lt;a href=""&gt;탭메뉴01&lt;/a&gt;&lt;/li&gt;
+                &lt;li id="tab2_02" role="tab" aria-selected="false"&gt;&lt;a href=""&gt;탭메뉴02&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;div class="tab_cont js_tcont on" data-tab="tab2_01" role="tab" aria-labelledby="tab2_01"&gt;
+                &lt;!-- third --&gt;
+                &lt;div class="tab t_tab"&gt;
+                    &lt;ul class="tab_menu js_tmenu" role="tablist"&gt;
+                        &lt;li id="tab3_01" class="on" role="tab" aria-selected="true"&gt;&lt;a href=""&gt;탭메뉴01&lt;/a&gt;&lt;/li&gt;
+                        &lt;li id="tab3_02" role="tab" aria-selected="false"&gt;&lt;a href=""&gt;탭메뉴02&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                    &lt;div class="tab_cont js_tcont on" data-tab="tab3_01" role="tab" aria-labelledby="tab3_01"&gt;탭내용01&lt;/div&gt;
+                    &lt;div class="tab_cont js_tcont" data-tab="tab3_02" role="tab" aria-labelledby="tab3_02"&gt;탭내용02&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;!-- // third --&gt;
+            &lt;/div&gt;
+            &lt;div class="tab_cont js_tcont" data-tab="tab2_02" role="tab" aria-labelledby="tab2_02"&gt;탭내용02&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;!-- // second --&gt;
+    &lt;/div&gt;
+    &lt;div class="tab_cont js_tcont" data-tab="tab1_02" role="tab" aria-labelledby="tab1_02"&gt;탭내용02&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- // first --&gt;</code>
+</pre>
+                        </div>
+                        <div class="js_tcont" data-tab="code02_1_2">
+                            <pre>
+<code class="line-numbers language-css">/*** tab ***/
+/* first tab */
+.tab.f_tab > .tab_menu {position: relative;height: 45px;font-size: 17px;}
+.tab.f_tab > .tab_menu::after {content: '';display: block;clear: both;}
+.tab.f_tab > .tab_menu li {float: left;width: 120px;height: 100%;border: 1px solid var(--bdr);border-left: 0;line-height: 45px;text-align: center;}
+.tab.f_tab > .tab_menu li:first-child {border-left: 1px solid var(--bdr);}
+.tab.f_tab > .tab_menu li.on {border-color: var(--blue);color: #FFFFFF;background: var(--blue);}
+.tab.f_tab > .tab_menu li a {display: block;}
+
+/* second tab */
+.tab.s_tab > .tab_menu {padding: 15px 35px;border-bottom: 1px solid var(--bdr);font-size: 15px;background: var(--form-tbl-hover-bg);}
+.tab.s_tab > .tab_menu::after {content: '';display: block;clear: both;}
+.tab.s_tab > .tab_menu li {float: left;position: relative;margin-right: 22px;padding-left: 10px;}
+.tab.s_tab > .tab_menu li::after {content: '';position: absolute;left: 0;top: 50%;width: 4px;height: 4px;background: #797979;transform: translateY(-50%);}
+.tab.s_tab > .tab_menu li.on {color: var(--blue);text-decoration: underline;text-underline-position: under;}
+.tab.s_tab > .tab_menu li.on::after {background: var(--blue);}
+.tab.s_tab > .tab_menu li a {display: block;}
+
+/* third tab */
+.tab.t_tab > .tab_menu {height: 45px;padding: 0 45px;border-bottom: 1px solid var(--bdr);font-size: 15px;line-height: 45px;color: var(--dark);}
+.tab.t_tab > .tab_menu::after {content: '';display: block;clear: both;}
+.tab.t_tab > .tab_menu li {float: left;position: relative;}
+.tab.t_tab > .tab_menu li:nth-child(n+2) {margin-left: 24px;}
+.tab.t_tab > .tab_menu li:nth-child(n+2)::after {content: '';position: absolute;left: -13px;top: 50%;width: 1px;height: 15px;background: var(--bdr);transform: translateY(-50%);}
+.tab.t_tab > .tab_menu li.on {font-weight: 700;}
+.tab.t_tab > .tab_menu li a {display: block;}</code>
+</pre>
+                        </div>
+                    </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

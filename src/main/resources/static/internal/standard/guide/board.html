@@ -1,0 +1,2806 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/board.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+    <!-- simplebar -->
+    <link rel="stylesheet" href="lib/simplebar/simplebar.min.css">
+    <script src="lib/simplebar/simplebar.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">게시판</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">일반 목록</li>
+                <li id="tab02">상세</li>
+                <li id="tab03">댓글</li>
+                <li id="tab04">등록</li>
+                <li id="tab05">Q&A</li>
+                <li id="tab06">FAQ</li>
+                <li id="tab07">갤러리</li>
+                <li id="tab08">갤러리 박스형</li>
+                <li id="tab09">캘린더</li>
+                <li id="tab10">캘린더 상세형</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. 게시판 공통 적용 css</dt>
+                    </dl>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_1_1" class="on">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_1_1">
+                            <pre>
+<code class="line-numbers language-css">/*** board ***/
+/* board list count */
+.all_num {font-size: 14px;color: #666;}
+.all_num > * {vertical-align: bottom;}
+.all_num i::before {position: relative;top: -1px;margin-right: 3px;font-size: 18px;}
+.all_num .num {margin: 0 3px 0 5px;font-weight: 400;color: #26a4de;}
+
+/* board top */
+.board_top {display: table;table-layout: fixed;width: 100%;margin-bottom: 10px;}
+.board_left {display: table-cell;color: #666666;vertical-align: middle;}
+.board_right {display: table-cell;text-align: right;vertical-align: bottom;}
+.board_right select + select,
+.board_right .btn + select,
+.board_right .btn + .btn {margin-left: 5px;}</code>
+</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">일반 목록</h2>
+                </section>
+
+                <div class="ui_sample">
+                    <div class="board_top">
+                        <div class="board_left">
+                            <div class="all_num"><i class="xi-paper-o"></i>전체<span class="num">10</span>건</div>
+                        </div>
+                        <div class="board_right">
+                            <button class="btn btn_excel">엑셀 다운로드</button>
+                            <select>
+                                <option value="10">10건</option>
+                                <option value="20">20건</option>
+                                <option value="30">30건</option>
+                                <option value="50">50건</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="board_list">
+                        <colgroup>
+                            <col style="width: 7%;">
+                            <col>
+                            <col style="width: 7%;">
+                            <col style="width: 10%;">
+                            <col style="width: 7%;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">번호</th>
+                                <th scope="col">제목</th>
+                                <th scope="col">첨부파일</th>
+                                <th scope="col">등록일</th>
+                                <th scope="col">조회수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="i_notice">공지</span></td>
+                                <td class="l ellipsis">
+                                    <a href="#" class="ellipsis">제목</a>
+                                </td>
+                                <td><img src="images/icon/file_zip.svg" alt="zip"></td>
+                                <td>0000.00.00</td>
+                                <td>00</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td class="l ellipsis">
+                                    <a href="#" class="ellipsis">비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목</a><i class="xi-lock"></i>
+                                </td>
+                                <td><img src="images/icon/file_zip.svg" alt="zip"></td>
+                                <td>0000.00.00</td>
+                                <td>00</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td class="l ellipsis">
+                                    <a href="#" class="ellipsis">새로운 글입니다.</a><span class="i_new">new</span>
+                                </td>
+                                <td><img src="images/icon/file_zip.svg" alt="zip"></td>
+                                <td>0000.00.00</td>
+                                <td>00</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="no_data">데이터가 없습니다.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                        <li id="code01_2_2">css</li>
+                        <li id="code01_2_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="board_top"&gt;
+    &lt;div class="board_left"&gt;
+        &lt;div class="all_num"&gt;&lt;i class="xi-paper-o"&gt;&lt;/i&gt;전체&lt;span class="num"&gt;10&lt;/span&gt;건&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="board_right"&gt;
+        &lt;button class="btn btn_excel"&gt;엑셀 다운로드&lt;/button&gt;
+        &lt;select&gt;
+            &lt;option value="10"&gt;10건&lt;/option&gt;
+            &lt;option value="20"&gt;20건&lt;/option&gt;
+            &lt;option value="30"&gt;30건&lt;/option&gt;
+            &lt;option value="50"&gt;50건&lt;/option&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;table class="board_list"&gt;
+    &lt;colgroup&gt;
+        &lt;col style="width: 7%;"&gt;
+        &lt;col&gt;
+        &lt;col style="width: 7%;"&gt;
+        &lt;col style="width: 10%;"&gt;
+        &lt;col style="width: 7%;"&gt;
+    &lt;/colgroup&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th scope="col"&gt;번호&lt;/th&gt;
+            &lt;th scope="col"&gt;제목&lt;/th&gt;
+            &lt;th scope="col"&gt;첨부파일&lt;/th&gt;
+            &lt;th scope="col"&gt;등록일&lt;/th&gt;
+            &lt;th scope="col"&gt;조회수&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;&lt;span class="i_notice"&gt;공지&lt;/span&gt;&lt;/td&gt;
+            &lt;td class="l ellipsis"&gt;
+                &lt;a href="#" class="ellipsis"&gt;제목&lt;/a&gt;
+            &lt;/td&gt;
+            &lt;td&gt;&lt;img src="images/icon/file_zip.svg" alt="zip"&gt;&lt;/td&gt;
+            &lt;td&gt;0000.00.00&lt;/td&gt;
+            &lt;td&gt;00&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;2&lt;/td&gt;
+            &lt;td class="l ellipsis"&gt;
+                &lt;a href="#" class="ellipsis"&gt;비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목 비밀글 제목&lt;/a&gt;&lt;i class="xi-lock"&gt;&lt;/i&gt;
+            &lt;/td&gt;
+            &lt;td&gt;&lt;img src="images/icon/file_zip.svg" alt="zip"&gt;&lt;/td&gt;
+            &lt;td&gt;0000.00.00&lt;/td&gt;
+            &lt;td&gt;00&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;1&lt;/td&gt;
+            &lt;td class="l ellipsis"&gt;
+                &lt;a href="#" class="ellipsis"&gt;새로운 글입니다.&lt;/a&gt;&lt;span class="i_new"&gt;new&lt;/span&gt;
+            &lt;/td&gt;
+            &lt;td&gt;&lt;img src="images/icon/file_zip.svg" alt="zip"&gt;&lt;/td&gt;
+            &lt;td&gt;0000.00.00&lt;/td&gt;
+            &lt;td&gt;00&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td colspan="5" class="no_data"&gt;데이터가 없습니다.&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_2_2">
+                        <pre>
+<code class="line-numbers language-css">/*** board ***/
+/* board list */
+.board_list {border-top: 1px solid var(--black);}
+.board_list > thead > tr > th,
+.board_list > tbody > tr > td {position: relative;height: 42px;padding: 8px 10px;border-bottom: 1px solid var(--tbl-bdr);font-size: 14px;font-weight: 400;color: var(--dark);text-align: center;background: #FFFFFF;}
+.board_list > thead > tr > th {font-weight: 500;background: var(--tbl-th);}
+.board_list > tbody > tr > td:not(.no_data) {cursor: pointer;}
+.board_list > tbody > tr:hover > td:not(.no_data) {background: var(--board-tbl-hover-bg);}
+.board_list .i_notice {display: inline-block;padding: 4px 8px;border: 1px solid #ea871d;border-radius: 100px;font-size: 13px;font-weight: 500;line-height: 1;color: #ea871d;}
+.board_list .i_new {display: inline-block;padding: 3px 4px 4px;font-size: 11px;line-height: 1;color: #fff;text-transform: uppercase;background: #ea871d;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code01_2_3">
+                        <ul>
+                            <li><a href="images/icon/file_zip.svg" title="Download" download>file_zip.svg</a></li>
+                            <li>그 외 file icon은 [버튼 & 태그 > 첨부파일 이미지] 참고</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">상세</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>1. 항목 기준으로 1행 2열배열은 <span class="impact">2:3:2:3</span> / 1행 1열배열은 <span class="impact">2:8</span>을 유지한다.</dt>
+                        <dt>2. th의 col은 기본 <span class="impact">style="width: 20%;"</span>로 한다.</dt>
+                        <dt>3. 기본 <span class="impact">행 높이는 42px</span>로 한다.</dt>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <div class="board_top">
+                        <div class="board_left"></div>
+                        <div class="board_right">
+                            <ul class="view_top">
+                                <li><a href="" class="i_share">공유</a></li>
+                                <li><a href="" class="i_print">인쇄</a></li>
+                                <li><a href="" class="i_siren">신고</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <table class="board_view">
+                        <colgroup>
+                            <col style="width: 20%;">
+                            <col style="width: 30%;">
+                            <col style="width: 20%;">
+                            <col style="width: 30%;">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row">제목</th>
+                                <td colspan="3">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">작성기관</th>
+                                <td>-</td>
+                                <th scope="row">작성일</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    본문
+                                    <div class="likeit">
+                                        <span class="like">
+                                            <input type="radio" name="radio01" id="likeit_y"><label for="likeit_y">추천</label>
+                                            <span class="num">0</span>
+                                        </span>
+                                        <span class="dislike">
+                                            <input type="radio" name="radio01" id="likeit_n"><label for="likeit_n">반대</label>
+                                            <span class="num">0</span>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">첨부파일</th>
+                                <td colspan="3">
+                                    <ul class="file_li">
+                                        <li><a href=""><img src="images/icon/file_img.svg" alt="img">첨부파일</a></li>
+                                        <li><a href=""><img src="images/icon/file_img.svg" alt="img">첨부파일</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="btn_area">
+                        <button type="button" class="btn bd blue">수정</button>
+                        <button type="button" class="btn bd red">삭제</button>
+                        <button type="button" class="btn gray">목록</button>
+                    </div>
+                    <!-- 댓글, q&a 위치 -->
+                    <table class="oth_post">
+                        <colgroup>
+                            <col style="width: 20%;">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row">이전글<i class="xi-angle-up-thin"></i></th>
+                                <td><a href="" class="ellipsis">이전글</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">다음글<i class="xi-angle-down-thin"></i></th>
+                                <td><a href="" class="ellipsis">다음글</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="board_top"&gt;
+    &lt;!-- &lt;div class="board_left"&gt;&lt;/div&gt; --&gt;
+    &lt;div class="board_right"&gt;
+        &lt;ul class="view_top"&gt;
+            &lt;li&gt;&lt;a href="" class="i_share"&gt;공유&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="" class="i_print"&gt;인쇄&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="" class="i_siren"&gt;신고&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;table class="board_view"&gt;
+    &lt;colgroup&gt;
+        &lt;col style="width: 20%;"&gt;
+        &lt;col style="width: 30%;"&gt;
+        &lt;col style="width: 20%;"&gt;
+        &lt;col style="width: 30%;"&gt;
+    &lt;/colgroup&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;제목&lt;/th&gt;
+            &lt;td colspan="3"&gt;-&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;작성기관&lt;/th&gt;
+            &lt;td&gt;-&lt;/td&gt;
+            &lt;th scope="row"&gt;작성일&lt;/th&gt;
+            &lt;td&gt;-&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td colspan="4"&gt;
+                본문
+                &lt;div class="likeit"&gt;
+                    &lt;span class="like"&gt;
+                        &lt;input type="radio" name="radio01" id="likeit_y"&gt;&lt;label for="likeit_y"&gt;추천&lt;/label&gt;
+                        &lt;span class="num"&gt;0&lt;/span&gt;
+                    &lt;/span&gt;
+                    &lt;span class="dislike"&gt;
+                        &lt;input type="radio" name="radio01" id="likeit_n"&gt;&lt;label for="likeit_n"&gt;반대&lt;/label&gt;
+                        &lt;span class="num"&gt;0&lt;/span&gt;
+                    &lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;첨부파일&lt;/th&gt;
+            &lt;td colspan="3"&gt;
+                &lt;ul class="file_li"&gt;
+                    &lt;li&gt;&lt;a href=""&gt;&lt;img src="images/icon/file_img.svg" alt="img"&gt;첨부파일&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;&lt;img src="images/icon/file_img.svg" alt="img"&gt;첨부파일&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="btn_area"&gt;
+    &lt;button type="button" class="btn bd blue"&gt;수정&lt;/button&gt;
+    &lt;button type="button" class="btn bd red"&gt;삭제&lt;/button&gt;
+    &lt;button type="button" class="btn gray"&gt;목록&lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- 댓글, q&a 위치 --&gt;
+&lt;table class="oth_post"&gt;
+    &lt;colgroup&gt;
+        &lt;col style="width: 20%;"&gt;
+        &lt;col&gt;
+    &lt;/colgroup&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;이전글&lt;i class="xi-angle-up-thin"&gt;&lt;/i&gt;&lt;/th&gt;
+            &lt;td&gt;&lt;a href="" class="ellipsis"&gt;이전글&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;다음글&lt;i class="xi-angle-down-thin"&gt;&lt;/i&gt;&lt;/th&gt;
+            &lt;td&gt;&lt;a href="" class="ellipsis"&gt;다음글&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** board ***/
+/* board view */
+.board_view {border-top: 1px solid var(--black);}
+.board_view > tbody > tr > th, .board_view > tbody > tr > td {position: relative;height: 42px;padding: 8px 10px;border-bottom: 1px solid var(--tbl-bdr);font-size: 14px;font-weight: 400;color: var(--dark);text-align: left;background: #FFFFFF;}
+.board_view > tbody > tr > th {padding-left: 15px;font-weight: 500;background: var(--tbl-th);}
+.board_view > tbody > tr > td + td[rowspan] {border-left: 1px solid var(--tbl-bdr);}
+.board_view .file_li li {font-size: 14px;}
+.board_view .file_li li + li {margin-top: 3px;}
+.board_view .file_li li img {height: 18px;margin-right: 5px;vertical-align: sub;}
+
+/* board view top */
+.view_top {display: flex;justify-content: flex-end;}
+.view_top li {position: relative;}
+.view_top li + li {margin-left: 10px;padding-left: 10px;}
+.view_top li + li::before {content: '';position: absolute;left: 0;top: 4px;width: 1px;height: 17px;border-left: 1px dotted #aaa;}
+.view_top li a {display: inline-block;width: 22px;height: 22px;font-size: 0px;vertical-align: bottom;}
+.view_top li .i_share {background: url(../images/icon/i_share.svg) no-repeat 100% 100%;}
+.view_top li .i_print {background: url(../images/icon/i_print.svg) no-repeat 100% 100%;}
+.view_top li .i_siren {background: url(../images/icon/i_siren.svg) no-repeat 100% 100%;}
+.view_top li .i_siren.on {background: url(../images/icon/i_siren_on.svg) no-repeat 100% 100%;}
+
+/* board view likeit (like/dislike) */
+.likeit {padding: 60px 0 40px;text-align: center;}
+.likeit input {display: none;}
+.likeit .num {font-size: 20px;font-weight: 500;line-height: 75px;color: var(--dark);vertical-align: bottom;}
+.likeit .like .num {float: left;}
+.likeit span {display: inline-block;}
+.likeit span + span {margin-left: 15px;}
+.likeit label {display: inline-block;width: 75px;height: 75px;padding-top: 42px;border-radius: 100px;font-size: 14px;font-weight: 400;color: var(--dark);letter-spacing: -0.03em;text-align: center;cursor: pointer;}
+.likeit .like label:hover, .likeit .dislike label:hover {background-color: #e2e2e2;}
+.likeit label {display: inline-block;width: 75px;height: 75px;margin: 0 15px;padding-top: 42px;border-radius: 40px;font-size: 14px;letter-spacing: -1px;text-align: center;cursor: pointer;}
+.likeit input:checked ~ .num {color: #366abe;}
+.likeit .like label {background: #eee url(../images/icon/thumbs_up.svg) no-repeat 50% 30%;}
+.likeit .like input:checked + label {color: #FFFFFF;background: #366abe url(../images/icon/thumbs_up_on.svg) no-repeat 50% 30%;}
+.likeit .dislike label {background: #eee url(../images/icon/thumbs_down.svg) no-repeat 50% 30%;}
+.likeit .dislike input:checked + label {color: #FFFFFF;background: #366abe url(../images/icon/thumbs_down_on.svg) no-repeat 50% 30%;}
+.likeit label:hover {background-color: #E2E2E2;}
+
+/* board link prev/next post */
+.oth_post {margin-top: 20px;border-top: 1px solid var(--tbl-bdr);border-bottom: 1px solid var(--tbl-bdr);}
+.oth_post th, .oth_post td {position: relative;height: 42px;padding: 8px 10px;border-bottom: 1px solid var(--tbl-bdr);font-size: 14px;font-weight: 400;color: var(--dark);text-align: left;background: #FFFFFF;}
+.oth_post th {padding-left: 15px;font-weight: normal;background: var(--tbl-th);}
+.oth_post i {margin-left: 12px;color: var(--dark);}
+.oth_post a.ellipsis {display: block;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_1_3">
+                        <ul>
+                            <li><a href="images/icon/i_share.svg" title="Download" download>i_share.svg</a></li>
+                            <li><a href="images/icon/i_print.svg" title="Download" download>i_print.svg</a></li>
+                            <li><a href="images/icon/i_siren.svg" title="Download" download>i_siren.svg</a></li>
+                            <li><a href="images/icon/thumbs_up.svg" title="Download" download>thumbs_up.svg</a></li>
+                            <li><a href="images/icon/thumbs_up_on.svg" title="Download" download>thumbs_up_on.svg</a></li>
+                            <li><a href="images/icon/thumbs_down.svg" title="Download" download>thumbs_down.svg</a></li>
+                            <li><a href="images/icon/thumbs_down_on.svg" title="Download" download>thumbs_down_on.svg</a></li>
+                            <li><a href="images/icon/file_img.svg" title="Download" download>file_img.svg</a></li>
+                            <li>그 외 file icon은 [버튼 & 태그 > 첨부파일 이미지] 참고</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">댓글</h2>
+                <div class="ui_sample">
+                    <div class="cmnt_area">
+                        <div class="cmnt_write">
+                            <div class="write_box">
+                                <textarea rows="3" placeholder="0자 이내"></textarea>
+                                <button type="button" class="btn blue">등록</button>
+                            </div>
+                        </div>
+                        <div class="cmnt_list">
+                            <span class="cmnt_num">댓글<strong>0</strong>건</span>
+                            <ul class="list">
+                                <li>
+                                    <div class="reply_box">
+                                        <div class="reply_txt">
+                                            <div class="info">
+                                                <span>정보시스템부 홍길동</span>
+                                                <span>2022.04.13 12:00</span>
+                                                <a href="">신고</a>
+                                            </div>
+                                            <div class="btns">
+                                                <button class="btn sml">수정</button>
+                                                <button class="btn sml gray">삭제</button>
+                                            </div>
+                                            <p>댓글</p>
+                                            <div class="btn_area">
+                                                <button type="button" class="btn reply icl js_reReply"><i class="xi-speech-o"></i>답글<strong>1</strong></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 댓글의 댓글 -->
+                                    <div class="re_reply">
+                                        <ul>
+                                            <!-- 댓글의 댓글 등록 -->
+                                            <li class="write_box">
+                                                <textarea rows="2" placeholder="0자 이내"></textarea>
+                                                <button type="button" class="btn blue">등록</button>
+                                            </li>
+                                            <!-- // 댓글의 댓글 등록 -->
+                                            <li>
+                                                <div class="info">
+                                                    <span>정보시스템부 홍길동</span>
+                                                    <span>2022.04.13 12:00</span>
+                                                    <a href="">신고</a>
+                                                </div>
+                                                <div class="btns">
+                                                    <button class="btn sml">수정</button>
+                                                    <button class="btn sml gray">삭제</button>
+                                                </div>
+                                                <p>댓글</p>
+                                            </li>
+                                            <!-- 댓글의 댓글 수정 -->
+                                            <li>
+                                                <div class="info">
+                                                    <span>정보시스템부 홍길동</span>
+                                                    <span>2022.04.13 12:00</span>
+                                                    <a href="">신고</a>
+                                                </div>
+                                                <div class="write_box">
+                                                    <textarea rows="2" placeholder="0자 이내"></textarea>
+                                                    <button type="button" class="btn blue">수정</button>
+                                                </div>
+                                            </li>
+                                            <!-- // 댓글의 댓글 수정 -->
+                                        </ul>
+                                        <a href="" class="cmnt_more">답글 더보기 <i class="xi-plus"></i></a>
+                                    </div>
+                                    <!-- // 댓글의 댓글 -->
+                                </li>
+                                <!-- 댓글 수정 -->
+                                <li>
+                                    <div class="reply_box">
+                                        <div class="reply_txt">
+                                            <div class="info">
+                                                <span>정보시스템부 홍길동</span>
+                                                <span>2022.04.13 12:00</span>
+                                                <a href="">신고</a>
+                                            </div>
+                                            <div class="write_box">
+                                                <textarea rows="3" placeholder="0자 이내"></textarea>
+                                                <button type="button" class="btn blue">수정</button>
+                                            </div>
+                                            <div class="btn_area">
+                                                <button type="button" class="btn reply icl js_reReply"><i class="xi-speech-o"></i>답글<strong>0</strong></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!--// 댓글 수정-->
+                                <li class="no_data">등록된 댓글이 없습니다.</li>
+                            </ul>
+                            <a href="" class="cmnt_more">더보기 <i class="xi-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                        <li id="code03_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="cmnt_area"&gt;
+    &lt;div class="cmnt_write"&gt;
+        &lt;div class="write_box"&gt;
+            &lt;textarea rows="3" placeholder="0자 이내"&gt;&lt;/textarea&gt;
+            &lt;button type="button" class="btn blue"&gt;등록&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="cmnt_list"&gt;
+        &lt;span class="cmnt_num"&gt;댓글&lt;strong&gt;0&lt;/strong&gt;건&lt;/span&gt;
+        &lt;ul class="list"&gt;
+            &lt;li&gt;
+                &lt;div class="reply_box"&gt;
+                    &lt;div class="reply_txt"&gt;
+                        &lt;div class="info"&gt;
+                            &lt;span&gt;정보시스템부 홍길동&lt;/span&gt;
+                            &lt;span&gt;2022.04.13 12:00&lt;/span&gt;
+                            &lt;a href=""&gt;신고&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div class="btns"&gt;
+                            &lt;button class="btn sml"&gt;수정&lt;/button&gt;
+                            &lt;button class="btn sml gray"&gt;삭제&lt;/button&gt;
+                        &lt;/div&gt;
+                        &lt;p&gt;댓글&lt;/p&gt;
+                        &lt;div class="btn_area"&gt;
+                            &lt;button type="button" class="btn reply icl js_reReply"&gt;&lt;i class="xi-speech-o"&gt;&lt;/i&gt;답글&lt;strong&gt;1&lt;/strong&gt;&lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;!-- 댓글의 댓글 --&gt;
+                &lt;div class="re_reply"&gt;
+                    &lt;ul&gt;
+                        &lt;!-- 댓글의 댓글 등록 --&gt;
+                        &lt;li class="write_box"&gt;
+                            &lt;textarea rows="2" placeholder="0자 이내"&gt;&lt;/textarea&gt;
+                            &lt;button type="button" class="btn blue"&gt;등록&lt;/button&gt;
+                        &lt;/li&gt;
+                        &lt;!-- // 댓글의 댓글 등록 --&gt;
+                        &lt;li&gt;
+                            &lt;div class="info"&gt;
+                                &lt;span&gt;정보시스템부 홍길동&lt;/span&gt;
+                                &lt;span&gt;2022.04.13 12:00&lt;/span&gt;
+                                &lt;a href=""&gt;신고&lt;/a&gt;
+                            &lt;/div&gt;
+                            &lt;div class="btns"&gt;
+                                &lt;button class="btn sml"&gt;수정&lt;/button&gt;
+                                &lt;button class="btn sml gray"&gt;삭제&lt;/button&gt;
+                            &lt;/div&gt;
+                            &lt;p&gt;댓글&lt;/p&gt;
+                        &lt;/li&gt;
+                        &lt;!-- 댓글의 댓글 수정 --&gt;
+                        &lt;li&gt;
+                            &lt;div class="info"&gt;
+                                &lt;span&gt;정보시스템부 홍길동&lt;/span&gt;
+                                &lt;span&gt;2022.04.13 12:00&lt;/span&gt;
+                                &lt;a href=""&gt;신고&lt;/a&gt;
+                            &lt;/div&gt;
+                            &lt;div class="write_box"&gt;
+                                &lt;textarea rows="2" placeholder="0자 이내"&gt;&lt;/textarea&gt;
+                                &lt;button type="button" class="btn blue"&gt;수정&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/li&gt;
+                        &lt;!-- // 댓글의 댓글 수정 --&gt;
+                    &lt;/ul&gt;
+                    &lt;a href="" class="cmnt_more"&gt;답글 더보기 &lt;i class="xi-plus"&gt;&lt;/i&gt;&lt;/a&gt;
+                &lt;/div&gt;
+                &lt;!-- // 댓글의 댓글 --&gt;
+            &lt;/li&gt;
+            &lt;!-- 댓글 수정 --&gt;
+            &lt;li&gt;
+                &lt;div class="reply_box"&gt;
+                    &lt;div class="reply_txt"&gt;
+                        &lt;div class="info"&gt;
+                            &lt;span&gt;정보시스템부 홍길동&lt;/span&gt;
+                            &lt;span&gt;2022.04.13 12:00&lt;/span&gt;
+                            &lt;a href=""&gt;신고&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div class="write_box"&gt;
+                            &lt;textarea rows="3" placeholder="0자 이내"&gt;&lt;/textarea&gt;
+                            &lt;button type="button" class="btn blue"&gt;수정&lt;/button&gt;
+                        &lt;/div&gt;
+                        &lt;div class="btn_area"&gt;
+                            &lt;button type="button" class="btn reply icl js_reReply"&gt;&lt;i class="xi-speech-o"&gt;&lt;/i&gt;답글&lt;strong&gt;0&lt;/strong&gt;&lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            &lt;!--// 댓글 수정--&gt;
+            &lt;li class="no_data"&gt;등록된 댓글이 없습니다.&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;a href="" class="cmnt_more"&gt;더보기 &lt;i class="xi-plus"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** board ***/
+/** board comment area **/
+.cmnt_area {position: relative;margin-top: 20px;}
+.cmnt_write {padding: 20px;border: 1px solid var(--tbl-bdr);background: var(--basic-bg);}
+.write_box {display: flex;}
+.write_box textarea {font-size: 15px;}
+.write_box .btn {min-width: 100px;height: auto;margin-left: 10px;}
+.cmnt_list .info + .write_box {margin-top: 10px;}
+
+/* board comment list */
+.cmnt_list {margin-top: 20px;}
+.cmnt_num {display: inline-block;margin: 0 15px 10px 0;font-size: 15px;color: var(--dark);}
+.cmnt_num strong {margin: 0 3px 0 5px;}
+
+/* comment list */
+.cmnt_list .list {position: relative;border-top: 1px solid var(--tbl-bdr);font-size: 15px;}
+.cmnt_list .list li {position: relative;}
+.cmnt_list .list .btn, .cmnt_list .list .btn i {font-size: 14px;}
+.cmnt_list .list > li {border-bottom: 1px solid var(--tbl-bdr);}
+.cmnt_list .list > li.no_data {padding: 15px 0;color: var(--dark);}
+.cmnt_list .reply_box {padding: 15px 0;}
+.cmnt_list .reply_txt {margin-top: 6px;color: var(--dark);word-break: break-all;}
+.cmnt_list .reply_btn {margin-top: 10px;}
+
+/* comment info */
+.cmnt_list .info {margin-bottom: 6px;font-size: 14px;}
+.cmnt_list .info * {display: inline-block;line-height: 1;color: var(--gray);}
+.cmnt_list .info *:first-child {font-weight: 500;color: var(--dark);}
+.cmnt_list .info * + * {margin-left: 8px;padding-left: 8px;border-left: 1px solid var(--tbl-bdr);}
+.cmnt_list .info a:hover {color: var(--dark);}
+
+/* comment button */
+.cmnt_list .list li .btns {position: absolute;right: 0;top: 16px;}
+.cmnt_list .list .re_reply .btns {top: 10px;}
+.cmnt_list .reply_txt .btn_area {display: flex;justify-content: space-between;}
+.cmnt_list .btn_area {margin-top: 15px;}
+.cmnt_list .btn_area .btn {min-width: auto;height: 25px;padding: 0;border: 0;line-height: 25px;color: var(--dark);background: transparent;}
+.cmnt_list .btn.reply strong {margin-left: 5px;}
+
+/* comment re reply */
+.cmnt_list .re_reply {display: none;border-top: 1px dashed var(--tbl-bdr);background: var(--basic-bg);}
+.cmnt_list .re_reply ul {padding: 0 25px;}
+.cmnt_list .re_reply li {padding: 15px 0;}
+.cmnt_list .re_reply li + li {border-top: 1px solid var(--tbl-bdr);}
+.cmnt_list .re_reply li p {color: var(--dark);}
+.cmnt_list .re_reply .cmnt_more {margin-top: 0;border-top: 1px solid var(--tbl-bdr);font-size: 14px;line-height: 40px;background: transparent;}
+.cmnt_list .re_reply .cmnt_more:hover {background: rgba(0, 0, 0, 0.03);}
+
+/* comment more button */
+.cmnt_more {display: block;margin-top: 15px;font-size: 15px;line-height: 45px;color: var(--dark);text-align: center;background: var(--btn-hover);}
+.cmnt_more:hover {background: #ebebeb;}
+.cmnt_more i {position: relative;top: 1px;}
+/** // board comment area **/</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_3">
+                        <pre>
+<code class="line-numbers language-js">// reply
+$(document).ready(function () {
+    $('.js_reReply').click(function () {
+        $(this).parents('.reply_box').siblings('.re_reply').toggle();
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab04">
+                <h2 class="section_main_ttl">등록</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>1. 항목 기준으로 1행 2열배열은 <span class="impact">2:3:2:3</span> / 1행 1열배열은 <span class="impact">2:8</span>을 유지한다.</dt>
+                        <dt>2. th의 col은 기본 <span class="impact">style="width: 20%;"</span>로 한다.</dt>
+                        <dt>3. 테이블 내 input은 기본적으로 width: auto; 이고, 필요한 경우 간격&font js를 이용해 class로 width를 지정한다.</dt>
+                        <dd>ex. &lt;input type="text" <span class="impact">class="w30p"</span>&gt;</dd>
+                        <dt>4. 기본 <span class="impact">행 높이는 42px</span>로 한다.</dt>
+                        <dt>5. 필수 입력</dt>
+                        <dd>
+                            └ 항목명 좌측에 구성함으로써 정렬이 흔들리지 않게 유지한다.<br>
+                            └ 테이블 위: <span class="impact">&lt;div class="form_guide"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 필수입력&lt;/div&gt;</span><br>
+                            └ th 안: <span class="impact">&lt;span class="asterisk"&gt;*&lt;/span&gt; 텍스트</span>
+                        </dd>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <div class="board_top">
+                        <!-- <div class="board_left"></div> -->
+                        <div class="board_right">
+                            <div class="form_guide"><span class="asterisk">*</span>필수입력</div>
+                        </div>
+                    </div>
+                    <table class="board_write">
+                        <colgroup>
+                            <col style="width: 20%;">
+                            <col>
+                            <col style="width: 20%;">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row"><span class="asterisk">*</span>제목</th>
+                                <td colspan="3"><input type="text" class="w100p"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">타이틀</th>
+                                <td>
+                                    <select name="" id="">
+                                        <option value="">옵션</option>
+                                        <option value="">옵션</option>
+                                        <option value="">옵션</option>
+                                    </select>
+                                </td>
+                                <th scope="row">타이틀</th>
+                                <td>
+                                    <span class="chk">
+                                        <span class="cbx"><input type="checkbox" name="cbx01" id="cbx01_1"><label for="cbx01_1">체크박스 cbx</label></span>
+                                        <span class="cbx"><input type="checkbox" name="cbx01" id="cbx01_2"><label for="cbx01_2">체크박스 cbx</label></span>
+                                        <span class="cbx"><input type="checkbox" name="cbx01" id="cbx01_3"><label for="cbx01_3">체크박스 cbx</label></span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><span class="asterisk">*</span>내용</th>
+                                <td colspan="3"><textarea rows="5" placeholder="0자 이내"></textarea></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">첨부파일</th>
+                                <td colspan="3">
+                                    <div class="file_wrap">
+                                        <button type="button" class="btn bd blue btn_file"><span class="fa_check">파일선택</span></button>
+                                        <button type="button" class="btn bd red btn_fileDel"><span class="fa_remove">파일삭제</span></button>
+                                        <span class="pad_l5">파일은 최대 5개까지 첨부 가능합니다. (개별 용량 10MB)</span>
+                                        <table class="tbl_file">
+                                            <caption>첨부파일 업로드 목록</caption>
+                                            <colgroup>
+                                                <col style="width: 10%;">
+                                                <col>
+                                                <col style="width: 15%;">
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">
+                                                        <span class="chk">
+                                                            <span class="cbx no_txt"><input type="checkbox" name="selectFile" id="allFile" title="전체선택"><label for="allFile"></label></span>
+                                                        </span>
+                                                    </th>
+                                                    <th scope="col">첨부파일명</th>
+                                                    <th scope="col">용량</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span class="chk">
+                                                            <span class="cbx no_txt"><input type="checkbox" name="file" id="file01"><label for="file01"></label></span>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="file_tit">
+                                                            <label for="file1"><span><img src="images/icon/file_hwp.svg" alt="hwp"></span>첨부파일1</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>4.43MB</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3"> 첨부파일이 없습니다.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="file_dragarea">
+                                        <em class="file_txt">마우스로 드래그해서 첨부파일을 추가해 주세요.</em>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="btn_area">
+                        <button type="button" class="btn blue">등록</button>
+                        <button type="button" class="btn gray">목록</button>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code04_1_1" class="on">html</li>
+                        <li id="code04_1_2">css</li>
+                        <li id="code04_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code04_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="board_top"&gt;
+    &lt;!-- &lt;div class="board_left"&gt;&lt;/div&gt; --&gt;
+    &lt;div class="board_right"&gt;
+        &lt;div class="form_guide"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt;필수입력&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;table class="board_write"&gt;
+    &lt;colgroup&gt;
+        &lt;col style="width: 20%;"&gt;
+        &lt;col&gt;
+        &lt;col style="width: 20%;"&gt;
+        &lt;col&gt;
+    &lt;/colgroup&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt;제목&lt;/th&gt;
+            &lt;td colspan="3"&gt;&lt;input type="text" class="w100p"&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;타이틀&lt;/th&gt;
+            &lt;td&gt;
+                &lt;select name="" id=""&gt;
+                    &lt;option value=""&gt;옵션&lt;/option&gt;
+                    &lt;option value=""&gt;옵션&lt;/option&gt;
+                    &lt;option value=""&gt;옵션&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/td&gt;
+            &lt;th scope="row"&gt;타이틀&lt;/th&gt;
+            &lt;td&gt;
+                &lt;span class="chk"&gt;
+                    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_1"&gt;&lt;label for="cbx01_1"&gt;체크박스 cbx&lt;/label&gt;&lt;/span&gt;
+                    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_2"&gt;&lt;label for="cbx01_2"&gt;체크박스 cbx&lt;/label&gt;&lt;/span&gt;
+                    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_3"&gt;&lt;label for="cbx01_3"&gt;체크박스 cbx&lt;/label&gt;&lt;/span&gt;
+                &lt;/span&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt;내용&lt;/th&gt;
+            &lt;td colspan="3"&gt;&lt;textarea rows="5" placeholder="0자 이내"&gt;&lt;/textarea&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;첨부파일&lt;/th&gt;
+            &lt;td colspan="3"&gt;
+                &lt;div class="file_wrap"&gt;
+                    &lt;button type="button" class="btn bd blue btn_file"&gt;&lt;span class="fa_check"&gt;파일선택&lt;/span&gt;&lt;/button&gt;
+                    &lt;button type="button" class="btn bd red btn_fileDel"&gt;&lt;span class="fa_remove"&gt;파일삭제&lt;/span&gt;&lt;/button&gt;
+                    &lt;span class="pad_l5"&gt;파일은 최대 5개까지 첨부 가능합니다. (개별 용량 10MB)&lt;/span&gt;
+                    &lt;table class="tbl_file"&gt;
+                        &lt;caption&gt;첨부파일 업로드 목록&lt;/caption&gt;
+                        &lt;colgroup&gt;
+                            &lt;col style="width: 10%;"&gt;
+                            &lt;col&gt;
+                            &lt;col style="width: 15%;"&gt;
+                        &lt;/colgroup&gt;
+                        &lt;thead&gt;
+                            &lt;tr&gt;
+                                &lt;th scope="col"&gt;
+                                    &lt;span class="chk"&gt;
+                                        &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="selectFile" id="allFile" title="전체선택"&gt;&lt;label for="allFile"&gt;&lt;/label&gt;&lt;/span&gt;
+                                    &lt;/span&gt;
+                                &lt;/th&gt;
+                                &lt;th scope="col"&gt;첨부파일명&lt;/th&gt;
+                                &lt;th scope="col"&gt;용량&lt;/th&gt;
+                            &lt;/tr&gt;
+                        &lt;/thead&gt;
+                        &lt;tbody&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;
+                                    &lt;span class="chk"&gt;
+                                        &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="file" id="file01"&gt;&lt;label for="file01"&gt;&lt;/label&gt;&lt;/span&gt;
+                                    &lt;/span&gt;
+                                &lt;/td&gt;
+                                &lt;td&gt;
+                                    &lt;div class="file_tit"&gt;
+                                        &lt;label for="file1"&gt;&lt;span&gt;&lt;img src="images/icon/file_hwp.svg" alt="hwp"&gt;&lt;/span&gt;첨부파일1&lt;/label&gt;
+                                    &lt;/div&gt;
+                                &lt;/td&gt;
+                                &lt;td&gt;4.43MB&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;td colspan="3"&gt;첨부파일이 없습니다.&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/tbody&gt;
+                    &lt;/table&gt;
+                &lt;/div&gt;
+                &lt;div class="file_dragarea"&gt;
+                    &lt;em class="file_txt"&gt;마우스로 드래그해서 첨부파일을 추가해 주세요.&lt;/em&gt;
+                &lt;/div&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="btn_area"&gt;
+    &lt;button type="button" class="btn blue"&gt;등록&lt;/button&gt;
+    &lt;button type="button" class="btn gray"&gt;목록&lt;/button&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code04_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** board ***/
+/* board write */
+.board_write {border-top: 1px solid var(--black);}
+.board_write > tbody > tr > th, .board_write > tbody > tr > td {position: relative;height: 47px;padding: 8px 10px;border-bottom: 1px solid var(--tbl-bdr);font-size: 14px;font-weight: 400;color: var(--dark);text-align: left;background: #FFFFFF;}
+.board_write > tbody > tr > th {padding-left: 25px;font-weight: 500;background: var(--tbl-th);}
+.board_write > tbody > tr > td + td[rowspan] {border-left: 1px solid var(--tbl-bdr);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code04_1_3">
+                        <ul>
+                            <li><a href="images/icon/fa_check.svg" title="Download" download>fa_check.svg</a></li>
+                            <li><a href="images/icon/fa_remove.svg" title="Download" download>fa_remove.svg</a></li>
+                            <li><a href="images/icon/bg_drag_image.png" title="Download" download>bg_drag_image.png</a></li>
+                            <li><a href="images/icon/file_hwp.svg" title="Download" download>file_hwp.svg</a></li>
+                            <li>그 외 file icon은 [버튼 & 태그 > 첨부파일 이미지] 참고</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab05">
+                <h2 class="section_main_ttl">Q&A</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>1. th의 col은 기본 <span class="impact">style="width: 20%;"</span>로 한다.</dt>
+                    </dl>
+                </section>
+                <div class="ui_sample">
+                    <table class="board_reply">
+                        <colgroup>
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="tit">답변제목</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>답변내용</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="board_reply">
+                        <colgroup>
+                            <col style="width: 20%;">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row">답변내용</th>
+                                <td><textarea rows="5" placeholder="0자 이내"></textarea></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code05_1_1" class="on">html</li>
+                        <li id="code05_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code05_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;table class="board_reply"&gt;
+    &lt;colgroup&gt;
+        &lt;col&gt;
+    &lt;/colgroup&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;div class="tit"&gt;답변제목&lt;/div&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;답변내용&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table class="board_reply"&gt;
+    &lt;colgroup&gt;
+        &lt;col style="width: 20%;"&gt;
+        &lt;col&gt;
+    &lt;/colgroup&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;답변내용&lt;/th&gt;
+            &lt;td&gt;&lt;textarea rows="5" placeholder="0자 이내"&gt;&lt;/textarea&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code05_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** board ***/
+/* board reply */
+.board_reply {margin-top: 20px;border-top: 1px solid var(--black);}
+.board_reply > tbody > tr > th, .board_reply > tbody > tr > td {position: relative;height: 42px;padding: 8px 10px;border-bottom: 1px solid var(--tbl-bdr);font-size: 14px;font-weight: 400;color: var(--dark);text-align: left;background: #FFFFFF;}
+.board_reply > tbody > tr > th {padding-left: 15px;font-weight: 500;background: var(--tbl-th);}
+.board_reply .tit {display: inline-block;position: relative;padding-left: 20px;font-weight: 500;color: #1156c8;}
+.board_reply .tit::before {content: '\e981';font-family: 'xeicon';position: absolute;left: 0;top: 0;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab06">
+                <h2 class="section_main_ttl">FAQ</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>1. faq에 적용되는 js: <span class="impact">기타 > accordion 참고</span></dt>
+                    </dl>
+                </section>
+                <h3 class="section_sub_ttl">전체 오픈 o</h3>
+                <div class="ui_sample">
+                    <div class="faq_list js_accWrap">
+                        <dl class="js_accBox">
+                            <dt class="js_accHead">
+                                <a href="">
+                                    <span>Q.</span>
+                                    <p>질문</p>
+                                    <i class="xi-angle-down-min"></i>
+                                </a>
+                            </dt>
+                            <dd class="js_accCont">
+                                <span>A.</span>답변
+                            </dd>
+                        </dl>
+                        <dl class="js_accBox">
+                            <dt class="js_accHead">
+                                <a href=""><span>Q.</span>
+                                    <p>질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다.</p>
+                                    <i class="xi-angle-down-min"></i>
+                                </a>
+                            </dt>
+                            <dd class="js_accCont">
+                                <span>A.</span>
+                                <p>답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다.</p>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">전체 오픈 x</h3>
+                <div class="ui_sample">
+                    <div class="faq_list js_accWrap_each">
+                        <dl class="js_accBox">
+                            <dt class="js_accHead">
+                                <a href="">
+                                    <span>Q.</span>
+                                    질문
+                                    <i class="xi-angle-down-min"></i>
+                                </a>
+                            </dt>
+                            <dd class="js_accCont">
+                                <span>A.</span>답변
+                            </dd>
+                        </dl>
+                        <dl class="js_accBox">
+                            <dt class="js_accHead">
+                                <a href=""><span>Q.</span>
+                                    <p>질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다. 질문이 긴 경우입니다.</p>
+                                    <i class="xi-angle-down-min"></i>
+                                </a>
+                            </dt>
+                            <dd class="js_accCont">
+                                <span>A.</span>
+                                <p>답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다. 답변이 긴 경우입니다.</p>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code06_1_1" class="on">html</li>
+                        <li id="code06_1_2">css</li>
+                        <li id="code06_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code06_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;!-- &lt;div class="faq_list js_accWrap_each"&gt; --&gt;&lt;!-- 전체 오픈 x --&gt;
+&lt;div class="faq_list js_accWrap"&gt;&lt;!-- 전체 오픈 o --&gt;
+    &lt;dl class="js_accBox"&gt;
+        &lt;dt class="js_accHead"&gt;
+            &lt;a href=""&gt;
+                &lt;span&gt;Q.&lt;/span&gt;
+                &lt;p&gt;질문&lt;/p&gt;
+                &lt;i class="xi-angle-down-min"&gt;&lt;/i&gt;
+            &lt;/a&gt;
+        &lt;/dt&gt;
+        &lt;dd class="js_accCont"&gt;
+            &lt;span&gt;A.&lt;/span&gt;
+            답변
+        &lt;/dd&gt;
+    &lt;/dl&gt;
+    &lt;dl class="js_accBox"&gt;
+        &lt;dt class="js_accHead"&gt;
+            &lt;a href=""&gt;
+                &lt;span&gt;Q.&lt;/span&gt;
+                 &lt;p&gt;질문&lt;/p&gt;
+                &lt;i class="xi-angle-down-min"&gt;&lt;/i&gt;
+            &lt;/a&gt;
+        &lt;/dt&gt;
+        &lt;dd class="js_accCont"&gt;
+            &lt;span&gt;A.&lt;/span&gt;
+            답변
+        &lt;/dd&gt;
+    &lt;/dl&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code06_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** faq **/
+.faq_list {position: relative;}
+.faq_list dl {background: #FFFFFF;}
+.faq_list dl:first-of-type {border-top: 1px solid var(--black);}
+.faq_list dl:last-of-type {border-bottom: 1px solid var(--black);}
+.faq_list dl dt {position: relative;min-height: 60px;border-top: 1px solid var(--bdr);}
+.faq_list dl dt a {display: flex;align-items: center;position: relative;width: 100%;height: 100%;padding: 20px 70px 20px 90px;font-size: 19px;font-weight: bold;line-height: 1.3;color: var(--dark);}
+.faq_list dl dt span {display: block;position: absolute;left: 40px;top: 21px;font-size: 19px;font-weight: 900;color: var(--dark);}
+.faq_list dl dt i {position: absolute;right: 25px;top: 18px;font-size: 35px;color: var(--black);transition: all 0.2s;}
+.faq_list dl.open dt, .faq_list dl dt:hover {background: var(--basic-bg);}
+.faq_list dl.open dt i {transform: rotate(180deg);}
+.faq_list dl dd {display: none;position: relative;padding: 30px 40px 30px 90px;border-top: 1px solid var(--bdr);font-size: 18px;font-weight: 400;line-height: 1.3;color: var(--dark);}
+.faq_list dl dd span {display: block;position: absolute;left: 43px;font-size: 19px;font-weight: 900;color: var(--blue);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code06_1_3">
+                        <pre>
+<code class="line-numbers language-js">// accordion (ex faq)
+$(document).ready(function () {
+    $('.js_accCont').hide();
+    if ($('[class*="js_accWrap"]').length) {
+        $('.js_accHead').click(function () {
+            // if each
+            if ($(this).parents('[class*="js_accWrap"]').hasClass('js_accWrap_each')) {
+                $(this).parents('.js_accBox').siblings('.js_accBox').removeClass('open');
+                $(this).parents('.js_accBox').siblings('.js_accBox').find('.js_accCont').stop().slideUp(200);
+            }
+
+            // open
+            if ($(this).parents('.js_accBox').hasClass('open')) {
+                $(this).parents('.js_accBox').removeClass('open').find('.js_accCont').stop().slideUp(200);
+            } else {
+                $(this).parents('.js_accBox').addClass('open').find('.js_accCont').stop().slideDown(200);
+            }
+            return false;
+        });
+    }
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab07">
+                <h2 class="section_main_ttl">갤러리</h2>
+                <div class="ui_sample">
+                    <div class="gallery_wrap">
+                        <ul class="thum_list">
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code07_1_1" class="on">html</li>
+                        <li id="code07_1_2">css</li>
+                        <li id="code07_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code07_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="gallery_wrap"&gt;
+    &lt;ul class="thum_list"&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;
+                &lt;figure class="thum_img"&gt;&lt;img src="images/content/temp_img01.jpg" alt="image"&gt;&lt;/figure&gt;
+                &lt;div class="thum_txt"&gt;
+                    &lt;div class="tit"&gt;타이틀&lt;/div&gt;
+                    &lt;div class="date"&gt;2022-01-01&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code07_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** gallery **/
+.gallery_wrap {position: relative;}
+.gallery_wrap .thum_list {display: flex;flex-wrap: wrap;justify-content: space-between;}
+.gallery_wrap .thum_list li {overflow: hidden;width: calc((100% - 120px) / 4);margin-bottom: 30px;border: 1px solid var(--bdr);border-radius: 5px;}
+.gallery_wrap .thum_list li > a {display: block;}
+.gallery_wrap .thum_img {overflow: hidden;position: relative;width: 100%;padding-top: 75.4%;}
+.gallery_wrap .thum_img img {position: absolute;left: 50%;top: 50%;width: 100%;height: 100%;object-fit: cover;transform: translate(-50%, -50%);transition: .4s;}
+.gallery_wrap .thum_txt {min-height: 70px;padding: 15px;background: #FFFFFF;}
+.gallery_wrap .thum_txt .tit {margin-bottom: 7px;font-size: 18px;font-weight: 500;line-height: 1;color: var(--dark);overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.gallery_wrap .thum_txt .date {font-size: 14px;font-weight: 400;line-height: 1;color: var(--gray);}
+.gallery_wrap .thum_list li .thum_img::before {content: '';opacity: 0;position: absolute;left: 0;top: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.3);z-index: 1;transition: 0.1s;}
+.gallery_wrap .thum_list li:hover .thum_img::before {opacity: 1;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code07_1_3">
+                        <ul>
+                            <li><a href="images/content/temp_img01.jpg" title="Download" download>temp_img01.jpg</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab08">
+                <h2 class="section_main_ttl">갤러리 박스형</h2>
+                <div class="ui_sample">
+                    <div class="gallery_wrap">
+                        <ul class="thum_list">
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div>
+                                            <span class="area01">대전세종충남본부</span>
+                                            <span class="area02">보령지점</span>
+                                        </div>
+                                        <div class="tit">샘플이미지</div>
+                                        <p class="txt">논산지점은 8월 18일 아파트 전기안전관리자 및 사무소장 간담회를 개최하였다. 이날 이헌주 지점장의 인사말씀으로 대단위 아파트의 안정적</p>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div>
+                                            <span class="area01">대전세종충남본부</span>
+                                            <span class="area02">보령지점</span>
+                                        </div>
+                                        <div class="tit">샘플이미지</div>
+                                        <p class="txt">논산지점은 8월 18일 아파트 전기안전관리자 및 사무소장 간담회를 개최하였다. 이날 이헌주 지점장의 인사말씀으로 대단위 아파트의 안정적</p>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div>
+                                            <span class="area01">대전세종충남본부</span>
+                                            <span class="area02">보령지점</span>
+                                        </div>
+                                        <div class="tit">샘플이미지</div>
+                                        <p class="txt">논산지점은 8월 18일 아파트 전기안전관리자 및 사무소장 간담회를 개최하였다. 이날 이헌주 지점장의 인사말씀으로 대단위 아파트의 안정적</p>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div>
+                                            <span class="area01">대전세종충남본부</span>
+                                            <span class="area02">보령지점</span>
+                                        </div>
+                                        <div class="tit">샘플이미지</div>
+                                        <p class="txt">논산지점은 8월 18일 아파트 전기안전관리자 및 사무소장 간담회를 개최하였다. 이날 이헌주 지점장의 인사말씀으로 대단위 아파트의 안정적</p>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div>
+                                            <span class="area01">대전세종충남본부</span>
+                                            <span class="area02">보령지점</span>
+                                        </div>
+                                        <div class="tit">샘플이미지</div>
+                                        <p class="txt">논산지점은 8월 18일 아파트 전기안전관리자 및 사무소장 간담회를 개최하였다. 이날 이헌주 지점장의 인사말씀으로 대단위 아파트의 안정적</p>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div>
+                                            <span class="area01">대전세종충남본부</span>
+                                            <span class="area02">보령지점</span>
+                                        </div>
+                                        <div class="tit">샘플이미지</div>
+                                        <p class="txt">논산지점은 8월 18일 아파트 전기안전관리자 및 사무소장 간담회를 개최하였다. 이날 이헌주 지점장의 인사말씀으로 대단위 아파트의 안정적</p>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div>
+                                            <span class="area01">대전세종충남본부</span>
+                                            <span class="area02">보령지점</span>
+                                        </div>
+                                        <div class="tit">샘플이미지</div>
+                                        <p class="txt">논산지점은 8월 18일 아파트 전기안전관리자 및 사무소장 간담회를 개최하였다. 이날 이헌주 지점장의 인사말씀으로 대단위 아파트의 안정적</p>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/content/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div>
+                                            <span class="area01">대전세종충남본부</span>
+                                            <span class="area02">보령지점</span>
+                                        </div>
+                                        <div class="tit">샘플이미지</div>
+                                        <p class="txt">논산지점은 8월 18일 아파트 전기안전관리자 및 사무소장 간담회를 개최하였다. 이날 이헌주 지점장의 인사말씀으로 대단위 아파트의 안정적</p>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code08_1_1" class="on">html</li>
+                        <li id="code08_1_2">css</li>
+                        <li id="code08_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code08_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="gallery_wrap"&gt;
+    &lt;ul class="thum_list"&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;
+                &lt;figure class="thum_img"&gt;&lt;img src="images/content/temp_img01.jpg" alt="image"&gt;&lt;/figure&gt;
+                &lt;div class="thum_txt"&gt;
+                    &lt;div&gt;
+                        &lt;span class="area01"&gt;대전세종충남본부&lt;/span&gt;
+                        &lt;span class="area02"&gt;보령지점&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class="tit"&gt;샘플이미지&lt;/div&gt;
+                    &lt;p class="txt"&gt;논산지점은 8월 18일 아파트 전기안전관리자 및 사무소장 간담회를 개최하였다. 이날 이헌주 지점장의 인사말씀으로 대단위 아파트의 안정적&lt;/p&gt;
+                    &lt;div class="date"&gt;2022-01-01&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code08_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** gallery **/
+/* detail text (box type) */
+.gallery_wrap .thum_txt .txt {margin: 10px 0;font-size: 14px;}
+.gallery_wrap .thum_txt .area01 {display: inline-block;margin-bottom: 5px;font-size: 16px;font-weight: 500;line-height: 1;color: #17a6bb;}
+.gallery_wrap .thum_txt .area02 {display: inline-block;position: relative;margin-bottom: 5px;padding-left: 20px;font-size: 14px;line-height: 1;color: var(--dark);}
+.gallery_wrap .thum_txt .area02::before {content: '';position: absolute;left: 8px;top: 50%;width: 1px;height: 14px;background: #bdbdbd;transform: translateY(-50%);}
+.gallery_wrap .thum_list li:hover .txt {color: #666;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code08_1_3">
+                        <ul>
+                            <li><a href="images/content/temp_img01.jpg" title="Download" download>temp_img01.jpg</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab09">
+                <h2 class="section_main_ttl">캘린더</h2>
+                <div class="ui_sample">
+                    <div class="scheduler_wrap">
+                        <div class="sch_top">
+                            <div class="sch_year">
+                                <span class="prev_y"></span>
+                                2022
+                                <span class="next_y"></span>
+                            </div>
+                            <span class="chk sch_legend">
+                                <span class="personal_work"><input type="checkbox" name="schLegend01" id="schLegend01_1" checked><label for="schLegend01_1">개인업무</label></span>
+                                <span class="department_work"><input type="checkbox" name="schLegend01" id="schLegend01_2" checked><label for="schLegend01_2">부서업무</label></span>
+                                <span class="company_work"><input type="checkbox" name="schLegend01" id="schLegend01_3" checked><label for="schLegend01_3">회사업무</label></span>
+                                <span class="meeting"><input type="checkbox" name="schLegend01" id="schLegend01_4" checked><label for="schLegend01_4">회의</label></span>
+                                <span class="director_work"><input type="checkbox" name="schLegend01" id="schLegend01_5" checked><label for="schLegend01_5">경영진일정</label></span>
+                            </span>
+                        </div>
+                        <ul class="sch_mon">
+                            <li class="on"><a href="">1월</a></li>
+                            <li><a href="">2월</a></li>
+                            <li><a href="">3월</a></li>
+                            <li><a href="">4월</a></li>
+                            <li><a href="">5월</a></li>
+                            <li><a href="">6월</a></li>
+                            <li><a href="">7월</a></li>
+                            <li><a href="">8월</a></li>
+                            <li><a href="">9월</a></li>
+                            <li><a href="">10월</a></li>
+                            <li><a href="">11월</a></li>
+                            <li><a href="">12월</a></li>
+                        </ul>
+                        <table class="sch_tbl">
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">일요일</th>
+                                    <th scope="col">월요일</th>
+                                    <th scope="col">화요일</th>
+                                    <th scope="col">수요일</th>
+                                    <th scope="col">목요일</th>
+                                    <th scope="col">금요일</th>
+                                    <th scope="col">토요일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div></div></td>
+                                    <td><div></div></td>
+                                    <td><div></div></td>
+                                    <td><div></div></td>
+                                    <td><div></div></td>
+                                    <td><div></div></td>
+                                    <td class="red"><div>1</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div>2</div></td>
+                                    <td><div>3</div></td>
+                                    <td><div>4</div></td>
+                                    <td>
+                                        <div>5</div>
+                                        <div class="sch_txt"><span class="personal_work">10:00</span>개인업무</div>
+                                    </td>
+                                    <td><div>6</div></td>
+                                    <td><div>7</div></td>
+                                    <td><div>8</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div>9</div></td>
+                                    <td><div>10</div></td>
+                                    <td>
+                                        <div>11</div>
+                                        <div class="sch_txt"><span class="department_work">10:00</span>부서업무 부서업무 부서업무</div>
+                                        <div class="sch_txt"><span class="company_work">10:00</span>회사업무</div>
+                                    </td>
+                                    <td><div>12</div></td>
+                                    <td><div>13</div></td>
+                                    <td><div>14</div></td>
+                                    <td><div>15</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div>16</div></td>
+                                    <td><div>17</div></td>
+                                    <td><div>18</div></td>
+                                    <td><div>19</div></td>
+                                    <td class="today">
+                                        <div>20</div>
+                                        <div class="sch_txt"><span class="meeting">10:00</span>회의</div>
+                                        <div class="sch_txt"><span class="director_work">10:00</span>경영진일정</div>
+                                    </td>
+                                    <td><div>21</div></td>
+                                    <td><div>22</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div>23</div></td>
+                                    <td><div>24</div></td>
+                                    <td><div>25</div></td>
+                                    <td><div>26</div></td>
+                                    <td><div>27</div></td>
+                                    <td><div>28</div></td>
+                                    <td><div>29</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div>30</div></td>
+                                    <td class="red"><div>31</div></td>
+                                    <td><div></div></td>
+                                    <td><div></div></td>
+                                    <td><div></div></td>
+                                    <td><div></div></td>
+                                    <td><div></div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code09_1_1" class="on">html</li>
+                        <li id="code09_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code09_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="scheduler_wrap"&gt;
+    &lt;div class="sch_top"&gt;
+        &lt;div class="sch_year"&gt;
+            &lt;span class="prev_y"&gt;&lt;/span&gt;
+            2022
+            &lt;span class="next_y"&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;span class="chk sch_legend"&gt;
+            &lt;span class="personal_work"&gt;&lt;input type="checkbox" name="schLegend01" id="schLegend01_1" checked&gt;&lt;label for="schLegend01_1"&gt;개인업무&lt;/label&gt;&lt;/span&gt;
+            &lt;span class="department_work"&gt;&lt;input type="checkbox" name="schLegend01" id="schLegend01_2" checked&gt;&lt;label for="schLegend01_2"&gt;부서업무&lt;/label&gt;&lt;/span&gt;
+            &lt;span class="company_work"&gt;&lt;input type="checkbox" name="schLegend01" id="schLegend01_3" checked&gt;&lt;label for="schLegend01_3"&gt;회사업무&lt;/label&gt;&lt;/span&gt;
+            &lt;span class="meeting"&gt;&lt;input type="checkbox" name="schLegend01" id="schLegend01_4" checked&gt;&lt;label for="schLegend01_4"&gt;회의&lt;/label&gt;&lt;/span&gt;
+            &lt;span class="director_work"&gt;&lt;input type="checkbox" name="schLegend01" id="schLegend01_5" checked&gt;&lt;label for="schLegend01_5"&gt;경영진일정&lt;/label&gt;&lt;/span&gt;
+        &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;ul class="sch_mon"&gt;
+        &lt;li class="on"&gt;&lt;a href=""&gt;1월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;2월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;3월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;4월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;5월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;6월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;7월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;8월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;9월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;10월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;11월&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;12월&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;table class="sch_tbl"&gt;
+        &lt;colgroup&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+            &lt;col&gt;
+        &lt;/colgroup&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th scope="col"&gt;일요일&lt;/th&gt;
+                &lt;th scope="col"&gt;월요일&lt;/th&gt;
+                &lt;th scope="col"&gt;화요일&lt;/th&gt;
+                &lt;th scope="col"&gt;수요일&lt;/th&gt;
+                &lt;th scope="col"&gt;목요일&lt;/th&gt;
+                &lt;th scope="col"&gt;금요일&lt;/th&gt;
+                &lt;th scope="col"&gt;토요일&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td class="red"&gt;&lt;div&gt;1&lt;/div&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;div&gt;2&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;3&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;4&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;div&gt;5&lt;/div&gt;
+                    &lt;div class="sch_txt"&gt;&lt;span class="personal_work"&gt;10:00&lt;/span&gt;개인업무&lt;/div&gt;
+                &lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;6&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;7&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;8&lt;/div&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;div&gt;9&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;10&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;div&gt;11&lt;/div&gt;
+                    &lt;div class="sch_txt"&gt;&lt;span class="department_work"&gt;10:00&lt;/span&gt;부서업무 부서업무 부서업무&lt;/div&gt;
+                    &lt;div class="sch_txt"&gt;&lt;span class="company_work"&gt;10:00&lt;/span&gt;회사업무&lt;/div&gt;
+                &lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;12&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;13&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;14&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;15&lt;/div&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;div&gt;16&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;17&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;18&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;19&lt;/div&gt;&lt;/td&gt;
+                &lt;td class="today"&gt;
+                    &lt;div&gt;20&lt;/div&gt;
+                    &lt;div class="sch_txt"&gt;&lt;span class="meeting"&gt;10:00&lt;/span&gt;회의&lt;/div&gt;
+                    &lt;div class="sch_txt"&gt;&lt;span class="director_work"&gt;10:00&lt;/span&gt;경영진일정&lt;/div&gt;
+                &lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;21&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;22&lt;/div&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;div&gt;23&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;24&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;25&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;26&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;27&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;28&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;29&lt;/div&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;div&gt;30&lt;/div&gt;&lt;/td&gt;
+                &lt;td class="red"&gt;&lt;div&gt;31&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code09_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** scheduler **/
+.scheduler_wrap {position: relative;}
+.scheduler_wrap.tab .tab_cont {margin-top: 0;}
+.scheduler_wrap td.red {color: var(--red) !important;}
+.scheduler_wrap .search_basic {margin-top: 30px;}
+.sch_top {display: flex;justify-content: space-between;align-items: center;margin-bottom: 10px;}
+.sch_top .right {display: flex;align-items: center;}
+.sch_year {font-size: 26px;font-weight: 700;line-height: 1;color: var(--blue);}
+.sch_year > .prev_y, .sch_year > .next_y {font-family: 'xeicon';font-size: 22px;font-weight: 700;cursor: pointer;}
+.sch_year > .prev_y {margin-right: 10px;}
+.sch_year > .next_y {margin-left: 10px;}
+.sch_year > .prev_y::before {content: '\e93b';}
+.sch_year > .next_y::before {content: '\e93e';}
+
+/* scheduler legend */
+.sch_legend {text-align: right;}
+.sch_legend > span label {padding: 0;line-height: inherit;}
+.sch_legend label::before {content: '';display: inline-block;width: 12px;height: 12px;margin-right: 10px;border: 0;border-radius: 6px;vertical-align: baseline;}
+.sch_legend label {color: #dddddd;}
+.sch_legend label::before {background: #ededed;}
+.sch_legend input:checked ~ label {color: var(--black);}
+.sch_legend .personal_work input:checked ~ label::before {background: #fe9f71;}
+.sch_legend .department_work input:checked ~ label::before {background: #32b8b0;}
+.sch_legend .company_work input:checked ~ label::before {background: #339af0;}
+.sch_legend .meeting input:checked ~ label::before {background: #845ef7;}
+.sch_legend .director_work input:checked ~ label::before {background: #6cc07a;}
+
+/* month list */
+.sch_mon {display: flex;}
+.sch_mon li {width: calc(100% / 12);}
+.sch_mon li a {display: block;height: 58px;border-top: 1px solid var(--bdr);border-bottom: 1px solid var(--bdr);font-size: 15px;line-height: 58px;text-align: center;}
+.sch_mon li.on a {border-top: 3px solid var(--blue);font-weight: 500;line-height: 54px;color: var(--blue);background: #ecf2fa;}
+
+/* scheduler table */
+.sch_tbl th, .sch_tbl td {border: 1px solid var(--bdr);font-size: 14px;}
+.sch_tbl th {height: 42px;padding: 5px;border-top: 0;}
+.sch_tbl td {height: 110px;padding: 5px 10px 10px;text-align: right;vertical-align: top;}
+.sch_tbl tr > *:first-child {color: var(--red);}
+.sch_tbl tr > *:last-child {color: var(--blue);}
+.sch_tbl td > div:not(.sch_txt) {cursor: pointer;}
+.sch_tbl td.today {background: #fbf6f7;}
+.sch_tbl .sch_txt {margin-top: 5px;color: var(--dark);text-align: left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.sch_tbl .sch_txt > span {display: inline-block;min-width: 44px;margin-right: 5px;padding: 0 5px;border-radius: 4px;font-size: 13px;line-height: 20px;color: #FFFFFF;text-align: center;}
+.sch_tbl .sch_txt > span.personal_work {background: #fe9f71;}
+.sch_tbl .sch_txt > span.department_work {background: #32b8b0;}
+.sch_tbl .sch_txt > span.company_work {background: #339af0;}
+.sch_tbl .sch_txt > span.meeting {background: #845ef7;}
+.sch_tbl .sch_txt > span.director_work {background: #6cc07a;}
+/** // scheduler **/</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab10">
+                <h2 class="section_main_ttl">캘린더 상세형</h2>
+                <div class="ui_sample">
+                    <div class="scheduler_wrap tab">
+                        <div class="sch_top">
+                            <div class="sch_year">
+                                <span class="prev_y"></span>
+                                2022
+                                <span class="next_y"></span>
+                            </div>
+                            <div class="right">
+                                <span class="chk sch_legend">
+                                    <span class="personal_work"><input type="checkbox" name="schLegend02" id="schLegend02_1" checked><label for="schLegend02_1">개인업무</label></span>
+                                    <span class="department_work"><input type="checkbox" name="schLegend02" id="schLegend02_2" checked><label for="schLegend02_2">부서업무</label></span>
+                                    <span class="company_work"><input type="checkbox" name="schLegend02" id="schLegend02_3" checked><label for="schLegend02_3">회사업무</label></span>
+                                    <span class="meeting"><input type="checkbox" name="schLegend02" id="schLegend02_4" checked><label for="schLegend02_4">회의</label></span>
+                                    <span class="director_work"><input type="checkbox" name="schLegend02" id="schLegend02_5" checked><label for="schLegend02_5">경영진일정</label></span>
+                                </span>
+                                <ul class="sch_type js_tmenu">
+                                    <li id="schBasic" class="cal on"><a href="">calendar</a></li>
+                                    <li id="schToday" class="today"><a href="">today</a></li>
+                                    <li id="schList" class="list"><a href="">list</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab_cont js_tcont on" data-tab="schBasic">
+                            <ul class="sch_mon">
+                                <li class="on"><a href="">1월</a></li>
+                                <li><a href="">2월</a></li>
+                                <li><a href="">3월</a></li>
+                                <li><a href="">4월</a></li>
+                                <li><a href="">5월</a></li>
+                                <li><a href="">6월</a></li>
+                                <li><a href="">7월</a></li>
+                                <li><a href="">8월</a></li>
+                                <li><a href="">9월</a></li>
+                                <li><a href="">10월</a></li>
+                                <li><a href="">11월</a></li>
+                                <li><a href="">12월</a></li>
+                            </ul>
+                            <table class="sch_tbl">
+                                <colgroup>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">일요일</th>
+                                        <th scope="col">월요일</th>
+                                        <th scope="col">화요일</th>
+                                        <th scope="col">수요일</th>
+                                        <th scope="col">목요일</th>
+                                        <th scope="col">금요일</th>
+                                        <th scope="col">토요일</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><div></div></td>
+                                        <td><div></div></td>
+                                        <td><div></div></td>
+                                        <td><div></div></td>
+                                        <td><div></div></td>
+                                        <td><div></div></td>
+                                        <td class="red"><div>1</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div>2</div></td>
+                                        <td><div>3</div></td>
+                                        <td><div>4</div></td>
+                                        <td>
+                                            <div>5</div>
+                                            <div class="sch_txt"><span class="personal_work">10:00</span>개인업무</div>
+                                        </td>
+                                        <td><div>6</div></td>
+                                        <td><div>7</div></td>
+                                        <td><div>8</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div>9</div></td>
+                                        <td><div>10</div></td>
+                                        <td>
+                                            <div>11</div>
+                                            <div class="sch_txt"><span class="department_work">10:00</span>부서업무 부서업무 부서업무</div>
+                                            <div class="sch_txt"><span class="company_work">10:00</span>회사업무</div>
+                                        </td>
+                                        <td><div>12</div></td>
+                                        <td><div>13</div></td>
+                                        <td><div>14</div></td>
+                                        <td><div>15</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div>16</div></td>
+                                        <td><div>17</div></td>
+                                        <td><div>18</div></td>
+                                        <td><div>19</div></td>
+                                        <td class="today">
+                                            <div>20</div>
+                                            <div class="sch_txt"><span class="meeting">10:00</span>회의</div>
+                                            <div class="sch_txt"><span class="director_work">10:00</span>경영진일정</div>
+                                        </td>
+                                        <td><div>21</div></td>
+                                        <td><div>22</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div>23</div></td>
+                                        <td><div>24</div></td>
+                                        <td><div>25</div></td>
+                                        <td><div>26</div></td>
+                                        <td><div>27</div></td>
+                                        <td><div>28</div></td>
+                                        <td><div>29</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div>30</div></td>
+                                        <td class="red"><div>31</div></td>
+                                        <td><div></div></td>
+                                        <td><div></div></td>
+                                        <td><div></div></td>
+                                        <td><div></div></td>
+                                        <td><div></div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab_cont js_tcont" data-tab="schToday">
+                            <div class="sch_sm_wrap">
+                                <div class="sch_box">
+                                    <table class="sch_sm">
+                                        <colgroup>
+                                            <col>
+                                            <col>
+                                            <col>
+                                            <col>
+                                            <col>
+                                            <col>
+                                            <col>
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">일</th>
+                                                <th scope="col">월</th>
+                                                <th scope="col">화</th>
+                                                <th scope="col">수</th>
+                                                <th scope="col">목</th>
+                                                <th scope="col">금</th>
+                                                <th scope="col">토</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><a href=""></a></td>
+                                                <td><a href=""></a></td>
+                                                <td><a href=""></a></td>
+                                                <td><a href=""></a></td>
+                                                <td><a href=""></a></td>
+                                                <td><a href=""></a></td>
+                                                <td><a href="">1</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="">2</a></td>
+                                                <td><a href="">3</a></td>
+                                                <td><a href="">4</a></td>
+                                                <td>
+                                                    <a href="">5</a>
+                                                    <div class="points">
+                                                        <span class="personal_work"></span>
+                                                    </div>
+                                                </td>
+                                                <td><a href="">6</a></td>
+                                                <td><a href="">7</a></td>
+                                                <td><a href="">8</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="">9</a></td>
+                                                <td><a href="">10</a></td>
+                                                <td>
+                                                    <a href="">11</a>
+                                                    <div class="points">
+                                                        <span class="department_work"></span>
+                                                        <span class="company_work"></span>
+                                                    </div>
+                                                </td>
+                                                <td><a href="">12</a></td>
+                                                <td><a href="">13</a></td>
+                                                <td><a href="">14</a></td>
+                                                <td><a href="">15</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="">16</a></td>
+                                                <td><a href="">17</a></td>
+                                                <td><a href="">18</a></td>
+                                                <td><a href="">19</a></td>
+                                                <td class="today">
+                                                    <a href="" class="on">20</a>
+                                                    <div class="points">
+                                                        <span class="meeting"></span>
+                                                        <span class="director_work"></span>
+                                                    </div>
+                                                </td>
+                                                <td><a href="">21</a></td>
+                                                <td><a href="">22</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="">23</a></td>
+                                                <td><a href="">24</a></td>
+                                                <td><a href="">25</a></td>
+                                                <td><a href="">26</a></td>
+                                                <td><a href="">27</a></td>
+                                                <td><a href="">28</a></td>
+                                                <td><a href="">29</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="">30</a></td>
+                                                <td class="red"><a href="">31</a></td>
+                                                <td><a href=""></a></td>
+                                                <td><a href=""></a></td>
+                                                <td><a href=""></a></td>
+                                                <td><a href=""></a></td>
+                                                <td><a href=""></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('.sch_sm td a:empty').css('cursor', 'default');
+                                            $('.sch_sm td a:not(:empty)').click(function () {
+                                                $('.sch_sm td a').removeClass('on');
+                                                $(this).addClass('on');
+                                            });
+                                        });
+                                    </script>
+                                    <div class="sch_today">
+                                        <div class="date">Today<br><strong>04월 22일 (금)</strong></div>
+                                        <div class="list_wrap">
+                                            <div class="tit">일정안내</div>
+                                            <div class="list" style="max-height: 88px;" data-simplebar data-simplebar-auto-hide="false">
+                                                <ul>
+                                                    <li><span class="personal_work">00:00</span>개인업무</li>
+                                                    <li><span class="department_work">00:00</span>부서업무</li>
+                                                    <li><span class="company_work">05:24</span>회사업무 회사업무 회사업무 회사업무</li>
+                                                    <li><span class="meeting">05:24</span>회의</li>
+                                                    <li><span class="director_work">05:24</span>경영진일정</li>
+                                                    <li class="no_data">일정이 없습니다.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sch_list" style="max-height: 490px;" data-simplebar data-simplebar-auto-hide="false">
+                                    <ul>
+                                        <li>
+                                            <span class="end"><i class="xi-time-o"></i>01:46 ~ 08:35</span>
+                                            <div>
+                                                <strong class="no01">일정</strong>
+                                                <p>상세일정</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="end"><i class="xi-time-o"></i>00:00 ~ 00:00</span>
+                                            <div>
+                                                <strong class="no02">모든 국민은 신속한 재판을 받을 권리를 가진다.</strong>
+                                                <p>형사피고인은 상당한 이유가 없는 한 지체없이 공개재판을 받을 권리를 가진다. 대통령이 궐위된 때 또는 대통령 당선자가 사망하거나 판결 기타의 사유로 그 자격을 상실한 때에는 60일 이내에 후임자를 선거한다.</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="end"><i class="xi-time-o"></i>00:00 ~ 00:00</span>
+                                            <div>
+                                                <strong class="no03">일정</strong>
+                                                <p>상세일정</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span><i class="xi-time-o"></i>01:46 ~ 08:35</span>
+                                            <div>
+                                                <strong class="no04">모든 국민은 신속한 재판을 받을 권리를 가진다.</strong>
+                                                <p>형사피고인은 상당한 이유가 없는 한 지체없이 공개재판을 받을 권리를 가진다. 대통령이 궐위된 때 또는 대통령 당선자가 사망하거나 판결 기타의 사유로 그 자격을 상실한 때에는 60일 이내에 후임자를 선거한다.</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span><i class="xi-time-o"></i>00:00 ~ 00:00</span>
+                                            <div>
+                                                <strong class="no01">모든 국민은 신속한 재판을 받을 권리를 가진다.</strong>
+                                                <p>형사피고인은 상당한 이유가 없는 한 지체없이 공개재판을 받을 권리를 가진다. 대통령이 궐위된 때 또는 대통령 당선자가 사망하거나 판결 기타의 사유로 그 자격을 상실한 때에는 60일 이내에 후임자를 선거한다.</p>
+                                            </div>
+                                        </li>
+                                        <li class="no_data">일정이 없습니다.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab_cont js_tcont" data-tab="schList">
+                            <div class="search_basic">
+                                <table>
+                                    <colgroup>
+                                        <col style="width: 90px;">
+                                        <col>
+                                        <col style="width: 120px;">
+                                        <col>
+                                        <col style="width: 120px;">
+                                        <col>
+                                        <col style="width: 120px;">
+                                        <col>
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <td><label>기간</label></td>
+                                            <td colspan="3">
+                                                <span class="calendar_input"><input type="text" id="StartDate"></span>
+                                                <span class="gap">~</span>
+                                                <span class="calendar_input"><input type="text" id="EndDate"></span>
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        fncDate("StartDate", "EndDate");
+                                                    });
+                                                </script>
+                                            </td>
+                                            <td><label>제목</label></td>
+                                            <td colspan="3">
+                                                <select class="w130">
+                                                    <option>전체</option>
+                                                </select>
+                                                <input type="text" class="auto">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn_search"><i class="xi-search"></i>검색</button>
+                            </div>
+                            <div class="board_top">
+                                <div class="board_left">
+                                    <div class="all_num"><i class="xi-paper-o"></i>전체<span class="num">0</span>건</div>
+                                </div>
+                                <!-- <div class="border_right"></div> -->
+                            </div>
+                            <table class="board_list">
+                                <colgroup>
+                                    <col style="width: 50px;">
+                                    <col style="width: 15%;">
+                                    <col style="width: 7%;">
+                                    <col>
+                                    <col style="width: 10%;">
+                                    <col style="width: 7%;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">번호</th>
+                                        <th scope="col">기간</th>
+                                        <th scope="col">구분</th>
+                                        <th scope="col">제목</th>
+                                        <th scope="col">등록일</th>
+                                        <th scope="col">등록자</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>2022.04.22 ~ 2022.04.22</td>
+                                        <td>개인업무</td>
+                                        <td class="subject">제목</td>
+                                        <td>2022.04.22</td>
+                                        <td>홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>2022.04.22 ~ 2022.04.22</td>
+                                        <td>개인업무</td>
+                                        <td class="subject">제목</td>
+                                        <td>2022.04.22</td>
+                                        <td>홍길동</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="no_data">데이터가 없습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="sidebyside">
+                                <div class="left"></div>
+                                <div class="paging_wrap">
+                                    <ul class="paging">
+                                        <li class="btn_page first"><a href="">목록 처음으로 이동</a></li>
+                                        <li class="btn_page prev"><a href="">이전 페이지로 이동</a></li>
+                                        <li class="current"><a href="">1</a></li>
+                                        <li><a href="">2</a></li>
+                                        <li><a href="">3</a></li>
+                                        <li><a href="">4</a></li>
+                                        <li><a href="">5</a></li>
+                                        <li class="btn_page next"><a href="">다음 페이지로 이동</a></li>
+                                        <li class="btn_page last"><a href="">목록 마지막으로 이동</a></li>
+                                    </ul>
+                                </div>
+                                <div class="right">
+                                    <div class="btn_area">
+                                        <button type="button" class="btn btn_write">일정등록</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code10_1_1" class="on">html</li>
+                        <li id="code10_1_2">css</li>
+                        <li id="code10_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code10_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="scheduler_wrap tab"&gt;
+    &lt;div class="sch_top"&gt;
+        &lt;div class="sch_year"&gt;
+            &lt;span class="prev_y"&gt;&lt;/span&gt;
+            2022
+            &lt;span class="next_y"&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="right"&gt;
+            &lt;span class="chk sch_legend"&gt;
+                &lt;span class="personal_work"&gt;&lt;input type="checkbox" name="schLegend02" id="schLegend02_1" checked&gt;&lt;label for="schLegend02_1"&gt;개인업무&lt;/label&gt;&lt;/span&gt;
+                &lt;span class="department_work"&gt;&lt;input type="checkbox" name="schLegend02" id="schLegend02_2" checked&gt;&lt;label for="schLegend02_2"&gt;부서업무&lt;/label&gt;&lt;/span&gt;
+                &lt;span class="company_work"&gt;&lt;input type="checkbox" name="schLegend02" id="schLegend02_3" checked&gt;&lt;label for="schLegend02_3"&gt;회사업무&lt;/label&gt;&lt;/span&gt;
+                &lt;span class="meeting"&gt;&lt;input type="checkbox" name="schLegend02" id="schLegend02_4" checked&gt;&lt;label for="schLegend02_4"&gt;회의&lt;/label&gt;&lt;/span&gt;
+                &lt;span class="director_work"&gt;&lt;input type="checkbox" name="schLegend02" id="schLegend02_5" checked&gt;&lt;label for="schLegend02_5"&gt;경영진일정&lt;/label&gt;&lt;/span&gt;
+            &lt;/span&gt;
+            &lt;ul class="sch_type js_tmenu"&gt;
+                &lt;li id="schBasic" class="cal on"&gt;&lt;a href=""&gt;calendar&lt;/a&gt;&lt;/li&gt;
+                &lt;li id="schToday" class="today"&gt;&lt;a href=""&gt;today&lt;/a&gt;&lt;/li&gt;
+                &lt;li id="schList" class="list"&gt;&lt;a href=""&gt;list&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="tab_cont js_tcont on" data-tab="schBasic"&gt;
+        &lt;ul class="sch_mon"&gt;
+            &lt;li class="on"&gt;&lt;a href=""&gt;1월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;2월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;3월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;4월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;5월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;6월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;7월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;8월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;9월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;10월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;11월&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;12월&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;table class="sch_tbl"&gt;
+            &lt;colgroup&gt;
+                &lt;col&gt;
+                &lt;col&gt;
+                &lt;col&gt;
+                &lt;col&gt;
+                &lt;col&gt;
+                &lt;col&gt;
+                &lt;col&gt;
+            &lt;/colgroup&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th scope="col"&gt;일요일&lt;/th&gt;
+                    &lt;th scope="col"&gt;월요일&lt;/th&gt;
+                    &lt;th scope="col"&gt;화요일&lt;/th&gt;
+                    &lt;th scope="col"&gt;수요일&lt;/th&gt;
+                    &lt;th scope="col"&gt;목요일&lt;/th&gt;
+                    &lt;th scope="col"&gt;금요일&lt;/th&gt;
+                    &lt;th scope="col"&gt;토요일&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                    &lt;td class="red"&gt;&lt;div&gt;1&lt;/div&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;div&gt;2&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;3&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;4&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;div&gt;5&lt;/div&gt;
+                        &lt;div class="sch_txt"&gt;&lt;span class="personal_work"&gt;10:00&lt;/span&gt;개인업무&lt;/div&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;6&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;7&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;8&lt;/div&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;div&gt;9&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;10&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;div&gt;11&lt;/div&gt;
+                        &lt;div class="sch_txt"&gt;&lt;span class="department_work"&gt;10:00&lt;/span&gt;부서업무 부서업무 부서업무&lt;/div&gt;
+                        &lt;div class="sch_txt"&gt;&lt;span class="company_work"&gt;10:00&lt;/span&gt;회사업무&lt;/div&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;12&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;13&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;14&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;15&lt;/div&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;div&gt;16&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;17&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;18&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;19&lt;/div&gt;&lt;/td&gt;
+                    &lt;td class="today"&gt;
+                        &lt;div&gt;20&lt;/div&gt;
+                        &lt;div class="sch_txt"&gt;&lt;span class="meeting"&gt;10:00&lt;/span&gt;회의&lt;/div&gt;
+                        &lt;div class="sch_txt"&gt;&lt;span class="director_work"&gt;10:00&lt;/span&gt;경영진일정&lt;/div&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;21&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;22&lt;/div&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;div&gt;23&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;24&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;25&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;26&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;27&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;28&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;29&lt;/div&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;div&gt;30&lt;/div&gt;&lt;/td&gt;
+                    &lt;td class="red"&gt;&lt;div&gt;31&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;div class="tab_cont js_tcont" data-tab="schToday"&gt;
+        &lt;div class="sch_sm_wrap"&gt;
+            &lt;div class="sch_box"&gt;
+                &lt;table class="sch_sm"&gt;
+                    &lt;colgroup&gt;
+                        &lt;col&gt;
+                        &lt;col&gt;
+                        &lt;col&gt;
+                        &lt;col&gt;
+                        &lt;col&gt;
+                        &lt;col&gt;
+                        &lt;col&gt;
+                    &lt;/colgroup&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th scope="col"&gt;일&lt;/th&gt;
+                            &lt;th scope="col"&gt;월&lt;/th&gt;
+                            &lt;th scope="col"&gt;화&lt;/th&gt;
+                            &lt;th scope="col"&gt;수&lt;/th&gt;
+                            &lt;th scope="col"&gt;목&lt;/th&gt;
+                            &lt;th scope="col"&gt;금&lt;/th&gt;
+                            &lt;th scope="col"&gt;토&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;1&lt;/a&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;a href=""&gt;2&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;3&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;4&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;
+                                &lt;a href=""&gt;5&lt;/a&gt;
+                                &lt;div class="points"&gt;
+                                    &lt;span class="personal_work"&gt;&lt;/span&gt;
+                                &lt;/div&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;6&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;7&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;8&lt;/a&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;a href=""&gt;9&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;10&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;
+                                &lt;a href=""&gt;11&lt;/a&gt;
+                                &lt;div class="points"&gt;
+                                    &lt;span class="department_work"&gt;&lt;/span&gt;
+                                    &lt;span class="company_work"&gt;&lt;/span&gt;
+                                &lt;/div&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;12&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;13&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;14&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;15&lt;/a&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;a href=""&gt;16&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;17&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;18&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;19&lt;/a&gt;&lt;/td&gt;
+                            &lt;td class="today"&gt;
+                                &lt;a href="" class="on"&gt;20&lt;/a&gt;
+                                &lt;div class="points"&gt;
+                                    &lt;span class="meeting"&gt;&lt;/span&gt;
+                                    &lt;span class="director_work"&gt;&lt;/span&gt;
+                                &lt;/div&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;21&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;22&lt;/a&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;a href=""&gt;23&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;24&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;25&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;26&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;27&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;28&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;29&lt;/a&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;a href=""&gt;30&lt;/a&gt;&lt;/td&gt;
+                            &lt;td class="red"&gt;&lt;a href=""&gt;31&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href=""&gt;&lt;/a&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+                &lt;script&gt;
+                    $(document).ready(function () {
+                        $('.sch_sm td a:empty').css('cursor', 'default');
+                        $('.sch_sm td a:not(:empty)').click(function () {
+                            $('.sch_sm td a').removeClass('on');
+                            $(this).addClass('on');
+                        });
+                    });
+                &lt;/script&gt;
+                &lt;div class="sch_today"&gt;
+                    &lt;div class="date"&gt;Today&lt;br&gt;&lt;strong&gt;04월 22일 (금)&lt;/strong&gt;&lt;/div&gt;
+                    &lt;div class="list_wrap"&gt;
+                        &lt;div class="tit"&gt;일정안내&lt;/div&gt;
+                        &lt;div class="list" style="max-height: 88px;" data-simplebar data-simplebar-auto-hide="false"&gt;
+                            &lt;ul&gt;
+                                &lt;li&gt;&lt;span class="personal_work"&gt;00:00&lt;/span&gt;개인업무&lt;/li&gt;
+                                &lt;li&gt;&lt;span class="department_work"&gt;00:00&lt;/span&gt;부서업무&lt;/li&gt;
+                                &lt;li&gt;&lt;span class="company_work"&gt;05:24&lt;/span&gt;회사업무 회사업무 회사업무 회사업무&lt;/li&gt;
+                                &lt;li&gt;&lt;span class="meeting"&gt;05:24&lt;/span&gt;회의&lt;/li&gt;
+                                &lt;li&gt;&lt;span class="director_work"&gt;05:24&lt;/span&gt;경영진일정&lt;/li&gt;
+                                &lt;li class="no_data"&gt;일정이 없습니다.&lt;/li&gt;
+                            &lt;/ul&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="sch_list" style="max-height: 490px;" data-simplebar data-simplebar-auto-hide="false"&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;
+                        &lt;span class="end"&gt;&lt;i class="xi-time-o"&gt;&lt;/i&gt;01:46 ~ 08:35&lt;/span&gt;
+                        &lt;div&gt;
+                            &lt;strong class="no01"&gt;일정&lt;/strong&gt;
+                            &lt;p&gt;상세일정&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;span class="end"&gt;&lt;i class="xi-time-o"&gt;&lt;/i&gt;00:00 ~ 00:00&lt;/span&gt;
+                        &lt;div&gt;
+                            &lt;strong class="no02"&gt;모든 국민은 신속한 재판을 받을 권리를 가진다.&lt;/strong&gt;
+                            &lt;p&gt;형사피고인은 상당한 이유가 없는 한 지체없이 공개재판을 받을 권리를 가진다. 대통령이 궐위된 때 또는 대통령 당선자가 사망하거나 판결 기타의 사유로 그 자격을 상실한 때에는 60일 이내에 후임자를 선거한다.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;span class="end"&gt;&lt;i class="xi-time-o"&gt;&lt;/i&gt;00:00 ~ 00:00&lt;/span&gt;
+                        &lt;div&gt;
+                            &lt;strong class="no03"&gt;일정&lt;/strong&gt;
+                            &lt;p&gt;상세일정&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;span&gt;&lt;i class="xi-time-o"&gt;&lt;/i&gt;01:46 ~ 08:35&lt;/span&gt;
+                        &lt;div&gt;
+                            &lt;strong class="no04"&gt;모든 국민은 신속한 재판을 받을 권리를 가진다.&lt;/strong&gt;
+                            &lt;p&gt;형사피고인은 상당한 이유가 없는 한 지체없이 공개재판을 받을 권리를 가진다. 대통령이 궐위된 때 또는 대통령 당선자가 사망하거나 판결 기타의 사유로 그 자격을 상실한 때에는 60일 이내에 후임자를 선거한다.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;span&gt;&lt;i class="xi-time-o"&gt;&lt;/i&gt;00:00 ~ 00:00&lt;/span&gt;
+                        &lt;div&gt;
+                            &lt;strong class="no01"&gt;모든 국민은 신속한 재판을 받을 권리를 가진다.&lt;/strong&gt;
+                            &lt;p&gt;형사피고인은 상당한 이유가 없는 한 지체없이 공개재판을 받을 권리를 가진다. 대통령이 궐위된 때 또는 대통령 당선자가 사망하거나 판결 기타의 사유로 그 자격을 상실한 때에는 60일 이내에 후임자를 선거한다.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/li&gt;
+                    &lt;li class="no_data"&gt;일정이 없습니다.&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="tab_cont js_tcont" data-tab="schList"&gt;
+        &lt;div class="search_basic"&gt;
+            &lt;table&gt;
+                &lt;colgroup&gt;
+                    &lt;col style="width: 90px;"&gt;
+                    &lt;col&gt;
+                    &lt;col style="width: 120px;"&gt;
+                    &lt;col&gt;
+                    &lt;col style="width: 120px;"&gt;
+                    &lt;col&gt;
+                    &lt;col style="width: 120px;"&gt;
+                    &lt;col&gt;
+                &lt;/colgroup&gt;
+                &lt;tbody&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;&lt;label&gt;기간&lt;/label&gt;&lt;/td&gt;
+                        &lt;td colspan="3"&gt;
+                            &lt;span class="calendar_input"&gt;&lt;input type="text" id="StartDate"&gt;&lt;/span&gt;
+                            &lt;span class="gap"&gt;~&lt;/span&gt;
+                            &lt;span class="calendar_input"&gt;&lt;input type="text" id="EndDate"&gt;&lt;/span&gt;
+                            &lt;script&gt;
+                                $(document).ready(function () {
+                                    fncDate("StartDate", "EndDate");
+                                });
+                            &lt;/script&gt;
+                        &lt;/td&gt;
+                        &lt;td&gt;&lt;label&gt;제목&lt;/label&gt;&lt;/td&gt;
+                        &lt;td colspan="3"&gt;
+                            &lt;select class="w130"&gt;
+                                &lt;option&gt;전체&lt;/option&gt;
+                            &lt;/select&gt;
+                            &lt;input type="text" class="auto"&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+            &lt;button type="button" class="btn btn_search"&gt;&lt;i class="xi-search"&gt;&lt;/i&gt;검색&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class="board_top"&gt;
+            &lt;div class="board_left"&gt;
+                &lt;div class="all_num"&gt;&lt;i class="xi-paper-o"&gt;&lt;/i&gt;전체&lt;span class="num"&gt;0&lt;/span&gt;건&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;!-- &lt;div class="board_right"&gt;&lt;/div&gt; --&gt;
+        &lt;/div&gt;
+        &lt;table class="board_list"&gt;
+            &lt;colgroup&gt;
+                &lt;col style="width: 50px;"&gt;
+                &lt;col style="width: 15%;"&gt;
+                &lt;col style="width: 7%;"&gt;
+                &lt;col&gt;
+                &lt;col style="width: 10%;"&gt;
+                &lt;col style="width: 7%;"&gt;
+            &lt;/colgroup&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th scope="col"&gt;번호&lt;/th&gt;
+                    &lt;th scope="col"&gt;기간&lt;/th&gt;
+                    &lt;th scope="col"&gt;구분&lt;/th&gt;
+                    &lt;th scope="col"&gt;제목&lt;/th&gt;
+                    &lt;th scope="col"&gt;등록일&lt;/th&gt;
+                    &lt;th scope="col"&gt;등록자&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;1&lt;/td&gt;
+                    &lt;td&gt;2022.04.22 ~ 2022.04.22&lt;/td&gt;
+                    &lt;td&gt;개인업무&lt;/td&gt;
+                    &lt;td class="subject"&gt;제목&lt;/td&gt;
+                    &lt;td&gt;2022.04.22&lt;/td&gt;
+                    &lt;td&gt;홍길동&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;0&lt;/td&gt;
+                    &lt;td&gt;2022.04.22 ~ 2022.04.22&lt;/td&gt;
+                    &lt;td&gt;개인업무&lt;/td&gt;
+                    &lt;td class="subject"&gt;제목&lt;/td&gt;
+                    &lt;td&gt;2022.04.22&lt;/td&gt;
+                    &lt;td&gt;홍길동&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td colspan="6" class="no_data"&gt;데이터가 없습니다.&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;div class="sidebyside"&gt;
+            &lt;div class="left"&gt;&lt;/div&gt;
+            &lt;div class="paging_wrap"&gt;
+                &lt;ul class="paging"&gt;
+                    &lt;li class="btn_page first"&gt;&lt;a href=""&gt;목록 처음으로 이동&lt;/a&gt;&lt;/li&gt;
+                    &lt;li class="btn_page prev"&gt;&lt;a href=""&gt;이전 페이지로 이동&lt;/a&gt;&lt;/li&gt;
+                    &lt;li class="current"&gt;&lt;a href=""&gt;1&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;2&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;3&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;4&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""&gt;5&lt;/a&gt;&lt;/li&gt;
+                    &lt;li class="btn_page next"&gt;&lt;a href=""&gt;다음 페이지로 이동&lt;/a&gt;&lt;/li&gt;
+                    &lt;li class="btn_page last"&gt;&lt;a href=""&gt;목록 마지막으로 이동&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+            &lt;div class="right"&gt;
+                &lt;div class="btn_area"&gt;
+                    &lt;button type="button" class="btn btn_write"&gt;일정등록&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code10_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** scheduler **/
+/* scheduler type */
+.sch_type {display: inline-flex;position: relative;margin-left: 20px;}
+.sch_type li {width: 57px;height: 34px;margin-left: -1px;border: 1px solid var(--gray);font-size: 0;}
+.sch_type li.on {border-color: var(--blue);z-index: 1;}
+.sch_type li a {display: block;height: 100%;}
+.sch_type .cal a {background: url(../images/icon/i_sch.png) no-repeat 50% 50%;}
+.sch_type .cal.on a {background: url(../images/icon/i_sch_on.png) no-repeat 50% 50%;}
+.sch_type .today a {background: url(../images/icon/i_sch_today.png) no-repeat 50% 50%;}
+.sch_type .today.on a {background: url(../images/icon/i_sch_today_on.png) no-repeat 50% 50%;}
+.sch_type .list a {background: url(../images/icon/i_sch_list.png) no-repeat 50% 50%;}
+.sch_type .list.on a {background: url(../images/icon/i_sch_list_on.png) no-repeat 50% 50%;}
+
+/* today view */
+.sch_sm_wrap {display: flex;justify-content: space-between;margin-top: 30px;}
+.sch_sm_wrap .sch_box {width: 35%;}
+.sch_sm_wrap .sch_list {overflow-y: auto;width: 63%;}
+.sch_sm_wrap .personal_work {background: #fe9f71;}
+.sch_sm_wrap .department_work {background: #32b8b0;}
+.sch_sm_wrap .company_work {background: #339af0;}
+.sch_sm_wrap .meeting {background: #845ef7;}
+.sch_sm_wrap .director_work {background: #6cc07a;}
+
+/* today view left */
+.sch_sm_wrap .sch_sm tr > *:first-child {color: var(--red);}
+.sch_sm_wrap .sch_sm tr > *:last-child {color: var(--blue);}
+.sch_sm_wrap .sch_sm th {position: relative;height: 40px;font-size: 15px;font-weight: 700;background: var(--basic-bg);}
+.sch_sm_wrap .sch_sm td {position: relative;height: 50px;border-bottom: 1px solid var(--tbl-bdr);font-size: 14px;text-align: center;}
+.sch_sm_wrap .sch_sm td.today {background: #fbf6f7;}
+.sch_sm_wrap .sch_sm td a {display: inline-block;width: 30px;height: 25px;margin-bottom: 5px;border-radius: 4px;line-height: 25px;}
+.sch_sm_wrap .sch_sm td a.on {color: #FFFFFF;background: #26a19c;}
+.sch_sm_wrap .sch_sm td .points {position: absolute;left: 0;bottom: 5px;width: 100%;height: 5px;}
+.sch_sm_wrap .sch_sm td .points span {display: inline-block;width: 5px;height: 5px;border-radius: 5px;vertical-align: top;}
+.sch_sm_wrap .sch_today {display: flex;margin-top: 20px;}
+.sch_sm_wrap .sch_today .date {display: flex;flex-direction: column;justify-content: center;width: 150px;height: 130px;margin-right: 20px;border-radius: 10px;text-align: center;background: var(--basic-bg);}
+.sch_sm_wrap .sch_today .date strong {font-size: 20px;color: var(--blue);}
+.sch_sm_wrap .sch_today .list_wrap {width: calc(100% - 170px);}
+.sch_sm_wrap .sch_today .list_wrap .tit {margin-bottom: 10px;padding: 0 0 5px 25px;border-bottom: 1px solid var(--bdr);font-size: 18px;font-weight: 500;background: url(../images/icon/bg_sch_tit.png) no-repeat 0 25%;}
+.sch_sm_wrap .sch_today .list_wrap li {padding-left: 60px;font-size: 15px;line-height: 22px;}
+.sch_sm_wrap .sch_today .list_wrap li + li {margin-top: 5px;}
+.sch_sm_wrap .sch_today .list_wrap li span {display: inline-block;width: 50px;margin: 0 9px 0 -60px;padding: 0 5px;border-radius: 4px;font-size: 14px;color: #FFFFFF;text-align: center;}
+.sch_sm_wrap .sch_today .list_wrap .no_data {padding: 0;}
+.sch_sm_wrap .sch_today .list_wrap .scr_box {overflow-y: auto;}
+
+/* today view right */
+.sch_sm_wrap .sch_list ul {padding: 15px 30px;background: #FFFFFF;}
+.sch_sm_wrap .sch_list li {display: flex;}
+.sch_sm_wrap .sch_list li + li:not(.no_data) {margin-top: 15px;padding-top: 15px;border-top: 1px solid var(--bdr);}
+.sch_sm_wrap .sch_list span {display: inline-block;min-width: 140px;height: 30px;margin-right: 50px;border-radius: 4px;line-height: 30px;color: #FFFFFF;text-align: center;background: #ffa375;}
+.sch_sm_wrap .sch_list span.end {background: var(--gray-light);}
+.sch_sm_wrap .sch_list span i {margin-right: 5px;transform: scale(-1, 1);}
+.sch_sm_wrap .sch_list strong {position: relative;background: none;}
+.sch_sm_wrap .sch_list strong::before {content: '';display: inline-block;position: relative;width: 12px;height: 12px;margin: 0 8px 0 -21px;border-radius: 6px;}
+.sch_sm_wrap .sch_list .personal_work::before {background: #fe9f71;}
+.sch_sm_wrap .sch_list .department_work::before {background: #32b8b0;}
+.sch_sm_wrap .sch_list .company_work::before {background: #6cc07a;}
+.sch_sm_wrap .sch_list .meeting::before {background: #845ef7;}
+.sch_sm_wrap .sch_list .director_work::before {background: #6cc07a;}
+.sch_sm_wrap .sch_list p {font-size: 15px;color: var(--gray);}
+
+/* today view list no data */
+.sch_sm_wrap .sch_list.empty {min-height: 100%;}
+.sch_sm_wrap .sch_list.empty .mCSB_container {height: calc(100% - 0.1px);}
+.sch_sm_wrap .sch_list.empty ul {height: 100%;background: #f8f8f8;}
+/** // scheduler **/</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code10_1_3">
+                        <ul>
+                            <li><a href="images/icon/bg_sch_tit.png" title="Download" download>bg_sch_tit.png</a></li>
+                            <li><a href="images/icon/i_sch.png" title="Download" download>i_sch.png</a></li>
+                            <li><a href="images/icon/i_sch_on.png" title="Download" download>i_sch_on.png</a></li>
+                            <li><a href="images/icon/i_sch_today.png" title="Download" download>i_sch_today.png</a></li>
+                            <li><a href="images/icon/i_sch_today_on.png" title="Download" download>i_sch_today_on.png</a></li>
+                            <li><a href="images/icon/i_sch_list.png" title="Download" download>i_sch_list.png</a></li>
+                            <li><a href="images/icon/i_sch_list_on.png" title="Download" download>i_sch_list_on.png</a></li>
+                            <li><a href="images/icon/bg_empty.png" title="Download" download>bg_empty.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+    <!-- swiper -->
+    <link rel="stylesheet" href="lib/swiper/swiper-bundle.min.css">
+    <script src="lib/swiper/swiper-bundle.min.js"></script>
+    <script>
+        $(function () {
+            $("body > header > nav").scrollTop(450);
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">aos</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">스크립트 정보</li>
+                <li id="tab02">사용 방법, 옵션</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>사이트: <a href="https://github.com/michalsnik/aos" target="_blank" class="impact" style="text-decoration: underline;">https://github.com/michalsnik/aos</a></dt>
+                        <dt>1. <span class="impact">aos.css</span> : 기본적인 aos 디자인을 담은 css</dt>
+                        <dt>2. <span class="impact">aos.js</span> : 기본적인 aos 기능을 담은 js</dt>
+                    </dl>
+                </section>
+                <div class="ui_sample" style="margin-bottom: 10px;">
+                    ↓ download
+                </div>
+                <div class="ui_code" style="display: block;">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">down</li>
+                    </ul>
+                    <div class="js_tcont li_linenum on" data-tab="code01_1_1">
+                        <ul>
+                            <li><a href="lib/aos/aos.css" title="Download" download>aos.css</a></li>
+                            <li><a href="lib/aos/aos.js" title="Download" download>aos.js</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">기본 사용 방법</h2>
+                <div class="ui_code" style="display: block;">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;html&gt;
+&lt;head&gt;
+    &lt;!-- AOS 라이브러리 불러오기--&gt;
+    &lt;link rel="css/aos.css"&gt;
+    &lt;script src="js/aos.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div data-aos="fade-up"&gt;&lt;/div&gt;
+    &lt;div data-aos="fade-up"
+        data-aos-offset="200"
+        data-aos-easing="ease-out-cubic"
+        data-aos-duration="2000"&gt;
+    &lt;/div&gt;
+    &lt;!-- AOS 스크립트 시작 --&gt;
+    &lt;script&gt;
+        AOS.init();
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">옵션 종류 및 설명</h2>
+                <div class="ui_code" style="display: block;">
+                    <ul class="js_tmenu">
+                        <li id="code02_2_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div
+    data-aos="fade-up"
+    data-aos-offset="200"
+    data-aos-delay="50"
+    data-aos-duration="1000"
+    data-aos-easing="ease-in-out"
+    data-aos-mirror="true"
+    data-aos-once="false"
+    data-aos-anchor-placement="top-center"&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                </div>
+                <table class="data_tbl mar_t30">
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th><b>옵션</b></th>
+                            <th><b>설명</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>data-aos</th>
+                            <td class="l"><span>사용할 애니메이션 효과명</span></td>
+                        </tr>
+                        <tr>
+                            <th>data-aos-easing</th>
+                            <td class="l"><span>애니메이션 시간흐름에 따른 속도설정 옵션<span>(default: ease)</span></span></td>
+                        </tr>
+                        <tr>
+                            <th>data-aos-anchor</th>
+                            <td class="l"><span>특정한 객체에 anchor를 설정하여,<br>어떤 객체를 기준으로 애니메이션이 시작 될지를 설정</span></td>
+                        </tr>
+                        <tr>
+                            <th>data-aos-delay</th>
+                            <td class="l"><span>애니메이션 재생 대기시간 설정(default: 0)</span></td>
+                        </tr>
+                        <tr>
+                            <th>data-aos-offset</th>
+                            <td class="l"><span>애니메이션 효과가 시작될 객체의 위치 설정</span></td>
+                        </tr>
+                        <tr>
+                            <th>data-aos-duration</th>
+                            <td class="l"><span>애니메이션의 재생시간 설정(default: 400)</span></td>
+                        </tr>
+                        <tr>
+                            <th>data-aos-anchor-placement</th>
+                            <td class="l"><span>애니메이션이 어느 위치에서부터 적용될지 설정(default: top-bottom)</span></td>
+                        </tr>
+                        <tr>
+                            <th>data-aos-once</th>
+                            <td class="l"><span>스크롤 할때마다 애니매이션이 재생될지를 설정 (default: true) <br>이 값을 false로 하게되면, 스크롤을 위로 올렸다 다시 내릴때 애니메이션이 다시 재생되도록 할 수 있다.</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 class="section_main_ttl line">옵션 사용 예시</h2>
+                <div class="ui_code" style="display: block;">
+                    <iframe src="https://michalsnik.github.io/aos/" style="display: block;width: 100%;height: 500px;border: 0;"></iframe>
+                </div>
+
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

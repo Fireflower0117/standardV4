@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/content.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+    <!-- swiper -->
+    <link rel="stylesheet" href="lib/swiper/swiper-bundle.min.css">
+    <script src="lib/swiper/swiper-bundle.min.js"></script>
+    <script>
+        $(function () {
+            $("body > header > nav").scrollTop(450);
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">swiper</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">스크립트 정보</li>
+                <li id="tab02">스와이퍼</li>
+                <li id="tab03">사용 예시</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>사이트: <a href="https://swiperjs.com/demos" target="_blank" class="impact" style="text-decoration: underline;">https://swiperjs.com/demos</a></dt>
+                        <dt>1. <span class="impact">swiper.min.css</span> : 기본적인 swiper 디자인을 담은 css</dt>
+                        <dt>2. <span class="impact">swiper.min.js</span> : 기본적인 swiper 기능을 담은 js</dt>
+                    </dl>
+                </section>
+                <div class="ui_sample" style="margin-bottom: 10px;">
+                    ↓ download
+                </div>
+                <div class="ui_code" style="display: block;">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">down</li>
+                    </ul>
+                    <div class="js_tcont li_linenum on" data-tab="code01_1_1">
+                        <ul>
+                            <li><a href="lib/swiper/swiper.min.css" title="Download" download>swiper.min.css</a></li>
+                            <li><a href="lib/swiper/swiper.min.js" title="Download" download>swiper.min.js</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">기본형</h2>
+                <div class="ui_sample">
+                    <div class="basicSwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">Slide 1</div>
+                            <div class="swiper-slide">Slide 2</div>
+                            <div class="swiper-slide">Slide 3</div>
+                        </div>
+                    </div>
+                    <script>
+                        var basicSwiper = new Swiper(".basicSwiper", {});
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="basicSwiper"&gt;
+    &lt;div class="swiper-wrapper"&gt;
+        &lt;div class="swiper-slide"&gt;Slide 1&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 2&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 3&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var basicSwiper = new Swiper(".basicSwiper", {});
+&lt;/script&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">Navigation Swiper</h2>
+                <div class="ui_sample">
+                    <div class="naviSwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">Slide 1</div>
+                            <div class="swiper-slide">Slide 2</div>
+                            <div class="swiper-slide">Slide 3</div>
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                    <script>
+                        var naviSwiper = new Swiper(".naviSwiper", {
+                            navigation: {
+                                nextEl: ".swiper-button-next",
+                                prevEl: ".swiper-button-prev",
+                            },
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_2_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="naviSwiper"&gt;
+    &lt;div class="swiper-wrapper"&gt;
+        &lt;div class="swiper-slide"&gt;Slide 1&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 2&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 3&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="swiper-button-next"&gt;&lt;/div&gt;
+    &lt;div class="swiper-button-prev"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var naviSwiper = new Swiper(".naviSwiper", {
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+&lt;/script&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">Pagination Swiper</h2>
+                <div class="ui_sample">
+                    <div class="pageSwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">Slide 1</div>
+                            <div class="swiper-slide">Slide 2</div>
+                            <div class="swiper-slide">Slide 3</div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                    <script>
+                        var pageSwiper = new Swiper(".pageSwiper", {
+                            pagination: {
+                                el: ".swiper-pagination",
+                                clickable: true,
+                            },
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_3_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="pageSwiper"&gt;
+    &lt;div class="swiper-wrapper"&gt;
+        &lt;div class="swiper-slide"&gt;Slide 1&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 2&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 3&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="swiper-pagination"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var pageSwiper = new Swiper(".pageSwiper", {
+            pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
+&lt;/script&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">Pagination fraction Swiper</h2>
+                <div class="ui_sample">
+                    <div class="fractionSwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">Slide 1</div>
+                            <div class="swiper-slide">Slide 2</div>
+                            <div class="swiper-slide">Slide 3</div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                    <script>
+                        var fractionSwiper = new Swiper(".fractionSwiper", {
+                            pagination: {
+                                el: ".swiper-pagination",
+                                type: "fraction",
+                            },
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_4_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_4_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="fractionSwiper"&gt;
+    &lt;div class="swiper-wrapper"&gt;
+        &lt;div class="swiper-slide"&gt;Slide 1&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 2&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 3&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="swiper-pagination"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var fractionSwiper = new Swiper(".fractionSwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+            type: "fraction",
+        },
+    });
+&lt;/script&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">Vertical Swiper</h2>
+                <div class="ui_sample">
+                    <div class="vSwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">Slide 1</div>
+                            <div class="swiper-slide">Slide 2</div>
+                            <div class="swiper-slide">Slide 3</div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                    <script>
+                        var vSwiper = new Swiper(".vSwiper", {
+                            direction: "vertical",
+                            pagination: {
+                                el: ".swiper-pagination",
+                                clickable: true,
+                            },
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_5_1" class="on">html</li>
+                        <li id="code02_5_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_5_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="vSwiper"&gt;
+    &lt;div class="swiper-wrapper"&gt;
+        &lt;div class="swiper-slide"&gt;Slide 1&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 2&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 3&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="swiper-pagination"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var vSwiper = new Swiper(".vSwiper", {
+        direction: "vertical",
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
+&lt;/script&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_5_2">
+                        <pre><code class="line-numbers language-css">.vSwiper {height: 100px;}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">swiper01</h2>
+                <div class="ui_sample">
+                    <div class="demoSwiper01">
+                        <div class="tit">
+                            <strong>타이틀</strong>
+                            <div class="navi">
+                                <button class="btn ic"><i class="xi-angle-left"></i></button>
+                                <button class="btn ic"><i class="xi-pause"></i></button>
+                                <button class="btn ic"><i class="xi-angle-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">Slide 1</div>
+                            <div class="swiper-slide">Slide 2</div>
+                            <div class="swiper-slide">Slide 3</div>
+                        </div>
+                    </div>
+                    <script>
+                        var demoSwiper01 = new Swiper(".demoSwiper01", {
+                            speed: 1000,
+                            loop: true,
+                            autoplay: {
+                                delay: 2000,
+                                disableOnInteraction: false
+                            },
+                            navigation: {
+                                prevEl: ".xi-angle-left",
+                                nextEl: ".xi-angle-right",
+                            },
+                        });
+                        $('.demoSwiper01 .navi .xi-pause').click(function () {
+                            if ($(this).hasClass('xi-play')) {
+                                demoSwiper01.autoplay.start();
+                                $(this).removeClass('xi-play').addClass('xi-pause');
+                            } else {
+                                demoSwiper01.autoplay.stop();
+                                $(this).removeClass('xi-pause').addClass('xi-play');
+                            }
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="demoSwiper01"&gt;
+    &lt;div class="tit"&gt;
+        &lt;strong&gt;타이틀&lt;/strong&gt;
+        &lt;div class="navi"&gt;
+            &lt;button class="btn ic"&gt;&lt;i class="xi-angle-left"&gt;&lt;/i&gt;&lt;/button&gt;
+            &lt;button class="btn ic"&gt;&lt;i class="xi-pause"&gt;&lt;/i&gt;&lt;/button&gt;
+            &lt;button class="btn ic"&gt;&lt;i class="xi-angle-right"&gt;&lt;/i&gt;&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="swiper-wrapper"&gt;
+        &lt;div class="swiper-slide"&gt;Slide 1&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 2&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 3&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var demoSwiper01 = new Swiper(".demoSwiper01", {
+        speed: 1000, // 슬라이드 전환 속도 (기본 300(ms))
+        loop: true,
+        autoplay: {
+            delay: 2000, // 슬라이드 지연 속도 (기본 3000(ms))
+            disableOnInteraction: false // 직접 스와이프 후 자동재생 비활성화 여부 (기본 true)
+        },
+        navigation: {
+            prevEl: ".xi-angle-left",
+            nextEl: ".xi-angle-right",
+        },
+    });
+    $('.demoSwiper01 .navi .xi-pause').click(function () {
+        if($(this).hasClass('xi-play')) {
+            demoSwiper01.autoplay.start();
+            $(this).removeClass('xi-play').addClass('xi-pause');
+        } else {
+            demoSwiper01.autoplay.stop();
+            $(this).removeClass('xi-pause').addClass('xi-play');
+        }
+    });
+&lt;/script&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** swiper **/
+/* demoSwiper01 */
+.demoSwiper01 {overflow: hidden;width: 260px;height: 340px;margin-left: 0 !important;border: 1px solid var(--bdr);border-radius: 5px;}
+.demoSwiper01 .tit {display: flex;justify-content: space-between;align-items: center;height: 60px;padding: 10px 15px;background: #FFFFFF;}
+.demoSwiper01 .tit strong {font-size: 18px;}
+.demoSwiper01 .navi {display: flex;}
+.demoSwiper01 .navi > div {cursor: pointer;}
+.demoSwiper01 .swiper-wrapper {height: 280px;}
+.demoSwiper01 .swiper-slide {background: var(--bdr);}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">swiper02</h2>
+                <div class="ui_sample">
+                    <div class="demoSwiper02">
+                        <div class="tit">
+                            <strong>타이틀</strong>
+                        </div>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">Slide 1</div>
+                            <div class="swiper-slide">Slide 2</div>
+                            <div class="swiper-slide">Slide 3</div>
+                        </div>
+                        <div class="navi">
+                            <div class="xi-angle-up"></div>
+                            <div class="xi-angle-down"></div>
+                        </div>
+                    </div>
+                    <script>
+                        var demoSwiper02 = new Swiper(".demoSwiper02", {
+                            direction: "vertical",
+                            speed: 1000,
+                            loop: true,
+                            autoplay: {
+                                delay: 2000,
+                                disableOnInteraction: false
+                            },
+                            navigation: {
+                                prevEl: ".xi-angle-up",
+                                nextEl: ".xi-angle-down",
+                            },
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_2_1" class="on">html</li>
+                        <li id="code03_2_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="demoSwiper02"&gt;
+    &lt;div class="tit"&gt;
+        &lt;strong&gt;타이틀&lt;/strong&gt;
+    &lt;/div&gt;
+    &lt;div class="swiper-wrapper"&gt;
+        &lt;div class="swiper-slide"&gt;Slide 1&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 2&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;Slide 3&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="navi"&gt;
+        &lt;div class="xi-angle-up"&gt;&lt;/div&gt;
+        &lt;div class="xi-angle-down"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var demoSwiper02 = new Swiper(".demoSwiper02", {
+        direction: "vertical", // 슬라이드 방향 (기본 horizontal)
+        speed: 1000, // 슬라이드 전환 속도 (기본 300(ms))
+        loop: true,
+        autoplay: {
+            delay: 2000, // 슬라이드 지연 속도 (기본 3000(ms))
+            disableOnInteraction: false // 직접 스와이프 후 자동재생 비활성화 여부 (기본 true)
+        },
+        navigation: {
+            prevEl: ".xi-angle-up",
+            nextEl: ".xi-angle-down",
+        },
+    });
+&lt;/script&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** swiper **/
+/* demoSwiper02 */
+.demoSwiper02 {display: flex;overflow: hidden;height: 50px;border: 1px solid var(--bdr);border-radius: 5px;}
+.demoSwiper02 .tit {display: flex;align-items: center;min-width: calc(20% - 50px);padding: 10px 15px;font-size: 18px;background: #FFFFFF;}
+.demoSwiper02 .swiper-wrapper {width: 80%;}
+.demoSwiper02 .swiper-slide {display: flex;align-items: center;padding: 5px 15px;background: var(--bdr);}
+.demoSwiper02 .navi {display: flex;flex-direction: column;width: 50px;padding: 5px 10px;background: #FFFFFF;}
+.demoSwiper02 .navi > div {height: 50%;line-height: inherit;cursor: pointer;}
+.demoSwiper02 .navi > div::before {display: block;font-family: 'xeicon';color: #8d8e8e;text-align: center;}
+.demoSwiper02 .navi > div:hover::before {color: var(--dark);}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">swiper03</h2>
+                <div class="ui_sample">
+                    <div class="ds03">
+                        <button class="btn ic"><i class="xi-angle-left"></i></button>
+                        <div class="demoSwiper03">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><span>Slide 1</span></div>
+                                <div class="swiper-slide"><span>Slide 2</span></div>
+                                <div class="swiper-slide"><span>Slide 3</span></div>
+                                <div class="swiper-slide"><span>Slide 4</span></div>
+                                <div class="swiper-slide"><span>Slide 5</span></div>
+                                <div class="swiper-slide"><span>Slide 6</span></div>
+                            </div>
+                        </div>
+                        <button class="btn ic"><i class="xi-angle-right"></i></button>
+                    </div>
+                    <script>
+                        var demoSwiper03 = new Swiper(".demoSwiper03", {
+                            slidesPerView: 5,
+                            speed: 1000,
+                            loop: true,
+                            autoplay: {
+                                delay: 2000,
+                                disableOnInteraction: false
+                            },
+                            navigation: {
+                                prevEl: ".xi-angle-left",
+                                nextEl: ".xi-angle-right",
+                            },
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_3_1" class="on">html</li>
+                        <li id="code03_3_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="ds03"&gt;
+    &lt;button class="btn ic"&gt;&lt;i class="xi-angle-left"&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;div class="demoSwiper03"&gt;
+        &lt;div class="swiper-wrapper"&gt;
+            &lt;div class="swiper-slide"&gt;&lt;span&gt;Slide 1&lt;/span&gt;&lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;&lt;span&gt;Slide 2&lt;/span&gt;&lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;&lt;span&gt;Slide 3&lt;/span&gt;&lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;&lt;span&gt;Slide 4&lt;/span&gt;&lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;&lt;span&gt;Slide 5&lt;/span&gt;&lt;/div&gt;
+            &lt;div class="swiper-slide"&gt;&lt;span&gt;Slide 6&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button class="btn ic"&gt;&lt;i class="xi-angle-right"&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var demoSwiper03 = new Swiper(".demoSwiper03", {
+        slidesPerView: 5, // 한 번에 보이는 슬라이드 개수 (기본 1)
+        speed: 1000, // 슬라이드 전환 속도 (기본 300(ms))
+        loop: true,
+        autoplay: {
+            delay: 2000, // 슬라이드 지연 속도 (기본 3000(ms))
+            disableOnInteraction: false // 직접 스와이프 후 자동재생 비활성화 여부 (기본 true)
+        },
+        navigation: {
+            prevEl: ".xi-angle-left",
+            nextEl: ".xi-angle-right",
+        },
+    });
+&lt;/script&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_3_2">
+                        <pre>
+<code class="line-numbers language-css">/** swiper **/
+/* demoSwiper03 */
+.ds03 {display: flex;align-items: center;position: relative;height: 100px;}
+.ds03 .prev,
+.ds03 .next {cursor: pointer;}
+.demoSwiper03 {overflow: hidden;height: 100%;margin: 0 5%;}
+.demoSwiper03 .swiper-wrapper {text-align: center;}
+.demoSwiper03 .swiper-slide span {display: inline-flex;justify-content: center;align-items: center;width: 100px;height: 100%;border-radius: 5px;background: var(--bdr);}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">swiper04</h2>
+                <div class="ui_sample">
+                    <div class="demoSwiper04">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><div>Slide 1</div></div>
+                            <div class="swiper-slide"><div>Slide 2</div></div>
+                            <div class="swiper-slide"><div>Slide 3</div></div>
+                            <div class="swiper-slide"><div>Slide 4</div></div>
+                            <div class="swiper-slide"><div>Slide 5</div></div>
+                            <div class="swiper-slide"><div>Slide 6</div></div>
+                        </div>
+                    </div>
+                    <script>
+                        var demoSwiper04 = new Swiper(".demoSwiper04", {
+                            slidesPerView: 5,
+                            spaceBetween: 30,
+                            speed: 1000,
+                            centeredSlides: true,
+                            effect: 'coverflow',
+                            coverflowEffect: {
+                                rotate: 0,
+                                slideShadows: false,
+                            },
+                            loop: true,
+                            autoplay: {
+                                delay: 2000,
+                                disableOnInteraction: false
+                            },
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_4_1" class="on">html</li>
+                        <li id="code03_4_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_4_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="demoSwiper04"&gt;
+    &lt;div class="swiper-wrapper"&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 1&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 2&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 3&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 4&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 5&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 6&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var demoSwiper04 = new Swiper(".demoSwiper04", {
+        slidesPerView: 5, // 한 번에 보이는 슬라이드 개수 (기본 1)
+        spaceBetween: 30, // 슬라이드 사이 거리 (기본 0(px))
+        speed: 1000, // 슬라이드 전환 속도 (기본 300(ms))
+        centeredSlides: true, // 활성 슬라이드 중앙 배치 여부 (기본 false)
+        effect: 'coverflow', // 커버플로우 효과
+        coverflowEffect: {
+            rotate: 0, // 슬라이드 회전 각도 (기본 50)
+            slideShadows: false, // 슬라이드 그림자 활성화 (기본 true)
+        },
+        loop: true,
+        autoplay: {
+            delay: 2000, // 슬라이드 지연 속도 (기본 3000(ms))
+            disableOnInteraction: false // 직접 스와이프 후 자동재생 비활성화 여부 (기본 true)
+        },
+    });
+&lt;/script&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_4_2">
+                        <pre>
+<code class="line-numbers language-css">/** swiper **/
+/* demoSwiper04 */
+.demoSwiper04 {overflow: hidden;}
+.demoSwiper04 .swiper-wrapper {height: 300px;}
+.demoSwiper04 .swiper-slide {background: #FFFFFF;transform: none !important;}
+.demoSwiper04 .swiper-slide div {opacity: 0.2;width: 100%;height: 100%;border-radius: 5px;background: var(--bdr);transition: 0.2s opacity;}
+.demoSwiper04 .swiper-slide-prev div,
+.demoSwiper04 .swiper-slide-next div {opacity: 0.4;}
+.demoSwiper04 .swiper-slide-active div {opacity: 1;}</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">swiper05</h2>
+                <div class="ui_sample">
+                    <div class="demoSwiper05">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><div>Slide 1</div></div>
+                            <div class="swiper-slide"><div>Slide 2</div></div>
+                            <div class="swiper-slide"><div>Slide 3</div></div>
+                            <div class="swiper-slide"><div>Slide 4</div></div>
+                            <div class="swiper-slide"><div>Slide 5</div></div>
+                            <div class="swiper-slide"><div>Slide 6</div></div>
+                        </div>
+                    </div>
+                    <script>
+                        var demoSwiper05 = new Swiper(".demoSwiper05", {
+                            slidesPerView: 5,
+                            speed: 1000,
+                            centeredSlides: true,
+                            effect: 'coverflow',
+                            coverflowEffect: {
+                                rotate: 0,
+                                slideShadows: false,
+                            },
+                            loop: true,
+                            autoplay: {
+                                delay: 2000,
+                                disableOnInteraction: false
+                            },
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_5_1" class="on">html</li>
+                        <li id="code03_5_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_5_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="demoSwiper05"&gt;
+    &lt;div class="swiper-wrapper"&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 1&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 2&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 3&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 4&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 5&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="swiper-slide"&gt;&lt;div&gt;Slide 6&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var demoSwiper05 = new Swiper(".demoSwiper05", {
+        slidesPerView: 5, // 한 번에 보이는 슬라이드 개수 (기본 1)
+        speed: 1000, // 슬라이드 전환 속도 (기본 300(ms))
+        centeredSlides: true, // 활성 슬라이드 중앙 배치 여부 (기본 false)
+        effect: 'coverflow', // 커버플로우 효과
+        coverflowEffect: {
+            rotate: 0, // 슬라이드 회전 각도 (기본 50)
+            slideShadows: false, // 슬라이드 그림자 활성화 (기본 true)
+        },
+        loop: true,
+        autoplay: {
+            delay: 2000, // 슬라이드 지연 속도 (기본 3000(ms))
+            disableOnInteraction: false // 직접 스와이프 후 자동재생 비활성화 여부 (기본 true)
+        },
+    });
+&lt;/script&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_5_2">
+                        <pre>
+<code class="line-numbers language-css">/** swiper **/
+/* demoSwiper05 */
+.demoSwiper05 {overflow: hidden;}
+.demoSwiper05 .swiper-wrapper {height: 300px;}
+.demoSwiper05 .swiper-slide {background: #FFFFFF;}
+.demoSwiper05 .swiper-slide div {opacity: 0.2;width: 100%;height: 100%;border-radius: 5px;background: var(--bdr);transition: 0.2s opacity;}
+.demoSwiper05 .swiper-slide-prev div,
+.demoSwiper05 .swiper-slide-next div {opacity: 0.4;}
+.demoSwiper05 .swiper-slide-active div {opacity: 1;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,259 @@
+@charset "UTF-8";
+
+/* common */
+body {min-width: 1400px;}
+.container {display: flex;}
+main {padding: 25px 0 50px;}
+main {width: 100%;max-width: 1495px;margin: 0 auto 0 280px;padding-right: 170px;}
+.guide_tit {margin-bottom: 30px;font-size: 35px;font-weight: 100;}
+
+/* header */
+body > header .util_btn {position: fixed;right: 20px;top: 30px;}
+body > header .util_btn div {display: inline-block;position: relative;}
+body > header .util_btn span {display: none;position: absolute;left: 50%;transform: translateX(-50%);top: 50px;width: 130px;padding: 10px;border-radius: 5px;font-size: 12px;text-align: center;background: #f2f2f2;z-index: 9999;}
+body > header .util_btn span::before {content: '';position: absolute;left: 50%;top: -5px;margin-left: -5px;border-left: 10px solid transparent;border-top: 10px solid #f2f2f2;transform: rotate(-45deg);}
+body > header .util_btn button:hover + span {display: block;}
+
+body > header > nav h1 {padding: 10px 20px;border-bottom: 1px solid rgba(255, 255, 255, .08);font-size: inherit;}
+body > header > nav h1 a img {display: block;margin-bottom: 5px;}
+body > header > nav h1 span {opacity: 0.7;font-size: 15px;font-weight: 500;color: #fff;line-height: 1;}
+body > header > nav {overflow-y: auto;overscroll-behavior: none;position: fixed;left: 0;top: 0px;bottom: 0;width: 250px;height: 100vh;background-color: #1b1c1d;z-index: 1;}
+body > header > nav::-webkit-scrollbar {width: 7px;}
+body > header > nav::-webkit-scrollbar-thumb {margin-right: 10px;border-radius: 10px;background: #D8D8D8;}
+body > header > nav::-webkit-scrollbar-track {width: 30px;background: #1b1c1d;}
+
+body > header > nav > ul {font-size: 0;text-align: center;}
+body > header > nav > ul > li {border-bottom: 1px solid rgba(255, 255, 255, .08);}
+body > header > nav > ul > li > a {display: block;position: relative;min-width: 120px;padding: 0 20px;font-size: 16px;font-weight: 500;line-height: 45px;color: #fff;text-align: left;}
+body > header > nav > ul ul {padding-bottom: 10px;}
+body > header > nav > ul ul li a {opacity: 0.7;display: block;position: relative;padding: 5px 10px;padding-left: 20px;font-size: 15px;font-weight: 300;color: #fff;text-align: left;}
+body > header > nav > ul ul li.on a, nav > ul ul li:hover a {opacity: 1;font-weight: 500;}
+body > header > nav > ul ul li.on a::after {content: "\e93e";font-family: 'xeicon' !important;display: inline-block;width: 15px;height: 15px;margin-left: 15px;font-size: 12px;color: #fff;}
+
+/* guide content tab */
+.common_tab {overflow: hidden;position: relative;border-bottom: 1px solid #000;}
+.common_tab::after {content: '';display: block;clear: both;}
+.common_tab li {float: left;min-width: 105px;height: 40px;margin: 0 -1px -1px 0;padding: 0 15px;border: 1px solid #000;font-size: 15px;line-height: 38px;text-align: center;cursor: pointer;}
+.common_tab .on {color: #fff;background-color: #454545;}
+.common_tab_content {position: relative;margin-top: 20px;}
+
+.section_main_ttl, .section_sub_ttl {font-weight: 600;}
+.section_main_ttl::before, .section_sub_ttl::before {content: '';display: inline-block;position: relative;top: -2px;height: 2px;margin-right: 5px;background-color: #72a4e6;vertical-align: middle;}
+.section_main_ttl {margin-bottom: 10px;font-size: 16px;font-weight: 600;}
+.section_main_ttl::before {width: 8px;height: 3px;}
+.section_sub_ttl {margin-top: 30px;margin-bottom: 10px;font-size: 14px;}
+.section_sub_ttl::before {width: 5px;}
+.noted + .section_main_ttl, .ui_code + .section_main_ttl, .ui_sample + .section_main_ttl {margin-top: 30px;}
+.ui_code + .section_main_ttl, .ui_basic_info + .section_main_ttl, .section_main_ttl.line {margin-top: 40px;padding-top: 40px;border-top: 1px solid #ddd;}
+.ui_sample + .ui_code {margin-top: 20px;}
+.ui_code {font-size: 16px;}
+.noted {position: relative;margin-top: 10px;padding-left: 20px;font-size: 14px;color: #72a4e6;}
+.noted::before {content: '\e9a7';font-family: 'xeicon' !important;display: inline-block;position: absolute;left: 0;top: 0;margin-right: 5px;font-size: 15px;vertical-align: middle;}
+.noted .ex {font-size: 14px;}
+.noted + .ui_sample {margin-top: 5px;}
+.ex {display: block;margin-top: 5px;color: #f7634e;}
+.impact {color: #f7634e;}
+.important {margin-bottom: 15px;font-size: 18px;color: #72a4e6;}
+.ui_sample > p {font-size: 16px;}
+.ui_basic_info {margin-bottom: 40px;}
+.ui_basic_info:first-child ~ .ui_basic_info {margin-top: 20px;padding-top: 15px;border-top: 1px solid #e3e3e3;}
+/* .ui_basic_info h3 {margin-bottom: 15px;font-size: 20px;font-weight: 500;color: #72a4e6;letter-spacing: -1.2px;}
+.ui_basic_info h3:nth-of-type(1) ~ h3 {margin-top: 25px;}
+.ui_basic_info h4 {margin-bottom: 15px;}
+.ui_basic_info h4:nth-of-type(1) ~ h4 {margin-top: 25px;} */
+.ui_basic_info .ui_sample {margin-top: 10px;padding-top: 10px;}
+.ui_basic_info dl {font-size: 16px;}
+.ui_basic_info dt:first-child ~ dt {margin-top: 8px;}
+.ui_basic_info dd {padding: 5px 0 8px 20px;line-height: 1.6;}
+.ui_sample_ttl {position: relative;margin-top: 30px !important;padding-left: 12px;padding-bottom: 15px;font-weight: 500;color: #72a4e6;}
+.ui_sample_ttl::before {content: '';position: absolute;left: 0;top: 14px;width: 6px;height: 2px;background-color: #72a4e6;}
+table th .info,
+table td .info {margin-top: 10px;font-size: 14px;font-weight: 400;line-height: 1.2;color: #f7634e;}
+table .ui_code {margin: 5px;}
+
+.ui_sample .pop_page header {position: relative;left: auto;right: auto;top: auto;min-width: auto;height: 66px;text-align: inherit;background-color: #07348c;z-index: auto;}
+.ui_sample .pop_page main {min-height: auto;}
+.ui_sample .notice_pop {position: relative;z-index: auto;}
+
+.btn_code_open {margin-left: 5px !important;text-indent: -9999px;background: #fff url(../images/icon/i_faq_off.png) no-repeat center / 10px;}
+.btn_code_open.on {background: #fff url(../images/icon/i_faq_on.png) no-repeat center / 10px;}
+.ui_code {display: none;}
+.ui_code pre[class*=language-] {margin: 0;}
+.ui_code pre[class*=language-] {border-radius: 0;}
+.ui_code {background: #272822;}
+.ui_code > ul {border-bottom: 1px solid #454545;}
+.ui_code > ul::after {content: '';display: block;clear: both;}
+.ui_code > ul li {float: left;min-width: 70px;padding: 0 15px;border-right: 1px solid #454545;font-size: 14px;line-height: 30px;color: #fff;text-align: center;text-transform: uppercase;cursor: pointer;}
+.ui_code > ul li:hover {background: rgba(255, 255, 255, 0.05);}
+.ui_code > ul li.on {background: rgba(255, 255, 255, 0.1);}
+.ui_code .li_linenum {padding: 1em;font-family: 'Consolas';}
+.ui_code .li_linenum li {counter-increment: linenumber;position: relative;line-height: 1.8;color: #fff;}
+.ui_code .li_linenum li::before {content: counter(linenumber);display: inline-block;width: 2em;margin-right: .8em;padding-right: .8em;border-right: 1px solid #999;font-size: 16px;color: #999;letter-spacing: -1px;text-align: right;}
+.ui_code .li_linenum li a::before {content: '\e904';font-family: 'xeicon';position: relative;bottom: -2px;margin-right: 10px;line-height: 1;}
+.ui_code .li_linenum li a:hover {color: #999;}
+
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+    .ui_code pre {overflow-x: auto;margin: 0;padding: 1em;}
+    .ui_code .li_linenum li a::before {content: '\e980';}
+}
+
+.ui_code div.code-toolbar > .toolbar {opacity: 1;right: 0;top: -31px;}
+.ui_code div.code-toolbar > .toolbar button {width: 70px;border-left: 1px solid #454545 !important;border-radius: 0 !important;line-height: 30px !important;color: #fff !important;background: #272822 !important;box-shadow: none !important;}
+.ui_code div.code-toolbar > .toolbar button:hover {background: rgba(255, 255, 255, 0.05) !important;}
+
+
+
+/*** only guide sample css ***/
+.scrbox, .scrcustom:not(.scr_box):not(.tbl_scroll) {border: 1px solid #ccc;}
+/** scroll (mCustomScrollbar) **/
+.scrcustom .mCustomScrollBox .mCSB_dragger_bar {margin: 0 !important;background-color: #6B6B6B !important;}
+.scrcustom .mCustomScrollBox .mCSB_draggerRail {margin: 0 !important;background-color: #ECECEC !important;}
+/* vertical */
+.scrcustom .mCSB_vertical > .mCSB_container {margin-right: 0 !important;}
+.scrcustom .mCSB_scrollTools_vertical {width: 10px !important;}
+.scrcustom .mCSB_scrollTools_vertical .mCSB_dragger_bar {width: 10px !important;}
+.scrcustom .mCSB_scrollTools_vertical .mCSB_draggerRail {width: 10px !important;}
+/* horizontal */
+.scrcustom .mCSB_horizontal > .mCSB_container {margin-bottom: 0 !important;}
+.scrcustom .mCSB_scrollTools_horizontal {height: 10px !important;}
+.scrcustom .mCSB_scrollTools_horizontal .mCSB_dragger_bar {height: 10px !important;}
+.scrcustom .mCSB_scrollTools_horizontal .mCSB_draggerRail {height: 10px !important;}
+/* vertical + horizontal */
+.scrcustom .mCSB_vertical_horizontal > .mCSB_container_wrapper {margin: 0 !important;}
+.scrcustom .mCSB_vertical_horizontal .mCSB_container {padding: 0 !important;}
+
+/** swiper **/
+.basicSwiper, .naviSwiper, .pageSwiper, .fractionSwiper, .vSwiper, .groupSwiper, .gridSwiper {position: relative;height: 100px;border: 1px solid #ccc;}
+.gridSwiper .swiper-slide {height: calc((100% - 30px) / 2);background: #eee;}
+.basicSwiper, .naviSwiper, .pageSwiper, .fractionSwiper, .vSwiper {overflow: hidden;position: relative;height: 100px;border: 1px solid #DEDEDF;}
+.demoSwiper01 .swiper-slide,
+.demoSwiper04 .swiper-slide div,
+.demoSwiper05 .swiper-slide div {display: flex;justify-content: center;align-items: center;}
+
+/** simplebar csscustom **/
+.scrboxsample {border: 1px solid #ccc;}
+.scrboxsample.csscumtom.simplebar-scrollable-y .simplebar-offset {padding-right: 20px;} /* 세로 스크롤이 생기면 padding-right값 주기 */
+.scrboxsample.csscumtom.simplebar-scrollable-x {padding-bottom: 15px;} /* 가로 스크롤이 생기면 padding-bottom값 주기 */
+.scrboxsample.csscumtom.simplebar-scrollable-y.simplebar-scrollable-x {padding-bottom: 0;} /* 상하좌우 스크롤이 생기면 padding-bottom값 빼기 */
+.scrboxsample.csscumtom.simplebar-scrollable-y.simplebar-scrollable-x .simplebar-offset {padding-bottom: 15px !important;} /* 상하좌우 스크롤이 생기면 simplebar-offset에 padding-bottom값 주기 */ 
+.scrboxsample.csscumtom.simplebar-scrollable-y.simplebar-scrollable-x .simplebar-track.simplebar-horizontal {right: 20px;} /* 상하좌우 스크롤이 생기면 가로 스크롤을 오른쪽에서 더 띄우기 */
+.scrboxsample.csscumtom .simplebar-track {opacity: 0.8;transition: opacity .1s linear;}
+.scrboxsample.csscumtom.simplebar-scrollable-x:hover .simplebar-track,
+.scrboxsample.csscumtom.simplebar-scrollable-y:hover .simplebar-track {opacity: 1;}
+.scrboxsample.csscumtom .simplebar-track.simplebar-vertical {right: 7px;top: 7px;bottom: 7px;width: 5px;border-radius: 10px;background: #cfcfcf;}
+.scrboxsample.csscumtom .simplebar-track.simplebar-vertical .simplebar-scrollbar::before {left: 0;right: 0;top: 0;bottom: 0;width: 5px;}
+.scrboxsample.csscumtom .simplebar-track.simplebar-horizontal {left: 7px;right: 7px;bottom: 7px;height: 5px;border-radius: 10px;background: #cfcfcf;}
+.scrboxsample.csscumtom .simplebar-track.simplebar-horizontal .simplebar-scrollbar::before {left: 0;right: 0;top: 0;bottom: 0;}
+/* 상하버튼추가 */
+.scrboxsample.csscumtom.scrwrap {position: relative;}
+.scrboxsample.csscumtom.scrwrap .simplebar-scrollable-y .simplebar-offset {padding-right: 20px;} /* 세로 스크롤이 생기면 padding-right값 주기 */
+.scrboxsample.csscumtom.scrwrap .simplebar-scrollable-y.simplebar-scrollable-x .simplebar-offset {padding-bottom: 15px !important;} /* 가로 스크롤이 생기면 padding-bottom값 주기 */
+.scrboxsample.csscumtom.scrwrap .simplebar-scrollable-y.simplebar-scrollable-x {padding-bottom: 0;} /* 상하좌우 스크롤이 생기면 padding-bottom값 빼기 */
+.scrboxsample.csscumtom.scrwrap .simplebar-scrollable-y.simplebar-scrollable-x .simplebar-track.simplebar-horizontal {right: 20px;} /* 상하좌우 스크롤이 생기면 가로 스크롤을 오른쪽에서 더 띄우기 */ 
+.scrboxsample.csscumtom.scrwrap .simplebar-track.simplebar-vertical {top: 20px;bottom: 20px;}
+.scrboxsample.csscumtom.scrwrap .scroll_up_button, 
+.scrboxsample.csscumtom.scrwrap .scroll_down_button {opacity: 0.8;position: absolute;right: 0;height: 16px;padding: 0;color: #000;background: none;z-index: 99;transition: opacity .1s linear;}
+.scrboxsample.csscumtom.scrwrap .scroll_up_button:hover, 
+.scrboxsample.csscumtom.scrwrap .scroll_down_button:hover {opacity: 1;}
+.scrboxsample.csscumtom.scrwrap .scroll_up_button i, 
+.scrboxsample.csscumtom.scrwrap .scroll_down_button i {font-size: 16px;vertical-align: top;}
+.scrboxsample.csscumtom.scrwrap .scroll_up_button {top: 0px;}
+.scrboxsample.csscumtom.scrwrap .scroll_down_button {bottom: 3px;}
+
+/* accordion */
+.ui_acc .js_accBox {border: 1px solid var(--bdr);}
+.ui_acc .js_accBox > .js_accHead:hover,
+.ui_acc .js_accBox.open > div:not(.js_accCont) {background: var(--basic-bg);}
+.ui_acc .js_accBox + .js_accBox {margin-top: 10px;}
+.ui_acc .js_accBox > div {display: flex;align-items: center;gap: 20px;height: 50px;padding: 10px;}
+.ui_acc .js_accHead {cursor: pointer;}
+.ui_acc .btn.js_accHead {border-color: var(--bdr);}
+.ui_acc .js_accBox .xi-angle-down {transition: 0.2s;}
+.ui_acc .js_accBox.open .xi-angle-down {transform: rotate(180deg);}
+.ui_acc .js_accCont {border-top: 1px solid var(--bdr);}
+
+/* etc */
+.chart_row {display: flex;justify-content: space-between;}
+.chart_row > div {width: 45%;}
+.loading_wrap.entire {position: absolute !important;}
+.gallery_wrap.mobile .thum_list li {width: 100%;margin-bottom: 1rem;}
+
+
+
+/** 버튼 (basic.css에 들어 있으나 ui요소 등에서 버튼 스타일 나오게 하기 위해 동일한 css를 layout.css에 기재 **/
+/* button size */
+.btn {display: inline-block;min-width: 80px;height: 36px;margin: 0;padding: 0 12px;border: 1px solid var(--dark);border-radius: 5px;font-size: 14px;line-height: 34px;color: var(--dark);text-align: center;background-color: transparent;transition: 0.1s color, 0.1s border-color, 0.1s background-color;}
+.btn:hover, .btn:focus {background-color: var(--btn-hover);}
+.btn.sml {min-width: 46px;height: 30px;padding: 0 10px;font-size: 12px;line-height: 28px;}
+.btn_sns {min-width: 100px;height: 33px;padding: 0 8px;font-size: 13px;line-height: 31px;}
+
+/* only icon button */
+.btn.ic {min-width: 30px;width: 30px;height: 30px;padding: 0;border: 1px solid var(--bdr);border-radius: 4px;font-family: 'xeicon';font-size: 16px;line-height: 28px;color: var(--dark);letter-spacing: 0;}
+.btn.ic:hover, .btn.ic:focus {background-color: var(--basic-bg);}
+.btn.ic i {bottom: 0;}
+.btn.ic + .btn.ic {margin-left: 5px;}
+
+/* set button color */
+/* blue */
+.btn.blue, .btn.btn_save, .btn.btn_write, .btn.btn_rewrite {border-color: var(--blue);color: #FFFFFF;background-color: var(--blue);}
+.btn.blue:hover, .btn.btn_save:hover, .btn.btn_write:hover, .btn.btn_rewrite:hover,
+.btn.blue:focus, .btn.btn_save:focus, .btn.btn_write:focus, .btn.btn_rewrite:focus {border-color: var(--btn-blue-hover);background-color: var(--btn-blue-hover);}
+/* red */
+.btn.red, .btn.btn_del {border-color: var(--red);color: #FFFFFF;background-color: var(--red);}
+.btn.red:hover, .btn.btn_del:hover,
+.btn.red:focus, .btn.btn_del:focus {border-color: var(--btn-red-hover);background-color: var(--btn-red-hover)}
+/* green */
+.btn.green {border-color: var(--green);color: #FFFFFF;background-color: var(--green);}
+.btn.green:hover, .btn.green:focus {border-color: var(--btn-green-hover);background-color: var(--btn-green-hover);}
+/* gray */
+.btn.gray, .btn.btn_cancel, .btn.btn_list {border-color: var(--gray);color: #FFFFFF;background-color: var(--gray);}
+.btn.gray:hover, .btn.btn_cancel:hover, .btn.btn_list:hover,
+.btn.gray:focus, .btn.btn_cancel:focus, .btn.btn_list:focus {border-color: var(--btn-gray-hover);background-color: var(--btn-gray-hover);}
+/* gray light */
+.btn.gray.light {border-color: var(--gray-light);color: var(--dark);background-color: var(--gray-light);}
+.btn.gray.light:hover, .btn.gray.light:focus {border-color: var(--btn-gray-light-hover);background-color: var(--btn-gray-light-hover);}
+/* dark */
+.btn.black {color: #FFFFFF;background-color: var(--black);}
+.btn.black:hover, .btn.black:focus {background-color: var(--dark);}
+
+/* function button */
+.btn.btn_excel {padding-left: 32px;background: url(../images/icon/file_excel.svg) no-repeat 10px 50% / auto 16px;}
+.btn.btn_excel:hover, .btn.btn_excel:focus {background-color: var(--btn-hover);}
+
+/* button border */
+.btn.bd {background-color: transparent;}
+.btn.bd.red {border-color: var(--red);color: var(--red);}
+.btn.bd.red:hover, .btn.bd.red:focus {background-color: var(--btn-bd-red-hover);}
+.btn.bd.green {border-color: var(--green);color: var(--green);}
+.btn.bd.green:hover, .btn.bd.green:focus {background-color: var(--btn-bd-green-hover);}
+.btn.bd.blue {border-color: var(--blue);color: var(--blue);}
+.btn.bd.blue:hover, .btn.bd.blue:focus {background-color: var(--btn-bd-blue-hover);}
+.btn.bd.gray {border-color: var(--gray);color: var(--gray);}
+.btn.bd.gray:hover, .btn.bd.gray:focus {background-color: var(--btn-bd-gray-hover);}
+
+/* icon button */
+.btn i {position: relative;bottom: -1px;font-size: 15px;color: inherit;}
+.btn.sml i {font-size: 13px;}
+.btn.icl i {margin-right: 3px;}
+.btn.icr i {margin-left: 3px;}
+.btn.sml.icl, .btn.sml.icr {padding: 0 10px;}
+
+/** paging **/
+.paging_wrap {position: relative;margin-top: 20px;}
+.paging {font-size: 0;text-align: center;}
+.paging li {display: inline-block;position: relative;min-width: 36px;height: 36px;border: 1px solid var(--bdr);border-left: 0;font-size: 14px;line-height: 34px;color: var(--dark);background-color: #FFFFFF;vertical-align: middle;cursor: pointer;}
+.paging li a {display: block;height: 100%;padding: 0 5px;}
+.paging li:first-child {border-left: 1px solid var(--bdr);border-radius: 5px 0 0 5px;}
+.paging li:last-child {border-radius: 0 5px 5px 0;}
+.paging li.btn_page {font-size: 0;color: var(--black);}
+.paging li.btn_page a::before,
+.paging li.btn_page a::after {font-family: 'xeicon';font-size: 14px;}
+.paging li.btn_page a::after {margin-left: -8px;}
+.paging li.first a::before,
+.paging li.first a::after,
+.paging li.prev a::before {content: '\e93d';}
+.paging li.next a::before,
+.paging li.last a::after,
+.paging li.last a::before {content: '\e940';}
+.paging li:hover,
+.paging .current {border-color: var(--blue);color: #FFFFFF;background-color: var(--blue);}

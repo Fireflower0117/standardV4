@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/content.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/content.js"></script>
+    <!-- swiper -->
+    <link rel="stylesheet" href="lib/swiper/swiper-bundle.min.css">
+    <script src="lib/swiper/swiper.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">최신글</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">가로형</li>
+                <li id="tab02">세로형</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. UI 요소에서 사용되는 css, js는 각 메뉴의 샘플코드에서 복사해서 추가, img파일 개별 다운로드 후 경로에 맞게 넣어야 함.</dt>
+                    </dl>
+                </section>
+                <h2 class="section_main_ttl">가로 기본형</h2>
+                <div class="ui_sample">
+                    <div class="recent_list typeA">
+                        <div class="title">
+                            <b>공지사항</b>
+                            <a href="" class="btn_more">더보기</a>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="">
+                                    <p>정부, 개방형 국민인재 직위 공모 안내</p>
+                                    <img src="images/content/i_recent_new.png"><span>2023.12.31</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <p>정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내</p>
+                                    <img src="images/content/i_recent_new.png"><span>2023.12.31</span>
+                                </a>
+                            </li>
+                            <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                            <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                            <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">html</li>
+                        <li id="code01_1_2">css</li>
+                        <li id="code01_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="recent_list"&gt;
+    &lt;div class="title"&gt;
+        &lt;b&gt;공지사항&lt;/b&gt;
+        &lt;a href="" class="btn_more"&gt;더보기&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;img src="images/content/i_recent_new.png"&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;img src="images/content/i_recent_new.png"&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** recent **/
+.recent_list {width: 100%;max-width: 600px;padding: 20px 25px;background: #fafafa;}
+.recent_list .title {display: flex;justify-content: space-between;align-items: center;margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px solid #ddd;}
+.recent_list .title b {font-size: 25px;font-weight: 400;color: #333;}
+.recent_list .title .btn_more {display: block;width: 20px;height: 20px;text-indent: -9999px;background: url(../images/content/i_recent_more.png) no-repeat center;transition: all 0.15s;}
+.recent_list .title .btn_more:hover {transform: rotate(180deg);}
+.recent_list ul li a {display: block;overflow: hidden;padding: 7px 0;}
+.recent_list ul li:last-child a {padding-bottom: 0;}
+.recent_list ul li a * {font-size: 16px;font-weight: 400;line-height: 1;color: #333;}
+.recent_list ul li p {display: inline-block;max-width: 75%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.recent_list ul li p::before {content: '·';margin-right: 5px;}
+.recent_list ul li img {margin-left: 5px;vertical-align: -1px;}
+.recent_list ul li span {float: right;font-weight: 300;}
+.recent_list ul li a:hover p {font-weight: 500;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code01_1_3">
+                        <ul>
+                            <li><a href="images/content/i_recent_more.png" title="Download" download>i_recent_more.png</a></li>
+                            <li><a href="images/content/i_recent_new.png" title="Download" download>i_recent_new.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">가로 꾸밈형</h2>
+                <div class="ui_sample">
+                    <div class="recent_list typeB">
+                        <div class="title">
+                            <b>공지사항</b>
+                            <a href="" class="btn_more">더보기</a>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="">
+                                    <div class="img_area"><img src="images/content/img_recent_sample1.png" alt=""></div>
+                                    <div>
+                                        <p>정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <p>정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내</p>
+                                    <img src="images/content/i_recent_new.png"><span>2023.12.31</span>
+                                </a>
+                            </li>
+                            <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                            <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                        <li id="code01_2_2">css</li>
+                        <li id="code01_2_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="recent_list"&gt;
+    &lt;div class="title"&gt;
+        &lt;b&gt;공지사항&lt;/b&gt;
+        &lt;a href="" class="btn_more"&gt;더보기&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;ul&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;
+                &lt;div class="img_area"&gt;&lt;img src="images/content/img_recent_sample1.png" alt=""&gt;&lt;/div&gt;
+                &lt;div&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/div&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;img src="images/content/i_recent_new.png"&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** recent **/
+.recent_list {width: 100%;max-width: 600px;padding: 20px 25px;border: 1px solid #ddd;background: #fff;}
+.recent_list .title {display: flex;justify-content: space-between;align-items: center;margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px solid #ddd;}
+.recent_list .title b {font-size: 25px;font-weight: 400;color: #333;}
+.recent_list .title .btn_more {display: block;width: 20px;height: 20px;text-indent: -9999px;background: url(../images/content/i_recent_more.png) no-repeat center;transition: all 0.15s;}
+.recent_list .title .btn_more:hover {transform: rotate(180deg);}
+.recent_list ul li a {display: block;overflow: hidden;padding: 5px 0;}
+.recent_list ul li:last-child a {padding-bottom: 0;}
+.recent_list ul li a * {font-size: 16px;font-weight: 400;line-height: 1;color: #333;}
+.recent_list ul li p {display: inline-block;max-width: 75%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.recent_list ul li p::before {content: '·';margin-right: 5px;}
+.recent_list ul li img {margin-left: 5px;vertical-align: -1px;}
+.recent_list ul li span {float: right;font-weight: 300;}
+.recent_list ul li a:hover p {font-weight: 500;}
+.recent_list ul li:first-child {padding: 5px 0 10px;}
+.recent_list ul li:first-child a {display: flex;}
+.recent_list ul li:first-child p::before {display: none;}
+.recent_list ul li:first-child p {max-width: 100%;min-height: 50px;max-height: 50px;padding-top: 10px;line-height: 1.3;white-space: normal;}
+.recent_list ul li:first-child span {display: block;float: none;margin-top: 20px;text-align: right;}
+.recent_list ul li .img_area {overflow: hidden;width: 180px;height: 100px;border-radius: 5px;}
+.recent_list ul li .img_area img {width: 100%;height: 100%;object-fit: cover;margin: 0;}
+.recent_list ul li .img_area + div {width: calc(100% - 180px);padding-left: 15px;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code01_2_3">
+                        <ul>
+                            <li><a href="images/content/i_recent_more.png" title="Download" download>i_recent_more.png</a></li>
+                            <li><a href="images/content/i_recent_new.png" title="Download" download>i_recent_new.png</a></li>
+                            <li><a href="images/content/img_recent_sample1.png" title="Download" download>img_recent_sample1.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">가로 기본형 (tab)</h2>
+                <div class="ui_sample">
+                    <div class="recent_list typeC">
+                        <div class="title">
+                            <ul class="tab_menu js_tmenu" role="tablist">
+                                <li id="tab1_01" class="on" role="tab" aria-selected="true"><a href="">공지사항</a></li>
+                                <li id="tab1_02" role="tab" aria-selected="false"><a href="">자료실</a></li>
+                            </ul>
+                        </div>
+                        <div class="tab_cont js_tcont on" data-tab="tab1_01" role="tabpanel" aria-labelledby="tab1_01">
+                            <a href="" class="btn_more">더보기</a>
+                            <ul>
+                                <li>
+                                    <a href="">
+                                        <p>정부, 개방형 국민인재 직위 공모 안내</p>
+                                        <img src="images/content/i_recent_new.png"><span>2023.12.31</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <p>정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내</p>
+                                        <img src="images/content/i_recent_new.png"><span>2023.12.31</span>
+                                    </a>
+                                </li>
+                                <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                                <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                                <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                            </ul>
+                        </div>
+                        <div class="tab_cont js_tcont" data-tab="tab1_02" role="tabpanel" aria-labelledby="tab1_02">
+                            <a href="" class="btn_more">더보기</a>
+                            <ul>
+                                <li>
+                                    <a href="">
+                                        <p>정부, 개방형 국민인재 직위 공모 안내</p>
+                                        <img src="images/content/i_recent_new.png"><span>2023.12.31</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <p>정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내</p>
+                                        <img src="images/content/i_recent_new.png"><span>2023.12.31</span>
+                                    </a>
+                                </li>
+                                <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                                <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                                <li><a href=""><p>정부, 개방형 국민인재 직위 공모 안내</p><span>2023.12.31</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <!-- <button class="btn icl mar_b10px"><i class="xi-arrow-bottom"></i>*.css</button> --><!-- 다운로드 파일 필요한 경우 -->
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_3_1" class="on">html</li>
+                        <li id="code01_3_2">css</li>
+                        <li id="code01_3_3">js</li>
+                        <li id="code01_3_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="recent_list"&gt;
+    &lt;div class="title"&gt;
+        &lt;ul class="tab_menu js_tmenu" role="tablist"&gt;
+            &lt;li id="tab1_01" class="on" role="tab" aria-selected="true"&gt;&lt;a href=""&gt;공지사항&lt;/a&gt;&lt;/li&gt;
+            &lt;li id="tab1_02" role="tab" aria-selected="false"&gt;&lt;a href=""&gt;자료실&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class="tab_cont js_tcont on" data-tab="tab1_01" role="tabpanel" aria-labelledby="tab1_01"&gt;
+        &lt;a href="" class="btn_more"&gt;더보기&lt;/a&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;img src="images/content/i_recent_new.png"&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;img src="images/content/i_recent_new.png"&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class="tab_cont js_tcont" data-tab="tab1_02" role="tabpanel" aria-labelledby="tab1_02"&gt;
+        &lt;a href="" class="btn_more"&gt;더보기&lt;/a&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;img src="images/content/i_recent_new.png"&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내 정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;img src="images/content/i_recent_new.png"&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;p&gt;정부, 개방형 국민인재 직위 공모 안내&lt;/p&gt;&lt;span&gt;2023.12.31&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_3_2">
+                        <pre>
+<code class="line-numbers language-css">/** recent **/
+.recent_list {width: 100%;max-width: 600px;padding: 20px 25px;background: #fafafa;}
+.recent_list .title {margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px solid #ddd;}
+.recent_list .title li {display: inline-block;position: relative;}
+.recent_list .title li::after {content: '';display: block;position: absolute;right: -11px;top: 15px;width: 3px;height: 3px;border-radius: 100px;background: #333;}
+.recent_list .title li:last-child::after {display: none;}
+.recent_list .title li + li {margin-left: 15px;}
+.recent_list .title li a {padding: 0;font-size: 20px;font-weight: 400;color: #999;}
+.recent_list .title li.on a {font-weight: 600;color: #333;}
+.recent_list .tab_cont {position: relative;}
+.recent_list .btn_more {display: block;position: absolute;right: 0;top: -50px;width: 20px;height: 20px;text-indent: -9999px;background: url(../images/content/i_recent_more.png) no-repeat center;transition: all 0.15s;}
+.recent_list .btn_more:hover {transform: rotate(180deg);}
+.recent_list ul li a {display: block;overflow: hidden;padding: 7px 0;}
+.recent_list ul li:last-child a {padding-bottom: 0;}
+.recent_list ul li a * {color: #333;font-size: 16px;font-weight: 400;line-height: 1;}
+.recent_list ul li p {display: inline-block;max-width: 75%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.recent_list ul li p::before {content: '·';margin-right: 5px;}
+.recent_list ul li img {margin-left: 5px;vertical-align: -1px;}
+.recent_list ul li span {float: right;font-weight: 300;}
+.recent_list ul li a:hover p {font-weight: 500;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_3_3">
+                        <pre>
+<code class="line-numbers language-js">// tab
+$(document).ready(function () {
+    if ($('.js_tmenu').length || $('.js_tcont').length) {
+        $('.js_tcont').stop().hide();
+        $('.js_tcont.on').stop().show();
+        $('.js_tmenu li a').click(function () {
+            let tabId = $(this).parent().attr('id');
+            let selTabId = $('.js_tmenu li[id="' + tabId + '"], .js_tcont[data-tab="' + tabId + '"]');
+            $(this).closest('.tab').find('.js_tmenu li, .js_tcont').not('.js_tmenu li.on').removeClass('on');
+            selTabId.addClass('on').fadeIn();
+            selTabId.siblings('.js_tcont').stop().hide();
+            selTabId.siblings().removeClass('on');
+            return false;
+        });
+    }
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code01_3_4">
+                        <ul>
+                            <li><a href="images/content/i_recent_more.png" title="Download" download>i_recent_more.png</a></li>
+                            <li><a href="images/content/i_recent_new.png" title="Download" download>i_recent_new.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">세로 기본형</h2>
+                <div class="ui_sample">
+                    <div class="recent_list typeD">
+                        <div class="title">
+                            <b>공지사항</b>
+                            <a href="" class="btn_more">더보기</a>
+                        </div>
+                        <ul class="list">
+                            <li>
+                                <a href="">
+                                    <b>정부, 개방형 국민인재 직위 공모 안내<img src="images/content/i_recent_new.png"></b>
+                                    <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                    <span>2023.12.31</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <b>정부, 개방형 국민인재 직위 공모 안내 정부, 개방형..<img src="images/content/i_recent_new.png"></b>
+                                    <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                    <span>2023.12.31</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <b>정부, 개방형 국민인재 직위 공모 안내</b>
+                                    <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                    <span>2023.12.31</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <!-- <button class="btn icl mar_b10px"><i class="xi-arrow-bottom"></i>*.css</button> -->
+                <!-- 다운로드 파일 필요한 경우 -->
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="recent_list"&gt;
+    &lt;div class="title"&gt;
+        &lt;b&gt;공지사항&lt;/b&gt;
+        &lt;a href="" class="btn_more"&gt;더보기&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;ul class="list"&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;
+                &lt;b&gt;정부, 개방형 국민인재 직위 공모 안내&lt;img src="images/content/i_recent_new.png"&gt;&lt;/b&gt;
+                &lt;p&gt;국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업&lt;/p&gt;
+                &lt;span&gt;2023.12.31&lt;/span&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;
+                &lt;b&gt;정부, 개방형 국민인재 직위 공모 안내&lt;img src="images/content/i_recent_new.png"&gt;&lt;/b&gt;
+                &lt;p&gt;국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업&lt;/p&gt;
+                &lt;span&gt;2023.12.31&lt;/span&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;
+                &lt;b&gt;정부, 개방형 국민인재 직위 공모 안내&lt;img src="images/content/i_recent_new.png"&gt;&lt;/b&gt;
+                &lt;p&gt;국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업&lt;/p&gt;
+                &lt;span&gt;2023.12.31&lt;/span&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** recent **/
+.recent_list {width: 100%;max-width: 800px;}
+.recent_list .title {display: flex;justify-content: space-between;align-items: center;margin-bottom: 20px;}
+.recent_list .title b {font-size: 25px;font-weight: 400;color: #333;}
+.recent_list .title .btn_more {display: block;width: 33px;height: 33px;text-indent: -9999px;background: url(../images/content/i_recent_more2.png) no-repeat center;transition: all 0.15s;}
+.recent_list .title .btn_more:hover {transform: rotate(180deg);}
+.recent_list .list::after {content: '';display: block;clear: both;}
+.recent_list .list li {float: left;width: 32%;border: 1px solid #e5e5e5;border-radius: 5px;background: #fafafa;transition: all 0.2s;}
+.recent_list .list li a {display: block;position: relative;padding: 30px 20px;}
+.recent_list .list li a::after {content: '';opacity: 0;display: block;position: absolute;left: 0;top: 0;width: 100%;height: 100%;border: 5px solid #006ad3;border-radius: 5px;transition: all 0.2s;}
+.recent_list .list li + li {margin-left: 2%;}
+.recent_list .list li b {display: block;overflow: hidden;height: 41px;margin-bottom: 20px;font-size: 17px;font-weight: 500;line-height: 1.2;}
+.recent_list .list li b img {margin-left: 5px;vertical-align: -2px;}
+.recent_list .list li p {overflow: hidden;height: 100px;padding-top: 30px;border-top: 2px solid #e1e1e1;font-size: 15px;font-weight: 400;color: #555555;}
+.recent_list .list li span {display: block;margin-top: 40px;font-size: 14px;color: #555555;}
+.recent_list .list li span::before {content: '';display: inline-block;width: 15px;height: 15px;margin-right: 5px;background: url(../images/content/i_recent_time.png) no-repeat center;vertical-align: -2px;}
+.recent_list .list li:hover {box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);}
+.recent_list .list li:hover a::after {opacity: 1;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_1_3">
+                        <ul>
+                            <li><a href="images/content/i_recent_more2.png" title="Download" download="">i_recent_more2.png</a></li>
+                            <li><a href="images/content/i_recent_new.png" title="Download" download="">i_recent_new.png</a></li>
+                            <li><a href="images/content/i_recent_time.png" title="Download" download="">i_recent_time.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">세로 카드형 (tab)</h2>
+                <div class="ui_sample">
+                    <div class="recent_list typeE">
+                        <div class="title">
+                            <ul class="tab_menu js_tmenu recent_tab_menu">
+                                <li id="tab2_01" class="on"><a href="">공지사항</a></li>
+                                <li id="tab2_02"><a href="">자료실</a></li>
+                            </ul>
+                        </div>
+                        <div class="tab_cont js_tcont on" data-tab="tab2_01">
+                            <div class="recent_slider">
+                                <div class="swiper_btn">
+                                    <button class="btn_recent_prev">이전</button>
+                                    <button class="btn_recent_next">다음</button>
+                                    <a href="" class="btn_more">더보기</a>
+                                </div>
+                                <div class="swiper-container">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide">
+                                            <a href="">
+                                                <span class="cate typeA">자금지원</span>
+                                                <b>1정부, 개방형 국민인재 직위 공모 안내 국민인재 직위 공모 안내</b>
+                                                <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업 국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                                <span>2023.12.31</span>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="">
+                                                <span class="cate typeB">기타</span>
+                                                <b>2정부, 개방형 국민인재 직위 공모 안내</b>
+                                                <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업 국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                                <span>2023.12.31</span>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="">
+                                                <span class="cate typeC">해외마케팅</span>
+                                                <b>3정부, 개방형 국민인재 직위 공모 안내</b>
+                                                <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업 국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                                <span>2023.12.31</span>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="">
+                                                <span class="cate typeC">해외마케팅</span>
+                                                <b>4정부, 개방형 국민인재 직위 공모 안내</b>
+                                                <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업 국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                                <span>2023.12.31</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab_cont js_tcont" data-tab="tab2_02">
+                            <div class="recent_slider">
+                                <div class="swiper_btn">
+                                    <button class="btn_recent_prev">이전</button>
+                                    <button class="btn_recent_next">다음</button>
+                                    <a href="" class="btn_more">더보기</a>
+                                </div>
+                                <div class="swiper-container">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide">
+                                            <a href="">
+                                                <span class="cate typeA">자금지원</span>
+                                                <b>1정부, 개방형 국민인재 직위 공모 안내 국민인재 직위 공모 안내</b>
+                                                <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업 국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                                <span>2023.12.31</span>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="">
+                                                <span class="cate typeB">기타</span>
+                                                <b>2정부, 개방형 국민인재 직위 공모 안내</b>
+                                                <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업 국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                                <span>2023.12.31</span>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="">
+                                                <span class="cate typeC">해외마케팅</span>
+                                                <b>3정부, 개방형 국민인재 직위 공모 안내</b>
+                                                <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업 국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                                <span>2023.12.31</span>
+                                            </a>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <a href="">
+                                                <span class="cate typeC">해외마케팅</span>
+                                                <b>4정부, 개방형 국민인재 직위 공모 안내</b>
+                                                <p>국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업 국내 대표음악업체 HDC영창(대표:현계흥)이 5일부터 10일까지 대구에서 열리는 ‘2018 국제 컴퓨터음악컨퍼런스국내 대표음악업</p>
+                                                <span>2023.12.31</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_2_1" class="on">html</li>
+                        <li id="code02_2_2">css</li>
+                        <li id="code02_2_3">js</li>
+                        <li id="code02_2_4">img</li>
+                        <li id="code02_2_5">file</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;head&gt;
+    ...
+    &lt;link rel="stylesheet" href="lib/swiper/swiper-bundle.min.css"&gt;
+    &lt;script src="lib/swiper/swiper.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;div class="recent_list"&gt;
+    &lt;div class="title"&gt;
+        &lt;ul class="tab_menu js_tmenu recent_tab_menu"&gt;
+            &lt;li id="tab1_01" class="on"&gt;&lt;a href=""&gt;공지사항&lt;/a&gt;&lt;/li&gt;
+            &lt;li id="tab1_02"&gt;&lt;a href=""&gt;자료실&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class="tab_cont js_tcont on" data-tab="tab1_01"&gt;
+        &lt;div class="recent_slider"&gt;
+            &lt;div class="swiper_btn"&gt;
+                &lt;button class="btn_recent_prev"&gt;이전&lt;/button&gt;
+                &lt;button class="btn_recent_next"&gt;다음&lt;/button&gt;
+                &lt;a href="" class="btn_more"&gt;더보기&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="swiper-container"&gt;
+                &lt;div class="swiper-wrapper"&gt;
+                    &lt;div class="swiper-slide"&gt;
+                        &lt;a href=""&gt;
+                            &lt;span class="cate typeA"&gt;카테고리&lt;/span&gt;
+                            &lt;b&gt;1제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 &lt;/b&gt;
+                            &lt;p&gt;내용입니다.&lt;/p&gt;
+                            &lt;span&gt;2023.12.31&lt;/span&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                    &lt;div class="swiper-slide"&gt;
+                        &lt;a href=""&gt;
+                            &lt;span class="cate typeB"&gt;카테고리&lt;/span&gt;
+                            &lt;b&gt;2제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 &lt;/b&gt;
+                            &lt;p&gt;내용입니다.&lt;/p&gt;
+                            &lt;span&gt;2023.12.31&lt;/span&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                    &lt;div class="swiper-slide"&gt;
+                        &lt;a href=""&gt;
+                            &lt;span class="cate typeC"&gt;카테고리&lt;/span&gt;
+                            &lt;b&gt;3제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 &lt;/b&gt;
+                            &lt;p&gt;내용입니다.&lt;/p&gt;
+                            &lt;span&gt;2023.12.31&lt;/span&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                    &lt;div class="swiper-slide"&gt;
+                        &lt;a href=""&gt;
+                            &lt;span class="cate typeA"&gt;카테고리&lt;/span&gt;
+                            &lt;b&gt;4제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 &lt;/b&gt;
+                            &lt;p&gt;내용입니다.&lt;/p&gt;
+                            &lt;span&gt;2023.12.31&lt;/span&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="tab_cont js_tcont" data-tab="tab1_02"&gt;
+        &lt;div class="recent_slider"&gt;
+            &lt;div class="swiper_btn"&gt;
+                &lt;button class="btn_recent_prev"&gt;이전&lt;/button&gt;
+                &lt;button class="btn_recent_next"&gt;다음&lt;/button&gt;
+                &lt;a href="" class="btn_more"&gt;더보기&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="swiper-container"&gt;
+                &lt;div class="swiper-wrapper"&gt;
+                    &lt;div class="swiper-slide"&gt;
+                        &lt;a href=""&gt;
+                            &lt;span class="cate typeA"&gt;카테고리&lt;/span&gt;
+                            &lt;b&gt;1제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 &lt;/b&gt;
+                            &lt;p&gt;내용입니다.&lt;/p&gt;
+                            &lt;span&gt;2023.12.31&lt;/span&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                    &lt;div class="swiper-slide"&gt;
+                        &lt;a href=""&gt;
+                            &lt;span class="cate typeB"&gt;카테고리&lt;/span&gt;
+                            &lt;b&gt;2제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 &lt;/b&gt;
+                            &lt;p&gt;내용입니다.&lt;/p&gt;
+                            &lt;span&gt;2023.12.31&lt;/span&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                    &lt;div class="swiper-slide"&gt;
+                        &lt;a href=""&gt;
+                            &lt;span class="cate typeC"&gt;카테고리&lt;/span&gt;
+                            &lt;b&gt;3제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 &lt;/b&gt;
+                            &lt;p&gt;내용입니다.&lt;/p&gt;
+                            &lt;span&gt;2023.12.31&lt;/span&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                    &lt;div class="swiper-slide"&gt;
+                        &lt;a href=""&gt;
+                            &lt;span class="cate typeA"&gt;카테고리&lt;/span&gt;
+                            &lt;b&gt;4제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 제목입니다 &lt;/b&gt;
+                            &lt;p&gt;내용입니다.&lt;/p&gt;
+                            &lt;span&gt;2023.12.31&lt;/span&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** recent **/
+.recent_list {overflow: hidden;position: relative;width: 100%;max-width: 800px;}
+.recent_list .title {margin-bottom: 30px;}
+.recent_list .title li {display: inline-block;position: relative;}
+.recent_list .title li::after {content: '';display: block;position: absolute;right: -11px;top: 15px;width: 3px;height: 3px;border-radius: 100px;background: #333;}
+.recent_list .title li:last-child::after {display: none;}
+.recent_list .title li + li {margin-left: 15px;}
+.recent_list .title li a {padding: 0;font-size: 20px;font-weight: 400;color: #999;}
+.recent_list .title li.on a {font-weight: 600;color: #333;}
+.recent_list .swiper_btn {position: absolute;right: 0px;top: 1px;}
+.recent_list .pagination_fraction {font-size: 15px;vertical-align: -1px;}
+.recent_list .btn_recent_prev, .recent_list .btn_recent_next, .recent_list .btn_play_control {display: inline-block;width: 27px;height: 27px;border: 0;text-indent: -9999px;background: url(../images/content/btn_banner_controls.png) no-repeat;}
+.recent_list .btn_recent_prev {background-position: -28px -1px;}
+.recent_list .btn_recent_next {background-position: -81px -1px;}
+.recent_list .recent_slider {margin-top: 16px;}
+.recent_list .recent_slider .btn_more {display: inline-block;width: 27px;height: 27px;text-indent: -9999px;background: url(../images/content/i_recent_more.png) no-repeat center;transition: all 0.15s;}
+.recent_list .recent_slider .btn_more:hover {transform: rotate(180deg);}
+.recent_list .swiper-slide {width: calc(33.33% - 6px);height: 355px;margin: 0 3px;}
+.recent_list .swiper-slide a {display: block;position: relative;width: 100%;height: 100%;padding: 30px 25px;padding-bottom: 40px;border: 1px solid #EDEDED;background: #fff;}
+.recent_list .swiper-slide a::before {content: '';opacity: 0;display: block;position: absolute;left: 0px;top: 0px;width: 100%;height: calc(100% + 2px);border: 4px solid #467bcc;box-shadow: 3px 3px 23px rgba(0, 0, 0, 0.1);transition: all 0.2s;}
+.recent_list .swiper-slide a:hover::before {opacity: 1;transition: all 0.2s;}
+.recent_list .swiper-slide .cate {display: inline-block;letter-spacing: -0.05em;font-size: 13px;line-height: 1;padding: 4px 15px;border-radius: 100px;border: 2px solid #ddd;min-width: 70px;text-align: center;color: #3D3E3D;font-weight: 500;margin-bottom: 10px;}
+.recent_list .swiper-slide .cate.typeA {border-color: #ff9458;}
+.recent_list .swiper-slide .cate.typeB {border-color: #20cf9b;}
+.recent_list .swiper-slide .cate.typeC {border-color: #a089f6;}
+.recent_list .swiper-slide b {display: block;overflow: hidden;height: 95px;margin-bottom: 18px;font-size: 23px;font-weight: bold;line-height: 1.45;color: #3D3E3D;}
+.recent_list .swiper-slide p {overflow: hidden;height: 72px;margin-bottom: 45px;font-size: 16px;font-weight: 300;line-height: 1.6;color: #666666;}
+.recent_list .swiper-slide span {display: block;font-size: 15px;font-weight: 400;color: #9B9B9B;letter-spacing: 0;}
+.recent_list .list::after {content: '';display: block;clear: both;}
+.recent_list .list li {float: left;width: 32%;border-radius: 5px;border: 1px solid #e5e5e5;background: #fafafa;transition: all 0.2s;}
+.recent_list .list li a {display: block;position: relative;padding: 30px 20px;}
+.recent_list .list li a::after {content: '';opacity: 0;display: block;position: absolute;left: 0;top: 0;width: 100%;height: 100%;border: 5px solid #006ad3;border-radius: 5px;transition: all 0.2s;}
+.recent_list .list li + li {margin-left: 2%;}
+.recent_list .list li b {display: block;overflow: hidden;height: 41px;margin-bottom: 20px;font-size: 17px;font-weight: 500;line-height: 1.2;}
+.recent_list .list li b img {margin-left: 5px;vertical-align: -2px;}
+.recent_list .list li p {overflow: hidden;height: 100px;padding-top: 30px;border-top: 2px solid #e1e1e1;font-size: 15px;font-weight: 400;color: #555555;}
+.recent_list .list li span {display: block;margin-top: 40px;font-size: 14px;color: #555555;}
+.recent_list .list li span::before {content: '';display: inline-block;width: 15px;height: 15px;margin-right: 5px;background: url(../images/content/i_recent_time.png) no-repeat center;vertical-align: -2px;}
+.recent_list .list li:hover {box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);}
+.recent_list .list li:hover a::after {opacity: 1;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_2_3">
+                        <pre>
+<code class="line-numbers language-js">// tab
+$(document).ready(function () {
+    if ($('.js_tmenu').length || $('.js_tcont').length) {
+        $('.js_tcont').stop().hide();
+        $('.js_tcont.on').stop().show();
+        $('.js_tmenu li a').click(function () {
+            let tabId = $(this).parent().attr('id');
+            let selTabId = $('.js_tmenu li[id="' + tabId + '"], .js_tcont[data-tab="' + tabId + '"]');
+            $(this).closest('.tab').find('.js_tmenu li, .js_tcont').not('.js_tmenu li.on').removeClass('on');
+            selTabId.addClass('on').fadeIn();
+            selTabId.siblings('.js_tcont').stop().hide();
+            selTabId.siblings().removeClass('on');
+            return false;
+        });
+    }
+});
+
+// recent slider
+$(document).ready(function () {
+	function slider() {
+		var swiperArr = [];
+		var slideInx = [];
+		var slideNum = [];
+		$(".recent_slider").each(function (index) {
+			var $this = $(this);
+			$this.addClass("slider-" + index);
+			swiperArr.push(undefined);
+			slideInx.push(0);
+			slideNum.push($this.find('.swiper-slide').length);
+		});
+		function sliderAct() {
+			$(".recent_slider").each(function (index) {
+				if (swiperArr[index] != undefined) {
+					swiperArr[index].destroy();
+					swiperArr[index] = undefined;
+				}
+				swiperArr[index] = new Swiper('.slider-' + index + ' .swiper-container', {
+					slidesPerView: 'auto',
+					loop: true,
+					speed: 500,
+					observer: true,
+					observeParents: true,
+					navigation: {
+						nextEl: $('.slider-' + index).find('.btn_recent_next'),
+						prevEl: $('.slider-' + index).find('.btn_recent_prev')
+					},
+					on: {
+						activeIndexChange: function () {
+							if ($('.slider-' + index).parent('.tab_cont').css('display') != 'none') {
+								slideInx[index] = this.realIndex;
+							}
+						}
+					},
+				});
+				if (swiperArr[index] == undefined) {
+					swiperArr[index] = swiper;
+				}
+			});
+		}
+		sliderAct();
+	}
+	slider();
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_2_4">
+                        <ul>
+                            <li><a href="images/content/i_recent_more.png" title="Download" download>i_recent_more.png</a></li>
+                            <li><a href="images/content/btn_banner_controls.png" title="Download" download>btn_banner_controls.png</a></li>
+                        </ul>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_2_5">
+                        <ul>
+                            <li><a href="zip/swiper.zip" title="Download" download>swiper.zip</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

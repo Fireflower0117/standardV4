@@ -1,0 +1,25 @@
+<svg id="i_siren_on" xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22">
+  <g id="그룹_432" data-name="그룹 432" transform="translate(-800 -223)">
+    <path id="사각형_700" data-name="사각형 700" d="M7,0H7a7,7,0,0,1,7,7v7H0V7A7,7,0,0,1,7,0Z" transform="translate(803 226)" fill="#db2828"/>
+    <path id="패스_123" data-name="패스 123" d="M4,0A4,4,0,0,1,8,4" transform="translate(806.5 228.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+  </g>
+  <g id="그룹_435" data-name="그룹 435" transform="translate(-800 -223)">
+    <rect id="사각형_706" data-name="사각형 706" width="1" height="2" rx="0.5" transform="translate(809.5 223)" fill="#db2828"/>
+    <rect id="사각형_706-2" data-name="사각형 706" width="2" height="1" rx="0.5" transform="translate(800 232.5)" fill="#db2828"/>
+    <rect id="사각형_706-3" data-name="사각형 706" width="2" height="1" rx="0.5" transform="translate(818 232.5)" fill="#db2828"/>
+    <rect id="사각형_706-4" data-name="사각형 706" width="2" height="1" rx="0.5" transform="translate(803.407 225.5) rotate(45)" fill="#db2828"/>
+    <rect id="사각형_706-5" data-name="사각형 706" width="2" height="1" rx="0.5" transform="translate(815.207 226.914) rotate(-45)" fill="#db2828"/>
+  </g>
+  <g id="그룹_434" data-name="그룹 434" transform="translate(-800 -223)">
+    <rect id="사각형_697" data-name="사각형 697" width="20" height="5" rx="1" transform="translate(800 240)" fill="#db2828"/>
+    <line id="선_223" data-name="선 223" x2="6" transform="translate(801.5 242.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+    <line id="선_222" data-name="선 222" transform="translate(810.5 242.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1"/>
+  </g>
+  <g id="그룹_436" data-name="그룹 436" transform="translate(-786 -223)">
+    <line id="선_218" data-name="선 218" x2="14" transform="translate(789 239.5)" fill="none" stroke="#fff" stroke-width="1" opacity="0.43"/>
+    <g id="제외_1" data-name="제외 1" transform="translate(-8230 10826)" fill="#db2828" stroke-linecap="round" opacity="0.43">
+      <path d="M9017-10586h18a1,1,0,0,1,1,1h-20A1,1,0,0,1,9017-10586Z" stroke="none"/>
+      <path d="M 9017 -10586 L 9035 -10586 C 9035.552734375 -10586 9036 -10585.552734375 9036 -10585 L 9016 -10585 C 9016 -10585.552734375 9016.447265625 -10586 9017 -10586 Z" stroke="none" fill="#fff"/>
+    </g>
+  </g>
+</svg>

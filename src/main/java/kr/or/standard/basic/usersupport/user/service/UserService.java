@@ -56,14 +56,16 @@ public class UserService extends EgovAbstractServiceImpl   {
 	private final MessageSource messageSource;
 	private final ExcelView excelView;
 	
+	
+	
 	// 사용자 건수 조회
-	public int selectUserCount(UserVO vo) { 
+	public int selectCount(UserVO vo) { 
 		UserVO rtnVo = (UserVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserMngMapper.selectUserCount" ,vo);
 		return Integer.parseInt(rtnVo.getUserCount());  
 	}
 	
 	// 사용자 목록 조회
-	public List<UserVO> selectUserList(UserVO vo) {
+	public List<UserVO> selectList(UserVO vo) {
 	    return (List<UserVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserMngMapper.selectUsertList" , vo); 
 	}
 	
@@ -71,12 +73,12 @@ public class UserService extends EgovAbstractServiceImpl   {
 		
 		// 사용자 건수 조회
 		PaginationInfo paginationInfo = paginationService.procPagination(userVo); 
-		int totalRecordCount = selectUserCount(userVo);  
+		int totalRecordCount = selectCount(userVo);  
 		paginationInfo.setTotalRecordCount(totalRecordCount);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
 		// 사용자 목록 조회
-		List<UserVO> resultList = selectUserList(userVo); 
+		List<UserVO> resultList = selectList(userVo); 
 		
 		model.addAttribute("resultList", resultList);
 		model.addAttribute("totalRecordCount", paginationInfo.getTotalRecordCount());
@@ -478,8 +480,8 @@ public class UserService extends EgovAbstractServiceImpl   {
 		return userMngMapper.selectScrbUserCount(vo);
 	};*/
 
-	/*public List<UserVO> selectHwpList(UserVO vo) {
+	public List<UserVO> selectHwpList(UserVO vo) {
 		return (List<UserVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserMngMapper.selectHwpList" , vo); 
-	}*/ 
+	} 
 	
 }

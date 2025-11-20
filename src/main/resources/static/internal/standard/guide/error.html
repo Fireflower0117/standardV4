@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/content.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/content.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">에러</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">404 타입A</li>
+                <li id="tab02">404 타입B</li>
+                <li id="tab03">404 타입C</li>
+                <li id="tab04">500 타입A</li>
+                <li id="tab05">500 타입B</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. error 공통 적용 css</dt>
+                        <dt>2. UI 요소에서 사용되는 css, js는 각 메뉴의 샘플코드에서 복사해서 추가, img파일 개별 다운로드 후 경로에 맞게 넣어야 함.</dt>
+                    </dl>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_1_1" class="on">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_1_1">
+                            <pre>
+<code class="line-numbers language-css">/** error **/
+/* error btn 버튼설정 */
+.error_wrap .error_btns {margin-top: 30px;}
+.error_wrap .error_btns a {display: inline-block;width: 150px;height: 40px;border-radius: 5px;font-size: 13px;line-height: 38px;text-align: center;}
+.error_btns .btn_main {border: 1px solid var(--black);color: var(--black);background-color: #FFFFFF;}
+.error_btns .btn_prev {color: #FFFFFF;background-color: #282828;}</code>
+</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <h2 class="section_main_ttl">404 타입A</h2>
+                <div class="ui_sample">
+                    <div class="error_wrap typeA">
+                        <h1><img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"></h1>
+                        <div class="error_info">
+                            <p class="tit">
+                                <strong>404 Not Found Error</strong>
+                                주소가 잘못 입력되었거나, 변경 혹은 삭제되어 <br>
+                                요청하신 페이지를 찾을 수 없습니다.
+                            </p>
+                            <p class="txt">
+                                입력하신 주소가 정확한지 다시한번 확인해 주세요. <br>
+                                문의사항이 있을 경우 관리자에게 문의하시기 바랍니다.
+                            </p>
+                        </div>
+                        <div class="error_btns">
+                            <a href="" class="btn btn_main">메인페이지로 이동</a>
+                            <a href="" class="btn btn_prev">이전페이지로 이동</a>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                        <li id="code01_2_2">css</li>
+                        <li id="code01_2_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="error_wrap"&gt;
+    &lt;h1&gt;&lt;img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"&gt;&lt;/h1&gt;
+    &lt;div class="error_info"&gt;
+        &lt;p class="tit"&gt;
+            &lt;strong&gt;404 Not Found Error&lt;/strong&gt;
+            주소가 잘못 입력되었거나, 변경 혹은 삭제되어 &lt;br&gt;
+            요청하신 페이지를 찾을 수 없습니다.
+        &lt;/p&gt;
+        &lt;p class="txt"&gt;
+            입력하신 주소가 정확한지 다시한번 확인해 주세요. &lt;br&gt;
+            문의사항이 있을 경우 관리자에게 문의하시기 바랍니다.
+        &lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="error_btns"&gt;
+        &lt;a href="" class="btn btn_main"&gt;메인페이지로 이동&lt;/a&gt;
+        &lt;a href="" class="btn btn_prev"&gt;이전페이지로 이동&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** error **/
+/* error404 */
+.error_wrap {position: relative;width: 900px;margin: 0 auto;}
+.error_wrap h1 {position: relative;margin-bottom: 10px;font-size: 25px;}
+.error_wrap .error_info {position: relative;padding: 10px 0 30px;border-bottom: 2px solid #282828;background: url(../images/common/bg_error404a.png) no-repeat 100% 50%;}
+.error_wrap .error_info .tit {font-size: 20px;color: var(--black);letter-spacing: -2px;}
+.error_wrap .error_info .tit strong {display: block;font-size: 30px;color: var(--dark);}
+.error_wrap .error_info .txt {margin-top: 25px;font-size: 16px;line-height: 1.5;color: #808080;}
+.error_wrap .error_btns {text-align: center;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code01_2_3">
+                        <ul>
+                            <li><a href="images/common/error_logo.jpg" title="Download" download>error_logo.jpg</a></li>
+                            <li><a href="images/common/bg_error404a.png" title="Download" download>bg_error404a.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">404 타입B</h2>
+                <div class="ui_sample">
+                    <div class="error_wrap typeB">
+                        <h1><img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"></h1>
+                        <div class="error_box">
+                            <div class="error_info">
+                                <p class="tit"><strong>404 Error</strong>페이지를 찾을 수 없습니다.</p>
+                                <p class="txt">입력하신 주소가 정확한지 다시한번 확인해 주세요. <br>문의사항이 있을 경우 관리자에게 문의하시기 바랍니다.</p>
+                                <div class="error_btns">
+                                    <a href="" class="btn btn_main">메인페이지로 이동</a>
+                                    <a href="" class="btn btn_prev">이전페이지로 이동</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="error_wrap"&gt;
+    &lt;h1&gt;&lt;img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"&gt;&lt;/h1&gt;
+    &lt;div class="error_box"&gt;
+        &lt;div class="error_info"&gt;
+            &lt;p class="tit"&gt;&lt;strong&gt;404 Error&lt;/strong&gt;페이지를 찾을 수 없습니다.&lt;/p&gt;
+            &lt;p class="txt"&gt;입력하신 주소가 정확한지 다시한번 확인해 주세요. &lt;br&gt;문의사항이 있을 경우 관리자에게 문의하시기 바랍니다.&lt;/p&gt;
+            &lt;div class="error_btns"&gt;
+                &lt;a href="" class="btn btn_main"&gt;메인페이지로 이동&lt;/a&gt;
+                &lt;a href="" class="btn btn_prev"&gt;이전페이지로 이동&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** error **/
+/* error404 */
+.error_wrap {position: relative;width: 900px;margin: 0 auto;}
+.error_wrap h1 {position: relative;margin-bottom: 35px;border-bottom: 1px solid #e5e5e5;font-size: 25px;}
+.error_wrap .error_box {display: flex;justify-content: center;position: relative;}
+.error_wrap .error_info {position: relative;padding-left: 220px;background: url(../images/common/bg_error404b.jpg) no-repeat 0 50%;}
+.error_wrap .error_info .tit {font-size: 20px;color: var(--black);letter-spacing: -2px;}
+.error_wrap .error_info .tit strong {display: block;font-size: 30px;color: var(--dark);}
+.error_wrap .error_info .txt {margin-top: 25px;font-size: 16px;line-height: 1.5;color: #808080;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_1_3">
+                        <ul>
+                            <li><a href="images/common/error_logo.jpg" title="Download" download>error_logo.jpg</a></li>
+                            <li><a href="images/common/bg_error404b.png" title="Download" download>bg_error404b.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">404 타입C</h2>
+                <div class="ui_sample">
+                    <div class="error_wrap typeC">
+                        <div class="error_info">
+                            <p class="tit">
+                                <strong>404 Error</strong>
+                                페이지를 찾을 수 없습니다.
+                            </p>
+                            <p class="txt">입력하신 주소가 정확한지 다시한번 확인해 주세요. <br>문의사항이 있을 경우 관리자에게 문의하시기 바랍니다.</p>
+                            <div class="error_btns">
+                                <a href="" class="btn btn_main">메인페이지로 이동</a>
+                                <a href="" class="btn btn_prev">이전페이지로 이동</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                        <li id="code03_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="error_wrap"&gt;
+    &lt;div class="error_info"&gt;
+        &lt;p class="tit"&gt;&lt;strong&gt;404 Error&lt;/strong&gt;페이지를 찾을 수 없습니다.&lt;/p&gt;
+        &lt;p class="txt"&gt;입력하신 주소가 정확한지 다시한번 확인해 주세요. &lt;br&gt;문의사항이 있을 경우 관리자에게 문의하시기 바랍니다.&lt;/p&gt;
+        &lt;div class="error_btns"&gt;
+            &lt;a href="" class="btn btn_main"&gt;메인페이지로 이동&lt;/a&gt;
+            &lt;a href="" class="btn btn_prev"&gt;이전페이지로 이동&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** error **/
+/* error404 */
+.error_wrap {position: relative;width: 900px;margin: 0 auto;}
+.error_wrap .error_info {position: relative;padding-top: 100px;text-align: center;background: url(../images/common/bg_error404c.jpg) no-repeat 50% 0;}
+.error_wrap .error_info .tit {font-size: 30px;font-weight: 300;color: var(--dark);letter-spacing: -0.6px;}
+.error_wrap .error_info .tit strong {display: block;font-size: 30px;color: #f42d2d;}
+.error_wrap .error_info .txt {margin-top: 15px;font-size: 15px;font-weight: 100;line-height: 1.5;color: #808080;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code03_1_3">
+                        <ul>
+                            <li><a href="images/common/error_logo.jpg" title="Download" download>error_logo.jpg</a></li>
+                            <li><a href="images/common/bg_error404c.png" title="Download" download>bg_error404c.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab04">
+                <h2 class="section_main_ttl">500 타입A</h2>
+                <div class="ui_sample">
+                    <div class="error_wrap type500A">
+                        <h1><img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"></h1>
+                        <div class="error_box">
+                            <div class="error_info">
+                                <p class="tit"><strong>500 Error</strong>서비스가 일시적으로 원활하지 않습니다.</p>
+                                <p class="txt">이용에 불편을 드려 죄송합니다. 잠시 후 다시 시도해주시기 바랍니다.</p>
+                                <div class="error_btns">
+                                    <a href="" class="btn btn_main">메인페이지로 이동</a>
+                                    <a href="" class="btn btn_prev">이전페이지로 이동</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code04_1_1" class="on">html</li>
+                        <li id="code04_1_2">css</li>
+                        <li id="code04_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code04_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="error_wrap"&gt;
+    &lt;h1&gt;&lt;img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"&gt;&lt;/h1&gt;
+    &lt;div class="error_box"&gt;
+        &lt;div class="error_info"&gt;
+            &lt;p class="tit"&gt;&lt;strong&gt;500 Error&lt;/strong&gt;서비스가 일시적으로 원활하지 않습니다.&lt;/p&gt;
+            &lt;p class="txt"&gt;이용에 불편을 드려 죄송합니다. 잠시 후 다시 시도해주시기 바랍니다.&lt;/p&gt;
+            &lt;div class="error_btns"&gt;
+                &lt;a href="" class="btn btn_main"&gt;메인페이지로 이동&lt;/a&gt;
+                &lt;a href="" class="btn btn_prev"&gt;이전페이지로 이동&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code04_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** error **/
+/* error500 */
+.error_wrap {position: relative;width: 1000px;margin: 0 auto;}
+.error_wrap h1 {position: relative;font-size: 25px;}
+.error_wrap .error_box {position: relative;padding: 60px 0 60px 20px;border: 1px solid #cccccc;}
+.error_wrap .error_info {position: relative;padding-left: 445px;background: url(../images/common/bg_error500a.png) no-repeat 0 50%;}
+.error_wrap .error_info .tit {font-size: 20px;color: var(--black);letter-spacing: -2px;}
+.error_wrap .error_info .tit strong {display: block;font-size: 30px;color: var(--dark);}
+.error_wrap .error_info .txt {margin-top: 25px;font-size: 16px;line-height: 1.5;color: #808080;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code04_1_3">
+                        <ul>
+                            <li><a href="images/common/error_logo.jpg" title="Download" download>error_logo.jpg</a></li>
+                            <li><a href="images/common/bg_error500a.png" title="Download" download>bg_error500a.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab05">
+                <h2 class="section_main_ttl">500 타입B</h2>
+                <div class="ui_sample">
+                    <div class="error_wrap type500B">
+                        <h1><img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"></h1>
+                        <div class="error_box">
+                            <div class="error_info">
+                                <p class="tit"><strong>500 Error</strong>서비스가 일시적으로 원활하지 않습니다.</p>
+                                <p class="txt">이용에 불편을 드려 죄송합니다. 잠시후 다시 시도해 주시기 바랍니다.</p>
+                                <div class="error_btns">
+                                    <a href="" class="btn btn_main">메인페이지로 이동</a>
+                                    <a href="" class="btn btn_prev">이전페이지로 이동</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code05_1_1" class="on">html</li>
+                        <li id="code05_1_2">css</li>
+                        <li id="code05_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code05_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="error_wrap"&gt;
+    &lt;h1&gt;&lt;img src="images/common/error_logo.jpg" alt="(주)오픈노트opennote"&gt;&lt;/h1&gt;
+    &lt;div class="error_box"&gt;
+        &lt;div class="error_info"&gt;
+            &lt;p class="tit"&gt;&lt;strong&gt;500 Error&lt;/strong&gt;서비스가 일시적으로 원활하지 않습니다.&lt;/p&gt;
+            &lt;p class="txt"&gt;이용에 불편을 드려 죄송합니다. 잠시후 다시 시도해 주시기 바랍니다.&lt;/p&gt;
+            &lt;div class="error_btns"&gt;
+                &lt;a href="" class="btn btn_main"&gt;메인페이지로 이동&lt;/a&gt;
+                &lt;a href="" class="btn btn_prev"&gt;이전페이지로 이동&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code05_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** error **/
+/* error500 */
+.error_wrap {position: relative;width: 900px;margin: 0 auto;}
+.error_wrap h1 {position: relative;margin-bottom: 35px;border-bottom: 1px solid #e5e5e5;font-size: 25px;}
+.error_wrap .error_box {display: flex;justify-content: center;position: relative;}
+.error_wrap .error_info {position: relative;padding-right: 280px;background: url(../images/common/bg_error500b.jpg) no-repeat 100% 50%;}
+.error_wrap .error_info .tit {font-size: 24px;color: var(--black);letter-spacing: -2px;}
+.error_wrap .error_info .tit strong {display: block;font-size: 30px;color: var(--dark);}
+.error_wrap .error_info .txt {margin-top: 25px;font-size: 14px;line-height: 1.5;color: #808080;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code05_1_3">
+                        <ul>
+                            <li><a href="images/common/error_logo.jpg" title="Download" download>error_logo.jpg</a></li>
+                            <li><a href="images/common/bg_error500b.png" title="Download" download>bg_error500b.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

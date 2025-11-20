@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">기본 파일</h3>
+
+            <section class="ui_basic_info">
+                <h2 class="section_main_ttl">유의사항 <span class="impact">(필독)</span></h2>
+                <dl>
+                    <dt>1. 파일 경로 필수 확인후 <span class="impact">경로에 맞게</span> 파일 넣기</dt>
+                    <dd>
+                        └ 상대경로를 사용할 때, css 파일 내에서 import 하는 경우와 html의 &lt;head&gt;&lt;/head&gt; 에서 include 하는 경우 경로가 달라져야 함.
+                    </dd>
+                    <dt>2. <span class="impact">기본 요소</span> 메뉴의 샘플 코드(html)은 <span class="impact">basic.zip의 모든 구성요소가 경로에 맞게 들어있는 상태</span>에서 사용.</dt>
+                    <dt>3. <span class="impact">기본 요소</span> 메뉴의 샘플 코드(css, js)는 <span class="impact">basic.css와 basic.js</span>에 모두 선언되어 있으므로 <span class="impact">개별 css/js 추가X</span></dt>
+                    <dd>
+                        └ basic.css, board.css에서 수정해서 사용할 것들은 common.css에 수정 css 적기 <span class="impact">(basic, board 수정 X)</span><br>
+                        └ <span class="impact">basic.js</span>에 기본 선언되어있는 스크립트를 수정할땐 basic.js에 직접 수정하되 수정 되었다는 주석 표시
+                    </dd>
+                    <dt>4. <span class="impact">UI 요소</span> 에서 사용되는 css, js는 각 메뉴의 샘플코드에서 복사해서 사용. img파일 개별 다운로드 필요. <span class="impact">(일괄 파일 없음)</span></dt>
+                    <dt>5. css 파일 구조</dt>
+                    <dd>
+                        └ <span class="impact">시스템 사이트</span>의 경우 : 메인+서브에 공통 적용되는 common.css 파일 추가해 메인+서브 공통부분, 서브에 적용되는 css 기재/ 메인에만 적용되는 main.css 추가해 메인 css 기재<br>
+                        └ <span class="impact">일반 사이트</span>의 경우 : 메인+서브에 공통 적용되는 common.css 파일 추가해 메인+서브 공통부분 css 기재 / 메인에만 적용되는 main.css 추가해 메인 css 기재 / 서브에만 적용되는 sub.css 추가해 서브 css 기재<br>
+                        └ <span class="impact">시스템, 일반 사이트 공통</span> : 멤버십, 에러 등이 필요한 경우 퍼블가이드 UI요소에서 원하는 부분만 복사해서 common.css에 기재
+                    </dd>
+                </dl>
+            </section>
+
+            <h2 class="section_main_ttl">파일</h2>
+            <section class="ui_basic_info">
+                <dl>
+                    <dt>1. 기본요소 종합 파일 <a class="btn icl mar_l10px" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a></dt>
+                    <dd style="color: #a5a5a5;">└ 기본요소에서 사용되는 모든 css, js, image 파일 + sample html<br><br></dd>
+                    <dt>01) css</dt>
+                    <dt>- root.css</dt>
+                    <dd style="color: #a5a5a5;">└ basic.css 에서 필요한 변수값을 선언해둔 파일</dd>
+                    <dt>- reset.css</dt>
+                    <dd style="color: #a5a5a5;">└ 브라우저 기본 스타일 제거 및 기본 설정, 폰트선언 파일</dd>
+                    <dt>- basic.css</dt>
+                    <dd style="color: #a5a5a5;">└ 기본요소(form & 텍스트 ~ 기타)의 css 파일 (root.css, reset.css import 파일)</dd>
+                    <dt>- board.css</dt>
+                    <dd style="color: #a5a5a5;">└ 게시판 요소(게시판 ~ 검색 & 페이징)의 css 파일</dd>
+                    <dt>- member.css</dt>
+                    <dd style="color: #a5a5a5;">└ 멤버십 요소의 css 파일</dd>
+                    <dt>- jquery-ui-1.12.1.custom.css</dt>
+                    <dd style="color: #a5a5a5;">└ jquery-ui 의 css 파일<br><br></dd>
+                    <dt>02) fonts</dt>
+                    <dd style="color: #a5a5a5;">└ reset.css 에서 필요한 fonts 폴더<br><br></dd>
+                    <dt>03) images</dt>
+                    <dd style="color: #a5a5a5;">└ 기본요소, 게시판 요소에 사용되는 img 파일 모음<br><br></dd>
+                    <dt>04) js</dt>
+                    <dt>- jquery.min.js</dt>
+                    <dd style="color: #a5a5a5;">└ jqeury 기본 파일</dd>
+                    <dt>- jquery-ui-1.12.1.custom.js</dt>
+                    <dd style="color: #a5a5a5;">└ jqeury-ui 기본 파일</dd>
+                    <dt>- basic.js</dt>
+                    <dd style="color: #a5a5a5;">└ 기본요소, 게시판 요소에 사용되는 script 파일</dd>
+                    <dt>- member.js</dt>
+                    <dd style="color: #a5a5a5;">└ 멤버십 요소에 사용되는 script 파일<br><br></dd>
+                    <dt>05) lib</dt>
+                    <dd style="color: #a5a5a5;">└ 라이브러리 폴더 (xeicon 위치)</dd>
+                </dl>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

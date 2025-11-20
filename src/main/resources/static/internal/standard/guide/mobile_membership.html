@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/mobile.js"></script>
+    <script>
+        $(function () {
+            $("body > header > nav").scrollTop(450);
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">멤버십</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">로그인</li>
+                <li id="tab02">id/pw 찾기</li>
+                <li id="tab03">회원가입 안내</li>
+                <li id="tab04">본인인증</li>
+                <li id="tab05">약관동의</li>
+                <li id="tab06">정보입력</li>
+                <li id="tab07">가입완료</li>
+            </ul>
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">로그인 ~ 회원가입 공통 Default</h2>
+                    <dl>
+                        <dt>1. mobile_basic.css를 반드시 먼저 import 해야함. (mobile.zip 구성요소 모두 필수)</dt>
+                        <dt>2. mobile_basic.css import 이후 css 개별 추가, 혹은 종합 스타일이 들어있는 mobile.css를 import 해서 사용 <span class="impact">(mobile.css import 시 mobile_basic.css와 css 개별 추가 필요X)</span></dt>
+                    </dl>
+                </section>
+                <h2 class="section_main_ttl">로그인 기본형</h2>
+                <div class="ui_sample" style="width: 375px;">
+                    <div class="login_wrap">
+                        <div class="login_box">
+                            <h1 class="logo"><img src="images/common/logo.png" alt="로고"></h1>
+                            <form>
+                                <fieldset>
+                                    <div class="input_box">
+                                        <ul>
+                                            <li>
+                                                <label for="">아이디(이메일)</label>
+                                                <input type="text" placeholder="아이디를 입력해주세요." title="아이디 입력">
+                                                <button class="btn_del" tabindex="-1">내용삭제</button>
+                                                <!-- <p class="error_txt">필수입력입니다.</p> -->
+                                            </li>
+                                            <li>
+                                                <label for="">비밀번호</label>
+                                                <input type="password" placeholder="비밀번호를 입력해주세요." title="비밀번호 입력">
+                                                <button class="btn_del" tabindex="-1">내용삭제</button>
+                                                <!-- <p class="error_txt">필수입력입니다.</p> -->
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <span class="chk">
+                                        <span class="cbx"><input type="checkbox" name="cbx01" id="cbx01_1"><label for="cbx01_1">로그인 유지</label></span>
+                                        <span class="cbx"><input type="checkbox" name="cbx01" id="cbx01_2"><label for="cbx01_2">아이디 저장</label></span>
+                                    </span>
+                                    <div class="btn_area">
+                                        <button type="button" class="btn blue btn_login">로그인</button>
+                                    </div>
+                                    <ul class="links">
+                                        <li><a href="" class="btn_line">아이디 찾기</a></li>
+                                        <li><a href="" class="btn_line">비밀번호 찾기</a></li>
+                                        <li><a href="" class="btn_line blue">회원가입</a></li>
+                                    </ul>
+                                    <div class="member_sns">
+                                        <strong class="tit"><span>간편 로그인</span></strong>
+                                        <div class="btn_area">
+                                            <a href="" class="naver">네이버 로그인</a>
+                                            <a href="" class="kakao">카카오톡 로그인</a>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <script>
+                        // login input clear
+                        $(document).ready(function () {
+                            $('.login_box .input_box input').focusout(function () {
+                                $(".login_box .input_box .btn_del").removeClass("on");
+                            });
+                            $(".login_box .input_box .btn_del").click(function () {
+                                $(this).prev('input').val('');
+                                $(this).removeClass("on");
+                                return false;
+                            });
+                            $('.login_box .input_box input').on('focus keyup', function (e) {
+                                e.preventDefault();
+                                if ($(this).val().length) {
+                                    $(this).next(".btn_del").addClass("on");
+                                } else {
+                                    $(this).next(".btn_del").removeClass("on");
+                                }
+                            });
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">html</li>
+                        <li id="code01_1_2">css</li>
+                        <li id="code01_1_3">js</li>
+                        <li id="code01_1_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="login_wrap"&gt;
+    &lt;div class="login_box"&gt;
+        &lt;h1 class="logo"&gt;&lt;img src="images/common/logo.png" alt="로고"&gt;&lt;/h1&gt;
+        &lt;form&gt;
+            &lt;fieldset&gt;
+                &lt;div class="input_box"&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;
+                            &lt;label for=""&gt;아이디(이메일)&lt;/label&gt;
+                            &lt;input type="text" placeholder="아이디를 입력해주세요." title="아이디 입력"&gt;
+                            &lt;button class="btn_del" tabindex="-1"&gt;내용삭제&lt;/button&gt;
+                            &lt;!-- &lt;p class="error_txt"&gt;필수입력입니다.&lt;/p&gt; --&gt;
+                        &lt;/li&gt;
+                        &lt;li&gt;
+                            &lt;label for=""&gt;비밀번호&lt;/label&gt;
+                            &lt;input type="password" placeholder="비밀번호를 입력해주세요." title="비밀번호 입력"&gt;
+                            &lt;button class="btn_del" tabindex="-1"&gt;내용삭제&lt;/button&gt;
+                            &lt;!-- &lt;p class="error_txt"&gt;필수입력입니다.&lt;/p&gt; --&gt;
+                        &lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                &lt;span class="chk"&gt;
+                    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_1"&gt;&lt;label for="cbx01_1"&gt;로그인 유지&lt;/label&gt;&lt;/span&gt;
+                    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_2"&gt;&lt;label for="cbx01_2"&gt;아이디 저장&lt;/label&gt;&lt;/span&gt;
+                &lt;/span&gt;
+                &lt;div class="btn_area"&gt;
+                    &lt;button type="button" class="btn blue btn_login"&gt;로그인&lt;/button&gt;
+                &lt;/div&gt;
+                &lt;ul class="links"&gt;
+                    &lt;li&gt;&lt;a href="" class="btn_line"&gt;아이디 찾기&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="" class="btn_line"&gt;비밀번호 찾기&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="" class="btn_line blue"&gt;회원가입&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+                &lt;div class="member_sns"&gt;
+                    &lt;strong class="tit"&gt;&lt;span&gt;간편 로그인&lt;/span&gt;&lt;/strong&gt;
+                    &lt;div class="btn_area"&gt;
+                        &lt;a href="" class="naver"&gt;네이버 로그인&lt;/a&gt;
+                        &lt;a href="" class="kakao"&gt;카카오톡 로그인&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/fieldset&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** membership **/
+/* login */
+.login_wrap {display: flex;justify-content: center;align-items: center;width: 100%;padding: 5rem 2rem;}
+.login_box {position: relative;width: 100%;max-width: 56rem;margin: 0 auto;}
+.login_box h1.logo {width: 100%;margin-bottom: 3rem;padding-bottom: 0;text-align: center;}
+.login_box h1.logo img {max-width: 15rem;}
+.login_box .input_box input {width: 100%;height: 4.3rem;padding: 0 1.5rem;padding-right: 3.3rem;font-size: 1.4rem;line-height: 4.3rem;}
+.login_box .input_box > ul > li {position: relative;}
+.login_box .input_box > ul > li + li {margin-top: 1rem;}
+.login_box .input_box label {display: block;margin-bottom: 0.8rem;font-size: 1.4rem;font-weight: 500;color: #404040;}
+.login_box .input_box .btn_del {opacity: 0;position: absolute;right: 1rem;top: 4.3rem;width: 1.7rem;height: 1.7rem;font-size: 0;border: 0;background: url(../images/content/i_input_del.png) no-repeat center;z-index: 99;}
+.login_box .input_box .btn_del.on {opacity: 1;}
+.login_box .chk {margin-top: 1.5rem;}
+.login_box .chk > span label {font-size: 1.4rem;}
+.login_box .chk .cbx label::before {width: 1.5rem;height: 1.5rem;line-height: 1.3rem;}
+.login_box .chk .cbx input:checked + label::before {font-size: 1.3rem;}
+.login_box .links {margin-top: 2rem;text-align: center;}
+.login_box .links li {display: inline-block;position: relative;}
+.login_box .links li + li {margin-left: 2.4rem;}
+.login_box .links li + li::before {content: '';position: absolute;left: -1.2rem;top: 0.7rem;width: 0.1rem;height: 1.5rem;background: #cecece;}
+.login_box .links a {display: inline-block;padding: 0.5rem;font-size: 1.4rem;font-weight: 400;}
+.login_box .links a:hover {text-decoration: underline;}
+.login_box .links a.blue {color: var(--blue);}
+.login_box .btn_area {margin-top: 2rem;}
+.login_wrap .error_txt {margin-top: 0.6rem;line-height: 1.5;color: #e83667;}
+.member_sns {margin-top: 4rem;}
+.member_sns .tit {display: block;position: relative;text-align: center;}
+.member_sns .tit::before {content: "";opacity: .84;display: block;position: absolute;left: 0;top: 50%;width: 100%;height: 0.1rem;margin-top: -0.1rem;border: dotted #dadada;border-width: 0.2rem 0 0;z-index: 1;}
+.member_sns .tit span {position: relative;display: inline-block;padding: 0.5rem;font-size: 1.5rem;font-weight: 400;color: gray;background: #fff;z-index: 2;}
+.member_sns .btn_area {display: flex;justify-content: center;margin: 1.6rem 0;}
+.member_sns a {display: inline-block;width: 3.6rem;height: 3.6rem;margin: 0 1rem;font-size: 0;vertical-align: top;}
+.member_sns .kakao {background: url(../images/icon/img_kakaotalk.png) no-repeat center / 3.6rem;}
+.member_sns .naver {background: url(../images/icon/img_naver.png) no-repeat center / 3.6rem;}
+.btn_login {display: block;width: 100%;height: 5rem;font-size: 1.6rem;font-weight: 500;line-height: 4.9rem;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_3">
+                        <pre>
+<code class="line-numbers language-js">// login input clear
+$(document).ready(function () {
+    $('.login_box .input_box input').focusout(function () {
+        $(".login_box .input_box .btn_del").removeClass("on");
+    });
+    $(".login_box .input_box .btn_del").click(function () {
+        $(this).prev('input').val('');
+        $(this).removeClass("on");
+        return false;
+    });
+    $('.login_box .input_box input').on('focus keyup', function (e) {
+        e.preventDefault();
+        if ($(this).val().length) {
+            $(this).next(".btn_del").addClass("on");
+        } else {
+            $(this).next(".btn_del").removeClass("on");
+        }
+    });
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code01_1_4">
+                        <ul>
+                            <li><a href="images/icon/img_naver.png" title="Download" download>img_naver.png</a></li>
+                            <li><a href="images/icon/img_kakaotalk.png" title="Download" download>img_kakaotalk.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">id/pw 찾기</h2>
+                <div class="ui_sample" style="width: 375px;">
+                    <div class="login_wrap">
+                        <div class="login_box find_box">
+                            <h1 class="logo"><img src="images/common/logo.png" alt="로고"></h1>
+                            <div class="box">
+                                <b>아이디 찾기</b>
+                                <form>
+                                    <fieldset>
+                                        <div class="input_box">
+                                            <ul>
+                                                <li>
+                                                    <label for="">이름</label>
+                                                    <input type="text" placeholder="이름을 입력해주세요." title="이름 입력">
+                                                </li>
+                                                <li>
+                                                    <label for="">휴대폰번호</label>
+                                                    <input type="text" placeholder="‘-’를 제외한 숫자만 입력해 주세요." title="휴대폰번호 입력">
+                                                </li>
+                                                <li>
+                                                    <label for="">이메일</label>
+                                                    <input type="text" placeholder="이메일을 입력해주세요." title="이메일 입력">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="btn_area">
+                                            <button type="button" class="btn blue btn_login">아이디 찾기</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="box">
+                                <b>비밀번호 찾기</b>
+                                <form>
+                                    <fieldset>
+                                        <div class="input_box">
+                                            <ul>
+                                                <li>
+                                                    <label for="">아이디</label>
+                                                    <input type="text" placeholder="아이디를 입력해주세요." title="아이디 입력">
+                                                </li>
+                                                <li>
+                                                    <label for="">이름</label>
+                                                    <input type="text" placeholder="이름을 입력해주세요." title="이름 입력">
+                                                </li>
+                                                <li>
+                                                    <label for="">휴대폰번호</label>
+                                                    <input type="text" placeholder="‘-’를 제외한 숫자만 입력해 주세요." title="휴대폰번호 입력">
+                                                </li>
+                                                <li>
+                                                    <label for="">이메일</label>
+                                                    <input type="text" placeholder="이메일을 입력해주세요." title="이메일 입력">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="btn_area">
+                                            <button type="button" class="btn blue btn_login">비밀번호 찾기</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="login_wrap"&gt;
+    &lt;div class="login_box find_box"&gt;
+        &lt;h1 class="logo"&gt;&lt;img src="images/common/logo.png" alt="로고"&gt;&lt;/h1&gt;
+        &lt;div class="box"&gt;
+            &lt;b&gt;아이디 찾기&lt;/b&gt;
+            &lt;form&gt;
+                &lt;fieldset&gt;
+                    &lt;div class="input_box"&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;
+                                &lt;label for=""&gt;이름&lt;/label&gt;
+                                &lt;input type="text" placeholder="이름을 입력해주세요." title="이름 입력"&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;label for=""&gt;휴대폰번호&lt;/label&gt;
+                                &lt;input type="text" placeholder="‘-’를 제외한 숫자만 입력해 주세요." title="휴대폰번호 입력"&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;label for=""&gt;이메일&lt;/label&gt;
+                                &lt;input type="text" placeholder="이메일을 입력해주세요." title="이메일 입력"&gt;
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                    &lt;div class="btn_area"&gt;
+                        &lt;button type="button" class="btn blue btn_login"&gt;아이디 찾기&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/fieldset&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+        &lt;div class="box"&gt;
+            &lt;b&gt;비밀번호 찾기&lt;/b&gt;
+            &lt;form&gt;
+                &lt;fieldset&gt;
+                    &lt;div class="input_box"&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;
+                                &lt;label for=""&gt;아이디&lt;/label&gt;
+                                &lt;input type="text" placeholder="아이디를 입력해주세요." title="아이디 입력"&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;label for=""&gt;이름&lt;/label&gt;
+                                &lt;input type="text" placeholder="이름을 입력해주세요." title="이름 입력"&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;label for=""&gt;휴대폰번호&lt;/label&gt;
+                                &lt;input type="text" placeholder="‘-’를 제외한 숫자만 입력해 주세요." title="휴대폰번호 입력"&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;label for=""&gt;이메일&lt;/label&gt;
+                                &lt;input type="text" placeholder="이메일을 입력해주세요." title="이메일 입력"&gt;
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/div&gt;
+                    &lt;div class="btn_area"&gt;
+                        &lt;button type="button" class="btn blue btn_login"&gt;비밀번호 찾기&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/fieldset&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** membership **/
+/* id/pwd 찾기 css 추가 */
+.login_box.find_box {display: flex;flex-wrap: wrap;justify-content: space-between;max-width: 90rem;}
+.login_box.find_box .box {width: 100%;max-width: 43rem;}
+.login_box.find_box .box + .box {margin-top: 3.5rem;padding-top: 3.5rem;border-top: dotted #dadada;border-width: 0.2rem 0 0;}
+.login_box.find_box .box > b {display: block;margin-bottom: 2.5rem;font-size: 2rem;font-weight: 600;line-height: 1.25;color: #202020;letter-spacing: -0.01em;text-align: center;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. 회원가입 페이지 공통 적용 css</dt>
+                    </dl>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code03_1_1" class="on">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code03_1_1">
+                            <pre>
+<code class="line-numbers language-css">/** membership **/
+/* join 공통 */
+.join {width: 100%;max-width: 56rem;margin: 0 auto;padding: 0 2rem;}
+.join .page_tit {display: block;margin-bottom: 3rem;font-size: 2rem;font-weight: 600;line-height: 1.25;color: #202020;letter-spacing: -0.01em;text-align: center;}
+.join .page_tit span {display: block;margin-top: 0.7rem;font-size: 1.5rem;font-weight: 400;color: #606060;}
+.btn_join {display: block;width: 100%;height: 5rem;font-size: 1.6rem;font-weight: 500;line-height: 4.9rem;}</code>
+</pre>
+                        </div>
+                    </div>
+                </section>
+                <h2 class="section_main_ttl">회원가입 안내</h2>
+                <div class="ui_sample" style="width: 375px;">
+                    <div class="join info">
+                        <b class="page_tit">오픈노트에<br>접속하신것을 환영합니다.</b>
+                        <div class="btn_area">
+                            <button type="button" class="btn blue btn_join">회원가입</button>
+                        </div>
+                        <div class="member_sns">
+                            <strong class="tit"><span>SNS 회원가입</span></strong>
+                            <div class="btn_area">
+                                <a href="" class="naver">네이버 회원가입</a>
+                                <a href="" class="kakao">카카오톡 회원가입</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_2_1" class="on">html</li>
+                        <li id="code03_2_2">css</li>
+                        <li id="code03_2_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="join info"&gt;
+    &lt;b class="page_tit"&gt;오픈노트에&lt;br&gt;접속하신것을 환영합니다.&lt;/b&gt;
+    &lt;div class="btn_area"&gt;
+        &lt;button type="button" class="btn blue btn_join"&gt;회원가입&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="member_sns"&gt;
+        &lt;strong class="tit"&gt;&lt;span&gt;SNS 회원가입&lt;/span&gt;&lt;/strong&gt;
+        &lt;div class="btn_area"&gt;
+            &lt;a href="" class="naver"&gt;네이버 회원가입&lt;/a&gt;
+            &lt;a href="" class="kakao"&gt;카카오톡 회원가입&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** membership **/
+/* 1. 회원가입안내 join.info */
+.member_sns {margin-top: 2rem;}
+.member_sns .tit {display: block;position: relative;text-align: center;}
+.member_sns .tit::before {content: "";opacity: .84;display: block;position: absolute;left: 0;top: 50%;width: 100%;height: 0.1rem;margin-top: -0.1rem;border: dotted #dadada;border-width: 0.2rem 0 0;z-index: 1;}
+.member_sns .tit span {position: relative;display: inline-block;padding: 0.5rem;font-size: 1.5rem;font-weight: 400;color: gray;background: #fff;z-index: 2;}
+.member_sns .btn_area {display: flex;justify-content: center;margin: 1.6rem 0;}
+.member_sns a {display: inline-block;width: 3.6rem;height: 3.6rem;margin: 0 1rem;font-size: 0;vertical-align: top;}
+.member_sns .kakao {background: url(../images/icon/img_kakaotalk.png) no-repeat center / 3.6rem;}
+.member_sns .naver {background: url(../images/icon/img_naver.png) no-repeat center / 3.6rem;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code03_2_3">
+                        <ul>
+                            <li><a href="images/icon/img_naver.png" title="Download" download>img_naver.png</a></li>
+                            <li><a href="images/icon/img_kakaotalk.png" title="Download" download>img_kakaotalk.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab04">
+                <h2 class="section_main_ttl">본인인증</h2>
+                <div class="ui_sample" style="width: 375px;">
+                    <div class="join sign">
+                        <b class="page_tit">
+                            본인인증
+                            <span>본인인증 방법을 선택해 주세요.</span>
+                        </b>
+                        <ul class="btns">
+                            <li><a href=""><img src="images/icon/i_sign_kakao.png" alt=""><p>카카오 본인인증</p></a></li>
+                            <li><a href=""><img src="images/icon/i_sign_naver.png" alt=""><p>네이버 본인인증</p></a></li>
+                            <li><a href=""><img src="images/icon/i_sign_lock.png" alt=""><p>휴대폰 본인인증</p></a></li>
+                        </ul>
+                        <p class="sub_txt"><i class="xi-error"></i>본인명의 휴대폰 본인인증 시 제공되는 정보는 해당 인증기관에서 직접 수집하며,<br> 인증 이외의 용도로 이용, 저장하지 않습니다.</p>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code04_1_1" class="on">html</li>
+                        <li id="code04_1_2">css</li>
+                        <li id="code04_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code04_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="join sign"&gt;
+    &lt;b class="page_tit"&gt;
+        본인인증
+        &lt;span&gt;본인인증 방법을 선택해 주세요.&lt;/span&gt;
+    &lt;/b&gt;
+    &lt;ul class="btns"&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;img src="images/icon/i_sign_kakao.png" alt=""&gt;&lt;p&gt;카카오 본인인증&lt;/p&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;img src="images/icon/i_sign_naver.png" alt=""&gt;&lt;p&gt;네이버 본인인증&lt;/p&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=""&gt;&lt;img src="images/icon/i_sign_lock.png" alt=""&gt;&lt;p&gt;휴대폰 본인인증&lt;/p&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p class="sub_txt"&gt;&lt;i class="xi-error"&gt;&lt;/i&gt;본인명의 휴대폰 본인인증 시 제공되는 정보는 해당 인증기관에서 직접 수집하며,&lt;br&gt; 인증 이외의 용도로 이용, 저장하지 않습니다.&lt;/p&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code04_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** membership **/
+/* 2. 본인인증 join.sign */
+.join.sign {text-align: center;}
+.join.sign .btns {text-align: center;}
+.join.sign .btns li {display: inline-block;}
+.join.sign .btns li + li {margin-left: 2rem;}
+.join.sign .btns a {display: block;}
+.join.sign .btns a img {overflow: hidden;width: 7rem;border-radius: 20%;}
+.join.sign .btns a p {margin-top: 0.7rem;font-size: 1.4rem;font-weight: 400;line-height: 1.3;color: #606060;letter-spacing: -0.01em;}
+.join.sign .sub_txt {display: inline-block;position: relative;margin-top: 2.8rem;padding-left: 1.8rem;font-size: 1.3rem;font-weight: 400;line-height: 1.5;color: var(--gray);text-align: left;}
+.join.sign .sub_txt i {position: absolute;left: 0;top: 0.4rem;}
+.join.sign .sub_txt br {display: none;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code04_1_3">
+                        <ul>
+                            <li><a href="images/icon/i_sign_kakao.png" title="Download" download>i_sign_kakao.png</a></li>
+                            <li><a href="images/icon/i_sign_naver.png" title="Download" download>i_sign_naver.png</a></li>
+                            <li><a href="images/icon/i_sign_lock.png" title="Download" download>i_sign_lock.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab05">
+                <h2 class="section_main_ttl">약관 동의</h2>
+                <div class="ui_sample" style="width: 375px;">
+                    <div class="join agreement">
+                        <b class="page_tit">
+                            약관동의
+                            <span>약관 및 정보이용 안내에 동의해주세요.</span>
+                        </b>
+                        <div class="box">
+                            <div class="chk_all">
+                                <span class="chk chkall">
+                                    <span class="cbx"><input type="checkbox" name="agree" id="agree_all"><label for="agree_all">전체 약관동의</label></span>
+                                </span>
+                            </div>
+                            <span></span>
+                            <ul class="list">
+                                <li>
+                                    <span class="chk chklist">
+                                        <span class="cbx"><input type="checkbox" name="agree" id="agree_1"><label for="agree_1"><b>[필수]</b>이용약관 동의</label></span>
+                                    </span>
+                                    <a href="" class="btn_more" onclick="view_show(1);">더보기</a>
+                                </li>
+                                <li>
+                                    <span class="chk chklist">
+                                        <span class="cbx"><input type="checkbox" name="agree" id="agree_2"><label for="agree_2"><b>[필수]</b>개인정보 수집/이용 동의</label></span>
+                                    </span>
+                                    <a href="" class="btn_more" onclick="view_show(2);">더보기</a>
+                                </li>
+                                <li>
+                                    <span class="chk chklist">
+                                        <span class="cbx"><input type="checkbox" name="agree" id="agree_3"><label for="agree_3"><b class="gray">[선택]</b>마케팅 및 광고 활용 동의</label></span>
+                                    </span>
+                                    <a href="" class="btn_more2">더보기</a>
+                                    <div class="cont">
+                                        <p>내용입니다.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="btn_area">
+                            <button type="button" class="btn gray light btn_join">확인</button>
+                        </div>
+                    </div>
+                    <div id="display_view1" class="layer_pop js_popup w34rem">
+                        <div class="pop_header">
+                            <h2>이용약관</h2>
+                            <button type="button" class="pop_close" onclick="view_hide(1);"><i class="xi-close-thin"></i>닫기</button>
+                        </div>
+                        <div class="pop_content">
+                            <div class="term_box">
+                                <ul>
+                                    <li><strong class="tit">제1장 총칙</strong>
+                                        <ul>
+                                            <li>
+                                                <strong>제1조 (목적)</strong>
+                                                <ul class="fdepth">
+                                                    <li>이 약관은 오픈노트(이하 "회사"라 한다)가 제공하는 회원전용 홈페이지 서비스(이하 "서비스"라 한다)의 이용조건 및 절차에 관한 사항을 규정함을 목적으로 하며, 본 약관은 제5조에 따라 이용계약이 성립됩니다.</li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <strong>제2조(약관의 효력과 변경)</strong>
+                                                <ul class="fdepth">
+                                                    <li>
+                                                        <ul class="sdepth">
+                                                            <li>① 회사 서비스는 제5조에 따라 효력이 발생하며, 서비스 제공 및 이용에 있어 다른 규정에 우선적으로 적용됩니다.</li>
+                                                            <li>② 회사는 본 약관을 변경할 수 있으며, 변경된 약관은 회사 서비스 내에 공지하거나 e-mail을 통해 회원에게 공지하며, 공지와 동시에 그 효력이 발생됩니다. 다만, 회원이 변경된 약관에 동의하지 않는 경우, 본인의 회원등록을 취소(탈퇴)할 수 있으며 계속사용의 경우 약관 변경에 대한 동의로 간주됩니다.</li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><strong class="tit">제2장 서비스 이용계약체결</strong>
+                                        <ul>
+                                            <li>
+                                                <strong>제5조(이용계약의 성립)</strong>
+                                                <ul class="fdepth">
+                                                    <li>
+                                                        <ul class="sdepth">
+                                                            <li>① 이용계약은 이용자가 서비스에 접속하여 지정된 가입절차에 따라 이용 신청후 이를 확인한 회사가 이용승낙에 의하여 성립됩니다.</li>
+                                                            <li>② 이용계약은 회원 ID 단위로 체결합니다.</li>
+                                                            <li>③ 본 약관에 대한 동의는 가입신청시 ‘동의함’ 버튼을 누름으로써 성립됩니다.</li>
+                                                            <li>④ 회사는 다음 각 호에 해당하는 이용계약에 대해서는 가입을 취소할 수 있습니다.
+                                                                <ul class="tdepth">
+                                                                    <li>(1) 다른 사람의 명의를 사용하여 신청하였을 경우</li>
+                                                                    <li>(2) 이용계약 신청서의 내용을 허위로 기재하였거나 신청하였을 경우</li>
+                                                                    <li>(3) 다른 사람의 서비스 이용을 방해하거나 그 정보를 도용하는 등의 행위를 하였을 경우</li>
+                                                                    <li>(4) 회사 서비스를 이용하여 법령과 본 약관이 금지하는 행위를 하는 경우</li>
+                                                                    <li>(5) 기타 회사가 정한 이용신청 요건이 미비 되었을 경우</li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <strong>제6조(이용신청)</strong>
+                                                <ul class="fdepth">
+                                                    <li>이용신청은 이용자가 온라인으로 회사에서 정한 회원가입신청서에 입력하여 신청합니다.</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="display_view2" class="layer_pop js_popup w34rem">
+                        <div class="pop_header">
+                            <h2>개인정보 수집/이용</h2>
+                            <button type="button" class="pop_close" onclick="view_hide(2);"><i class="xi-close-thin"></i>닫기</button>
+                        </div>
+                        <div class="pop_content">
+                            <div class="term_box">
+                                <ul>
+                                    <li><b>(수집항목-필수)</b> 아이디, 비밀번호, 성명, 이메일, 핸드폰(연락처)</li>
+                                    <li><b>(수집항목-선택)</b> 주소, 연락처, 생년월일, 성별, 직업정보</li>
+                                    <li><b>(수집,이용목적)</b> 웹사이트 통합회원관리 및 민원처리, 편의서비스 제공</li>
+                                    <li><b>(보유,이용기간)</b> 회원탈퇴시까지</li>
+                                </ul>
+                                <p>
+                                    회사는 개인정보보호법에 따라 귀하의 개인정보를 수집 및 이용하고자 합니다. 상기 수집 및 이용동의와 함께 제출된 개인정보, 서류는 보유,이용기간 만료시 안전한 방법으로 파기합니다.<br>
+                                    개인정보 수집 및 이용동의를 거부하실 수 있으나 필수 정보의 수집,이용 동의거부 시, 해당사업의 회원가입 및 서비스 이용이 제한되는 불이익을 받을 수 있습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        // 더보기2
+                        $(".join.agreement .btn_more2").click(function () {
+                            if ($(this).hasClass("on")) {
+                                $(this).removeClass("on");
+                                $(this).next(".cont").slideUp(100);
+                            } else {
+                                $(this).addClass("on");
+                                $(this).next(".cont").slideDown(100);
+                            }
+                            return false;
+                        });
+                        // 체크박스
+                        $('.join.agreement .chkall input').on('click', function () {
+                            var checked = $(this).is(':checked');
+                            if (checked) {
+                                $('.chklist').find('input').prop('checked', true);
+                                $(".join.agreement .btn_join").removeClass("gray").removeClass("light").addClass("blue");
+                            } else {
+                                $('.chklist').find('input').prop('checked', false);
+                                $(".join.agreement .btn_join").removeClass("blue").addClass("light").addClass("gray");
+                            }
+                        });
+                        $('.join.agreement .chklist input').on('click', function () {
+                            var chkGroup = $('.chklist').length;
+                            var checked_cnt = $('.chklist input:checked').length;
+                            if (checked_cnt < chkGroup) {
+                                $('.chkall input').prop('checked', false);
+                                $(".join.agreement .btn_join").removeClass("blue").addClass("light").addClass("gray");
+                            } else if (checked_cnt == chkGroup) {
+                                $('.chkall input').prop('checked', true);
+                                $(".join.agreement .btn_join").removeClass("gray").removeClass("light").addClass("blue");
+                            }
+                        });
+                    </script>
+
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code05_1_1" class="on">html</li>
+                        <li id="code05_1_2">css</li>
+                        <li id="code05_1_3">js</li>
+                        <li id="code05_1_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code05_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="join agreement"&gt;
+    &lt;b class="page_tit"&gt;
+        약관동의
+        &lt;span&gt;약관 및 정보이용 안내에 동의해주세요.&lt;/span&gt;
+    &lt;/b&gt;
+    &lt;div class="box"&gt;
+        &lt;div class="chk_all"&gt;
+            &lt;span class="chk chkall"&gt;
+                &lt;span class="cbx"&gt;&lt;input type="checkbox" name="agree" id="agree_all"&gt;&lt;label for="agree_all"&gt;전체 약관동의&lt;/label&gt;&lt;/span&gt;
+            &lt;/span&gt;
+        &lt;/div&gt;
+        &lt;span&gt;&lt;/span&gt;
+        &lt;ul class="list"&gt;
+            &lt;li&gt;
+                &lt;span class="chk chklist"&gt;
+                    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="agree" id="agree_1"&gt;&lt;label for="agree_1"&gt;&lt;b&gt;[필수]&lt;/b&gt;이용약관 동의&lt;/label&gt;&lt;/span&gt;
+                &lt;/span&gt;
+                &lt;a href="" class="btn_more" onclick="view_show(1);"&gt;더보기&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;span class="chk chklist"&gt;
+                    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="agree" id="agree_2"&gt;&lt;label for="agree_2"&gt;&lt;b&gt;[필수]&lt;/b&gt;개인정보 수집/이용 동의&lt;/label&gt;&lt;/span&gt;
+                &lt;/span&gt;
+                &lt;a href="" class="btn_more" onclick="view_show(2);"&gt;더보기&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;span class="chk chklist"&gt;
+                    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="agree" id="agree_3"&gt;&lt;label for="agree_3"&gt;&lt;b class="gray"&gt;[선택]&lt;/b&gt;마케팅 및 광고 활용 동의&lt;/label&gt;&lt;/span&gt;
+                &lt;/span&gt;
+                &lt;a href="" class="btn_more2"&gt;더보기&lt;/a&gt;
+                &lt;div class="cont"&gt;
+                    &lt;p&gt;내용입니다.&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class="btn_area"&gt;
+        &lt;button type="button" class="btn gray light btn_join"&gt;확인&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 약관 popup --&gt;
+&lt;div id="display_view1" class="layer_pop js_popup"&gt;
+    &lt;div class="pop_header"&gt;
+        &lt;h2&gt;이용약관&lt;/h2&gt;
+        &lt;button type="button" class="pop_close" onclick="view_hide(1);"&gt;&lt;i class="xi-close-thin"&gt;&lt;/i&gt;닫기&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="pop_content"&gt;
+        &lt;div class="term_box"&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;strong class="tit"&gt;제1장 총칙&lt;/strong&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;
+                            &lt;strong&gt;제1조 (목적)&lt;/strong&gt;
+                            &lt;ul class="fdepth"&gt;
+                                &lt;li&gt;이 약관은 오픈노트(이하 "회사"라 한다)가 제공하는 회원전용 홈페이지 서비스(이하 "서비스"라 한다)의 이용조건 및 절차에 관한 사항을 규정함을 목적으로 하며, 본 약관은 제5조에 따라 이용계약이 성립됩니다.&lt;/li&gt;
+                            &lt;/ul&gt;
+                        &lt;/li&gt;
+                        &lt;li&gt;
+                            &lt;strong&gt;제2조(약관의 효력과 변경)&lt;/strong&gt;
+                            &lt;ul class="fdepth"&gt;
+                                &lt;li&gt;
+                                    &lt;ul class="sdepth"&gt;
+                                        &lt;li&gt;① 회사 서비스는 제5조에 따라 효력이 발생하며, 서비스 제공 및 이용에 있어 다른 규정에 우선적으로 적용됩니다.&lt;/li&gt;
+                                        &lt;li&gt;② 회사는 본 약관을 변경할 수 있으며, 변경된 약관은 회사 서비스 내에 공지하거나 e-mail을 통해 회원에게 공지하며, 공지와 동시에 그 효력이 발생됩니다. 다만, 회원이 변경된 약관에 동의하지 않는 경우, 본인의 회원등록을 취소(탈퇴)할 수 있으며 계속사용의 경우 약관 변경에 대한 동의로 간주됩니다.&lt;/li&gt;
+                                    &lt;/ul&gt;
+                                &lt;/li&gt;
+                            &lt;/ul&gt;
+                        &lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/li&gt;
+                &lt;li&gt;&lt;strong class="tit"&gt;제2장 서비스 이용계약체결&lt;/strong&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;
+                            &lt;strong&gt;제5조(이용계약의 성립)&lt;/strong&gt;
+                            &lt;ul class="fdepth"&gt;
+                                &lt;li&gt;
+                                    &lt;ul class="sdepth"&gt;
+                                        &lt;li&gt;① 이용계약은 이용자가 서비스에 접속하여 지정된 가입절차에 따라 이용 신청후 이를 확인한 회사가 이용승낙에 의하여 성립됩니다.&lt;/li&gt;
+                                        &lt;li&gt;② 이용계약은 회원 ID 단위로 체결합니다.&lt;/li&gt;
+                                        &lt;li&gt;③ 본 약관에 대한 동의는 가입신청시 ‘동의함’ 버튼을 누름으로써 성립됩니다.&lt;/li&gt;
+                                        &lt;li&gt;④ 회사는 다음 각 호에 해당하는 이용계약에 대해서는 가입을 취소할 수 있습니다.
+                                            &lt;ul class="tdepth"&gt;
+                                                &lt;li&gt;(1) 다른 사람의 명의를 사용하여 신청하였을 경우&lt;/li&gt;
+                                                &lt;li&gt;(2) 이용계약 신청서의 내용을 허위로 기재하였거나 신청하였을 경우&lt;/li&gt;
+                                                &lt;li&gt;(3) 다른 사람의 서비스 이용을 방해하거나 그 정보를 도용하는 등의 행위를 하였을 경우&lt;/li&gt;
+                                                &lt;li&gt;(4) 회사 서비스를 이용하여 법령과 본 약관이 금지하는 행위를 하는 경우&lt;/li&gt;
+                                                &lt;li&gt;(5) 기타 회사가 정한 이용신청 요건이 미비 되었을 경우&lt;/li&gt;
+                                            &lt;/ul&gt;
+                                        &lt;/li&gt;
+                                    &lt;/ul&gt;
+                                &lt;/li&gt;
+                            &lt;/ul&gt;
+                        &lt;/li&gt;
+                        &lt;li&gt;
+                            &lt;strong&gt;제6조(이용신청)&lt;/strong&gt;
+                            &lt;ul class="fdepth"&gt;
+                                &lt;li&gt;이용신청은 이용자가 온라인으로 회사에서 정한 회원가입신청서에 입력하여 신청합니다.&lt;/li&gt;
+                            &lt;/ul&gt;
+                        &lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="display_view2" class="layer_pop js_popup"&gt;
+    &lt;div class="pop_header"&gt;
+        &lt;h2&gt;개인정보 수집/이용&lt;/h2&gt;
+        &lt;button type="button" class="pop_close" onclick="view_hide(2);"&gt;&lt;i class="xi-close-thin"&gt;&lt;/i&gt;닫기&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="pop_content"&gt;
+        &lt;div class="term_box"&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;b&gt;(수집항목-필수)&lt;/b&gt; 아이디, 비밀번호, 성명, 이메일, 핸드폰(연락처)&lt;/li&gt;
+                &lt;li&gt;&lt;b&gt;(수집항목-선택)&lt;/b&gt; 주소, 연락처, 생년월일, 성별, 직업정보&lt;/li&gt;
+                &lt;li&gt;&lt;b&gt;(수집,이용목적)&lt;/b&gt; 웹사이트 통합회원관리 및 민원처리, 편의서비스 제공&lt;/li&gt;
+                &lt;li&gt;&lt;b&gt;(보유,이용기간)&lt;/b&gt; 회원탈퇴시까지&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;p&gt;
+                회사는 개인정보보호법에 따라 귀하의 개인정보를 수집 및 이용하고자 합니다. 상기 수집 및 이용동의와 함께 제출된 개인정보, 서류는 보유,이용기간 만료시 안전한 방법으로 파기합니다.&lt;br&gt;
+                개인정보 수집 및 이용동의를 거부하실 수 있으나 필수 정보의 수집,이용 동의거부 시, 해당사업의 회원가입 및 서비스 이용이 제한되는 불이익을 받을 수 있습니다.
+            &lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code05_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** membership **/
+/* 3. 약관동의 */
+.join.agreement .box {padding: 2rem 1.5rem;border-radius: 1.2rem;text-align: left;background: #f8f8f8;}
+.join.agreement .chk_all .cbx {margin: 0;}
+.join.agreement .chk_all .cbx label {font-size: 1.5rem;font-weight: 500;line-height: 1.7rem;}
+.join.agreement .chk_all .cbx label::before {width: 1.5rem;height: 1.5rem;line-height: 1.5rem;}
+.join.agreement .list {margin-top: 2rem;padding-top: 2rem;border-top: 0.2rem dotted #dadada;}
+.join.agreement .list li + li {margin-top: 1.5rem;}
+.join.agreement .list .cbx {margin: 0;}
+.join.agreement .list .cbx label {display: block;font-size: 1.4rem;font-weight: 400;line-height: 1.7rem;color: #777;}
+.join.agreement .list .cbx label b {margin-right: 0.3rem;font-size: 1.3rem;font-weight: 500;color: var(--blue);}
+.join.agreement .list .cbx label b.gray {color: var(--gray);}
+.join.agreement .list .cbx label::before {width: 1.5rem;height: 1.5rem;line-height: 1.5rem;background: #fff;}
+.join.agreement .list .cbx input:checked + label::before {content: '\e928';background: var(--chk-bg);}
+.join.agreement .list li {position: relative;}
+.join.agreement .list li .btn_more, .join.agreement .list li .btn_more2 {opacity: 0.7;display: block;position: absolute;right: 0;top: -0.1rem;width: 2rem;height: 2rem;font-size: 0;background: url(../images/icon/i_faq_off.png) no-repeat center / 1rem;transform: rotateZ(-90deg);}
+.join.agreement .list li .btn_more2 {transform: rotate(0deg);}
+.join.agreement .list li .btn_more2.on {transform: rotate(180deg);}
+.join.agreement .list li .cont {display: none;margin-top: 0.5rem;padding-left: 2rem;font-size: 1.3rem;}
+.term_box {overflow-y: auto;max-height: 70vh;}
+.term_box * {font-size: 1.3rem;line-height: 1.3;}
+.term_box strong {display: block;margin-bottom: 0.5rem;font-size: 1.4rem;font-weight: 500;}
+.term_box .tit {margin-bottom: 1rem;font-size: 1.5rem;font-weight: 600;}
+.term_box .tit + ul > li + li {margin-top: 1.5rem !important;}
+.term_box > ul > li + li {margin-top: 2rem !important;}
+.term_box .tdepth {padding-left: 1.5rem;padding-top: 0.5rem;font-size: 1.4rem;}
+.term_box p {margin-top: 1rem !important;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code05_1_3">
+                        <pre>
+<code class="line-numbers language-js">// 더보기2
+$(".join.agreement .btn_more2").click(function () {
+    if ($(this).hasClass("on")) {
+        $(this).removeClass("on");
+        $(this).next(".cont").slideUp(100);
+    } else {
+        $(this).addClass("on");
+        $(this).next(".cont").slideDown(100);
+    }
+    return false;
+});
+// 체크박스
+$('.join.agreement .chkall input').on('click', function () {
+    var checked = $(this).is(':checked');
+    if (checked) {
+        $('.chklist').find('input').prop('checked', true);
+        $(".join.agreement .btn_join").removeClass("gray").removeClass("light").addClass("blue");
+    } else {
+        $('.chklist').find('input').prop('checked', false);
+        $(".join.agreement .btn_join").removeClass("blue").addClass("light").addClass("gray");
+    }
+});
+$('.join.agreement .chklist input').on('click', function () {
+    var chkGroup = $('.chklist').length;
+    var checked_cnt = $('.chklist input:checked').length;
+    if (checked_cnt < chkGroup) {
+        $('.chkall input').prop('checked', false);
+        $(".join.agreement .btn_join").removeClass("blue").addClass("light").addClass("gray");
+    } else if (checked_cnt == chkGroup) {
+        $('.chkall input').prop('checked', true);
+        $(".join.agreement .btn_join").removeClass("gray").removeClass("light").addClass("blue");
+    }
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code05_1_4">
+                        <ul>
+                            <li><a href="images/icon/i_faq_off.png" title="Download" download>i_faq_off.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab06">
+                <h2 class="section_main_ttl">회원정보 입력</h2>
+                <div class="ui_sample" style="width: 375px;">
+                    <div class="join form">
+                        <b class="page_tit">회원정보 입력</b>
+                        <form method="post" action="">
+                            <div class="form_box">
+                                <div class="form_guide"><span class="asterisk">*</span> 필수입력</div>
+                                <ul>
+                                    <li>
+                                        <label for="" class="tit required">아이디</label>
+                                        <div class="form_group">
+                                            <input type="text" title="아이디 입력">
+                                            <button type="button" class="btn bd blue" onclick="view_show(3);">중복확인</button>
+                                        </div>
+                                        <!-- <p class="error_txt">필수입력입니다.</p> -->
+                                    </li>
+                                    <li>
+                                        <label for="" class="tit required">비밀번호</label>
+                                        <input type="password" title="비밀번호 입력">
+                                        <!-- <p class="error_txt">필수입력입니다.</p> -->
+                                    </li>
+                                    <li>
+                                        <label for="" class="tit required">비밀번호 확인</label>
+                                        <input type="password" title="비밀번호 확인">
+                                        <!-- <p class="error_txt">필수입력입니다.</p> -->
+                                    </li>
+                                    <li>
+                                        <label for="" class="tit required">이름</label>
+                                        <input type="text" value="홍길동" disabled>
+                                    </li>
+                                    <li>
+                                        <label for="" class="tit">생년월일</label>
+                                        <div class="form_group space">
+                                            <select class="w32p" disabled>
+                                                <option>1990</option>
+                                                <option>1989</option>
+                                                <option>1988</option>
+                                                <option>1987</option>
+                                            </select>
+                                            <select class="w32p" disabled>
+                                                <option>01</option>
+                                                <option>02</option>
+                                                <option>03</option>
+                                            </select>
+                                            <select class="w32p" disabled>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                            </select>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <label for="" class="tit required">휴대전화번호</label>
+                                        <div class="form_group space phone">
+                                            <select name="" id="" disabled>
+                                                <option value="">010</option>
+                                                <option value="">010</option>
+                                            </select>
+                                            <span class="gap">-</span>
+                                            <input type="text" value="1234" disabled>
+                                            <span class="gap">-</span>
+                                            <input type="text" value="1234" disabled>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <label for="" class="tit required">이메일</label>
+                                        <div class="form_group space email">
+                                            <input type="text" title="이메일 계정입력">
+                                            <span class="gap">@</span>
+                                            <select title="이메일 도메인 선택">
+                                                <option value="" selected="selected">직접입력</option>
+                                                <option value="">naver.com</option>
+                                            </select>
+                                            <input type="text" title="이메일 도메인 직접입력" placeholder="직접입력">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <label for="" class="tit">성별</label>
+                                        <span class="chk toggle">
+                                            <span class="radio"><input type="radio" name="sex" id="male" checked><label for="male">남자</label></span>
+                                            <span class="radio"><input type="radio" name="sex" id="female"><label for="female">여자</label></span>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="btn_area">
+                                <button type="button" class="btn blue btn_join">확인</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 아이디 중복확인 팝업 -->
+                    <div id="display_view3" class="layer_pop js_popup w34rem">
+                        <div class="pop_header">
+                            <h2>중복확인</h2>
+                            <button type="button" class="pop_close" onclick="view_hide(3);"><i class="xi-close-thin"></i>닫기</button>
+                        </div>
+                        <div class="pop_content">
+                            <p class="c">사용 가능한 이메일 입니다.</p>
+                            <div class="btn_area c">
+                                <button type="button" class="btn blue" onclick="view_hide(3);">확인</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code06_1_1" class="on">html</li>
+                        <li id="code06_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code06_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="join form"&gt;
+    &lt;b class="page_tit"&gt;회원정보 입력&lt;/b&gt;
+    &lt;form method="post" action=""&gt;
+        &lt;div class="form_box"&gt;
+            &lt;div class="form_guide"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 필수입력&lt;/div&gt;
+            &lt;ul&gt;
+                &lt;li&gt;
+                    &lt;label for="" class="tit required"&gt;아이디&lt;/label&gt;
+                    &lt;div class="form_group"&gt;
+                        &lt;input type="text" title="아이디 입력"&gt;
+                        &lt;button type="button" class="btn bd blue" onclick="view_show(3);"&gt;중복확인&lt;/button&gt;
+                    &lt;/div&gt;
+                    &lt;!-- &lt;p class="error_txt"&gt;필수입력입니다.&lt;/p&gt; --&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;label for="" class="tit required"&gt;비밀번호&lt;/label&gt;
+                    &lt;input type="password" title="비밀번호 입력"&gt;
+                    &lt;!-- &lt;p class="error_txt"&gt;필수입력입니다.&lt;/p&gt; --&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;label for="" class="tit required"&gt;비밀번호 확인&lt;/label&gt;
+                    &lt;input type="password" title="비밀번호 확인"&gt;
+                    &lt;!-- &lt;p class="error_txt"&gt;필수입력입니다.&lt;/p&gt; --&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;label for="" class="tit required"&gt;이름&lt;/label&gt;
+                    &lt;input type="text" value="홍길동" disabled&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;label for="" class="tit"&gt;생년월일&lt;/label&gt;
+                    &lt;div class="form_group space"&gt;
+                        &lt;select class="w32p" disabled&gt;
+                            &lt;option&gt;1990&lt;/option&gt;
+                            &lt;option&gt;1989&lt;/option&gt;
+                            &lt;option&gt;1988&lt;/option&gt;
+                            &lt;option&gt;1987&lt;/option&gt;
+                        &lt;/select&gt;
+                        &lt;select class="w32p" disabled&gt;
+                            &lt;option&gt;01&lt;/option&gt;
+                            &lt;option&gt;02&lt;/option&gt;
+                            &lt;option&gt;03&lt;/option&gt;
+                        &lt;/select&gt;
+                        &lt;select class="w32p" disabled&gt;
+                            &lt;option&gt;1&lt;/option&gt;
+                            &lt;option&gt;2&lt;/option&gt;
+                            &lt;option&gt;3&lt;/option&gt;
+                        &lt;/select&gt;
+                    &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;label for="" class="tit required"&gt;휴대전화번호&lt;/label&gt;
+                    &lt;div class="form_group space phone"&gt;
+                        &lt;select name="" id="" disabled&gt;
+                            &lt;option value=""&gt;010&lt;/option&gt;
+                            &lt;option value=""&gt;010&lt;/option&gt;
+                        &lt;/select&gt;
+                        &lt;span class="gap"&gt;-&lt;/span&gt;
+                        &lt;input type="text" value="1234" disabled&gt;
+                        &lt;span class="gap"&gt;-&lt;/span&gt;
+                        &lt;input type="text" value="1234" disabled&gt;
+                    &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;label for="" class="tit required"&gt;이메일&lt;/label&gt;
+                    &lt;div class="form_group space email"&gt;
+                        &lt;input type="text" title="이메일 계정입력"&gt;
+                        &lt;span class="gap"&gt;@&lt;/span&gt;
+                        &lt;select title="이메일 도메인 선택"&gt;
+                            &lt;option value="" selected="selected"&gt;직접입력&lt;/option&gt;
+                            &lt;option value=""&gt;naver.com&lt;/option&gt;
+                        &lt;/select&gt;
+                        &lt;input type="text" title="이메일 도메인 직접입력" placeholder="직접입력"&gt;
+                    &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;label for="" class="tit"&gt;성별&lt;/label&gt;
+                    &lt;span class="chk toggle"&gt;
+                        &lt;span class="radio"&gt;&lt;input type="radio" name="sex" id="male" checked&gt;&lt;label for="male"&gt;남자&lt;/label&gt;&lt;/span&gt;
+                        &lt;span class="radio"&gt;&lt;input type="radio" name="sex" id="female"&gt;&lt;label for="female"&gt;여자&lt;/label&gt;&lt;/span&gt;
+                    &lt;/span&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;div class="btn_area"&gt;
+            &lt;button type="button" class="btn blue btn_join"&gt;확인&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+&lt;!-- 아이디 중복확인 팝업 --&gt;
+&lt;div id="display_view3" class="layer_pop js_popup w34rem"&gt;
+    &lt;div class="pop_header"&gt;
+        &lt;h2&gt;중복확인&lt;/h2&gt;
+        &lt;button type="button" class="pop_close" onclick="view_hide(3);"&gt;&lt;i class="xi-close-thin"&gt;&lt;/i&gt;닫기&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="pop_content"&gt;
+        &lt;p class="c"&gt;사용 가능한 이메일 입니다.&lt;/p&gt;
+        &lt;div class="btn_area c"&gt;
+            &lt;button type="button" class="btn blue" onclick="view_hide(3);"&gt;확인&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code06_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** membership **/
+/* 4. 정보입력 */
+.join.form .error_txt {margin-top: 0.3rem;font-size: 1.2rem;color: #ed2828 !important;}
+.join.form .form_box > ul > li {display: flex;flex-wrap: wrap;}
+.join.form .form_box > ul > li .tit {display: block;width: 100%;margin-bottom: 0.8rem;font-size: 1.4rem;font-weight: 500;color: #404040;}
+.join.form .form_box > ul > li .tit.required::after {content: '*';margin-left: 0.3rem;font-size: 1.4rem;font-weight: 400;color: var(--red);}
+.join.form .form_box > ul > li + li {margin-top: 1.2rem;}
+.join.form .form_box input, .join.form .form_box select {width: 100%;height: 4.3rem;padding: 0 1.5rem;font-size: 1.4rem;line-height: 4.3rem;}
+.join.form .form_box [disabled] {opacity: 1;color: var(--dark);background-color: #f6f6f6;}
+.join.form .form_box .form_group {display: flex;width: 100%;}
+.join.form .form_box .form_group input {width: calc(100% - 8.5rem);}
+.join.form .form_box .btn {width: 8rem;height: 4.3rem;margin-left: 0.5rem;font-size: 1.4rem;line-height: 4.1rem;text-align: center;}
+.join.form .form_box .form_group.space {justify-content: space-between;align-items: center;font-size: 1.2rem;}
+.join.form .form_box .form_group.space select {min-width: 10rem;}
+.join.form .form_box .phone input, .join.form .form_box .phone select, .join.form .form_box .email input, .join.form .form_box .email select {max-width: 100%;}
+.join.form .chk.toggle {display: flex;width: 100%;}
+.join.form .chk.toggle input {left: 0;}
+.join.form .chk.toggle .radio {position: relative;width: 50%;height: 5rem;margin: 0;text-align: center;z-index: 999;}
+.join.form .chk.toggle .radio label {position: absolute;left: 0;top: 0;width: 100%;height: 4.3rem;border: 0.1rem solid var(--bdr);font-size: 1.4rem;font-weight: 500;line-height: 4.1rem;}
+.join.form .chk.toggle .radio label::before, .join.form .chk.toggle .radio label::after {display: none;}
+.join.form .chk.toggle .radio:first-of-type label {border-right: 0;border-radius: 0.8rem 0 0 0.8rem;}
+.join.form .chk.toggle .radio:last-of-type label {border-left: 0;border-radius: 0 0.8rem 0.8rem 0;}
+.join.form .chk.toggle .radio input:checked + label {color: #63a1ff;}
+.join.form .chk.toggle .radio input:checked + label, .join.form .chk.toggle .radio input:checked + label:hover {border: 0.1rem solid #63a1ff !important;background: #F8FBFF;}
+.join.form .btn_area {margin-top: 4rem;}</code>
+</pre>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab07">
+                <h2 class="section_main_ttl">가입 완료</h2>
+                <div class="ui_sample" style="width: 375px;">
+                    <div class="join finish">
+                        <b class="page_tit">회원가입 완료</b>
+                        <img src="images/common/logo.png" alt="로고">
+                        <p>회원 가입이 완료되었습니다.</p>
+                        <div class="btn_area c">
+                            <button type="button" class="btn btn_join">홈으로</button>
+                            <button type="button" class="btn btn_join blue"> 로그인</button>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code07_1_1" class="on">html</li>
+                        <li id="code07_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code07_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="join finish"&gt;
+    &lt;b class="page_tit"&gt;회원가입 완료&lt;/b&gt;
+    &lt;img src="images/common/logo.png" alt="로고"&gt;
+    &lt;p&gt;회원 가입이 완료되었습니다.&lt;/p&gt;
+    &lt;div class="btn_area c"&gt;
+        &lt;button type="button" class="btn btn_join"&gt;홈으로&lt;/button&gt;
+        &lt;button type="button" class="btn btn_join blue"&gt; 로그인&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code07_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** membership **/
+/* 5. 가입완료 finish */
+.join.finish p {position: relative;font-size: 1.5rem;font-weight: 500;line-height: 1.4;color: #202020;letter-spacing: -0.04rem;text-align: center;}
+.join.finish img {display: block;max-width: 15rem;margin: 0 auto 3rem;}
+.join.finish .btn_area {margin-top: 3rem;margin-bottom: 0;}
+.join.finish .btn_area .btn_join {display: inline-block;width: 14rem;height: 4.5rem;margin: 0 0.5rem;font-size: 1.5rem;line-height: 4.4rem;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <div class="popup_bg" id="js_popup_bg"></div>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

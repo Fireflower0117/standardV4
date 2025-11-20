@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">로딩 & progress</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">부분화면 로딩</li>
+                <li id="tab02">전체화면 로딩</li>
+                <li id="tab03">progress</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <h2 class="section_main_ttl">부분화면 로딩</h2>
+                <section class="ui_basic_info">
+                    <dt>1. 특정 content 영역에 로딩 화면이 생길때 사용한다.</dt>
+                    <dt>2. 로딩 소스가 삽입되는 부모 태그에는 반드시 position: relative; 속성이 적용되어야 한다.</dt>
+                    <dd>ex.<br>
+<pre>&lt;div class="box"&gt; --------&gt; position: relative; 속성을 가지고 있어야 함.
+    ... 컨텐츠
+    &lt;div class="loading_wrap partial"&gt;
+        &lt;div class="loading_box"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+                    </dd>
+                    <dt>3. 로딩이 끝나면 .loading_wrap을 display: none; 처리 한다.</dt>
+                </section>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample">
+                    <div class="sample_content" style="position: relative;width: 500px;height: 200px;padding: 10px;">
+                        <p>샘플 컨텐츠 영역</p>
+                        <div class="loading_wrap partial">
+                            <div class="loading_box"></div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">html</li>
+                        <li id="code01_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="loading_wrap partial"&gt;
+    &lt;div class="loading_box"&gt;&lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** loading ***/
+/* loading - 부분화면 */
+.loading_wrap.partial {display: block;position: absolute;left: 0;top: 0;bottom: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.3);z-index: 9999;}
+.loading_wrap.partial .loading_box {display: block;position: absolute;left: 0;top: 0;bottom: 0;width: 100%;height: 100%;z-index: 9999;}
+.loading_wrap.partial .loading_box::after {content: '';display: block;position: absolute;left: 50%;top: 50%;width: 50px;height: 50px;margin-left: -25px;margin-top: -25px;border: 7px solid rgba(255, 255, 255, 0.5);border-top-color: #fff;border-radius: 50%;-webkit-animation: spin 0.7s infinite linear;animation: spin 0.7s infinite linear;}
+@keyframes spin {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">전체화면 로딩</h2>
+                <section class="ui_basic_info">
+                    <dt>1. 페이지 전체 영역에 로딩 화면이 생길때 사용한다.</dt>
+                    <dt>2. 로딩이 끝나면 .loading_wrap을 display: none; 처리 한다.</dt>
+                </section>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample">
+                    <div class="sample_content" style="position: relative;width: 500px;height: 200px;padding: 10px;">
+                        <p>샘플 컨텐츠 영역 (전체화면)</p>
+                        <div class="loading_wrap entire">
+                            <div class="loading_box">
+                                <svg class="loader" width="79px" height="79px" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                                    <circle class="path" fill="none" stroke-width="8" stroke-linecap="round" cx="40" cy="40" r="25"></circle>
+                                </svg>
+                                <b>loading</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="loading_wrap entire"&gt;
+    &lt;div class="loading_box"&gt;
+        &lt;svg class="loader" width="79px" height="79px" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"&gt;
+            &lt;circle class="path" fill="none" stroke-width="8" stroke-linecap="round" cx="40" cy="40" r="25"&gt;&lt;/circle&gt;
+        &lt;/svg&gt;
+        &lt;b&gt;loading&lt;/b&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** loading ***/
+/* loading - 전체화면 */
+.loading_wrap.entire {display: block;position: fixed;left: 0;top: 0;bottom: 0;width: 100%;height: 100%;background: rgba(255, 255, 255, 0.7);z-index: 9999;}
+.loading_wrap.entire .loading_box {position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%);text-align: center;z-index: 99;}
+.loading_wrap.entire .loading_box b {display: block;font-size: 25px;font-weight: 500;color: #222;}
+.loading_wrap.entire .loading_box b::after {content: ' .';position: relative;left: -5px;animation: loading_dots 1s steps(5, end) infinite;}
+.loading_wrap.entire .loader {-webkit-animation: loading_rotator 1.4s linear infinite;animation: loading_rotator 1.4s linear infinite;}
+.loading_wrap.entire .loader .path {transform-origin: center;stroke: var(--blue);stroke-dasharray: 180;stroke-dashoffset: 0;-webkit-animation: loading_dash 1.4s ease-in-out infinite;animation: loading_dash 1.4s ease-in-out infinite;}
+@keyframes loading_dots {
+    0%, 20% {color: rgba(0, 0, 0, 0);text-shadow: .25em 0 0 rgba(0, 0, 0, 0), .5em 0 0 rgba(0, 0, 0, 0);}
+    40% {color: #000;text-shadow: .25em 0 0 rgba(0, 0, 0, 0), .5em 0 0 rgba(0, 0, 0, 0);}
+    60% {text-shadow: .25em 0 0 #000, .5em 0 0 rgba(0, 0, 0, 0);}
+    80%, 100% {text-shadow: .25em 0 0 #000, .5em 0 0 #000;}
+}
+@keyframes loading_rotator {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(270deg);}
+}
+@keyframes loading_dash {
+    0% {stroke-dashoffset: 180;}
+    50% {stroke-dashoffset: 45;transform: rotate(135deg);}
+    100% {stroke-dashoffset: 180;transform: rotate(450deg);}
+}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_1_3">
+                        <ul>
+                            <li><a href="images/common/loading.svg" title="Download" download>loading.svg</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">progress</h2>
+                <section class="ui_basic_info">
+                    <dt>1. 진행상태를 표시할때 사용한다.</dt>
+                </section>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample" style="max-width: 500px;">
+                    <div class="progress_bar typeA">
+                        <div class="bar" style="width: 60%;">
+                            <span class="txt">60%</span>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="progress_bar typeB">
+                        <div class="bar" style="width: 60%;">
+                            <span class="txt">60%</span>
+                        </div>
+                    </div>
+                    <br><br>
+                    <button class="btn btn_progress mar_b10">animate</button>
+                    <div class="progress_bar typeB animate">
+                        <div class="bar" data-to="60%">
+                            <span class="txt">60%</span>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                        <li id="code03_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="progress_bar typeA"&gt;
+    &lt;div class="bar" style="width: 60%;"&gt;
+        &lt;span class="txt"&gt;60%&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="progress_bar typeB"&gt;
+    &lt;div class="bar" style="width: 60%;"&gt;
+        &lt;span class="txt"&gt;60%&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;button class="btn btn_progress"&gt;animate&lt;/button&gt;
+&lt;div class="progress_bar typeB animate"&gt;
+    &lt;div class="bar" data-to="60%"&gt;
+        &lt;span class="txt"&gt;60%&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** progress ***/
+.progress_bar {width: 100%;height: 30px;border-radius: 5px;background: var(--bdr);}
+.progress_bar .bar {position: relative;width: 0;height: 100%;border-radius: 5px;background: var(--blue);}
+.progress_bar .txt {position: absolute;font-size: 15px;font-weight: 600;}
+.progress_bar.typeA .txt {right: 0;top: 0;padding-right: 10px;line-height: 30px;color: #fff;}
+.progress_bar.typeB .txt {right: 0;top: 35px;line-height: 1;text-align: right;}
+.progress_bar.animate .txt {opacity: 0;transition: all 0.2s;transition-delay: 0.7s;}
+.progress_bar.animate .bar {transition: width 0.5s;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_3">
+                        <pre>
+<code class="line-numbers language-js">// progress
+$(document).ready(function () {
+    $(".btn_progress").click(function () {
+        var progressto = $(".progress_bar.animate .bar").attr("data-to");
+        $(".progress_bar.animate .bar").css("width", progressto);
+        $(".progress_bar.animate .txt").css("opacity", "1");
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

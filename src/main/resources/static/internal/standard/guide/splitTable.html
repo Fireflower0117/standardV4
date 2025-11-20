@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/board.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+    <!-- simplebar -->
+    <link rel="stylesheet" href="lib/simplebar/simplebar.min.css">
+    <script src="lib/simplebar/simplebar.min.js"></script>
+    <!-- ztree -->
+    <script src="lib/ztree/jquery.ztree.core.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">분할 테이블</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">코드관리</li>
+                <li id="tab02">SMS</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <h2 class="section_main_ttl">코드 관리</h2>
+                <div class="ui_sample">
+                    <div class="code_area">
+                        <div class="code_box">
+                            <h4 class="code_tit">1차코드</h4>
+                            <table class="code_tbl title">
+                                <caption>1차코드</caption>
+                                <colgroup>
+                                    <col style="width: 80px;">
+                                    <col style="width: 110px;">
+                                    <col style="width: 90px;">
+                                    <col>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">코드</th>
+                                        <th scope="col">코드명</th>
+                                        <th scope="col">비고</th>
+                                        <th scope="col">기능</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="cont">
+                                <table class="code_tbl">
+                                    <caption>1차코드</caption>
+                                    <colgroup>
+                                        <col style="width: 79px;"><!-- title의 첫번째 td보다 1px 작게 -->
+                                        <col style="width: 110px;">
+                                        <col style="width: 90px;">
+                                        <col>
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">
+                                                <span class="code_basic">AA04-B01</span>
+                                                <input type="text" class="code_correct" value="AA04-B01">
+                                            </th>
+                                            <td>
+                                                <span class="code_basic">부서관리</span>
+                                                <input type="text" class="code_correct" value="부서관리">
+                                            </td>
+                                            <td>
+                                                <span class="code_basic">비고내용</span>
+                                                <input type="text" class="code_correct" value="비고내용">
+                                            </td>
+                                            <td class="c">
+                                                <div class="code_basic">
+                                                    <button type="button" class="btn sml code_up">위로</button>
+                                                    <button type="button" class="btn sml code_down">아래로</button>
+                                                    <button type="button" class="btn sml code_rewrite">수정</button>
+                                                    <button type="button" class="btn sml code_del">삭제</button>
+                                                </div>
+                                                <div class="code_correct">
+                                                    <button type="button" class="btn sml bd blue">저장</button>
+                                                    <button type="button" class="btn sml bd gray">취소</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <span class="code_basic">AA04-B01</span>
+                                                <input type="text" class="code_correct" value="AA04-B01">
+                                            </th>
+                                            <td>
+                                                <span class="code_basic">부서관리</span>
+                                                <input type="text" class="code_correct" value="부서관리">
+                                            </td>
+                                            <td>
+                                                <span class="code_basic">비고내용</span>
+                                                <input type="text" class="code_correct" value="비고내용">
+                                            </td>
+                                            <td class="c">
+                                                <div class="code_basic">
+                                                    <button type="button" class="btn sml code_up">위로</button>
+                                                    <button type="button" class="btn sml code_down">아래로</button>
+                                                    <button type="button" class="btn sml code_rewrite">수정</button>
+                                                    <button type="button" class="btn sml code_del">삭제</button>
+                                                </div>
+                                                <div class="code_correct">
+                                                    <button type="button" class="btn sml bd blue">저장</button>
+                                                    <button type="button" class="btn sml bd gray">취소</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <table class="code_tbl write">
+                                <caption>1차코드</caption>
+                                <colgroup>
+                                    <col style="width: 80px;">
+                                    <col style="width: 110px;">
+                                    <col style="width: 90px;">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" placeholder="코드"></td>
+                                        <td><input type="text" placeholder="코드명"></td>
+                                        <td><input type="text" placeholder="비고"></td>
+                                        <td><button type="button" class="btn sml code_add">추가</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="code_box">
+                            <h4 class="code_tit">2차코드</h4>
+                            <table class="code_tbl title">
+                                <caption>2차코드</caption>
+                                <colgroup>
+                                    <col style="width: 80px;">
+                                    <col style="width: 110px;">
+                                    <col style="width: 90px;">
+                                    <col>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">코드</th>
+                                        <th scope="col">코드명</th>
+                                        <th scope="col">비고</th>
+                                        <th scope="col">기능</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="cont">
+                                <table class="code_tbl">
+                                    <caption>2차코드</caption>
+                                    <colgroup>
+                                        <col style="width: 79px;"><!-- title의 첫번째 td보다 1px 작게 -->
+                                        <col style="width: 110px;">
+                                        <col style="width: 90px;">
+                                        <col>
+                                    </colgroup>
+                                    <tbody>
+                                        <tr class="no_code">
+                                            <td colspan="4">1차 코드를 선택해주세요</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <span class="code_basic">AA04-B01</span>
+                                                <input type="text" class="code_correct" value="AA04-B01">
+                                            </th>
+                                            <td>
+                                                <span class="code_basic">부서관리</span>
+                                                <input type="text" class="code_correct" value="부서관리">
+                                            </td>
+                                            <td>
+                                                <span class="code_basic">비고내용</span>
+                                                <input type="text" class="code_correct" value="비고내용">
+                                            </td>
+                                            <td class="c">
+                                                <div class="code_basic">
+                                                    <button type="button" class="btn sml code_up">위로</button>
+                                                    <button type="button" class="btn sml code_down">아래로</button>
+                                                    <button type="button" class="btn sml code_rewrite">수정</button>
+                                                    <button type="button" class="btn sml code_del">삭제</button>
+                                                </div>
+                                                <div class="code_correct">
+                                                    <button type="button" class="btn sml bd blue">저장</button>
+                                                    <button type="button" class="btn sml bd gray">취소</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <table class="code_tbl write">
+                                <caption>2차코드</caption>
+                                <colgroup>
+                                    <col style="width: 80px;">
+                                    <col style="width: 110px;">
+                                    <col style="width: 90px;">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" placeholder="코드"></td>
+                                        <td><input type="text" placeholder="코드명"></td>
+                                        <td><input type="text" placeholder="비고"></td>
+                                        <td><button type="button" class="btn sml code_add">추가</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="code_box">
+                            <h4 class="code_tit">3차코드</h4>
+                            <table class="code_tbl title">
+                                <caption>3차코드</caption>
+                                <colgroup>
+                                    <col style="width: 80px;">
+                                    <col style="width: 110px;">
+                                    <col style="width: 90px;">
+                                    <col>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">코드</th>
+                                        <th scope="col">코드명</th>
+                                        <th scope="col">비고</th>
+                                        <th scope="col">기능</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="cont">
+                                <table class="code_tbl">
+                                    <caption>2차코드</caption>
+                                    <colgroup>
+                                        <col style="width: 79px;"><!-- title의 첫번째 td보다 1px 작게 -->
+                                        <col style="width: 110px;">
+                                        <col style="width: 90px;">
+                                        <col>
+                                    </colgroup>
+                                    <tbody>
+                                        <tr class="no_code">
+                                            <td colspan="4">2차 코드를 선택해주세요</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <span class="code_basic">AA04-B01</span>
+                                                <input type="text" class="code_correct" value="AA04-B01">
+                                            </th>
+                                            <td>
+                                                <span class="code_basic">부서관리</span>
+                                                <input type="text" class="code_correct" value="부서관리">
+                                            </td>
+                                            <td>
+                                                <span class="code_basic">비고내용</span>
+                                                <input type="text" class="code_correct" value="비고내용">
+                                            </td>
+                                            <td class="c">
+                                                <div class="code_basic">
+                                                    <button type="button" class="btn sml code_up">위로</button>
+                                                    <button type="button" class="btn sml code_down">아래로</button>
+                                                    <button type="button" class="btn sml code_rewrite">수정</button>
+                                                    <button type="button" class="btn sml code_del">삭제</button>
+                                                </div>
+                                                <div class="code_correct">
+                                                    <button type="button" class="btn sml bd blue">저장</button>
+                                                    <button type="button" class="btn sml bd gray">취소</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <table class="code_tbl write">
+                                <caption>3차코드</caption>
+                                <colgroup>
+                                    <col style="width: 80px;">
+                                    <col style="width: 110px;">
+                                    <col style="width: 90px;">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" placeholder="코드"></td>
+                                        <td><input type="text" placeholder="코드명"></td>
+                                        <td><input type="text" placeholder="비고"></td>
+                                        <td><button type="button" class="btn sml code_add">추가</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">html</li>
+                        <li id="code01_1_2">css</li>
+                        <li id="code01_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="code_area"&gt;
+    &lt;div class="code_box"&gt;
+        &lt;h4 class="code_tit"&gt;1차코드&lt;/h4&gt;
+        &lt;table class="code_tbl title"&gt;
+            &lt;caption&gt;1차코드&lt;/caption&gt;
+            &lt;colgroup&gt;
+                &lt;col style="width: 80px;"&gt;
+                &lt;col style="width: 110px;"&gt;
+                &lt;col style="width: 90px;"&gt;
+                &lt;col&gt;
+            &lt;/colgroup&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th scope="col"&gt;코드&lt;/th&gt;
+                    &lt;th scope="col"&gt;코드명&lt;/th&gt;
+                    &lt;th scope="col"&gt;비고&lt;/th&gt;
+                    &lt;th scope="col"&gt;기능&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+        &lt;/table&gt;
+        &lt;div class="cont"&gt;
+            &lt;table class="code_tbl"&gt;
+                &lt;caption&gt;1차코드&lt;/caption&gt;
+                &lt;colgroup&gt;
+                    &lt;col style="width: 79px;"&gt;&lt;!-- title의 첫번째 td보다 1px 작게 --&gt;
+                    &lt;col style="width: 110px;"&gt;
+                    &lt;col style="width: 90px;"&gt;
+                    &lt;col&gt;
+                &lt;/colgroup&gt;
+                &lt;tbody&gt;
+                    &lt;tr&gt;
+                        &lt;th scope="row"&gt;
+                            &lt;span class="code_basic"&gt;AA04-B01&lt;/span&gt;
+                            &lt;input type="text" class="code_correct" value="AA04-B01"&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                            &lt;span class="code_basic"&gt;부서관리&lt;/span&gt;
+                            &lt;input type="text" class="code_correct" value="부서관리"&gt;
+                        &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;span class="code_basic"&gt;비고내용&lt;/span&gt;
+                            &lt;input type="text" class="code_correct" value="비고내용"&gt;
+                        &lt;/td&gt;
+                        &lt;td class="c"&gt;
+                            &lt;div class="code_basic"&gt;
+                                &lt;button type="button" class="btn sml code_up"&gt;위로&lt;/button&gt;
+                                &lt;button type="button" class="btn sml code_down"&gt;아래로&lt;/button&gt;
+                                &lt;button type="button" class="btn sml code_rewrite"&gt;수정&lt;/button&gt;
+                                &lt;button type="button" class="btn sml code_del"&gt;삭제&lt;/button&gt;
+                            &lt;/div&gt;
+                            &lt;div class="code_correct"&gt;
+                                &lt;button type="button" class="btn sml bd blue"&gt;저장&lt;/button&gt;
+                                &lt;button type="button" class="btn sml bd gray"&gt;취소&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;th scope="row"&gt;
+                            &lt;span class="code_basic"&gt;AA04-B01&lt;/span&gt;
+                            &lt;input type="text" class="code_correct" value="AA04-B01"&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                            &lt;span class="code_basic"&gt;부서관리&lt;/span&gt;
+                            &lt;input type="text" class="code_correct" value="부서관리"&gt;
+                        &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;span class="code_basic"&gt;비고내용&lt;/span&gt;
+                            &lt;input type="text" class="code_correct" value="비고내용"&gt;
+                        &lt;/td&gt;
+                        &lt;td class="c"&gt;
+                            &lt;div class="code_basic"&gt;
+                                &lt;button type="button" class="btn sml code_up"&gt;위로&lt;/button&gt;
+                                &lt;button type="button" class="btn sml code_down"&gt;아래로&lt;/button&gt;
+                                &lt;button type="button" class="btn sml code_rewrite"&gt;수정&lt;/button&gt;
+                                &lt;button type="button" class="btn sml code_del"&gt;삭제&lt;/button&gt;
+                            &lt;/div&gt;
+                            &lt;div class="code_correct"&gt;
+                                &lt;button type="button" class="btn sml bd blue"&gt;저장&lt;/button&gt;
+                                &lt;button type="button" class="btn sml bd gray"&gt;취소&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+        &lt;table class="code_tbl write"&gt;
+            &lt;caption&gt;1차코드&lt;/caption&gt;
+            &lt;colgroup&gt;
+                &lt;col style="width: 80px;"&gt;
+                &lt;col style="width: 110px;"&gt;
+                &lt;col style="width: 90px;"&gt;
+                &lt;col&gt;
+            &lt;/colgroup&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;input type="text" placeholder="코드"&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;input type="text" placeholder="코드명"&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;input type="text" placeholder="비고"&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;button type="button" class="btn sml code_add"&gt;추가&lt;/button&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** code ***/
+.code_area {font-size: 14px;color: var(--dark);}
+.code_area::after {content: '';display: table;clear: both;}
+.code_box {float: left;width: 32%;}
+.code_box:nth-child(n+2) {margin-left: 2%;}
+.code_tit {border: 1px solid var(--tbl-bdr);border-top-color: var(--black);border-bottom-color: var(--bdr);font-size: 15px;font-weight: 600;line-height: 45px;text-align: center;background: var(--tbl-th);}
+.code_box .cont {overflow-x: hidden;overflow-y: auto;width: 100%;height: 450px;border-left: 1px solid var(--tbl-bdr);border-right: 1px solid var(--tbl-bdr);border-bottom: 1px solid var(--tbl-bdr);}
+.code_tbl.write {background: var(--tbl-th);}
+.code_tbl thead th {font-weight: 500;background: var(--tbl-th);}
+.code_tbl thead th:last-child {border-right: 1px solid var(--tbl-bdr);}
+.code_tbl th, .code_tbl td {height: 40px;padding: 5px;border-left: 1px solid var(--tbl-bdr);border-bottom: 1px solid var(--tbl-bdr);font-weight: normal;}
+.code_tbl tbody th:first-child {border-left-color: transparent;}
+.code_tbl .no_code td {border-left: 0;text-align: center;cursor: default;}
+.code_tbl.write td:last-child {border-right: 1px solid var(--tbl-bdr);}
+.code_tbl input, .code_tbl select {min-width: 0;width: 100%;height: 30px;padding: 0 8px;}
+.code_tbl .code_basic {font-weight: normal;}
+.code_tbl .code_correct {display: none;margin-left: 0 !important;}
+.code_basic .btn {min-width: auto;width: 22px;height: 22px;margin-left: 0 !important;padding: 0;border: 1px solid var(--dark);font-size: 0;line-height: 20px;}
+.code_basic .btn::before {font-family: 'xeicon';color: var(--dark);}
+.code_basic .btn.code_up::before {content: '\e930';font-size: 20px;}
+.code_basic .btn.code_down::before {content: '\e936';font-size: 20px;}
+.code_basic .btn.code_rewrite::before {content: '\e9c3';font-size: 14px;}
+.code_basic .btn.code_del::before {content: '\e96e';font-size: 16px;}
+.code_correct .btn {margin: 0 !important;}
+.code_tbl .btn.code_add {width: 100%;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code01_1_3">
+                        <pre>
+<code class="line-numbers language-js">// code
+$(document).ready(function () {
+    $('.code_basic .code_rewrite').click(function () {
+        $(this).parents('tr').find('.code_basic').hide();
+        $(this).parents('tr').find('.code_correct').show();
+        $('.code_correct button').click(function () {
+            $(this).parents("tr").find('.code_correct').hide();
+            $(this).parents("tr").find('.code_basic').show();
+            return false;
+        });
+    });
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">SMS</h2>
+                <div class="ui_sample">
+                    <section class="sms_section">
+                        <div class="sms_area lt">
+                            <h4 class="md_tit">기관선택</h4>
+                            <div class="sms_box">
+                                <div class="sms_top">
+                                    <div class="sch_area">
+                                        <input type="text" placeholder="검색">
+                                        <button class="btn_sms_search"><i class="xi-search"></i><span>검색</span></button>
+                                    </div>
+                                </div>
+                                <div class="treemenu_box">
+                                    <script type="text/javaScript">
+                                        // set ztree
+                                        var setting = {
+                                            check: {
+                                                enable: true,
+                                                chkDisabledInherit: false  // 체크박스 disable기능
+                                            },
+                                            data: {
+                                                simpleData: {
+                                                    enable: true
+                                                }
+                                            },
+                                        };
+                                        // 트리메뉴 구성
+                                        // 상태옵션
+                                        // open: true - 열려있는 상태옵션, checked: true - 체크되어있는 상태옵션, chkDisabled: true - 체크막아져있는 상태옵션
+                                        // 메뉴 구성방법 및 예시
+                                        // 맨 상위 메뉴는 id: 한자리수 pId: 0  ex) id: 2, pId :0
+                                        // 2차 메뉴는 id: 1차 메뉴id + 2차메뉴순차수 pId: 1차 메뉴id ex) id: 21, pId: 2
+                                        // 3차 메뉴는 id: 2차 메뉴id + 3차메뉴순차수 pId: 2차 메뉴id ex) id: 211, pId: 21
+                                        var zNodesFst = [
+                                            { id: 1, pId: 0, name: '본사', open: true },
+                                            { id: 11, pId: 1, name: '전략기획본부(직할)', checked: true },
+                                            { id: 11, pId: 1, name: '경영성과향상TF', checked: true },
+                                            { id: 11, pId: 1, name: '기획처', open: true },
+                                            { id: 111, pId: 11, name: '경영기획부', checked: true },
+                                            { id: 112, pId: 11, name: '전략혁신부', checked: true },
+                                            { id: 113, pId: 11, name: '경영평가부', checked: true },
+                                            { id: 114, pId: 11, name: '광업등록사무소', checked: true },
+                                            { id: 115, pId: 11, name: '전기위원회', checked: true },
+                                            { id: 116, pId: 11, name: '경제자유구역기획단', checked: true },
+                                            { id: 117, pId: 11, name: '윤리준법부', checked: true },
+                                            { id: 118, pId: 11, name: '품질경영부', checked: true },
+                                            { id: 12, pId: 1, name: '인사노무처', open: true },
+                                            { id: 21, pId: 12, name: '인사부', open: true },
+                                            { id: 211, pId: 12, name: '노사복지부', checked: true },
+                                            { id: 212, pId: 12, name: '급여부', checked: true },
+                                            { id: 213, pId: 12, name: '인재개발부', checked: true },
+                                            { id: 213, pId: 12, name: '일자리창출팀', checked: true },
+                                            { id: 2, pId: 0, name: '서울지역본부', open: true },
+                                            { id: 2, pId: 0, name: '인천지역본부', open: true },
+                                            { id: 2, pId: 0, name: '경기지역본부', open: true },
+                                            { id: 2, pId: 0, name: '강원지역본부', open: true },
+                                            { id: 2, pId: 0, name: '대전지역본부', open: true },
+                                            { id: 2, pId: 0, name: '광주전남지역본부', open: true },
+                                            { id: 2, pId: 0, name: '대구지역본부', open: true },
+                                            { id: 2, pId: 0, name: '부산울산지역본부', open: true },
+                                            { id: 2, pId: 0, name: '경기북부지역사업처', open: true },
+                                            { id: 2, pId: 0, name: '충북지역사업처', open: true },
+                                            { id: 2, pId: 0, name: '전북지역사업처', open: true },
+                                            { id: 2, pId: 0, name: '경북지역사업처', open: true },
+                                            { id: 2, pId: 0, name: '경남지역사업처', open: true },
+                                            { id: 2, pId: 0, name: '제주지역사업처', open: true },
+                                        ];
+
+                                        $(document).ready(function () {
+                                            $.fn.zTree.init($("#tree_list"), setting, zNodesFst);
+                                            setCheck();
+                                            changeChk();
+                                        });
+
+                                        var code;
+                                        function setCheck() {
+                                            var zTree = $.fn.zTree.getZTreeObj("tree_list"),
+                                                type = { "Y": "ps", "N": "ps" }; // 체크가 부모 자식노드간의 연결이 되어있게 설정하는 옵션
+                                        }
+                                        function showCode(str) {
+                                            if (!code) code = $("#code");
+                                            code.empty();
+                                            code.append("<li>" + str + "</li>");
+                                        }
+                                        function changeChk() {
+                                            // 클릭시 아이콘색깔 변화(변형 추가소스) - 기본css로 쓸 경우 필요없음
+                                            $('.checkbox_true_full').prev().addClass('check');
+                                            $('.chk').click('on', function () {
+                                                setTimeout(function () {
+                                                    if ($('.chk').is('.checkbox_true_full, .checkbox_true_full_focus')) {
+                                                        $('.checkbox_true_full').prev().addClass('check');
+                                                        $('.checkbox_true_full_focus').prev().addClass('check');
+                                                    }
+                                                }, 100);
+                                                if ($(this).is('.checkbox_true_full, .checkbox_true_full_focus')) {
+                                                    setTimeout(function () {
+                                                        if ($('.chk').is('.checkbox_true_part')) {
+                                                            $('.checkbox_true_part').prev().removeClass('check');
+                                                        }
+                                                    }, 100);
+                                                    $(this).prev().removeClass('check');
+                                                    $(this).siblings('ul').find('.check').removeClass('check');
+                                                } else if ($(this).is('.checkbox_true_part, .checkbox_true_part_focus')) {
+                                                    $(this).siblings('ul').find('.check').removeClass('check');
+                                                }
+                                            });
+                                        }
+                                    </script>
+                                    <div class="tree_scr" data-simplebar data-simplebar-auto-hide="false">
+                                        <ul id="tree_list" class="ztree"></ul>
+                                    </div>
+                                </div>
+                                <div class="sms_bottom">
+                                    <!-- <div class="bot_lt"><span class="i_sms">10</span>건</div> -->
+                                    <div class="bot_rt"><a href="" class="btn sml gray">초기화</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sms_area lt">
+                            <h4 class="md_tit">사원 선택</h4>
+                            <div class="sms_box">
+                                <div class="sms_top">
+                                    <div class="sch_area">
+                                        <input type="text" placeholder="검색">
+                                        <button class="btn_sms_search"><i class="xi-search"></i><span>검색</span></button>
+                                    </div>
+                                </div>
+                                <div class="sms_tbl_top">
+                                    <table class="sms_tbl">
+                                        <caption>발송대상자</caption>
+                                        <colgroup>
+                                            <col style="width: 40px;">
+                                            <col style="width: 160px;">
+                                            <col>
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_1"><label for="cbx01_1"></label></span>
+                                                    </span>
+                                                </th>
+                                                <th scope="col">기관명</th>
+                                                <th class="name" scope="col">이름</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="sms_scl scl1" data-simplebar data-simplebar-auto-hide="false">
+                                    <table class="sms_tbl">
+                                        <caption>발송 대상자</caption>
+                                        <colgroup>
+                                            <col style="width: 40px;">
+                                            <col style="width: 160px;">
+                                            <col>
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_2"><label for="cbx01_2"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>동남발전사업처</td>
+                                                <td>민치록</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_3"><label for="cbx01_3"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>서남발전사업처</td>
+                                                <td>이창</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_4"><label for="cbx01_4"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>원전사업처</td>
+                                                <td>김영신</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_5"><label for="cbx01_5"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>전력인공지능부</td>
+                                                <td>주지훈</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_6"><label for="cbx01_6"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>송배전사업처</td>
+                                                <td>김성규</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_7"><label for="cbx01_7"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>ICT사업개발처</td>
+                                                <td>전정국</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_8"><label for="cbx01_8"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>에너지ICT연구부</td>
+                                                <td>김태형</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_9"><label for="cbx01_9"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>배전ICT연구부</td>
+                                                <td>박지민</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_10"><label for="cbx01_10"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>IT운영사업처</td>
+                                                <td>정호석</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_11"><label for="cbx01_11"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>정보통신사업처</td>
+                                                <td>민윤기</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_12"><label for="cbx01_12"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>DT사업처</td>
+                                                <td>김석진</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx01_13"><label for="cbx01_13"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>인사노무처</td>
+                                                <td>김남준</td>
+                                            </tr>
+                                            <!-- <tr>
+                                                <td colspan="3">데이터가 없습니다.</td>
+                                            </tr> -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sms_btns">
+                            <button class="btn ic btn_add">추가</button>
+                            <button class="btn ic btn_delete">삭제</button>
+                        </div>
+                        <div class="sms_area lt">
+                            <h4 class="md_tit">발송대상자</h4>
+                            <div class="sms_box">
+                                <div class="sms_tbl_top">
+                                    <table class="sms_tbl">
+                                        <caption>발송대상자</caption>
+                                        <colgroup>
+                                            <col style="width: 40px;">
+                                            <col style="width: 160px;">
+                                            <col>
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx03_1"><label for="cbx03_1"></label></span>
+                                                    </span>
+                                                </th>
+                                                <th scope="col">기관명</th>
+                                                <th class="name" scope="col">이름</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="sms_scl scl2" data-simplebar data-simplebar-auto-hide="false">
+                                    <table class="sms_tbl">
+                                        <caption>발송 대상자</caption>
+                                        <colgroup>
+                                            <col style="width: 40px;">
+                                            <col style="width: 160px;">
+                                            <col>
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span class="chk">
+                                                        <span class="cbx no_txt"><input type="checkbox" name="cbx01" id="cbx03_2"><label for="cbx03_2"></label></span>
+                                                    </span>
+                                                </td>
+                                                <td>동남발전사업처</td>
+                                                <td>민치록</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="sms_edit">
+                                    <div class="receiver">
+                                        <input type="text"><button class="btn sml blue">발송대상 추가</button>
+                                    </div>
+                                    <div class="sender">
+                                        <ul>
+                                            <li>
+                                                <div class="left">
+                                                    <label for="">보내는 사람</label>
+                                                </div>
+                                                <div class="right">
+                                                    <select name="" id="">
+                                                        <option value="">홍길동</option>
+                                                        <option value="">홍길순</option>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="left">
+                                                    <span class="chk">
+                                                        <span class="cbx"><input type="checkbox" name="" id="cbx02_1"><label for="cbx02_1">예약전송</label></span>
+                                                    </span>
+                                                </div>
+                                                <div class="right">
+                                                    <span class="calendar_input"><input type="text" id="OneDate"></span>
+                                                    <div class="time">
+                                                        <select name="" id="">
+                                                            <option value="">선택</option>
+                                                            <option value="">1</option>
+                                                            <option value="">2</option>
+                                                        </select>
+                                                        <span>시</span>
+                                                        <select name="" id="">
+                                                            <option value="">선택</option>
+                                                            <option value="">1</option>
+                                                            <option value="">2</option>
+                                                        </select>
+                                                        <span>분</span>
+                                                    </div>
+                                                    <script type="text/javaScript">
+                                                        $(document).ready(function() {
+                                                            fncDate("OneDate");
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="left">
+                                                    <span class="chk">
+                                                        <span class="cbx"><input type="checkbox" name="" id="cbx02_2"><label for="cbx02_2">문자저장</label></span>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="sms_bottom">
+                                    <div class="bot_lt"><span class="i_sms" id="smsUserCnt">0</span>건</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sms_area lt">
+                            <h4 class="md_tit">발송내용 <button class="btn sml blue">문자함</button></h4>
+                            <div class="sms_box">
+                                <div class="sms_textbox">
+                                    <div class="sms_texting">
+                                        <textarea placeholder="내용을 입력해주세요" class="text_area_scl01" name="onCmmSndngVO.smsCn" id="smsCn"></textarea>
+                                    </div>
+                                    <div class="sms_send_area">
+                                        <a href="" class="btn blue w100p">SMS 전송</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                        <li id="code02_1_3">js</li>
+                        <li id="code02_1_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;section class="sms_section"&gt;
+    &lt;div class="sms_area lt"&gt;
+        &lt;h4 class="md_tit"&gt;기관선택&lt;/h4&gt;
+        &lt;div class="sms_box"&gt;
+            &lt;div class="sms_top"&gt;
+                &lt;div class="sch_area"&gt;
+                    &lt;input type="text" placeholder="검색"&gt;
+                    &lt;button class="btn_sms_search"&gt;&lt;i class="xi-search"&gt;&lt;/i&gt;&lt;span&gt;검색&lt;/span&gt;&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="treemenu_box"&gt;
+                &lt;div class="tree_scr" data-simplebar data-simplebar-auto-hide="false"&gt;
+                    &lt;ul id="tree_list" class="ztree"&gt;&lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="sms_bottom"&gt;
+                &lt;!-- &lt;div class="bot_lt"&gt;&lt;span class="i_sms"&gt;10&lt;/span&gt;건&lt;/div&gt; --&gt;
+                &lt;div class="bot_rt"&gt;&lt;a href="" class="btn sml gray"&gt;초기화&lt;/a&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="sms_area lt"&gt;
+        &lt;h4 class="md_tit"&gt;사원 선택&lt;/h4&gt;
+        &lt;div class="sms_box"&gt;
+            &lt;div class="sms_top"&gt;
+                &lt;div class="sch_area"&gt;
+                    &lt;input type="text" placeholder="검색"&gt;
+                    &lt;button class="btn_sms_search"&gt;&lt;i class="xi-search"&gt;&lt;/i&gt;&lt;span&gt;검색&lt;/span&gt;&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="sms_tbl_top"&gt;
+                &lt;table class="sms_tbl"&gt;
+                    &lt;caption&gt;발송대상자&lt;/caption&gt;
+                    &lt;colgroup&gt;
+                        &lt;col style="width: 40px;"&gt;
+                        &lt;col style="width: 160px;"&gt;
+                        &lt;col&gt;
+                    &lt;/colgroup&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th scope="col"&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_1"&gt;&lt;label for="cbx01_1"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/th&gt;
+                            &lt;th scope="col"&gt;기관명&lt;/th&gt;
+                            &lt;th class="name" scope="col"&gt;이름&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;div class="sms_scl scl1" data-simplebar data-simplebar-auto-hide="false"&gt;
+                &lt;table class="sms_tbl"&gt;
+                    &lt;caption&gt;발송 대상자&lt;/caption&gt;
+                    &lt;colgroup&gt;
+                        &lt;col style="width: 40px;"&gt;
+                        &lt;col style="width: 160px;"&gt;
+                        &lt;col&gt;
+                    &lt;/colgroup&gt;
+                    &lt;tbody&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_2"&gt;&lt;label for="cbx01_2"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;동남발전사업처&lt;/td&gt;
+                            &lt;td&gt;민치록&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_3"&gt;&lt;label for="cbx01_3"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;서남발전사업처&lt;/td&gt;
+                            &lt;td&gt;이창&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_4"&gt;&lt;label for="cbx01_4"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;원전사업처&lt;/td&gt;
+                            &lt;td&gt;김영신&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_5"&gt;&lt;label for="cbx01_5"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;전력인공지능부&lt;/td&gt;
+                            &lt;td&gt;주지훈&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_6"&gt;&lt;label for="cbx01_6"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;송배전사업처&lt;/td&gt;
+                            &lt;td&gt;김성규&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_7"&gt;&lt;label for="cbx01_7"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;ICT사업개발처&lt;/td&gt;
+                            &lt;td&gt;전정국&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_8"&gt;&lt;label for="cbx01_8"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;에너지ICT연구부&lt;/td&gt;
+                            &lt;td&gt;김태형&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_9"&gt;&lt;label for="cbx01_9"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;배전ICT연구부&lt;/td&gt;
+                            &lt;td&gt;박지민&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_10"&gt;&lt;label for="cbx01_10"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;IT운영사업처&lt;/td&gt;
+                            &lt;td&gt;정호석&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_11"&gt;&lt;label for="cbx01_11"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;정보통신사업처&lt;/td&gt;
+                            &lt;td&gt;민윤기&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_12"&gt;&lt;label for="cbx01_12"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;DT사업처&lt;/td&gt;
+                            &lt;td&gt;김석진&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx01_13"&gt;&lt;label for="cbx01_13"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;인사노무처&lt;/td&gt;
+                            &lt;td&gt;김남준&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;!-- &lt;tr&gt;
+                            &lt;td colspan="3"&gt;데이터가 없습니다.&lt;/td&gt;
+                        &lt;/tr&gt; --&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="sms_btns"&gt;
+        &lt;button class="btn ic btn_add"&gt;추가&lt;/button&gt;
+        &lt;button class="btn ic btn_delete"&gt;삭제&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="sms_area lt"&gt;
+        &lt;h4 class="md_tit"&gt;발송대상자&lt;/h4&gt;
+        &lt;div class="sms_box"&gt;
+            &lt;div class="sms_tbl_top"&gt;
+                &lt;table class="sms_tbl"&gt;
+                    &lt;caption&gt;발송대상자&lt;/caption&gt;
+                    &lt;colgroup&gt;
+                        &lt;col style="width: 40px;"&gt;
+                        &lt;col style="width: 160px;"&gt;
+                        &lt;col&gt;
+                    &lt;/colgroup&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th scope="col"&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx03_1"&gt;&lt;label for="cbx03_1"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/th&gt;
+                            &lt;th scope="col"&gt;기관명&lt;/th&gt;
+                            &lt;th class="name" scope="col"&gt;이름&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;div class="sms_scl scl2" data-simplebar data-simplebar-auto-hide="false"&gt;
+                &lt;table class="sms_tbl"&gt;
+                    &lt;caption&gt;발송 대상자&lt;/caption&gt;
+                    &lt;colgroup&gt;
+                        &lt;col style="width: 40px;"&gt;
+                        &lt;col style="width: 160px;"&gt;
+                        &lt;col&gt;
+                    &lt;/colgroup&gt;
+                    &lt;tbody&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx no_txt"&gt;&lt;input type="checkbox" name="cbx01" id="cbx03_2"&gt;&lt;label for="cbx03_2"&gt;&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/td&gt;
+                            &lt;td&gt;동남발전사업처&lt;/td&gt;
+                            &lt;td&gt;민치록&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;div class="sms_edit"&gt;
+                &lt;div class="receiver"&gt;
+                    &lt;input type="text"&gt;&lt;button class="btn sml blue"&gt;발송대상 추가&lt;/button&gt;
+                &lt;/div&gt;
+                &lt;div class="sender"&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;
+                            &lt;div class="left"&gt;
+                                &lt;label for=""&gt;보내는 사람&lt;/label&gt;
+                            &lt;/div&gt;
+                            &lt;div class="right"&gt;
+                                &lt;select name="" id=""&gt;
+                                    &lt;option value=""&gt;홍길동&lt;/option&gt;
+                                    &lt;option value=""&gt;홍길순&lt;/option&gt;
+                                &lt;/select&gt;
+                            &lt;/div&gt;
+                        &lt;/li&gt;
+                        &lt;li&gt;
+                            &lt;div class="left"&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="" id="cbx02_1"&gt;&lt;label for="cbx02_1"&gt;예약전송&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class="right"&gt;
+                                &lt;span class="calendar_input"&gt;&lt;input type="text" id="OneDate"&gt;&lt;/span&gt;
+                                &lt;div class="time"&gt;
+                                    &lt;select name="" id=""&gt;
+                                        &lt;option value=""&gt;선택&lt;/option&gt;
+                                        &lt;option value=""&gt;1&lt;/option&gt;
+                                        &lt;option value=""&gt;2&lt;/option&gt;
+                                    &lt;/select&gt;
+                                    &lt;span&gt;시&lt;/span&gt;
+                                    &lt;select name="" id=""&gt;
+                                        &lt;option value=""&gt;선택&lt;/option&gt;
+                                        &lt;option value=""&gt;1&lt;/option&gt;
+                                        &lt;option value=""&gt;2&lt;/option&gt;
+                                    &lt;/select&gt;
+                                    &lt;span&gt;분&lt;/span&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/li&gt;
+                        &lt;li&gt;
+                            &lt;div class="left"&gt;
+                                &lt;span class="chk"&gt;
+                                    &lt;span class="cbx"&gt;&lt;input type="checkbox" name="" id="cbx02_2"&gt;&lt;label for="cbx02_2"&gt;문자저장&lt;/label&gt;&lt;/span&gt;
+                                &lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="sms_bottom"&gt;
+                &lt;div class="bot_lt"&gt;&lt;span class="i_sms" id="smsUserCnt"&gt;0&lt;/span&gt;건&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="sms_area lt"&gt;
+        &lt;h4 class="md_tit"&gt;발송내용 &lt;button class="btn sml blue"&gt;문자함&lt;/button&gt;&lt;/h4&gt;
+        &lt;div class="sms_box"&gt;
+            &lt;div class="sms_textbox"&gt;
+                &lt;div class="sms_texting"&gt;
+                    &lt;textarea placeholder="내용을 입력해주세요" class="text_area_scl01" name="onCmmSndngVO.smsCn" id="smsCn"&gt;&lt;/textarea&gt;
+                &lt;/div&gt;
+                &lt;div class="sms_send_area"&gt;
+                    &lt;a href="" class="btn blue w100p"&gt;SMS 전송&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** SMS ***/
+.sms_section {display: table;table-layout: fixed;width: 100%;}
+.sms_section .sms_lc {display: table-cell;width: 48.5%;padding-right: 20px;vertical-align: top;}
+.sms_section .sms_cc {display: table-cell;width: 3%;text-align: center;vertical-align: middle;}
+.sms_section .sms_rc {display: table-cell;width: 48.5%;padding-left: 20px;vertical-align: top;}
+.sms_section .md_tit {height: 26px;margin-bottom: 10px;font-size: 18px;font-weight: 600;color: var(--black);}
+.sms_section .md_tit .btn {margin-left: 5px;vertical-align: middle;}
+.sms_section .sms_lt::after {content: '';display: table;clear: both;}
+.sms_section .sms_area.lt {float: left;width: 22%;margin-right: 2%;}
+.sms_section .sms_area.lt:last-child {margin-right: 0;}
+.sms_section .sms_btns {float: left;width: 4%;margin-right: 2%;margin-top: 250px;text-align: center;}
+.sms_section .sms_btns button {margin: 0 !important;text-indent: -9999px;}
+.sms_section .sms_btns button:hover {background-color: var(--basic-bg);}
+.sms_section .sms_btns .btn_add {background: #fff url(../images/icon/i_sms_add.png) no-repeat center;}
+.sms_section .sms_btns .btn_delete {margin-top: 10px !important;background: #fff url(../images/icon/i_sms_delete.png) no-repeat center;}
+/* .btn_people_add {display: inline-block;width: 30px;height: 30px;border: 1px solid var(--tbl-bdr);background: #e1e1e1 url(../images/sub/i_enc_btn.png) no-repeat 50% 50%;text-indent: -9999em;}
+.btn_people_del {display: inline-block;width: 30px;height: 30px;border: 1px solid var(--tbl-bdr);background: #fff url(../images/sub/i_dec_btn.png) no-repeat 50% 50%;text-indent: -9999em;}
+.btn_people_add + .btn_people_del {margin-top: 10px;} */
+/* sms_top */
+.sms_top {height: auto;padding: 14px 16px;border: 1px solid var(--tbl-bdr);background: var(--tbl-th);}
+.sms_top .sch_area {position: relative;}
+.sms_top .sch_area input[type=text] {width: 100%;}
+.sms_top .sch_area .btn_sms_search {position: absolute;right: 5px;top: 0;width: 36px;height: 36px;font-size: 18px;color: #8D8E8E;background: none;}
+.sms_top .sch_area .btn_sms_search span {font-size: 0;text-indent: -9999px;}
+/* sms_bottom */
+.sms_bottom {display: table;table-layout: fixed;width: 100%;margin-top: 12px;font-size: 14px;}
+.sms_bottom .bot_lt {display: table-cell;width: 50%;}
+.sms_bottom .bot_lt .i_sms {display: inline-block;margin-right: 3px;padding-left: 20px;font-size: 14px;color: #0984d4;background: url(../images/icon/board_all2.png) no-repeat 0 50%;}
+.sms_bottom .bot_rt {display: table-cell;width: 50%;text-align: right;}
+.sms_note {display: inline-block;margin: 17px 0;padding-left: 20px;font-size: 14px;font-weight: 300;color: var(--dark);background: url(../images/i/i_info02.png) no-repeat 0 50%;}
+/* treemenu_box */
+.treemenu_box {position: relative;width: 100%;height: 455px;border: 1px solid var(--tbl-bdr);border-top: 0;background: #fff;}
+.treemenu_box .tree_scr {height: 100%;}
+.treemenu_box > .ztree {padding: 0;}
+.treemenu_box .ztree * {font-family: 'Noto Sans KR', 'Malgun Gothic', 'Helvetica Neue', 'Helvetica', 'Dotum';font-size: 15px;letter-spacing: -0.05em;}
+.treemenu_box .ztree li ul {padding: 0;}
+.treemenu_box .ztree li {position: relative;z-index: 1;}
+.treemenu_box .ztree li a {display: inline-block;width: 100%;height: 34px;margin: 0;padding-right: 10px;border-bottom: 1px solid var(--tbl-bdr);font-size: 15px;line-height: 34px;color: var(--dark);}
+.treemenu_box .ztree li a.curSelectedNode {opacity: 1;height: 34px;border: 0;border-bottom: 1px solid var(--tbl-bdr);font-weight: 400;color: var(--dark);background: #f1f6fa;}
+.treemenu_box .ztree li .level0 > span {padding-left: 20px;}
+.treemenu_box .ztree li .level1 > span {padding-left: 24px;}
+.treemenu_box .ztree li .level2 > span {padding-left: 27px;}
+.treemenu_box .ztree li span {line-height: 30px;}
+.treemenu_box .ztree .switch {position: absolute;left: 20px;top: 6px;z-index: 3;}
+.treemenu_box .ztree .level1.switch {position: absolute;left: 30px;top: 6px;}
+.treemenu_box .ztree .level0.switch.bottom_docu {position: absolute;left: 24px;top: 6px;}
+.treemenu_box .ztree .level1.switch.bottom_docu {position: absolute;left: 33px;top: 6px;}
+.treemenu_box .ztree .level2.switch.center_docu {position: absolute;left: 40px;top: 6px;}
+.treemenu_box .ztree .level2.switch.bottom_docu {position: absolute;left: 40px;top: 6px;}
+.treemenu_box .ztree li span.button.switch {width: 20px;height: 20px;}
+.treemenu_box .ztree li span.button.roots_open,
+.treemenu_box .ztree li span.button.center_open,
+.treemenu_box .ztree li span.button.bottom_open {background: url(../images/icon/i_tree_minus.png) no-repeat 50% 50%;}
+.treemenu_box .ztree li span.button.roots_close,
+.treemenu_box .ztree li span.button.center_close,
+.treemenu_box .ztree li span.button.bottom_close {background: url(../images/icon/i_tree_plus.png) no-repeat 50% 50%;}
+.treemenu_box .ztree li span.button.root_docu {background: none;}
+.treemenu_box .ztree li span.button.center_docu::after,
+.treemenu_box .ztree li span.button.bottom_docu::after {content: '';position: absolute;right: 8px;top: 50%;width: 8px;height: 2px;background: #9a9e9f;}
+.treemenu_box .ztree > li > span.button.center_docu::after {right: 5px;}
+.treemenu_box .ztree li span.button.center_docu.check {background: url(../images/icon/treeview_check.png) no-repeat 0 50%;}
+.treemenu_box .ztree li span.button.noline_docu {background: none;}
+.treemenu_box .ztree li span.button.roots_open + a,
+.treemenu_box .ztree li span.button.center_open + a,
+.treemenu_box .ztree li span.button.bottom_open + a {color: #0984d4;}
+.treemenu_box .ztree li span.button.ico_open,
+.treemenu_box .ztree li span.button.ico_close,
+.treemenu_box .ztree li span.button.ico_docu {margin: 0 2px 0 10px;cursor: default;}
+/* sms_tbl */
+.sms_tbl_top {border-left: 1px solid var(--tbl-bdr);border-right: 1px solid var(--tbl-bdr);}
+.sms_scl {height: 414px;border: 1px solid var(--tbl-bdr);border-top: 0;background: #FFFFFF;}
+.sms_scl.scl2 {height: 260px;}
+.sms_add {border-left: 1px solid var(--tbl-bdr);border-right: 1px solid var(--tbl-bdr);background: var(--tbl-bdr);}
+.sms_tbl {table-layout: fixed;}
+.sms_tbl .text {width: 100%;}
+.sms_tbl thead th {height: 40px;padding: 0 5px;border: 1px solid var(--tbl-bdr);border-top: 1px solid var(--tbl-bdr);font-size: 14px;font-weight: 500;color: var(--dark);text-align: center;background: var(--tbl-th);}
+.sms_top + .sms_tbl_top .sms_tbl thead th {border-top: 0;}
+.scroll .sms_tbl thead th.name {padding-right: 15px;}
+.sms_tbl tbody th {height: 40px;padding: 0 5px;border: 1px solid var(--tbl-bdr);text-align: center;}
+.sms_tbl tbody tr:first-of-type td {border-top: 0;}
+.sms_tbl td {height: 40px;padding: 0 5px;border: 1px solid var(--tbl-bdr);font-size: 14px;color: var(--dark);text-align: center;}
+.sms_tbl thead th:first-of-type, .sms_tbl td:first-of-type {border-left: 0;}
+.sms_tbl thead th:last-of-type, .sms_tbl tbody td:last-of-type {border-right: 0;}
+.sms_tbl .no_code td {text-align: center;cursor: default;}
+/* sms_edit */
+.sms_edit {height: 219px;padding: 13px;border: 1px solid var(--tbl-bdr);border-top: 0;background: #F9FAFB;}
+.sms_edit * {font-size: 14px;}
+.sms_edit input, .sms_edit select {height: 30px;padding: 0 8px;line-height: 28px;}
+.sms_edit .receiver {display: flex;justify-content: space-between;margin-bottom: 14px;padding-bottom: 13px;border-bottom: 1px dashed var(--bdr);}
+.sms_edit .receiver input {width: calc(100% - 95px);}
+.sms_edit ul li {display: flex;}
+.sms_edit ul li + li {margin-top: 5px;}
+.sms_edit ul li .left {width: 95px;line-height: 30px;}
+.sms_edit ul li .right {width: calc(100% - 95px);}
+.sms_edit ul li .right select, .sms_edit ul li .right .calendar_input {width: 100%;}
+.sms_edit ul li .right .time {display: flex;align-items: center;margin-top: 5px;}
+.sms_edit ul li .right .time select {min-width: 0;width: 40%;background-position: right -5px center;}
+.sms_edit ul li .right .time span {padding-left: 5px;}
+.sms_edit ul li .right .time span + select {margin-left: 10px;}
+.sms_edit .calendar_input .ui-datepicker-trigger {top: 5px;}
+.sms_edit .chk > span label {line-height: 15px;}
+.sms_textbox {position: relative;width: 100%;height: 520px;padding: 35px 20px;border: 1px solid var(--tbl-bdr);background: #FFFFFF;}
+.sms_textbox::before {content: '\e94a';font-family: 'xeicon' !important;position: absolute;left: 0;top: 0;width: 100%;height: 15px;padding-left: 10px;font-size: 1.15rem;line-height: 15px;color: #FFFFFF;background-color: #2f8fd6;}
+.sms_textbox::after {content: '';position: absolute;left: 0;bottom: -1px;width: 100%;height: 15px;background: #e0e0e4;}
+.btn_sms_cont {border-color: #d1d1d1;color: #FFFFFF;background: #d1d1d1;}
+.sms_texting {margin-bottom: 10px;}
+.sms_texting textarea {width: 100%;height: 403px;padding: 0;border: 0;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_3">
+                        <pre>
+<code class="line-numbers language-js">// set ztree
+var setting = {
+    check: {
+        enable: true,
+        chkDisabledInherit: false  // 체크박스 disable기능
+    },
+    data: {
+        simpleData: {
+            enable: true
+        }
+    },
+};
+// 트리메뉴 구성
+// 상태옵션
+// open: true - 열려있는 상태옵션, checked: true - 체크되어있는 상태옵션, chkDisabled: true - 체크막아져있는 상태옵션
+// 메뉴 구성방법 및 예시
+// 맨 상위 메뉴는 id: 한자리수 pId: 0  ex) id: 2, pId :0
+// 2차 메뉴는 id: 1차 메뉴id + 2차메뉴순차수 pId: 1차 메뉴id ex) id: 21, pId: 2
+// 3차 메뉴는 id: 2차 메뉴id + 3차메뉴순차수 pId: 2차 메뉴id ex) id: 211, pId: 21
+var zNodesFst = [
+    { id: 1, pId: 0, name: '본사', open: true },
+    { id: 11, pId: 1, name: '전략기획본부(직할)', checked: true },
+    { id: 11, pId: 1, name: '경영성과향상TF', checked: true },
+    { id: 11, pId: 1, name: '기획처', open: true },
+    { id: 111, pId: 11, name: '경영기획부', checked: true },
+    { id: 112, pId: 11, name: '전략혁신부', checked: true },
+    { id: 113, pId: 11, name: '경영평가부', checked: true },
+    { id: 114, pId: 11, name: '광업등록사무소', checked: true },
+    { id: 115, pId: 11, name: '전기위원회', checked: true },
+    { id: 116, pId: 11, name: '경제자유구역기획단', checked: true },
+    { id: 117, pId: 11, name: '윤리준법부', checked: true },
+    { id: 118, pId: 11, name: '품질경영부', checked: true },
+    { id: 12, pId: 1, name: '인사노무처', open: true },
+    { id: 21, pId: 12, name: '인사부', open: true },
+    { id: 211, pId: 12, name: '노사복지부', checked: true },
+    { id: 212, pId: 12, name: '급여부', checked: true },
+    { id: 213, pId: 12, name: '인재개발부', checked: true },
+    { id: 213, pId: 12, name: '일자리창출팀', checked: true },
+    { id: 2, pId: 0, name: '서울지역본부', open: true },
+    { id: 2, pId: 0, name: '인천지역본부', open: true },
+    { id: 2, pId: 0, name: '경기지역본부', open: true },
+    { id: 2, pId: 0, name: '강원지역본부', open: true },
+    { id: 2, pId: 0, name: '대전지역본부', open: true },
+    { id: 2, pId: 0, name: '광주전남지역본부', open: true },
+    { id: 2, pId: 0, name: '대구지역본부', open: true },
+    { id: 2, pId: 0, name: '부산울산지역본부', open: true },
+    { id: 2, pId: 0, name: '경기북부지역사업처', open: true },
+    { id: 2, pId: 0, name: '충북지역사업처', open: true },
+    { id: 2, pId: 0, name: '전북지역사업처', open: true },
+    { id: 2, pId: 0, name: '경북지역사업처', open: true },
+    { id: 2, pId: 0, name: '경남지역사업처', open: true },
+    { id: 2, pId: 0, name: '제주지역사업처', open: true },
+];
+
+$(document).ready(function () {
+    $.fn.zTree.init($("#tree_list"), setting, zNodesFst);
+    setCheck();
+    changeChk();
+});
+
+var code;
+function setCheck() {
+    var zTree = $.fn.zTree.getZTreeObj("tree_list"),
+        type = { "Y": "ps", "N": "ps" }; // 체크가 부모 자식노드간의 연결이 되어있게 설정하는 옵션
+}
+function showCode(str) {
+    if (!code) code = $("#code");
+    code.empty();
+    code.append("<li>" + str + "</li>");
+}
+function changeChk() {
+    // 클릭시 아이콘색깔 변화(변형 추가소스) - 기본css로 쓸 경우 필요없음
+    $('.checkbox_true_full').prev().addClass('check');
+    $('.chk').click('on', function () {
+        setTimeout(function () {
+            if ($('.chk').is('.checkbox_true_full, .checkbox_true_full_focus')) {
+                $('.checkbox_true_full').prev().addClass('check');
+                $('.checkbox_true_full_focus').prev().addClass('check');
+            }
+        }, 100);
+        if ($(this).is('.checkbox_true_full, .checkbox_true_full_focus')) {
+            setTimeout(function () {
+                if ($('.chk').is('.checkbox_true_part')) {
+                    $('.checkbox_true_part').prev().removeClass('check');
+                }
+            }, 100);
+            $(this).prev().removeClass('check');
+            $(this).siblings('ul').find('.check').removeClass('check');
+        } else if ($(this).is('.checkbox_true_part, .checkbox_true_part_focus')) {
+            $(this).siblings('ul').find('.check').removeClass('check');
+        }
+    });
+}
+
+$(document).ready(function() {
+    fncDate("OneDate");
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code02_1_4">
+                        <ul>
+                            <li><a href="images/icon/i_tree_minus.png" title="Download" download>i_tree_minus.png</a></li>
+                            <li><a href="images/icon/i_tree_plus.png" title="Download" download>i_tree_plus.png</a></li>
+                            <li><a href="images/icon/i_sms_add.png" title="Download" download>i_sms_add.png</a></li>
+                            <li><a href="images/icon/i_sms_delete.png" title="Download" download>i_sms_delete.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

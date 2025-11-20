@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/content.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/basic.js"></script>
+    <!-- simplebar -->
+    <link rel="stylesheet" href="lib/simplebar/simplebar.min.css">
+    <script src="lib/simplebar/simplebar.min.js"></script>
+    <!-- swiper -->
+    <link rel="stylesheet" href="lib/swiper/swiper-bundle.min.css">
+    <script src="lib/swiper/swiper-bundle.min.js"></script>
+    <!-- ztree -->
+    <link rel="stylesheet" href="lib/ztree/zTreeStyle.css">
+    <script src="lib/ztree/jquery.ztree.core.js"></script>
+    <script src="lib/ztree/jquery.ztree.excheck.min.js"></script>
+    <script>
+        $(function () {
+            $("body > header > nav").scrollTop(450);
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">ztree</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">스크립트 정보</li>
+                <li id="tab02">사용 방법</li>
+                <li id="tab03">css 적용</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>사이트: <a href="https://www.treejs.cn/v3/main.php#_zTreeInfo" target="_blank" class="impact" style="text-decoration: underline;">https://www.treejs.cn/v3/main.php#_zTreeInfo</a></dt>
+                        <dt>1. <span class="impact">zTreeStyle.css</span> : 기본적인 ztree 디자인을 담은 css</dt>
+                        <dt>2. <span class="impact">jquery.ztree.core.js</span> : 기본적인 ztree 기능을 담은 js</dt>
+                        <dt>3. <span class="impact">jquery.ztree.excheck.min.js</span> : checkbox 사용을 위한 js</dt>
+                    </dl>
+                </section>
+                <div class="ui_sample" style="margin-bottom: 10px;">
+                    ↓ download
+                </div>
+                <div class="ui_code" style="display: block;">
+                    <ul class="js_tmenu">
+                        <li id="code01_1_1" class="on">down</li>
+                    </ul>
+                    <div class="js_tcont li_linenum on" data-tab="code01_1_1">
+                        <ul>
+                            <li><a href="lib/ztree/jquery.ztree.core.js" title="Download" download>jquery.ztree.core.js</a></li>
+                            <li><a href="lib/ztree/zTreeStyle.css" title="Download" download>zTreeStyle.css</a></li>
+                            <li><a href="lib/ztree/jquery.ztree.excheck.min.js" title="Download" download>jquery.ztree.excheck.min.js</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <script>
+                    var zNodes = [
+                        {
+                            name: "test1", open: true, children: [
+                                { name: "test1_1" }, { name: "test1_2" }
+                            ]
+                        }, {
+                            name: "test2", open: true, children: [
+                                { name: "test2_1" }, { name: "test2_2" }
+                            ]
+                        }
+                    ];
+                </script>
+                <h2 class="section_main_ttl">기본형</h2>
+                <div class="ui_sample">
+                    <ul id="treeDemo" class="ztree"></ul>
+                    <script>
+                        var setting = {};
+                        $(document).ready(function () {
+                            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                        });
+                    </script>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;ul id="treeDemo" class="ztree"&gt;&lt;/ul&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-js">var zNodes = [
+    {
+        name: "test1", open: true, children: [
+            { name: "test1_1" }, { name: "test1_2" }
+        ]
+    }, {
+        name: "test2", open: true, children: [
+            { name: "test2_1" }, { name: "test2_2" }
+        ]
+    }
+];
+
+var setting = {};
+$(document).ready(function () {
+    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+});</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">checkbox형</h2>
+                <div class="ui_sample">
+                    <script>
+                        var setting2 = {
+                            check: {
+                                enable: true
+                            },
+                        };
+                        $(document).ready(function () {
+                            $.fn.zTree.init($("#treeDemo2"), setting2, zNodes);
+                        });
+                    </script>
+                    <ul id="treeDemo2" class="ztree"></ul>
+                    <br>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_2_1" class="on">html</li>
+                        <li id="code02_2_2">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;ul id="treeDemo2" class="ztree"&gt;&lt;/ul&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_2_2">
+                        <pre>
+<code class="line-numbers language-js">var zNodes = [
+    {
+        name: "test1", open: true, children: [
+            { name: "test1_1" }, { name: "test1_2" }
+        ]
+    }, {
+        name: "test2", open: true, children: [
+            { name: "test2_1" }, { name: "test2_2" }
+        ]
+    }
+];
+
+var setting2 = {
+    check: {
+        enable: true
+    },
+};
+$(document).ready(function () {
+    $.fn.zTree.init($("#treeDemo2"), setting2, zNodes);
+});</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">radio형</h2>
+                <div class="ui_sample">
+                    <script>
+                        var setting3 = {
+                            check: {
+                                enable: true,
+                                chkStyle: "radio",
+                                radioType: "level"
+                            },
+                        };
+                        $(document).ready(function () {
+                            $.fn.zTree.init($("#treeDemo3"), setting3, zNodes);
+                        });
+                    </script>
+                    <ul id="treeDemo3" class="ztree"></ul>
+                    <br>
+
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_3_1" class="on">html</li>
+                        <li id="code02_3_2">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;ul id="treeDemo3" class="ztree"&gt;&lt;/ul&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_3_2">
+                        <pre>
+<code class="line-numbers language-js">var zNodes = [
+    {
+        name: "test1", open: true, children: [
+            { name: "test1_1" }, { name: "test1_2" }
+        ]
+    }, {
+        name: "test2", open: true, children: [
+            { name: "test2_1" }, { name: "test2_2" }
+        ]
+    }
+];
+
+var setting3 = {
+    check: {
+        enable: true,
+        chkStyle: "radio",
+        radioType: "level"
+    },
+};
+$(document).ready(function () {
+    $.fn.zTree.init($("#treeDemo3"), setting3, zNodes);
+});</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">select형</h2>
+                <div class="ui_sample" style="position: relative;">
+                    <input id="citySel" type="text" readonly value="" style="width: 300px;" onclick="showMenu();">
+                    <a id="menuBtn" href="" onclick="showMenu(); return false;" class="btn mar_l5">select</a>
+                    <div id="menuContent" class="menuContent" style="display: none;overflow-y: auto;position: absolute;max-height: 100px;background-color: #fff;z-index: 99;">
+                        <ul id="treeDemo4" class="ztree" style="width: 180px;margin-top: 0;"></ul>
+                    </div>
+
+                    <script>
+                        var setting4 = {
+                            check: {
+                                enable: true,
+                                chkboxType: {
+                                    "Y": "",
+                                    "N": ""
+                                }
+                            },
+                            view: {
+                                dblClickExpand: false
+                            },
+                            data: {
+                                simpleData: {
+                                    enable: true
+                                }
+                            },
+                            callback: {
+                                beforeClick: beforeClick,
+                                onCheck: onCheck
+                            }
+                        };
+                        $(document).ready(function () {
+                            zTreeObj = $.fn.zTree.init($("#treeDemo4"), setting4, zNodes);
+                        });
+
+                        function beforeClick(treeId, treeNode) {
+                            var zTree = $.fn.zTree.getZTreeObj("treeDemo4");
+                            zTree.checkNode(treeNode, !treeNode.checked, null, true);
+                            return false;
+                        }
+                        function onCheck(e, treeId, treeNode) {
+                            var zTree = $.fn.zTree.getZTreeObj("treeDemo4"),
+                                nodes = zTree.getCheckedNodes(true),
+                                v = "";
+                            for (var i = 0, l = nodes.length; i < l; i++) {
+                                v += nodes[i].name + ",";
+                            }
+                            if (v.length > 0) v = v.substring(0, v.length - 1);
+                            var cityObj = $("#citySel");
+                            cityObj.attr("value", v);
+                        }
+                        function showMenu() {
+                            $("#menuContent").slideDown("fast");
+                            $("body").bind("mousedown", onBodyDown);
+                        }
+                        function hideMenu() {
+                            $("#menuContent").fadeOut("fast");
+                            $("body").unbind("mousedown", onBodyDown);
+                        }
+                        function onBodyDown(event) {
+                            if (!(event.target.id == "menuBtn" || event.target.id == "citySel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length > 0)) {
+                                hideMenu();
+                            }
+                        }
+                    </script>
+
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_4_1" class="on">html</li>
+                        <li id="code02_4_2">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_4_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;input id="citySel" type="text" readonly value="" style="width: 120px;" onclick="showMenu();"&gt;
+    &lt;a id="menuBtn" href="#" onclick="showMenu(); return false;" class="btn"&gt;select&lt;/a&gt;
+&lt;div id="menuContent" class="menuContent" style="display: none;position: absolute;background-color: #fff;"&gt;
+    &lt;ul id="treeDemo4" class="ztree" style="width: 180px;min-height: 200px;margin-top: 0;"&gt;&lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_4_2">
+                        <pre>
+<code class="line-numbers language-js">var setting4 = {
+    check: {
+        enable: true,
+        chkboxType: {
+            "Y": "",
+            "N": ""
+        }
+    },
+    view: {
+        dblClickExpand: false
+    },
+    data: {
+        simpleData: {
+            enable: true
+        }
+    },
+    callback: {
+        beforeClick: beforeClick,
+        onCheck: onCheck
+    }
+};
+$(document).ready(function () {
+    zTreeObj = $.fn.zTree.init($("#treeDemo4"), setting4, zNodes);
+});
+
+function beforeClick(treeId, treeNode) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo4");
+    zTree.checkNode(treeNode, !treeNode.checked, null, true);
+    return false;
+}
+function onCheck(e, treeId, treeNode) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo4"),
+        nodes = zTree.getCheckedNodes(true),
+        v = "";
+    for (var i = 0, l = nodes.length; i < l; i++) {
+        v += nodes[i].name + ",";
+    }
+    if (v.length > 0) v = v.substring(0, v.length - 1);
+    var cityObj = $("#citySel");
+    cityObj.attr("value", v);
+}
+function showMenu() {
+    $("#menuContent").slideDown("fast");
+    $("body").bind("mousedown", onBodyDown);
+}
+function hideMenu() {
+    $("#menuContent").fadeOut("fast");
+    $("body").unbind("mousedown", onBodyDown);
+}
+function onBodyDown(event) {
+    if (!(event.target.id == "menuBtn" || event.target.id == "citySel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length > 0)) {
+        hideMenu();
+    }
+}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">기본형</h2>
+                <div class="ui_sample">
+                    <script>
+                        var setting = {};
+                        $(document).ready(function () {
+                            zTreeObj = $.fn.zTree.init($("#treeDemo6"), setting, zNodes);
+                        });
+                    </script>
+                    <div class="treemenu_box" data-simplebar data-simplebar-auto-hide="false">
+                        <ul id="treeDemo6" class="ztree"></ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                        <li id="code03_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="treemenu_box" data-simplebar data-simplebar-auto-hide="false"&gt;
+    &lt;ul id="treeDemo6" class="ztree"&gt;&lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** ztree **/
+.treemenu_box {position: relative;width: 22%;height: 455px;border: 1px solid var(--tbl-bdr);background: #fff;}
+.treemenu_box .ztree {padding: 0;}
+.treemenu_box .ztree * {font-family: 'Noto Sans KR', 'Malgun Gothic', 'Helvetica Neue', 'Helvetica', 'Dotum';font-size: 15px;letter-spacing: -0.05em;}
+.treemenu_box .ztree li ul {padding: 0;}
+.treemenu_box .ztree li {position: relative;z-index: 1;}
+.treemenu_box .ztree li a {display: inline-block;width: 100%;min-height: 34px;height: auto;margin: 0;padding-right: 10px;border-bottom: 1px solid var(--tbl-bdr);font-size: 15px;line-height: 34px;color: var(--dark);text-decoration: none;white-space: normal;word-wrap: break-word;word-break: break-all;}
+.treemenu_box .ztree li a.curSelectedNode {opacity: 1;height: 36px;border: 0;border-bottom: 1px solid var(--tbl-bdr);font-weight: 400;line-height: 36px;color: var(--dark);background: #f1f6fa;}
+.treemenu_box .ztree li .level0 > span {padding-left: 20px;}
+.treemenu_box .ztree li .level1 > span {padding-left: 24px;}
+.treemenu_box .ztree li .level2 > span {padding-left: 27px;}
+.treemenu_box .ztree li span {line-height: 30px;}
+.treemenu_box .ztree .switch {position: absolute;left: 20px;top: 6px;z-index: 3;}
+.treemenu_box .ztree .level1.switch {position: absolute;left: 30px;top: 6px;}
+.treemenu_box .ztree .level1.switch.button[class*="_docu"] {left: 37px;}
+.treemenu_box .ztree .level2.switch.button[class*="_docu"] {left: 55px;}
+.treemenu_box .ztree li span.button.switch {width: 20px;height: 22px;}
+.treemenu_box .ztree li span.button.roots_open,
+.treemenu_box .ztree li span.button.center_open,
+.treemenu_box .ztree li span.button.bottom_open {background: url(../images/icon/i_tree_minus.png) no-repeat 50% 50%;}
+.treemenu_box .ztree li span.button.roots_close,
+.treemenu_box .ztree li span.button.center_close,
+.treemenu_box .ztree li span.button.bottom_close {background: url(../images/icon/i_tree_plus.png) no-repeat 50% 50%;}
+.treemenu_box .ztree li span.button.root_docu {background: none;}
+.treemenu_box .ztree li span.button.center_docu::after,
+.treemenu_box .ztree li span.button.bottom_docu::after {content: '';position: absolute;right: 8px;top: 50%;width: 8px;height: 2px;background: #9a9e9f;}
+.treemenu_box .ztree > li > span.button.center_docu::after {right: 5px;}
+.treemenu_box .ztree li span.button.noline_docu {background: none;}
+.treemenu_box .ztree li ul.line {background: none;}
+.treemenu_box .ztree li span.button[class*="_docu"] {background: none;}
+.treemenu_box .ztree li span.button.roots_open + a,
+.treemenu_box .ztree li span.button.center_open + a,
+.treemenu_box .ztree li span.button.bottom_open + a {color: #0984d4;}
+.treemenu_box .ztree li span.button.ico_open,
+.treemenu_box .ztree li span.button.ico_close,
+.treemenu_box .ztree li span.button.ico_docu {margin: 0 2px 0 10px;cursor: default;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_3">
+                        <pre>
+<code class="line-numbers language-js">var zNodes = [{
+    name: "test1", open: true, children: [
+        { name: "test1_1" }, { name: "test1_2" }
+    ]
+}, {
+    name: "test2", open: true, children: [
+        { name: "test2_1" }, { name: "test2_2" }
+    ]
+}];
+
+var setting = {};
+$(document).ready(function () {
+    zTreeObj = $.fn.zTree.init($("#treeDemo6"), setting, zNodes);
+});</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">checkbox형</h2>
+                <div class="ui_sample">
+                    <script>
+                        var setting2 = {
+                            check: {
+                                enable: true
+                            },
+                        };
+                        $(document).ready(function () {
+                            zTreeObj = $.fn.zTree.init($("#treeDemo7"), setting2, zNodes);
+                        });
+                    </script>
+                    <div class="treemenu_box" data-simplebar data-simplebar-auto-hide="false">
+                        <ul id="treeDemo7" class="ztree excheck"></ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_2_1" class="on">html</li>
+                        <li id="code03_2_2">css</li>
+                        <li id="code03_2_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="treemenu_box" data-simplebar data-simplebar-auto-hide="false"&gt;
+    &lt;ul id="treeDemo7" class="ztree excheck"&gt;&lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_2_2">
+                        <pre>
+<code class="line-numbers language-css">/** ztree **/
+/* ... 기본형 css ... */
+/* ztree - excheck */
+.treemenu_box .ztree.excheck .switch {position: relative !important;}
+.treemenu_box .ztree.excheck li span.button.chk {position: relative;left: 23px;top: 6px;width: 18px;height: 22px;background-position: 50% 50% !important;cursor: pointer;}
+.treemenu_box .ztree.excheck li a.curSelectedNode {min-height: 36px;line-height: 36px;}
+.treemenu_box .ztree.excheck li a[class^="level"] > span {padding-left: 7px;}
+.treemenu_box .ztree.excheck .level0 > a {margin-left: -41px;padding-left: 60px;}
+.treemenu_box .ztree.excheck .level1 > a {margin-left: -51px;padding-left: 80px;}
+.treemenu_box .ztree.excheck .level2 > a {margin-left: -61px;padding-left: 105px;}
+.treemenu_box .ztree.excheck .level1 > span.button.chk {left: 35px;}
+.treemenu_box .ztree.excheck .level2 > span.button.chk {left: 52px;}
+.treemenu_box .ztree.excheck li span.button.ico_open, .treemenu_box .ztree.excheck li span.button.ico_close, .treemenu_box .ztree.excheck li span.button.ico_docu {display: none;}
+/* ztree - excheck checkbox */
+.treemenu_box .ztree.excheck li > span[class*="checkbox_true"],
+.treemenu_box .ztree.excheck li > span[class*="checkbox_false"] {background: none;}
+.treemenu_box .ztree.excheck li > span[class*="checkbox_true"]::after {content: '\e928';font-family: 'xeicon';position: absolute;left: 0;top: 3px;width: 18px;height: 18px;border: 1px solid #fff;border-radius: 3px;font-size: 12px;line-height: 16px;color: #fff;text-align: center;background: #4683f3;}
+.treemenu_box .ztree.excheck li > span[class*="checkbox_false"]::after {content: '';position: absolute;left: 0;top: 3px;width: 18px;height: 18px;border: 1px solid #ddd;border-radius: 3px;background: #fff;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_2_3">
+                        <pre>
+<code class="line-numbers language-js">var zNodes = [{
+    name: "test1", open: true, children: [
+        { name: "test1_1" }, { name: "test1_2" }
+    ]
+}, {
+    name: "test2", open: true, children: [
+        { name: "test2_1" }, { name: "test2_2" }
+    ]
+}];
+
+var setting2 = {
+    check: {
+        enable: true
+    },
+};
+$(document).ready(function () {
+    zTreeObj = $.fn.zTree.init($("#treeDemo7"), setting2, zNodes);
+});</code>
+</pre>
+                    </div>
+                </div>
+
+                <h2 class="section_main_ttl">radio형</h2>
+                <div class="ui_sample">
+                    <script>
+                        var setting3 = {
+                            check: {
+                                enable: true,
+                                chkStyle: "radio",
+                                radioType: "level"
+                            },
+                        };
+                        $(document).ready(function () {
+                            zTreeObj = $.fn.zTree.init($("#treeDemo8"), setting3, zNodes);
+                        });
+                    </script>
+                    <div class="treemenu_box" data-simplebar data-simplebar-auto-hide="false">
+                        <ul id="treeDemo8" class="ztree excheck"></ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_3_1" class="on">html</li>
+                        <li id="code03_3_2">css</li>
+                        <li id="code03_3_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_3_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="treemenu_box" data-simplebar data-simplebar-auto-hide="false"&gt;
+    &lt;ul id="treeDemo8" class="ztree excheck"&gt;&lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_3_2">
+                        <pre>
+<code class="line-numbers language-css">/** ztree **/
+/* ... 기본형 css ... */
+/* ztree - excheck */
+.treemenu_box .ztree.excheck .switch {position: relative !important;}
+.treemenu_box .ztree.excheck li span.button.chk {position: relative;left: 23px;top: 6px;width: 18px;height: 22px;background-position: 50% 50% !important;cursor: pointer;}
+.treemenu_box .ztree.excheck li a.curSelectedNode {min-height: 36px;line-height: 36px;}
+.treemenu_box .ztree.excheck li a[class^="level"] > span {padding-left: 7px;}
+.treemenu_box .ztree.excheck .level0 > a {margin-left: -41px;padding-left: 60px;}
+.treemenu_box .ztree.excheck .level1 > a {margin-left: -51px;padding-left: 80px;}
+.treemenu_box .ztree.excheck .level2 > a {margin-left: -61px;padding-left: 105px;}
+.treemenu_box .ztree.excheck .level1 > span.button.chk {left: 35px;}
+.treemenu_box .ztree.excheck .level2 > span.button.chk {left: 52px;}
+.treemenu_box .ztree.excheck li span.button.ico_open, .treemenu_box .ztree.excheck li span.button.ico_close, .treemenu_box .ztree.excheck li span.button.ico_docu {display: none;}
+/* ztree - excheck radio */
+.treemenu_box .ztree.excheck li > span[class*="radio_true"],
+.treemenu_box .ztree.excheck li > span[class*="radio_false"] {background: none;}
+.treemenu_box .ztree.excheck li > span[class*="radio_true"]::before {content: '';position: absolute;left: 0;top: 3px;width: 18px;height: 18px;border: 5px solid #4683f3;border-radius: 50%;background: #fff;}
+.treemenu_box .ztree.excheck li > span[class*="radio_false"]::before {content: '';position: absolute;left: 0;top: 3px;width: 18px;height: 18px;border: 1px solid #d7d8da;border-radius: 50%;background: #fff;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_3_3">
+                        <pre>
+<code class="line-numbers language-js">var zNodes = [{
+    name: "test1", open: true, children: [
+        { name: "test1_1" }, { name: "test1_2" }
+    ]
+}, {
+    name: "test2", open: true, children: [
+        { name: "test2_1" }, { name: "test2_2" }
+    ]
+}];
+
+var setting3 = {
+    check: {
+        enable: true,
+        chkStyle: "radio",
+        radioType: "level"
+    },
+};
+$(document).ready(function () {
+    zTreeObj = $.fn.zTree.init($("#treeDemo8"), setting3, zNodes);
+});</code>
+</pre>
+                    </div>
+                </div>
+                <h2 class="section_main_ttl">select형</h2>
+                <div class="ui_sample">
+                    <script>
+                        var setting5 = {
+                            check: {
+                                enable: true,
+                                chkboxType: {
+                                    "Y": "",
+                                    "N": ""
+                                }
+                            },
+                            view: {
+                                dblClickExpand: false
+                            },
+                            data: {
+                                simpleData: {
+                                    enable: true
+                                }
+                            },
+                            callback: {
+                                beforeClick: beforeClick_,
+                                onCheck: onCheck_
+                            }
+                        };
+                        $(document).ready(function () {
+                            zTreeObj = $.fn.zTree.init($("#treeDemo9"), setting5, zNodes);
+                        });
+
+                        function beforeClick_(treeId, treeNode) {
+                            var zTree = $.fn.zTree.getZTreeObj("treeDemo9");
+                            zTree.checkNode(treeNode, !treeNode.checked, null, true);
+                            return false;
+                        }
+                        function onCheck_(e, treeId, treeNode) {
+                            var zTree = $.fn.zTree.getZTreeObj("treeDemo9"),
+                                nodes = zTree.getCheckedNodes(true),
+                                v = "";
+                            for (var i = 0, l = nodes.length; i < l; i++) {
+                                v += nodes[i].name + ",";
+                            }
+                            if (v.length > 0) v = v.substring(0, v.length - 1);
+                            var cityObj = $("#citySel2");
+                            cityObj.attr("value", v);
+                        }
+                        function showMenu_() {
+                            $("#menuContent2").slideDown("fast");
+                            $("body").bind("mousedown", onBodyDown_);
+                            $(".selectbox").toggleClass("on");
+                        }
+                        function hideMenu_() {
+                            $(".selectbox").removeClass("on");
+                            $("#menuContent2").fadeOut("fast");
+                            $("body").unbind("mousedown", onBodyDown_);
+                        }
+                        function onBodyDown_(event) {
+                            if (!(event.target.id == "menuBtn" || event.target.id == "citySel2" || event.target.id == "menuContent2" || $(event.target).parents("#menuContent2").length > 0)) {
+                                hideMenu_();
+                            }
+                        }
+                    </script>
+                    <div class="selectbox ztree_select">
+                        <input id="citySel2" type="text" class="selected" readonly value="" onclick="showMenu_();">
+                    </div>
+                    <div id="menuContent2" class="menuContent treemenu_box" data-simplebar
+                        data-simplebar-auto-hide="false">
+                        <ul id="treeDemo9" class="ztree excheck"></ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_4_1" class="on">html</li>
+                        <li id="code03_4_2">css</li>
+                        <li id="code03_4_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_4_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="selectbox ztree_select"&gt;
+    &lt;input id="citySel2" type="text" class="selected" readonly value="" onclick="showMenu();" /&gt;
+&lt;/div&gt;
+&lt;div id="menuContent2" class="menuContent treemenu_box" data-simplebar data-simplebar-auto-hide="false"&gt;
+    &lt;ul id="treeDemo9" class="ztree excheck"&gt;&lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_4_2">
+                        <pre>
+<code class="line-numbers language-css">/** ztree **/
+/* ... 기본형 css ... */
+/* ztree - excheck */
+.treemenu_box .ztree.excheck .switch {position: relative !important;}
+.treemenu_box .ztree.excheck li span.button.chk {position: relative;left: 23px;top: 6px;width: 18px;height: 22px;background-position: 50% 50% !important;cursor: pointer;}
+.treemenu_box .ztree.excheck li a.curSelectedNode {min-height: 36px;line-height: 36px;}
+.treemenu_box .ztree.excheck li a[class^="level"] > span {padding-left: 7px;}
+.treemenu_box .ztree.excheck .level0 > a {margin-left: -41px;padding-left: 60px;}
+.treemenu_box .ztree.excheck .level1 > a {margin-left: -51px;padding-left: 80px;}
+.treemenu_box .ztree.excheck .level2 > a {margin-left: -61px;padding-left: 105px;}
+.treemenu_box .ztree.excheck .level1 > span.button.chk {left: 35px;}
+.treemenu_box .ztree.excheck .level2 > span.button.chk {left: 52px;}
+.treemenu_box .ztree.excheck li span.button.ico_open, .treemenu_box .ztree.excheck li span.button.ico_close, .treemenu_box .ztree.excheck li span.button.ico_docu {display: none;}
+/* ztree - select */
+.ztree_select::after {content: '';display: block;width: 9px;height: 5px;background: url(../images/icon/i_sel2.png) no-repeat center;position: absolute;right: 11px;top: 16px;transition: all 0.1s;}
+.ztree_select.on::after {transform: rotate(180deg);}
+.ztree_select .selected {width: 220px;}
+.ztree_select.on .selected {border-bottom-color: transparent;border-radius: 5px 5px 0 0;}
+.ztree_select + .treemenu_box {width: 220px;height: 200px;display: none;position: absolute;border-radius: 0 0 5px 5px;background-color: #fff;z-index: 1;}
+.ztree_select + .treemenu_box .ztree {margin-top: 0;width: 100%;min-height: 200px;}
+.ztree_select.on + .treemenu_box {border-left: 1px solid var(--bdr-focus);border-bottom: 1px solid var(--bdr-focus);border-right: 1px solid var(--bdr-focus);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_4_3">
+                        <pre>
+<code class="line-numbers language-js">var setting5 = {
+    check: {
+        enable: true,
+        chkboxType: {
+            "Y": "",
+            "N": ""
+        }
+    },
+    view: {
+        dblClickExpand: false
+    },
+    data: {
+        simpleData: {
+            enable: true
+        }
+    },
+    callback: {
+        beforeClick: beforeClick_,
+        onCheck: onCheck_
+    }
+};
+$(document).ready(function () {
+    zTreeObj = $.fn.zTree.init($("#treeDemo9"), setting5, zNodes);
+});
+
+function beforeClick_(treeId, treeNode) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo9");
+    zTree.checkNode(treeNode, !treeNode.checked, null, true);
+    return false;
+}
+function onCheck_(e, treeId, treeNode) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo9"),
+        nodes = zTree.getCheckedNodes(true),
+        v = "";
+    for (var i = 0, l = nodes.length; i < l; i++) {
+        v += nodes[i].name + ",";
+    }
+    if (v.length > 0) v = v.substring(0, v.length - 1);
+    var cityObj = $("#citySel2");
+    cityObj.attr("value", v);
+}
+function showMenu_() {
+    $("#menuContent2").slideDown("fast");
+    $("body").bind("mousedown", onBodyDown_);
+    $(".selectbox").toggleClass("on");
+}
+function hideMenu_() {
+    $(".selectbox").removeClass("on");
+    $("#menuContent2").fadeOut("fast");
+    $("body").unbind("mousedown", onBodyDown_);
+}
+function onBodyDown_(event) {
+    if (!(event.target.id == "menuBtn" || event.target.id == "citySel2" || event.target.id == "menuContent2" || $(event.target).parents("#menuContent2").length > 0)) {
+        hideMenu_();
+    }
+}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오픈노트 퍼블리싱 가이드</title>
+    <link rel="stylesheet" href="lib/prism/prism.css">
+    <link rel="stylesheet" href="css/jquery-ui-1.12.1.custom.css">
+    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.12.1.custom.js"></script>
+    <script src="js/guide.js"></script>
+    <script src="js/mobile.js"></script>
+    <script>
+        $(function () {
+            $("body > header > nav").scrollTop(450);
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="index.html">
+                    <img src="images/guide_logo.png" alt="">
+                    <span>UI Publishing Guide_v3</span><!-- 24.01 upgrade version -->
+                </a>
+            </h1>
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="basic.html">기본 파일</a></li>
+                <li><a href="form.html">기본 요소</a>
+                    <ul>
+                        <li><a href="form.html">form & text</a></li>
+                        <li><a href="button.html">버튼 & 태그</a></li>
+                        <li><a href="table.html">테이블</a></li>
+                        <li><a href="tab.html">탭</a></li>
+                        <li><a href="popup.html">팝업</a></li>
+                        <li><a href="loading.html">로딩 & progress</a></li>
+                        <li><a href="space.html">간격 & font (js)</a></li>
+                        <li><a href="etc.html">기타</a></li>
+                        <li><a href="board.html">게시판</a></li>
+                        <li><a href="splitTable.html">분할테이블</a></li>
+                        <li><a href="search.html">검색 & 페이징</a></li>
+                        <li><a href="membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="membership.html">UI 요소</a>
+                    <ul>
+                        <li><a href="survey.html">설문조사</a></li>
+                        <li><a href="error.html">에러</a></li>
+                        <li><a href="mail.html">메일</a></li>
+                        <li><a href="gnb.html">대메뉴 & 서브메뉴</a></li>
+                        <li><a href="tit_breadcrumb.html">타이틀 & 로케이션</a></li>
+                        <li><a href="visual_banner.html">비쥬얼 & 배너존</a></li>
+                        <li><a href="recent.html">최신글</a></li>
+                    </ul>
+                </li>
+                <li><a href="mobile_basic.html">모바일</a>
+                    <ul>
+                        <li><a href="mobile_basic.html">모바일 기본</a></li>
+                        <li><a href="mobile_brd_tbl.html">테이블 & 게시판</a></li>
+                        <li><a href="mobile_search.html">검색 & 페이징</a></li>
+                        <li><a href="mobile_tab.html">탭</a></li>
+                        <li><a href="mobile_popup.html">팝업</a></li>
+                        <li><a href="mobile_error.html">에러</a></li>
+                        <li><a href="mobile_membership.html">멤버십</a></li>
+                    </ul>
+                </li>
+                <li><a href="scroll.html">플러그인</a>
+                    <ul>
+                        <li><a href="scroll.html">스크롤</a></li>
+                        <li><a href="highchart.html">highchart</a></li>
+                        <li><a href="swiper.html">swiper</a></li>
+                        <li><a href="aos.html">aos</a></li>
+                        <li><a href="ztree.html">ztree</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="util_btn r">
+            <div class="mar_t5">
+                <a class="btn icl" href="zip/basic.zip" title="Download" download><i class="xi-arrow-bottom"></i>basic.zip</a>
+                <span>기본요소 종합 파일</span>
+            </div><br>
+            <button class="btn blue icl mar_t5 btn_code_all_open"><i class="xi-caret-down-circle-o"></i>코드 전체 열기</button><br>
+            <button class="btn gray icl mar_t5 btn_code_all_close"><i class="xi-caret-up-circle-o"></i>코드 전체 닫기</button>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <h3 class="guide_tit">테이블 & 게시판</h3>
+            <ul class="common_tab js_tmenu">
+                <li id="tab01" class="on">기본 테이블</li>
+                <li id="tab02">가로 스크롤</li>
+                <li id="tab03">일반 목록</li>
+                <li id="tab04">상세</li>
+                <li id="tab05">댓글</li>
+                <li id="tab06">등록</li>
+                <li id="tab07">Q&A</li>
+                <li id="tab08">갤러리 게시판 목록</li>
+            </ul>
+
+            <section class="common_tab_content js_tcont on" data-tab="tab01">
+                <section class="ui_basic_info">
+                    <h2 class="section_main_ttl">Default</h2>
+                    <dl>
+                        <dt>1. mobile_basic.css를 반드시 먼저 import 해야함. (mobile.zip 구성요소 모두 필수)</dt>
+                        <dt>2. mobile_basic.css import 이후 css 개별 추가, 혹은 종합 스타일이 들어있는 mobile.css를 import 해서 사용 <span class="impact">(mobile.css import 시 mobile_basic.css와 css 개별 추가 필요X)</span></dt>
+                        <dt>3. 테이블 & 게시판 공통 적용 css</dt>
+                    </dl>
+                    <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                    <div class="ui_code">
+                        <ul class="js_tmenu">
+                            <li id="code01_1_1">css</li>
+                        </ul>
+                        <div class="js_tcont on" data-tab="code01_1_1">
+                            <pre>
+<code class="line-numbers language-css">/*** table ***/
+table .no_data {text-align: center !important;}
+table tr:hover .no_data {background: inherit !important;} 
+table .asterisk {margin-left: -1rem;}
+td img {vertical-align: middle;}
+.ellipsis {overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+table a.ellipsis {display: inline-block;max-width: 95%;vertical-align: middle;}
+table a.ellipsis + i {vertical-align: middle;}
+
+/* asterisk(*) + form guide */
+.asterisk {margin-right: 0.3rem;font-size: 1.4rem;font-weight: 400;color: var(--red);}
+.form_guide {margin-bottom: 1rem;font-size: 1.4rem;font-weight: 400;text-align: right;}
+
+/* table style */
+.data_tbl {border-top: 1px solid var(--black);}
+.data_tbl > * > tr > th,
+.data_tbl > * > tr > td {position: relative;height: 4rem;padding: 0.6rem 0.8rem;border-bottom: 1px solid var(--tbl-bdr);font-size: 1.4rem;font-weight: 400;color: var(--dark);letter-spacing: -0.05em;text-align: center;background: #FFFFFF;}
+.data_tbl > * > tr > th {font-weight: 500;background: var(--tbl-th);}
+.data_tbl > * > tr > *:not(:last-child) {border-right: 1px solid var(--tbl-bdr);}
+.data_tbl > tbody > tr > td + td[rowspan] {border-left: 1px solid var(--tbl-bdr);}
+.data_tbl:not(.form) > tbody > tr:hover > td:not(.no_data) {background: var(--form-tbl-hover-bg);}
+
+/* table border */
+.data_tbl .bdt {border-top: 1px solid var(--tbl-bdr);}
+.data_tbl .bdr {border-right: 1px solid var(--tbl-bdr);}
+.data_tbl .bdb {border-bottom: 1px solid var(--tbl-bdr);}
+.data_tbl .bdl {border-left: 1px solid var(--tbl-bdr);}
+
+/* table form */
+.data_tbl.form > * > tr > th,
+.data_tbl.form > * > tr > td {height: 4.9rem;}
+.data_tbl.form input[type="text"], .data_tbl.form input[type="password"], .data_tbl.form select {width: 100%;}
+.data_tbl.form .btn {min-width: 5rem;}</code>
+</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ui_basic_info" style="padding-top: 40px;">
+                    <h2 class="section_main_ttl">기본 설명</h2>
+                    <dl>
+                        <dt>1. 필수 입력</dt>
+                        <dd>
+                            └ 테이블 위: <span class="impact">&lt;div class="form_guide"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt; 필수입력&lt;/div&gt;</span><br>
+                            └ th 안: <span class="impact">&lt;span class="asterisk"&gt;*&lt;/span&gt; 텍스트</span>
+                        </dd>
+                        <dt>2. border 추가 클래스: <span class="impact">bdt, bdb, bdl, bdr</span></dt>
+                        <dt>3. 데이터가 없습니다: <span class="impact">no_data</span></dt>
+                    </dl>
+                </section>
+
+                <h2 class="section_main_ttl">기본 table</h2>
+                <div class="ui_sample">
+                    <div style="width: 360px;">
+                        <table class="data_tbl">
+                            <colgroup>
+                                <col style="width: 30%;">
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">타이틀</th>
+                                    <th scope="col">타이틀</th>
+                                    <th scope="col">타이틀</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">타이틀</th>
+                                    <td>내용</td>
+                                    <td>내용</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">타이틀</th>
+                                    <td>내용</td>
+                                    <td>내용</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="no_data">데이터가 없습니다</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                    <div style="width: 360px;">
+                        <div class="tbl_top">
+                            <!-- <div class="tbl_left"></div> -->
+                            <div class="tbl_right">
+                                <div class="form_guide"><span class="asterisk">*</span>필수입력</div>
+                            </div>
+                        </div>
+                        <div class="tbl_wrap">
+                            <table class="data_tbl form">
+                                <colgroup>
+                                    <col style="width: 30%;">
+                                    <col>
+                                    <col>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">타이틀</th>
+                                        <th scope="col">타이틀</th>
+                                        <th scope="col">타이틀</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">타이틀</th>
+                                        <td>내용</td>
+                                        <td>내용</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">타이틀</th>
+                                        <td><input type="text" placeholder="placeholder"></td>
+                                        <td><input type="text" placeholder="placeholder"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="no_data">데이터가 없습니다</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code01_2_1" class="on">html</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code01_2_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tbl_top"&gt;
+    &lt;!-- &lt;div class="tbl_left"&gt;&lt;/div&gt; --&gt;
+    &lt;div class="tbl_right"&gt;
+        &lt;div class="form_guide"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt;필수입력&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="tbl_wrap"&gt;
+    &lt;!-- form 형 --&gt;&lt;!-- &lt;table class="data_tbl form"&gt; --&gt;
+    &lt;table class="data_tbl"&gt;
+        &lt;colgroup&gt;
+            &lt;col style="width: 30%;"&gt;
+            &lt;col&gt;
+        &lt;/colgroup&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th scope="col"&gt;타이틀&lt;/th&gt;
+                &lt;th scope="col"&gt;타이틀&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;th scope="row"&gt;&lt;/th&gt;
+                &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td colspan="2" class="no_data"&gt;데이터가 없습니다&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab02">
+                <h2 class="section_main_ttl">기본형</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>1. table을 감싸는 &lt;div class="tbl_scroll scr_h"&gt;&lt;/div&gt;을 추가하고, 반드시 table 에 min-width값을 정해주어야 한다.</dt>
+                        <dt>2. 모든 열의 col width값은 퍼센트 로 넣어준다.</dt>
+                    </dl>
+                </section>
+                <div class="ui_sample" style="width: 360px;">
+                    <div class="tbl_scroll scr_h">
+                        <table class="data_tbl" style="min-width: 500px;">
+                            <colgroup>
+                                <col style="width: 33%;">
+                                <col style="width: 33%;">
+                                <col style="width: 33%;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th scope="col">-</th>
+                                    <th scope="col">-</th>
+                                    <th scope="col">-</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="no_data">데이터가 없습니다.</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code02_1_1" class="on">html</li>
+                        <li id="code02_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code02_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="tbl_scroll scr_h"&gt;
+    &lt;table class="data_tbl" style="min-width: 500px;"&gt;
+        &lt;colgroup&gt;
+            &lt;col style="width: 33%;"&gt;
+            &lt;col style="width: 33%;"&gt;
+            &lt;col style="width: 33%;"&gt;
+        &lt;/colgroup&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th scope="col"&gt;-&lt;/th&gt;
+                &lt;th scope="col"&gt;-&lt;/th&gt;
+                &lt;th scope="col"&gt;-&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;-&lt;/td&gt;
+                &lt;td&gt;-&lt;/td&gt;
+                &lt;td&gt;-&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td colspan="3" class="no_data"&gt;데이터가 없습니다.&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+        &lt;tfoot&gt;
+            &lt;tr&gt;
+                &lt;td scope="col"&gt;-&lt;/td&gt;
+                &lt;td scope="col"&gt;-&lt;/td&gt;
+                &lt;td scope="col"&gt;-&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tfoot&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code02_1_2">
+                        <pre>
+<code class="line-numbers language-css">/*** table ***/
+/* scroll table */
+.tbl_scroll {position: relative;}
+.tbl_scroll tbody + tfoot tr:first-child td {border-top: 1px solid var(--tbl-bdr);}
+
+/* horizontal scroll table */
+.tbl_scroll.scr_h {overflow-x: auto;position: relative;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab03">
+                <h2 class="section_main_ttl">기본형</h2>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample" style="width: 360px;">
+                    <div class="board_top">
+                        <div class="board_left">
+                            <div class="all_num"><i class="xi-paper-o"></i>전체<span class="num">0</span>건</div>
+                        </div>
+                        <!-- <div class="board_right"></div> -->
+                    </div>
+                    <div class="board_list">
+                        <ul>
+                            <li>
+                                <a href="">
+                                    <span class="num">1</span>
+                                    <b>게시글 제목입니다. </b>
+                                    <div><span>홍길동</span><span>2023.02.28</span></div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="num">1</span>
+                                    <b>게시글 제목입니다. 게시글 제목입니다. 게시글 제목입니다. 게시글 제목입니다.</b>
+                                    <div><span>홍길동</span><span>2023.02.28</span></div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="num">1</span>
+                                    <b>게시글 제목입니다. 게시글 제목입니다. 게시글 제목입니다. 게시글 제목입니다.</b>
+                                    <div><span>홍길동</span><span>2023.02.28</span></div>
+                                </a>
+                            </li>
+                            <li class="no_data">데이터가 없습니다.</li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code03_1_1" class="on">html</li>
+                        <li id="code03_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code03_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="board_top"&gt;
+    &lt;div class="board_left"&gt;
+        &lt;div class="all_num"&gt;&lt;i class="xi-paper-o"&gt;&lt;/i&gt;전체&lt;span class="num"&gt;0&lt;/span&gt;건&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- &lt;div class="board_right"&gt;&lt;/div&gt; --&gt;
+&lt;/div&gt;
+&lt;div class="board_list"&gt;
+    &lt;ul&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;
+                &lt;span class="num"&gt;1&lt;/span&gt;
+                &lt;b&gt;게시글 제목입니다.&lt;/b&gt;
+                &lt;div&gt;&lt;span&gt;홍길동&lt;/span&gt;&lt;span&gt;2023.02.28&lt;/span&gt;&lt;/div&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li class="no_data"&gt;데이터가 없습니다.&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code03_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** board **/
+/* board_list count */
+.all_num {margin-bottom: 1rem;font-size: 1.3rem;color: #666;}
+.all_num > * {vertical-align: bottom;}
+.all_num i::before {position: relative;top: -0.1rem;margin-right: 0.3rem;font-size: 1.5rem;}
+.all_num .num {margin: 0 0.3rem 0 0.5rem;font-weight: 400;color: #26a4de;}
+
+/* board_list */
+.board_list {border-top: 1px solid var(--black);}
+.board_list ul li {border-bottom: 1px solid var(--tbl-bdr);color: var(--dark);letter-spacing: -0.05em;}
+.board_list ul li a {display: block;position: relative;padding: 1rem 0.8rem;padding-left: 4rem;}
+.board_list ul li .num {position: absolute;left: 0;top: 50%;transform: translateY(-50%);width: 4rem;color: var(--dark);text-align: center;}
+.board_list ul li b {font-size: 1.4rem;font-weight: normal;line-height: 1.4;}
+.board_list ul li a > div {padding-top: 0.3rem;}
+.board_list ul li span {font-size: 1.3rem;}
+.board_list ul li span + span {margin-left: 1rem;}
+.board_list ul li.no_data {padding: 2rem 0.8rem;font-size: 1.4rem;text-align: center;}</code>
+</pre>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab04">
+                <h2 class="section_main_ttl">기본형</h2>
+                <h3 class="section_sub_ttl">기본</h3>
+                <div class="ui_sample" style="width: 360px;">
+                    <div class="board_view">
+                        <div class="title">
+                            <b class="tit">제목입니다. 게시글 제목 입니다. 게시글 제목 입니다. 게시글 제목 입니다.</b>
+                            <span>홍길동</span>
+                            <span>2023.02.28</span>
+                        </div>
+                        <div class="content">
+                            <p>게시글 내용</p>
+                        </div>
+                        <div class="file">
+                            <b>첨부파일</b>
+                            <ul class="file_li">
+                                <li><a href=""><img src="images/icon/file_img.svg" alt="img">첨부파일.jpg</a></li>
+                                <li><a href=""><img src="images/icon/file_img.svg" alt="img">첨부파일 첨부파일 첨부파일 첨부파일 첨부파일 첨부파일.jpg</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn_area">
+                            <button type="button" class="btn bd blue">수정</button>
+                            <button type="button" class="btn bd red">삭제</button>
+                            <button type="button" class="btn gray">목록</button>
+                        </div>
+                        <table class="oth_post">
+                            <colgroup>
+                                <col style="width: 30%;">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">이전글<i class="xi-angle-up-thin"></i></th>
+                                    <td><a href="" class="ellipsis">이전글</a></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">다음글<i class="xi-angle-down-thin"></i></th>
+                                    <td><a href="" class="ellipsis">다음글</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">기본 + 디테일</h3>
+                <div class="ui_sample" style="width: 360px;">
+                    <div class="board_view">
+                        <div class="title">
+                            <b class="tit">제목입니다. 게시글 제목 입니다. 게시글 제목 입니다. 게시글 제목 입니다.</b>
+                            <span>홍길동</span>
+                            <span>2023.02.28</span>
+                        </div>
+                        <div class="detail">
+                            <table class="data_tbl">
+                                <colgroup>
+                                    <col style="width: 30%;">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">타이틀</th>
+                                        <td class="l">내용</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">타이틀</th>
+                                        <td class="l">내용</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">타이틀</th>
+                                        <td class="l">내용</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="content">
+                            <p>게시글 내용</p>
+                        </div>
+                        <div class="file">
+                            <b>첨부파일</b>
+                            <ul class="file_li">
+                                <li><a href=""><img src="images/icon/file_img.svg" alt="img">첨부파일.jpg</a></li>
+                                <li><a href=""><img src="images/icon/file_img.svg" alt="img">첨부파일 첨부파일 첨부파일 첨부파일 첨부파일 첨부파일.jpg</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn_area">
+                            <button type="button" class="btn bd blue">수정</button>
+                            <button type="button" class="btn bd red">삭제</button>
+                            <button type="button" class="btn gray">목록</button>
+                        </div>
+                        <table class="oth_post">
+                            <colgroup>
+                                <col style="width: 30%;">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">이전글<i class="xi-angle-up-thin"></i></th>
+                                    <td><a href="" class="ellipsis">이전글</a></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">다음글<i class="xi-angle-down-thin"></i></th>
+                                    <td><a href="" class="ellipsis">다음글</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code04_1_1" class="on">html</li>
+                        <li id="code04_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code04_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="board_view"&gt;
+    &lt;div class="title"&gt;
+        &lt;b class="tit"&gt;제목입니다. 게시글 제목 입니다. 게시글 제목 입니다. 게시글 제목 입니다.&lt;/b&gt;
+        &lt;span&gt;홍길동&lt;/span&gt;
+        &lt;span&gt;2023.02.28&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;!-- &lt;div class="detail"&gt;
+        &lt;table class="data_tbl"&gt;
+            &lt;colgroup&gt;
+                &lt;col style="width: 30%;"&gt;
+                &lt;col&gt;
+            &lt;/colgroup&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;th scope="row"&gt;타이틀&lt;/th&gt;
+                    &lt;td&gt;내용&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt; --&gt;
+    &lt;div class="content"&gt;
+        &lt;p&gt;게시글 내용&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="file"&gt;
+        &lt;b&gt;첨부파일&lt;/b&gt;
+        &lt;ul class="file_li"&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;img src="images/icon/file_img.svg" alt="img"&gt;첨부파일.jpg&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=""&gt;&lt;img src="images/icon/file_img.svg" alt="img"&gt;첨부파일 첨부파일 첨부파일 첨부파일 첨부파일 첨부파일.jpg&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class="btn_area"&gt;
+        &lt;button type="button" class="btn bd blue"&gt;수정&lt;/button&gt;
+        &lt;button type="button" class="btn bd red"&gt;삭제&lt;/button&gt;
+        &lt;button type="button" class="btn gray"&gt;목록&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;table class="oth_post"&gt;
+        &lt;colgroup&gt;
+            &lt;col style="width: 30%;"&gt;
+            &lt;col&gt;
+        &lt;/colgroup&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;th scope="row"&gt;이전글&lt;i class="xi-angle-up-thin"&gt;&lt;/i&gt;&lt;/th&gt;
+                &lt;td&gt;&lt;a href="" class="ellipsis"&gt;이전글&lt;/a&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;th scope="row"&gt;다음글&lt;i class="xi-angle-down-thin"&gt;&lt;/i&gt;&lt;/th&gt;
+                &lt;td&gt;&lt;a href="" class="ellipsis"&gt;다음글&lt;/a&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code04_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** board **/
+/* board_view */
+.board_view {border-top: 1px solid var(--black);color: var(--dark);letter-spacing: -0.05em;}
+.board_view .title {padding: 1rem 0.8rem;border-bottom: 1px solid var(--tbl-bdr);}
+.board_view .title .tit {display: block;margin-bottom: 0.5rem;font-size: 1.5rem;font-weight: 500;line-height: 1.4;}
+.board_view .title span {font-size: 1.4rem;}
+.board_view .title span + span {margin-left: 1rem;}
+.board_view .content {padding: 0.8rem;min-height: 20rem;border-bottom: 1px solid var(--tbl-bdr);font-size: 1.4rem;}
+.board_view .file {padding: 1rem 0.8rem;border-bottom: 1px solid var(--tbl-bdr);}
+.board_view .file b {display: block;margin-bottom: 0.5rem;font-size: 1.4rem;font-weight: 500;}
+.board_view .file_li li a {display: block;position: relative;padding-left: 2rem;font-size: 1.4rem;}
+.board_view .file_li li + li {margin-top: 0.3rem;}
+.board_view .file_li li img {position: absolute;left: 0;top: 0.1rem;width: 1.5rem;}
+.board_view .detail {padding-top: 0.8rem;}
+
+/* board link prev/next post */
+.oth_post {margin-top: 2rem;border-top: 1px solid var(--tbl-bdr);}
+.oth_post th, .oth_post td {position: relative;height: 4rem;padding: 0.6rem 0.8rem;border-bottom: 1px solid var(--tbl-bdr);font-size: 1.4rem;font-weight: 400;color: var(--dark);letter-spacing: -0.05em;background: #FFFFFF;}
+.oth_post th {font-weight: normal;background: var(--tbl-th);}
+.oth_post i {margin-left: 1.2rem;font-size: 1.2rem;color: var(--dark);}
+.oth_post a.ellipsis {display: block;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab05">
+                <h2 class="section_main_ttl">기본형</h2>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample" style="width: 360px;">
+                    <div class="cmnt_area">
+                        <!-- 댓글 등록 -->
+                        <div class="cmnt_write">
+                            <div class="cmnt_title">
+                                <span class="cmnt_num">댓글 <strong>10</strong>건</span>
+                                <p>0/800 bytes(한글 500자)</p>
+                            </div>
+                            <div class="write_box">
+                                <textarea placeholder=""></textarea>
+                                <button type="button" class="btn blue cmnt">등록</button>
+                            </div>
+                        </div>
+                        <div class="cmnt_list">
+                            <ul class="list">
+                                <!-- 댓글 리스트 -->
+                                <li>
+                                    <div class="reply_box">
+                                        <div class="reply_txt">
+                                            <div class="info">
+                                                <span class="user"><i class="xi-user-o"></i>홍길동</span>
+                                                <span>2022.09.05</span>
+                                            </div>
+                                            <p>코멘트 내용입니다. 코멘트 내용입니다.</p>
+                                            <button type="button" class="btn reply js_reReply">답글<strong>0</strong></button>
+                                        </div>
+                                    </div>
+                                    <div class="re_reply">
+                                        <ul>
+                                            <!-- 답글 등록 -->
+                                            <li class="write">
+                                                <div class="cmnt_title">
+                                                    <p>0/800 bytes(한글 500자)</p>
+                                                </div>
+                                                <div class="write_box">
+                                                    <textarea placeholder=""></textarea>
+                                                    <button type="button" class="btn blue cmnt">등록</button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!-- 댓글 수정 가능할때 -->
+                                <li>
+                                    <div class="reply_box">
+                                        <div class="reply_txt">
+                                            <div class="info">
+                                                <span class="user"><i class="xi-user-o"></i>홍길동</span>
+                                                <span>2022.09.05</span>
+                                                <div class="btn_area">
+                                                    <button class="btn sml">수정</button>
+                                                    <button class="btn sml gray">삭제</button>
+                                                </div>
+                                            </div>
+                                            <p>코멘트 내용입니다. 코멘트 내용입니다.</p>
+                                            <button type="button" class="btn reply js_reReply">답글<strong>1</strong></button>
+                                        </div>
+                                    </div>
+                                    <div class="re_reply">
+                                        <ul>
+                                            <!-- 답글 등록 -->
+                                            <li class="write">
+                                                <div class="cmnt_title">
+                                                    <p>0/800 bytes(한글 500자)</p>
+                                                </div>
+                                                <div class="write_box">
+                                                    <textarea placeholder=""></textarea>
+                                                    <button type="button" class="btn blue cmnt">등록</button>
+                                                </div>
+                                            </li>
+                                            <!-- 등록된 답글 -->
+                                            <li>
+                                                <div class="info">
+                                                    <span class="user"><i class="xi-user-o"></i>홍길동</span>
+                                                    <span>2022.09.05</span>
+                                                </div>
+                                                <p>코멘트 내용입니다.</p>
+                                            </li>
+                                            <li>
+                                                <div class="info">
+                                                    <span class="user"><i class="xi-user-o"></i>홍길동</span>
+                                                    <span>2022.09.05</span>
+                                                    <div class="btn_area">
+                                                        <button class="btn sml">수정</button>
+                                                        <button class="btn sml gray">삭제</button>
+                                                    </div>
+                                                </div>
+                                                <p>코멘트 내용입니다.</p>
+                                            </li>
+                                            <!-- 답글 수정 -->
+                                            <li>
+                                                <div class="info">
+                                                    <span class="user"><i class="xi-user-o"></i>홍길동</span>
+                                                    <span>2022.09.05</span>
+                                                    <div class="btn_area">
+                                                        <button class="btn sml">수정</button>
+                                                        <button class="btn sml gray">취소</button>
+                                                    </div>
+                                                </div>
+                                                <div class="write_box">
+                                                    <textarea placeholder=""></textarea>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!-- 댓글 수정 -->
+                                <li>
+                                    <div class="reply_box">
+                                        <div class="reply_txt">
+                                            <div class="info">
+                                                <span class="user"><i class="xi-user-o"></i>홍길동</span>
+                                                <span>2022.09.05</span>
+                                                <div class="btn_area">
+                                                    <button class="btn sml">수정</button>
+                                                    <button class="btn sml gray">취소</button>
+                                                </div>
+                                            </div>
+                                            <div class="write_box">
+                                                <textarea placeholder=""></textarea>
+                                            </div>
+                                            <button type="button" class="btn reply js_reReply">답글<strong>0</strong></button>
+                                        </div>
+                                    </div>
+                                    <div class="re_reply">
+                                        <ul>
+                                            <!-- 답글 등록 -->
+                                            <li class="write">
+                                                <div class="cmnt_title">
+                                                    <p>0/800 bytes(한글 500자)</p>
+                                                </div>
+                                                <div class="write_box">
+                                                    <textarea placeholder=""></textarea>
+                                                    <button type="button" class="btn blue cmnt">등록</button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!-- 댓글 없는 경우 -->
+                                <li class="no_data">등록된 댓글이 없습니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code05_1_1" class="on">html</li>
+                        <li id="code05_1_2">css</li>
+                        <li id="code05_1_3">js</li>
+                        <li id="code05_1_4">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code05_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="cmnt_area"&gt;
+    &lt;!-- 댓글 등록 --&gt;
+    &lt;div class="cmnt_write"&gt;
+        &lt;div class="cmnt_title"&gt;
+            &lt;span class="cmnt_num"&gt;댓글 &lt;strong&gt;10&lt;/strong&gt;건&lt;/span&gt;
+            &lt;p&gt;0/800 bytes(한글 500자)&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="write_box"&gt;
+            &lt;textarea placeholder=""&gt;&lt;/textarea&gt;
+            &lt;button type="button" class="btn blue cmnt"&gt;등록&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="cmnt_list"&gt;
+        &lt;ul class="list"&gt;
+            &lt;!-- 댓글 리스트 --&gt;
+            &lt;li&gt;
+                &lt;div class="reply_box"&gt;
+                    &lt;div class="reply_txt"&gt;
+                        &lt;div class="info"&gt;
+                            &lt;span class="user"&gt;&lt;i class="xi-user-o"&gt;&lt;/i&gt;홍길동&lt;/span&gt;
+                            &lt;span&gt;2022.09.05&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;p&gt;코멘트 내용입니다. 코멘트 내용입니다.&lt;/p&gt;
+                        &lt;button type="button" class="btn reply js_reReply"&gt;답글&lt;strong&gt;0&lt;/strong&gt;&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="re_reply"&gt;
+                    &lt;ul&gt;
+                        &lt;!-- 답글 등록 --&gt;
+                        &lt;li class="write"&gt;
+                            &lt;div class="cmnt_title"&gt;
+                                &lt;p&gt;0/800 bytes(한글 500자)&lt;/p&gt;
+                            &lt;/div&gt;
+                            &lt;div class="write_box"&gt;
+                                &lt;textarea placeholder=""&gt;&lt;/textarea&gt;
+                                &lt;button type="button" class="btn blue cmnt"&gt;등록&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            &lt;!-- 댓글 수정 가능할때 --&gt;
+            &lt;li&gt;
+                &lt;div class="reply_box"&gt;
+                    &lt;div class="reply_txt"&gt;
+                        &lt;div class="info"&gt;
+                            &lt;span class="user"&gt;&lt;i class="xi-user-o"&gt;&lt;/i&gt;홍길동&lt;/span&gt;
+                            &lt;span&gt;2022.09.05&lt;/span&gt;
+                            &lt;div class="btn_area"&gt;
+                                &lt;button class="btn sml"&gt;수정&lt;/button&gt;
+                                &lt;button class="btn sml gray"&gt;삭제&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;p&gt;코멘트 내용입니다. 코멘트 내용입니다.&lt;/p&gt;
+                        &lt;button type="button" class="btn reply js_reReply"&gt;답글&lt;strong&gt;1&lt;/strong&gt;&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="re_reply"&gt;
+                    &lt;ul&gt;
+                        &lt;!-- 답글 등록 --&gt;
+                        &lt;li class="write"&gt;
+                            &lt;div class="cmnt_title"&gt;
+                                &lt;p&gt;0/800 bytes(한글 500자)&lt;/p&gt;
+                            &lt;/div&gt;
+                            &lt;div class="write_box"&gt;
+                                &lt;textarea placeholder=""&gt;&lt;/textarea&gt;
+                                &lt;button type="button" class="btn blue cmnt"&gt;등록&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/li&gt;
+                        &lt;!-- 등록된 답글 --&gt;
+                        &lt;li&gt;
+                            &lt;div class="info"&gt;
+                                &lt;span class="user"&gt;&lt;i class="xi-user-o"&gt;&lt;/i&gt;홍길동&lt;/span&gt;
+                                &lt;span&gt;2022.09.05&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;p&gt;코멘트 내용입니다.&lt;/p&gt;
+                        &lt;/li&gt;
+                        &lt;li&gt;
+                            &lt;div class="info"&gt;
+                                &lt;span class="user"&gt;&lt;i class="xi-user-o"&gt;&lt;/i&gt;홍길동&lt;/span&gt;
+                                &lt;span&gt;2022.09.05&lt;/span&gt;
+                                &lt;div class="btn_area"&gt;
+                                    &lt;button class="btn sml"&gt;수정&lt;/button&gt;
+                                    &lt;button class="btn sml gray"&gt;삭제&lt;/button&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;p&gt;코멘트 내용입니다.&lt;/p&gt;
+                        &lt;/li&gt;
+                        &lt;!-- 답글 수정 --&gt;
+                        &lt;li&gt;
+                            &lt;div class="info"&gt;
+                                &lt;span class="user"&gt;&lt;i class="xi-user-o"&gt;&lt;/i&gt;홍길동&lt;/span&gt;
+                                &lt;span&gt;2022.09.05&lt;/span&gt;
+                                &lt;div class="btn_area"&gt;
+                                    &lt;button class="btn sml"&gt;수정&lt;/button&gt;
+                                    &lt;button class="btn sml gray"&gt;취소&lt;/button&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class="write_box"&gt;
+                                &lt;textarea placeholder=""&gt;&lt;/textarea&gt;
+                            &lt;/div&gt;
+                        &lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            &lt;!-- 댓글 수정 --&gt;
+            &lt;li&gt;
+                &lt;div class="reply_box"&gt;
+                    &lt;div class="reply_txt"&gt;
+                        &lt;div class="info"&gt;
+                            &lt;span class="user"&gt;&lt;i class="xi-user-o"&gt;&lt;/i&gt;홍길동&lt;/span&gt;
+                            &lt;span&gt;2022.09.05&lt;/span&gt;
+                            &lt;div class="btn_area"&gt;
+                                &lt;button class="btn sml"&gt;수정&lt;/button&gt;
+                                &lt;button class="btn sml gray"&gt;취소&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="write_box"&gt;
+                            &lt;textarea placeholder=""&gt;&lt;/textarea&gt;
+                        &lt;/div&gt;
+                        &lt;button type="button" class="btn reply js_reReply"&gt;답글&lt;strong&gt;0&lt;/strong&gt;&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="re_reply"&gt;
+                    &lt;ul&gt;
+                        &lt;!-- 답글 등록 --&gt;
+                        &lt;li class="write"&gt;
+                            &lt;div class="cmnt_title"&gt;
+                                &lt;p&gt;0/800 bytes(한글 500자)&lt;/p&gt;
+                            &lt;/div&gt;
+                            &lt;div class="write_box"&gt;
+                                &lt;textarea placeholder=""&gt;&lt;/textarea&gt;
+                                &lt;button type="button" class="btn blue cmnt"&gt;등록&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            &lt;!-- 댓글 없는 경우 --&gt;
+            &lt;li class="no_data"&gt;등록된 댓글이 없습니다.&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code05_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** board **/
+/* cmnt_area */
+.cmnt_area {margin-top: 4rem;border-top: 1px solid #000;}
+.cmnt_write {padding: 1rem 0.8rem;border-bottom: 1px solid #e1e1e1;}
+.cmnt_area .cmnt_title {overflow: hidden;}
+.cmnt_area .cmnt_title .cmnt_num {float: left;font-size: 1.4rem;font-weight: 500;line-height: 1;}
+.cmnt_area .cmnt_title .cmnt_num strong {font-weight: 500;color: #d22234;}
+.cmnt_area .cmnt_title p {float: right;font-size: 1.3rem;font-weight: 300;line-height: 1;}
+.cmnt_area .write_box {display: flex;clear: both;}
+.cmnt_area .cmnt_title + .write_box {padding-top: 1rem;}
+.cmnt_area .info + .write_box {padding-top: 0.5rem;}
+.cmnt_area .write_box .btn.cmnt {width: 9rem;height: 7rem;margin-left: 1rem;border-radius: 0.5rem;font-size: 1.4rem;font-weight: 500;text-align: center;}
+.cmnt_area textarea {width: 100%;min-height: 0;height: 7rem;border: 1px solid #ccc;font-size: 1.3rem;}
+
+.cmnt_area .cmnt_list > ul > li {border-bottom: 1px solid #e1e1e1;}
+.cmnt_area .cmnt_list .info span {font-size: 1.4rem;font-weight: 300;color: #969696;}
+.cmnt_area .cmnt_list .info span + span {margin-left: 1rem;}
+.cmnt_area .cmnt_list .info .user {font-weight: 600;color: #000;}
+.cmnt_area .cmnt_list .info .user i {margin-right: 0.3rem;}
+.cmnt_area .cmnt_list .reply_box {padding: 1rem 0.8rem;}
+.cmnt_area .cmnt_list .info {margin-bottom: 0.5rem;}
+.cmnt_area .cmnt_list .btn_area {float: right;position: relative;top: -0.3rem;margin-top: 0;}
+.cmnt_area .cmnt_list p {clear: both;font-size: 1.4rem;}
+.cmnt_area .btn.reply {height: auto;margin-top: 1rem;margin-bottom: 0.5rem;padding: 0;border: 0;font-size: 1.4rem;line-height: 1;text-align: left;background: none;}
+.cmnt_area .btn.reply strong {padding-left: 0.3rem;color: #d22234;}
+.cmnt_area .btn.reply::after {content: '';display: inline-block;width: 0.9rem;height: 0.7rem;margin-left: 0.5rem;background: url(../images/mobile/i_select_arrow.png) no-repeat center center / 0.9rem;vertical-align: 0.1rem;transition: all 0.1s;}
+.cmnt_area .btn.reply.on::after {transform: rotate(180deg);}
+
+.cmnt_area .re_reply {display: none;}
+.cmnt_area .re_reply li {padding: 1rem 0.8rem;padding-left: 3.3rem;border-bottom: 1px solid #e1e1e1;background: url(../images/mobile/i_reply.png) no-repeat left 1.8rem top 1.4rem;}
+.cmnt_area .re_reply li:last-of-type {border-bottom: 0;}
+.cmnt_area .re_reply .write {padding-left: 1.8rem;padding-bottom: 0;border-bottom: 0;border-top: 1px solid #e1e1e1;background: none;}
+.cmnt_area .re_reply .write:first-child:last-child {padding-bottom: 1.5rem;}
+.cmnt_area .no_data {padding: 2rem;font-size: 1.4rem;text-align: center;}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code05_1_3">
+                        <pre>
+<code class="line-numbers language-js">// cmnt
+$(document).ready(function () {
+    $('.js_reReply').click(function () {
+        if ($(this).hasClass("on")) {
+            $(this).removeClass("on");
+            $(this).parents('.reply_box').siblings('.re_reply').hide();
+        } else {
+            $(this).addClass("on");
+            $(this).parents('.reply_box').siblings('.re_reply').show();
+        }
+        return false;
+    });
+});</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code05_1_4">
+                        <ul>
+                            <li><a href="images/mobile/i_select_arrow.png" title="Download" download>i_select_arrow.png</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab06">
+                <h2 class="section_main_ttl">기본형</h2>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample" style="width: 360px;">
+                    <div class="board_top">
+                        <!-- <div class="board_left"></div> -->
+                        <div class="board_right">
+                            <div class="form_guide"><span class="asterisk">*</span>필수입력</div>
+                        </div>
+                    </div>
+                    <table class="board_write">
+                        <colgroup>
+                            <col style="width: 30%;">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row"><span class="asterisk">*</span>제목</th>
+                                <td><input type="text" placeholder=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">비밀글</th>
+                                <td>
+                                    <span class="chk">
+                                        <span class="radio"><input type="radio" name="radio01" id="radio01_1"><label for="radio01_1">비밀글</label></span>
+                                        <span class="radio"><input type="radio" name="radio01" id="radio01_2"><label for="radio01_2">공개</label></span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">전화번호</th>
+                                <td>
+                                    <div class="phone">
+                                        <input type="text">
+                                        <span class="gap">-</span>
+                                        <input type="text">
+                                        <span class="gap">-</span>
+                                        <input type="text">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">이메일</th>
+                                <td>
+                                    <div class="email">
+                                        <input type="text" title="이메일 계정입력">
+                                        <span class="gap">@</span>
+                                        <select title="이메일 도메인 선택">
+                                            <option value="" selected="selected"></option>
+                                            <option value=""></option>
+                                        </select>
+                                        <input type="text" title="이메일 도메인 직접입력" placeholder="직접입력">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">주소</th>
+                                <td>
+                                    <div class="addr">
+                                        <input type="text">
+                                        <button type="button" class="btn">주소 검색</button>
+                                        <input type="text">
+                                        <input type="text">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">내용</th>
+                                <td><textarea name="" id="" cols="30" rows="5"></textarea></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code06_1_1" class="on">html</li>
+                        <li id="code06_1_2">css</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code06_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="board_top"&gt;
+    &lt;!-- &lt;div class="board_left"&gt;&lt;/div&gt; --&gt;
+    &lt;div class="board_right"&gt;
+        &lt;div class="form_guide"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt;필수입력&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;table class="board_write"&gt;
+    &lt;colgroup&gt;
+        &lt;col style="width: 30%;"&gt;
+        &lt;col&gt;
+    &lt;/colgroup&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;&lt;span class="asterisk"&gt;*&lt;/span&gt;제목&lt;/th&gt;
+            &lt;td&gt;&lt;input type="text" placeholder=""&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;비밀글&lt;/th&gt;
+            &lt;td&gt;
+                &lt;span class="chk"&gt;
+                    &lt;span class="radio"&gt;&lt;input type="radio" name="radio01" id="radio01_1"&gt;&lt;label for="radio01_1"&gt;비밀글&lt;/label&gt;&lt;/span&gt;
+                    &lt;span class="radio"&gt;&lt;input type="radio" name="radio01" id="radio01_2"&gt;&lt;label for="radio01_2"&gt;공개&lt;/label&gt;&lt;/span&gt;
+                &lt;/span&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;전화번호&lt;/th&gt;
+            &lt;td&gt;
+                &lt;div class="phone"&gt;
+                    &lt;input type="text"&gt;
+                    &lt;span class="gap"&gt;-&lt;/span&gt;
+                    &lt;input type="text"&gt;
+                    &lt;span class="gap"&gt;-&lt;/span&gt;
+                    &lt;input type="text"&gt;
+                &lt;/div&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;이메일&lt;/th&gt;
+            &lt;td&gt;
+                &lt;div class="email"&gt;
+                    &lt;input type="text" title="이메일 계정입력"&gt;
+                    &lt;span class="gap"&gt;@&lt;/span&gt;
+                    &lt;select title="이메일 도메인 선택"&gt;
+                        &lt;option value="" selected="selected"&gt;&lt;/option&gt;
+                        &lt;option value=""&gt;&lt;/option&gt;
+                    &lt;/select&gt;
+                    &lt;input type="text" title="이메일 도메인 직접입력" placeholder="직접입력"&gt;
+                &lt;/div&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;주소&lt;/th&gt;
+            &lt;td&gt;
+                &lt;div class="addr"&gt;
+                    &lt;input type="text"&gt;
+                    &lt;button type="button" class="btn"&gt;주소 검색&lt;/button&gt;
+                    &lt;input type="text"&gt;
+                    &lt;input type="text"&gt;
+                &lt;/div&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;내용&lt;/th&gt;
+            &lt;td&gt;&lt;textarea name="" id="" cols="30" rows="5"&gt;&lt;/textarea&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code06_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** board **/
+/* board write */
+.board_write {border-top: 1px solid var(--black);}
+.board_write > * > tr > th,
+.board_write > * > tr > td {position: relative;height: 4.9rem;padding: 0.6rem 0.8rem;border-bottom: 1px solid var(--tbl-bdr);font-size: 1.4rem;font-weight: 400;color: var(--dark);letter-spacing: -0.05em;text-align: left;background: #FFFFFF;}
+.board_write > * > tr > th {height: 4rem;padding: 0.8rem 1rem 0.8rem 2.5rem;font-weight: 500;background: var(--tbl-th);}
+.board_write input[type="text"], .board_write input[type="password"], .board_write select {width: 100%;}
+.board_write .btn {min-width: 5rem;}</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab07">
+                <h2 class="section_main_ttl">기본형</h2>
+                <section class="ui_basic_info">
+                    <dl>
+                        <dt>1. q&a에 적용되는 js: <span class="impact">기타 > accordion 참고</span></dt>
+                    </dl>
+                </section>
+                <h3 class="section_sub_ttl">전체 오픈 o</h3>
+                <div class="ui_sample" style="width: 360px;">
+                    <div class="faq_list js_accWrap">
+                        <dl class="js_accBox">
+                            <dt class="js_accHead">
+                                <a href="">
+                                    <span>Q.</span>
+                                    질문
+                                    <i class="xi-angle-down-min"></i>
+                                </a>
+                            </dt>
+                            <dd class="js_accCont">
+                                <span>A.</span>
+                                답변
+                            </dd>
+                        </dl>
+                        <dl class="js_accBox">
+                            <dt class="js_accHead">
+                                <a href="">
+                                    <span>Q.</span>
+                                    질문
+                                    <i class="xi-angle-down-min"></i>
+                                </a>
+                            </dt>
+                            <dd class="js_accCont">
+                                <span>A.</span>
+                                답변
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">전체 오픈 x</h3>
+                <div class="ui_sample" style="width: 360px;">
+                    <div class="faq_list js_accWrap_each">
+                        <dl class="js_accBox">
+                            <dt class="js_accHead">
+                                <a href="">
+                                    <span>Q.</span>
+                                    질문
+                                    <i class="xi-angle-down-min"></i>
+                                </a>
+                            </dt>
+                            <dd class="js_accCont">
+                                <span>A.</span>
+                                답변
+                            </dd>
+                        </dl>
+                        <dl class="js_accBox">
+                            <dt class="js_accHead">
+                                <a href="">
+                                    <span>Q.</span>
+                                    질문
+                                    <i class="xi-angle-down-min"></i>
+                                </a>
+                            </dt>
+                            <dd class="js_accCont">
+                                <span>A.</span>
+                                답변
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code07_1_1" class="on">html</li>
+                        <li id="code07_1_2">css</li>
+                        <li id="code07_1_3">js</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code07_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;!-- &lt;div class="faq_list js_accWrap_each"&gt; --&gt;&lt;!-- 전체 오픈 x --&gt;
+&lt;div class="faq_list js_accWrap"&gt;&lt;!-- 전체 오픈 o --&gt;
+    &lt;dl class="js_accBox"&gt;
+        &lt;dt class="js_accHead"&gt;
+            &lt;a href=""&gt;
+                &lt;span&gt;Q.&lt;/span&gt;
+                질문
+                &lt;i class="xi-angle-down-min"&gt;&lt;/i&gt;
+            &lt;/a&gt;
+        &lt;/dt&gt;
+        &lt;dd class="js_accCont"&gt;
+            &lt;span&gt;A.&lt;/span&gt;
+            답변
+        &lt;/dd&gt;
+    &lt;/dl&gt;
+    &lt;dl class="js_accBox"&gt;
+        &lt;dt class="js_accHead"&gt;
+            &lt;a href=""&gt;
+                &lt;span&gt;Q.&lt;/span&gt;
+                질문
+                &lt;i class="xi-angle-down-min"&gt;&lt;/i&gt;
+            &lt;/a&gt;
+        &lt;/dt&gt;
+        &lt;dd class="js_accCont"&gt;
+            &lt;span&gt;A.&lt;/span&gt;
+            답변
+        &lt;/dd&gt;
+    &lt;/dl&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code07_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** board **/
+/* faq */
+.faq_list {position: relative;}
+.faq_list dl {background: #FFFFFF;}
+.faq_list dl:last-of-type {border-bottom: 1px solid var(--black);}
+.faq_list dl dt {position: relative;min-height: 5.1rem;border-top: 1px solid var(--black);}
+.faq_list dl dt a {display: flex;align-items: center;position: relative;width: 100%;height: 100%;padding: 1.5rem 4rem 1.5rem 5rem;font-size: 1.6rem;font-weight: bold;line-height: 1.3;color: var(--dark);}
+.faq_list dl dt span {display: block;position: absolute;left: 2rem;top: 15px;font-size: 1.6rem;font-weight: 900;color: var(--dark);}
+.faq_list dl dt i {position: absolute;right: 1rem;top: 13px;font-size: 2.5rem;color: var(--black);transition: all 0.2s;}
+.faq_list dl dl.on dt, .faq_list dl dt:hover {background: var(--basic-bg);}
+.faq_list dl dl.on dt i {transform: rotate(180deg);}
+.faq_list dl dd {display: none;position: relative;padding: 1.5rem 4rem 1.5rem 5rem;border-top: 1px solid var(--black);font-size: 1.6rem;font-weight: 400;line-height: 1.3;color: var(--dark);}
+.faq_list dl dd span {display: block;position: absolute;left: 2rem;font-size: 1.6rem;font-weight: 900;color: var(--blue);}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code07_1_3">
+                        <pre>
+<code class="line-numbers language-js">// accordion (ex faq)
+$(document).ready(function () {
+    $('.js_accCont').hide();
+    if ($('[class*="js_accWrap"]').length) {
+        $('.js_accHead').click(function () {
+            // if each
+            if ($(this).parents('[class*="js_accWrap"]').hasClass('js_accWrap_each')) {
+                $(this).parents('.js_accBox').siblings('.js_accBox').removeClass('open');
+                $(this).parents('.js_accBox').siblings('.js_accBox').find('.js_accCont').stop().slideUp(200);
+            }
+
+            // open
+            if ($(this).parents('.js_accBox').hasClass('open')) {
+                $(this).parents('.js_accBox').removeClass('open').find('.js_accCont').stop().slideUp(200);
+            } else {
+                $(this).parents('.js_accBox').addClass('open').find('.js_accCont').stop().slideDown(200);
+            }
+            return false;
+        });
+    }
+});</code>
+</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="common_tab_content js_tcont" data-tab="tab08">
+                <h2 class="section_main_ttl">기본형</h2>
+                <h3 class="section_sub_ttl">화면</h3>
+                <div class="ui_sample" style="width: 360px;">
+                    <div class="gallery_wrap mobile">
+                        <ul class="thum_list">
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/mobile/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/mobile/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <figure class="thum_img"><img src="images/mobile/temp_img01.jpg" alt="image"></figure>
+                                    <div class="thum_txt">
+                                        <div class="tit">타이틀</div>
+                                        <div class="date">2022-01-01</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="section_sub_ttl">코드<button class="btn ic btn_code_open">코드 열기</button></h3>
+                <div class="ui_code">
+                    <ul class="js_tmenu">
+                        <li id="code08_1_1" class="on">html</li>
+                        <li id="code08_1_2">css</li>
+                        <li id="code08_1_3">img</li>
+                    </ul>
+                    <div class="js_tcont on" data-tab="code08_1_1">
+                        <pre>
+<code class="line-numbers language-html">&lt;div class="gallery_wrap"&gt;
+    &lt;ul class="thum_list"&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;
+                &lt;figure class="thum_img"&gt;&lt;img src="images/mobile/temp_img01.jpg" alt="image"&gt;&lt;/figure&gt;
+                &lt;div class="thum_txt"&gt;
+                    &lt;div class="tit"&gt;타이틀&lt;/div&gt;
+                    &lt;div class="date"&gt;2022-01-01&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;
+                &lt;figure class="thum_img"&gt;&lt;img src="images/mobile/temp_img01.jpg" alt="image"&gt;&lt;/figure&gt;
+                &lt;div class="thum_txt"&gt;
+                    &lt;div class="tit"&gt;타이틀&lt;/div&gt;
+                    &lt;div class="date"&gt;2022-01-01&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;a href=""&gt;
+                &lt;figure class="thum_img"&gt;&lt;img src="images/mobile/temp_img01.jpg" alt="image"&gt;&lt;/figure&gt;
+                &lt;div class="thum_txt"&gt;
+                    &lt;div class="tit"&gt;타이틀&lt;/div&gt;
+                    &lt;div class="date"&gt;2022-01-01&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code>
+</pre>
+                    </div>
+                    <div class="js_tcont" data-tab="code08_1_2">
+                        <pre>
+<code class="line-numbers language-css">/** board **/
+/* board gallery*/
+.gallery_wrap {position: relative;}
+.gallery_wrap .thum_list {display: flex;flex-wrap: wrap;justify-content: space-between;}
+.gallery_wrap .thum_list li {overflow: hidden;width: 49%;margin-bottom: 1.5rem;border: 1px solid var(--bdr);border-radius: 0.5rem;}
+.gallery_wrap .thum_list li > a {display: block;}
+.gallery_wrap .thum_img {overflow: hidden;position: relative;width: 100%;height: 20rem;}
+.gallery_wrap .thum_img img {width: 100%;height: 100%;object-fit: cover;}
+.gallery_wrap .thum_txt {min-height: 5.6rem;padding: 1rem;background: #ffffff;}
+.gallery_wrap .thum_txt .tit {margin-bottom: 0.7rem;font-size: 1.5rem;font-weight: 500;line-height: 1;color: var(--dark);overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.gallery_wrap .thum_txt .date {font-size: 1.4rem;font-weight: 400;line-height: 1;color: var(--gray);}
+@media screen and (max-width: 480px) {
+    .gallery_wrap .thum_list li {width: 100%;margin-bottom: 1rem;}
+    .gallery_wrap .thum_list li:last-of-type {margin-bottom: 0;}
+}</code>
+</pre>
+                    </div>
+                    <div class="js_tcont li_linenum" data-tab="code08_1_3">
+                        <ul>
+                            <li><a href="images/mobile/temp_img01.jpg" title="Download" download>temp_img01.jpg</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="lib/prism/prism.js"></script>
+</body>
+
+</html>
