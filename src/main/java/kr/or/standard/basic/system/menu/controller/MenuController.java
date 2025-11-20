@@ -5,7 +5,7 @@ import kr.or.standard.basic.common.domain.CmmnDefaultVO;
 import kr.or.standard.basic.common.view.excel.ExcelView;
 import kr.or.standard.basic.system.code.service.CodeService;
 import kr.or.standard.basic.system.code.vo.CodeVO;
-import kr.or.standard.basic.system.contTmpl.vo.ContTmplVO;
+import kr.or.standard.basic.usersupport.contTmpl.vo.ContTmplVO;
 import kr.or.standard.basic.system.menu.servie.MenuService;
 import kr.or.standard.basic.system.menu.vo.MenuVO;
 import lombok.RequiredArgsConstructor;

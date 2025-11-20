@@ -5,7 +5,7 @@ import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
 import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.common.view.excel.ExcelView;
-import kr.or.standard.basic.system.lginPlcy.service.LginPlcyService;
+import kr.or.standard.basic.usersupport.lginPlcy.service.LginPlcyService;
 import kr.or.standard.basic.system.regeps.vo.RegepsVO;
  
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.context.MessageSource;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,7 +34,6 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

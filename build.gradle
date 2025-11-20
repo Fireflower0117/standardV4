@@ -99,6 +99,7 @@ dependencies {
     
     // JSON
     implementation 'org.json:json:20240205'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     
      // xml Bind
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
@@ -106,6 +107,12 @@ dependencies {
     
     // Cache
     implementation 'net.sf.ehcache:ehcache:2.10.9.2'
+    
+    // Seo
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
+    implementation 'org.htmlunit:htmlunit:3.11.0'
+    implementation 'org.htmlunit:htmlunit-cssparser:3.11.0'
+    implementation 'org.jsoup:jsoup:1.17.2'
 }
 
 configurations.all {

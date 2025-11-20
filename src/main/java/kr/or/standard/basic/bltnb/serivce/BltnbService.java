@@ -74,7 +74,8 @@ public class BltnbService {
             } else {
                 returnUrl = "";
             }
-        
+        	
+        	log.info(" return url : {} ", returnUrl); 
             return returnUrl;
     }
     

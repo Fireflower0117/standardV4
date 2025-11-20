@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.mapper.component.RegCdMngMapper">
+                   
+    <!-- 검색 조건 -->
+    <sql id="Where">
+        <if test='searchKeyword !=null and searchKeyword !=""'>
+            <if test='searchCondition ==null or searchCondition == ""'>
+                AND (
+                       UPPER(REG_CD) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                    OR UPPER(REG_CD) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                )
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==1'>
+                AND UPPER(REG_CD) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+        </if>
+
+        <!-- 시도 시군구 읍면동 리 검색 조건 -->
+        <choose>
+            <when test='schCgg != null and schCgg != "" and schUmd != null and schUmd != "" and schRi != null and schRi != ""'>
+                AND REG_CD LIKE CONCAT(#{schSido},#{schCgg},#{schUmd},#{schRi},'%')
+            </when>
+            <when test='schCgg != null and schCgg != "" and schUmd != null and schUmd != ""'>
+                AND REG_CD LIKE CONCAT(#{schSido},#{schCgg},#{schUmd},'%')
+            </when>
+            <when test='schCgg != null and schCgg != ""'>
+                AND REG_CD LIKE CONCAT(#{schSido},#{schCgg},'%')
+            </when>
+            <when test='schSido != null and schSido != ""'>
+                AND REG_CD LIKE CONCAT(#{schSido},'%')
+            </when>
+        </choose>
+
+        <!-- 레벨 -->
+        <if test='schEtc04 !=null and schEtc04 !=""'>
+            AND LVL = #{schEtc04}
+        </if>
+
+
+    </sql>
+
+    <select id="selectCount" parameterType="cmRegCdVO" resultType="cmRegCdVO">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.selectCount */
+        SELECT COUNT(1) regCdCnt
+          FROM T_REG_CD_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+           AND DEL_YN = 'N'
+        </where>
+    </select>
+
+    <select id="selectList" parameterType="cmRegCdVO" resultType="cmRegCdVO">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.selectList */
+        SELECT REG_CD                                           regCd
+             , SIDO_NM                                          sidoNm
+             , CGG_NM                                           cggNm
+             , UMD_NM                                           umdNm
+             , RI_NM                                            riNm
+             , LVL                                              lvl
+             , RNKO                                             rnko
+             , CRE_YMD                                          creYmd
+             , REGR_SERNO                                       regrSerno
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	                regDt
+          FROM T_REG_CD_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+           AND DEL_YN = 'N'
+        </where>
+      ORDER BY REG_CD DESC, RNKO DESC
+         LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+    </select>
+
+    <!-- 엑셀 목록 조회 -->
+    <select id="selectExcelList" parameterType="cmRegCdVO" resultType="cmRegCdVO">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.selectExcelList */
+        SELECT REG_CD                               regCd
+             , SIDO_NM                              sidoNm
+             , CGG_NM                               cggNm
+             , UMD_NM                               umdNm
+             , RI_NM                                riNm
+             , LVL                                  lvl
+             , RNKO                                 rnko
+             , CRE_YMD                              creYmd
+             , REGR_SERNO                           regrSerno
+             , FNC_USER_NM(REGR_SERNO)              regrSerNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	    regDt
+          FROM T_REG_CD_MNG
+         <where>
+           <include refid="Where"/>
+           AND USE_YN = 'Y'
+           AND DEL_YN = 'N'
+         </where>
+         ORDER BY REG_CD DESC
+    </select>
+
+    <!-- 법정동코드 임시테이블에 일괄 등록 -->
+    <insert id="insertList" parameterType="java.util.List">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.insertList */
+        INSERT INTO T_REG_CD_MNG_TMP
+             ( REG_CD
+             , SIDO_NM
+             , CGG_NM
+             , UMD_NM
+             , RI_NM
+             , LVL
+             , RNKO
+             , CRE_YMD
+             , LWPOS_AREA_NM
+             )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+             ( #{item.regCd}
+             , #{item.sidoNm}
+             , #{item.cggNm}
+             , #{item.umdNm}
+             , #{item.riNm}
+             , #{item.lvl}
+             , #{item.rnko}
+             , #{item.creYmd}
+             , #{item.lwposAreaNm}
+             )
+        </foreach>
+    </insert>
+
+    <!-- 임시테이블에서 원본 테이블로 데이터 이동 -->
+    <insert id="insertContents">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.insertContents */
+        INSERT INTO T_REG_CD_MNG
+             ( REG_CD
+             , SIDO_NM
+             , CGG_NM
+             , UMD_NM
+             , RI_NM
+             , LVL
+             , RNKO
+             , CRE_YMD
+             )
+        SELECT REG_CD
+             , SIDO_NM
+             , CGG_NM
+             , UMD_NM
+             , RI_NM
+             , LVL
+             , RNKO
+             , CRE_YMD
+          FROM T_REG_CD_MNG_TMP
+            ON DUPLICATE KEY UPDATE
+               DEL_YN = 'N'
+    </insert>
+
+    <!-- 등록전 전체 DEL_YN = 'Y' 처리-->
+    <update id="deleteContents">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.deleteContents */
+        UPDATE T_REG_CD_MNG
+           SET DEL_YN = 'Y'
+    </update>
+
+    <!-- 삭제되었는데 삭제 일자가 없는 경우 현재 일로 업데이트 -->
+    <update id="updateDelYmdContents">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.updateDelYmdContents */
+        UPDATE T_REG_CD_MNG
+           SET DEL_YMD = NOW()
+         WHERE DEL_YN = 'Y'
+           AND DEL_YMD IS NULL
+    </update>
+
+    <!-- 임시 테이블 데이터 삭제 -->
+    <delete id="deleteTempContents">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.deleteTempContents */
+        DELETE FROM T_REG_CD_MNG_TMP
+    </delete>
+
+
+    <!-- 임시테이블 2차작업 - 시도 -->
+    <update id="updateTempSidoContents">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.updateTempSidoContents */
+        UPDATE T_REG_CD_MNG_TMP A
+          JOIN ( SELECT MAX(B.LWPOS_AREA_NM) 		    LWPOS_AREA_NM
+                      , SUBSTR(B.REG_CD,1,2) 	    REG_CD
+                   FROM T_REG_CD_MNG_TMP B
+                  WHERE B.LVL = 1
+                  GROUP BY SUBSTR(B.REG_CD,1,2)
+               ) B
+            ON SUBSTR(A.REG_CD,1,2) = B.REG_CD
+           SET A.SIDO_NM = B.LWPOS_AREA_NM
+         WHERE A.LVL != 1
+    </update>
+
+    <!-- 임시테이블 2차작업 - 시군구 -->
+    <update id="updateTempCggContents">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.updateTempCggContents */
+        UPDATE T_REG_CD_MNG_TMP A
+          JOIN ( SELECT MAX(B.LWPOS_AREA_NM) 		 LWPOS_AREA_NM
+                      , SUBSTR(B.REG_CD,1,5) 	 REG_CD
+                   FROM T_REG_CD_MNG_TMP B
+                  WHERE B.LVL = 2
+                  GROUP BY SUBSTR(B.REG_CD,1,5)
+               ) B
+            ON SUBSTR(A.REG_CD,1,5) = B.REG_CD
+           SET A.CGG_NM = B.LWPOS_AREA_NM
+         WHERE A.LVL != 1
+           AND A.LVL != 2
+    </update>
+
+    <!-- 임시테이블 2차작업 - 읍면동 -->
+    <update id="updateTempUmdContents">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.updateTempUmdContents */
+        UPDATE T_REG_CD_MNG_TMP A
+          JOIN ( SELECT MAX(B.LWPOS_AREA_NM) 		 LWPOS_AREA_NM
+                      , SUBSTR(B.REG_CD,1,8) 	 REG_CD
+                   FROM T_REG_CD_MNG_TMP B
+                  WHERE B.LVL = 3
+                  GROUP BY SUBSTR(B.REG_CD,1,8)
+               ) B
+            ON SUBSTR(A.REG_CD,1,8) = B.REG_CD
+           SET A.UMD_NM = B.LWPOS_AREA_NM
+         WHERE A.LVL = 4
+    </update>
+
+    <!-- 시도 시군구 읍면동 리 select box용 조회 -->
+    <select id="selectRegList" parameterType="cmRegCdVO" resultType="cmRegCdVO">
+        /* com.opennote.standard.mapper.component.RegCdMngMapper.selectRegList */
+        SELECT A.*
+             , SUBSTRING(A.REG_CD,1,2)			    AS sidoCd
+             , SUBSTRING(A.REG_CD,3,3)			    AS cggCd
+             , SUBSTRING(A.REG_CD,6,3)			    AS umdCd
+             , SUBSTRING(A.REG_CD,9,2)			    AS riCd
+          FROM (SELECT REG_CD
+                     , SIDO_NM					AS sidoNm
+                     , CGG_NM					AS cggNm
+                     , UMD_NM  					AS umdNm
+                     , RI_NM  					AS riNm
+                  FROM T_REG_CD_MNG
+         WHERE LVL = #{lvl}
+           AND USE_YN = 'Y'
+           AND DEL_YN = 'N'
+      <!-- 시도, 시군구에 따른 읍면동조회 -->
+      <if test="regCd != null and regCd != ''">
+           AND REG_CD LIKE CONCAT(#{regCd},'%')
+      </if>
+      <choose>
+          <when test="sort == 'DESC'">
+      ORDER BY SIDO_NM DESC, CGG_NM DESC, UMD_NM DESC
+          </when>
+          <otherwise>
+      ORDER BY SIDO_NM ASC, CGG_NM ASC, UMD_NM ASC
+          </otherwise>
+      </choose>
+          ) A
+    </select>
+
+</mapper>

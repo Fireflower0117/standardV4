@@ -87,15 +87,24 @@ public class CmmnDefaultDao {
         log.info("[DAO-INSERT-LIST DEFAULT COMPLETE] qid : {}, effRows : {}", qid, effRows );
         return effRows;
     }
-
+    
     public int insert(String qid, CmmnDefaultVO vo) { 
         log.info("[DAO-INSERT DEFAULT] qid : {} , vo : {}", qid, vo);
         int effCnt = sqlsession.insert(qid, vo);
         vo.setEffCnt(effCnt); 
         return effCnt;
     } 
-     
- 
+    
+    public int insert(String qid) {
+        return insert(qid , new CmmnDefaultVO() );
+    }
+    
+    public int insertList(String qid, List<? extends CmmnDefaultVO> voList) {
+        log.info("[DAO-INSERTLIST DEFAULT] qid : {} , size : {} ", qid , voList.size() );
+        int effRows = sqlsession.insert(qid, voList);
+        log.info("[DAO-INSERTLIST DEFAULT COMPLETE] qid : {}, effRows : {}", qid, effRows );
+        return effRows;
+    } 
 
     /***************************************************************************************************************/
     /*******************************            UPDATE     UPDATE      UPDATE       ********************************/
@@ -116,6 +125,10 @@ public class CmmnDefaultDao {
         vo.setEffCnt(effCnt); 
         return effCnt;
     }
+     
+    public int update(String qid) {
+        return update(qid , new CmmnDefaultVO() );
+    }
 
     /***************************************************************************************************************/
     /*******************************            DELETE     DELETE      DELETE       ********************************/
@@ -129,10 +142,12 @@ public class CmmnDefaultDao {
         log.info("[DAO-DELETE-LIST DEFAULT COMPLETE] qid : {} , effRows : {}", qid, effRows);
         return effRows;
     }
+    
 
     public int delete(String qid, CmmnDefaultVO vo) { 
         log.info("[DAO-DELETE DEFAULT] qid : {} , vo : {}", qid, vo);
         int effCnt = sqlsession.delete(qid, vo);
+        log.info("[DAO-DELETE COMPLETE] qid : {} , effCnt : {}", qid, effCnt);
         vo.setEffCnt(effCnt); 
         return effCnt;
     }
@@ -140,8 +155,12 @@ public class CmmnDefaultDao {
      public int delete(String qid, String str) { 
         log.info("[DAO-DELETE DEFAULT] qid : {} , str : {}", qid, str);
         int effCnt = sqlsession.delete(qid, str);
-        log.info("[DAO-DELETE DEFAULT] effCnt : {}", effCnt);
+        log.info("[DAO-DELETE COMPLETE] qid : {} , effCnt : {}", qid, effCnt);
         return effCnt;
+    }
+    
+    public int delete(String qid) {
+        return delete(qid , new CmmnDefaultVO() );
     }
   
   

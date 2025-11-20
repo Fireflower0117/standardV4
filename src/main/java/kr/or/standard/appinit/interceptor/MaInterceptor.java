@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import kr.or.standard.basic.login.vo.LoginVO;
-import kr.or.standard.basic.system.lginPlcy.service.LginPlcyService;
-import kr.or.standard.basic.system.lginPlcy.vo.LginPlcyVO;
+import kr.or.standard.basic.usersupport.lginPlcy.service.LginPlcyService;
+import kr.or.standard.basic.usersupport.lginPlcy.vo.LginPlcyVO;
 import kr.or.standard.basic.system.logo.service.LogoService;
 import kr.or.standard.basic.system.logo.vo.LogoVO;
 import kr.or.standard.basic.system.menu.servie.MenuService;

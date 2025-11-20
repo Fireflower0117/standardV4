@@ -5,7 +5,7 @@ import kr.or.standard.basic.common.domain.CmmnDefaultVO;
 import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.system.mngr.rstMng.service.RstMngService;
 import kr.or.standard.basic.system.mngr.rstMng.vo.RstMngVO;
-import kr.or.standard.basic.user.vo.UserVO;
+import kr.or.standard.basic.usersupport.user.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

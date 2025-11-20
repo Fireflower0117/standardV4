@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.mapper.basic.SeoMngMapper">
+	
+	<sql id="Where">
+		<if test="schEtc02 !=null and schEtc02 !=''">
+			<if test="schEtc01 ==null or schEtc01 == ''">
+				AND (UPPER(PROB_TAG) LIKE CONCAT('%',UPPER(#{schEtc02}),'%')
+				 OR UPPER(PROB_CONT) LIKE CONCAT('%',UPPER(#{schEtc02}),'%'))
+			</if>
+			<if test="schEtc01 !=null and schEtc01 !='' and schEtc01==1">
+				AND UPPER(PROB_TAG) LIKE CONCAT('%',UPPER(#{schEtc02}),'%')
+			</if>
+			<if test="schEtc01 !=null and schEtc01 !='' and schEtc01==2">
+				AND UPPER(PROB_CONT) LIKE CONCAT('%',UPPER(#{schEtc02}),'%')
+			</if>
+		</if>
+	</sql>
+	
+	<!-- seo 데이터 조회 -->
+	<select id="selectContents" parameterType="seoVO" resultType="seoVO">
+		/* com.opennote.standard.mapper.basic.SeoMngMapper.selectContents */
+		SELECT SEO_SERNO                                 seoSerno
+		     , SEO_TYPE									 seoType
+			 , DOMAIN_URL                                domainUrl
+			 , META_TAGE_RESULT                          metaTageResult
+			 , SITEMAP_RESULT                            sitemapResult
+			 , ROBOTS_RESULT                             robotsResult
+			 , FRAME_USE_RESULT            				 frameUseResult
+			 , IMGOPTI_RESULT                            imgOptiResult
+			 , SNSOPTI_RESULT                            snsOptiResult
+			 , MOBILE_YN                                 mobileYn
+			 , LOADTIME                                  loadTime
+			 , TITLE_META_YN                             titleMetaYn
+			 , META_TITLE_EQUAL_YN						 metaTitleEqualYn
+			 , META_TITLE_OPT_YN						 metaTitleOptYn
+			 , META_DESCRP_OPT_YN						 metaDescrpOptYn
+			 , DESCRIPTION_META_YN                       descriptionMetaYn
+			 , CHARSET_META_YN                           charsetMetaYn
+			 , UACOMPATIBLE_META_YN                      uaCompatibleMetaYn
+			 , VIEWPORT_META_YN                          viewportMetaYn
+			 , OG_TYPE_META_YN                           ogTypeMetaYn
+			 , OG_TITLE_META_YN                          ogTitleMetaYn
+			 , OG_DESCRIPTION_META_YN                    ogDescriptionMetaYn
+			 , OG_IMAGE_META_YN                          ogImageMetaYn
+			 , OG_URL_META_YN                            ogUrlMetaYn
+			 , CON_YN                                    conYn
+			 , IMG_UPRIGHTUSE_RESULT                     imgUprightUseResult
+			 , IMG_UPRIGHTUSE_MESSAGE                    imgUprightUseMessage
+			 , IMG_NMOPTI_RESULT                         imgNmOptiResult
+			 , IMG_NMOPTI_MESSAGE                        imgNmOptiMessage
+			 , IMG_CAPTION_RESULT                        imgCaptionResult
+			 , IMG_CAPTION_MESSAGE                       imgCaptionMessage
+			 , IMG_RESPONOPTI_RESULT                     imgResponOptiResult
+			 , IMG_RESPONOPTI_MESSAGE                    imgResponOptiMessage
+			 , IMG_OVER_YN                               imgOverYn
+			 , IMG_OVER_MESSAGE                          imgOverMessage
+			 , URL_STRUCT_RESULT                         urlStructResult
+			 , URL_HYPHEN_YN                             urlHyphenYn
+			 , URL_ASCII_YN                              urlAscIIYn
+			 , URL_LOGNID_YN                             urlLognIdyn
+			 , HREFLANG_YN                               hreflangYn
+			 , HREFLANG_MESSAGE                          hreflangMessage
+			 , CANONICAL_YN                              canonicalYn
+			 , LOAD_TIME_RESULT                          loadTimeResult
+			 , HEADING_ONE_RESULT                        headingOneResult
+			 , HEADING_ONE_YN                            headingOneYn
+			 , HEADING_ONE_CONT_YN			             headingOneContYn
+			 , HEADING_ONE_MESSAGE                       headingOneMessage
+			 , HEADING_OTHER_RESULT                      headingOtherResult
+			 , HEADING_OTHER_YN                          headingOtherYn
+			 , HEADING_OTHER_CONT_YN		             headingOtherContYn
+			 , HEADING_OTHER_MESSAGE                     headingOtherMessage
+			 , LINK_OPT_FNC_YN		                	 linkOptFncYn
+			 , LINK_OPT_ATAG_YN		                	 linkOptATagYn
+			 , LINK_OPT_ATAG_TXT_YN	                	 linkOptATagTxtYn
+		     , FONT_SIZE_OPT_YN							 fontSizeOptYn
+			 , DATE_FORMAT(REG_DT,'%Y-%m-%d %H:%i')      regDt
+			 , REGR_SERNO						         regrSerno
+		  FROM T_SEO_MNG 
+		 WHERE SEO_SERNO = #{seoSerno}
+		   AND USE_YN = 'Y'
+		 ORDER BY SEO_SERNO DESC
+	</select>
+	
+	
+	<!-- 서브 리스트 조회 -->
+	<select id="selectSubList" parameterType="seoVO" resultType="seoVO">
+		/* com.opennote.standard.mapper.basic.SeoMngMapper.selectSubList */
+		SELECT SEO_SERNO								seoSerno	
+			 , OPT_TYPE									optType
+			 , OPT_TYPE_DE_NO							optTypeDeNo
+			 , PROB_TAG									probTag
+			 , PROB_CONT								probCont
+			 , REGR_SERNO								regrSerno
+			 , PROB_TIPS								probTips
+			 , PROB_EX									probEx
+		  FROM T_SEO_MNG_SUB
+		<where>
+			<include refid="Where"/>
+		   AND SEO_SERNO = #{seoSerno}
+		   AND OPT_TYPE = #{optType}
+		</where>
+		ORDER BY OPT_TYPE_DE_NO
+		LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+	</select>
+	
+	
+	<!-- 서브 리스트 건수 조회 -->
+	<select id="selectSubCount" parameterType="seoVO" resultType="seoVO">
+		/* com.opennote.standard.mapper.basic.SeoMngMapper.selectSubCount */
+		SELECT COUNT(1)	seoCount 							
+		  FROM T_SEO_MNG_SUB
+		<where>
+		   <include refid="Where"/>
+		   AND SEO_SERNO = #{seoSerno}
+		   AND OPT_TYPE = #{optType}
+		</where>
+	</select>
+	
+	
+	
+	<!-- seo 데이터 등록 -->
+	<insert id="insertContents" parameterType="seoVO">
+		/* com.opennote.standard.mapper.basic.SeoMngMapper.insertContents */
+		INSERT INTO T_SEO_MNG(
+			   DOMAIN_URL
+			 , SEO_TYPE
+			 , META_TAGE_RESULT
+			 , SITEMAP_RESULT
+			 , ROBOTS_RESULT
+			 , FRAME_USE_RESULT
+			 , IMGOPTI_RESULT
+			 , SNSOPTI_RESULT
+			 , MOBILE_YN
+			 , LOADTIME
+			 , TITLE_META_YN
+			 , META_TITLE_EQUAL_YN
+			 , META_TITLE_OPT_YN
+			 , META_DESCRP_OPT_YN
+			 , DESCRIPTION_META_YN
+			 , CHARSET_META_YN
+			 , UACOMPATIBLE_META_YN
+			 , VIEWPORT_META_YN
+			 , OG_TYPE_META_YN
+			 , OG_TITLE_META_YN
+			 , OG_DESCRIPTION_META_YN
+			 , OG_IMAGE_META_YN
+			 , OG_URL_META_YN
+			 , CON_YN
+			 , IMG_UPRIGHTUSE_RESULT
+			 , IMG_UPRIGHTUSE_MESSAGE
+			 , IMG_NMOPTI_RESULT
+			 , IMG_NMOPTI_MESSAGE
+			 , IMG_CAPTION_RESULT
+			 , IMG_CAPTION_MESSAGE
+			 , IMG_RESPONOPTI_RESULT
+			 , IMG_RESPONOPTI_MESSAGE
+			 , IMG_OVER_YN
+			 , IMG_OVER_MESSAGE
+			 , URL_STRUCT_RESULT
+			 , URL_HYPHEN_YN
+			 , URL_ASCII_YN
+			 , URL_LOGNID_YN
+			 , HREFLANG_YN
+			 , HREFLANG_MESSAGE
+			 , CANONICAL_YN
+			 , LOAD_TIME_RESULT
+			 , HEADING_ONE_YN
+			 , HEADING_ONE_CONT_YN
+			 , HEADING_ONE_RESULT
+			 , HEADING_ONE_MESSAGE
+			 , HEADING_OTHER_YN
+			 , HEADING_OTHER_CONT_YN
+			 , HEADING_OTHER_RESULT
+			 , HEADING_OTHER_MESSAGE
+			 , LINK_OPT_FNC_YN
+			 , LINK_OPT_ATAG_YN
+			 , LINK_OPT_ATAG_TXT_YN
+			 , FONT_SIZE_OPT_YN
+			 , REGR_SERNO
+		)
+		VALUES (
+			   #{domainUrl }
+			 , #{seoType}
+			 , #{metaTageResult }
+			 , #{sitemapResult }
+			 , #{robotsResult }
+			 , #{frameUseResult }
+			 , #{imgOptiResult }
+			 , #{snsOptiResult }
+			 , #{mobileYn }
+			 , #{loadTime }
+			 , #{titleMetaYn }
+			 , #{metaTitleEqualYn }
+			 , #{metaTitleOptYn }
+			 , #{metaDescrpOptYn }
+			 , #{descriptionMetaYn }
+			 , #{charsetMetaYn }
+			 , #{uaCompatibleMetaYn }
+			 , #{viewportMetaYn }
+			 , #{ogTypeMetaYn }
+			 , #{ogTitleMetaYn }
+			 , #{ogDescriptionMetaYn }
+			 , #{ogImageMetaYn }
+			 , #{ogUrlMetaYn }
+			 , #{conYn }
+			 , #{imgUprightUseResult }
+			 , #{imgUprightUseMessage}
+			 , #{imgNmOptiResult }
+			 , #{imgNmOptiMessage }
+			 , #{imgCaptionResult }
+			 , #{imgCaptionMessage }
+			 , #{imgResponOptiResult }
+			 , #{imgResponOptiMessage}
+			 , #{imgOverYn }
+			 , #{imgOverMessage }
+			 , #{urlStructResult }
+			 , #{urlHyphenYn }
+			 , #{urlAscIIYn }
+			 , #{urlLognIdyn }
+			 , #{hreflangYn}
+			 , #{hreflangMessage}
+			 , #{canonicalYn}
+			 , #{loadTimeResult}
+			 , #{headingOneYn}
+			 , #{headingOneContYn}
+			 , #{headingOneResult}
+			 , #{headingOneMessage}
+			 , #{headingOtherYn}
+			 , #{headingOtherContYn}
+			 , #{headingOtherResult}
+			 , #{headingOtherMessage}
+			 , #{linkOptFncYn}
+			 , #{linkOptATagYn}
+			 , #{linkOptATagTxtYn}
+			 , #{fontSizeOptYn}
+			 , #{loginSerno}
+		)
+		<selectKey resultType="string" keyProperty="seoSerno" order="AFTER">
+	        SELECT LAST_INSERT_ID()
+	    </selectKey> 
+	</insert>
+	<!-- seo 데이터 서브 데이터 등록 -->
+	<insert id="insertSubContents" parameterType="seoVO">
+        /* com.opennote.standard.mapper.basic.SeoMngMapper.insertSubContents */
+        INSERT INTO T_SEO_MNG_SUB(
+   			   SEO_SERNO
+			 , OPT_TYPE
+			 , OPT_TYPE_DE_NO
+			 , PROB_TAG
+			 , PROB_CONT
+			 , PROB_TIPS
+			 , PROB_EX
+			 , REGR_SERNO
+        )
+        VALUES
+        <foreach collection="imgSubList" item="item" separator=",">
+        (
+              #{seoSerno}
+            , #{item.optType}
+            , #{item.optTypeDeNo}
+            , #{item.probTag}
+            , #{item.probCont}
+            , #{item.probTips}
+            , #{item.probEx}
+            , #{loginSerno}
+        )
+        </foreach>
+    </insert>
+	
+	<!-- 게시글 삭제 -->
+	<update id="deleteContents" parameterType="seoVO">
+		/* com.opennote.standard.mapper.basic.SeoMngMapper.deleteContents */
+		UPDATE T_SEO_MNG
+		   SET USE_YN = 'N'
+		 WHERE SEO_SERNO = #{seoSerno}
+	</update>
+	
+</mapper>

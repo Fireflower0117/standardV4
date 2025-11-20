@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="standard.mapper.component.SrvyMngMapper">
+
+	<sql id="Where">
+		<if test="schEtc01 != null and schEtc01 != ''">
+			<if test="schEtc01 ==1">
+				AND DATE_FORMAT(NOW(), '%Y.%m.%d') <![CDATA[ < ]]>  DATE_FORMAT(A.SRVY_STRT_DT, '%Y.%m.%d') OR A.SRVY_STS = 'N'
+			</if>
+			<if test="schEtc01 ==2">
+				AND (DATE_FORMAT(NOW(), '%Y.%m.%d') <![CDATA[ >= ]]>  DATE_FORMAT(A.SRVY_STRT_DT, '%Y.%m.%d')
+				AND DATE_FORMAT(NOW(), '%Y.%m.%d') <![CDATA[ <= ]]> DATE_FORMAT(A.SRVY_END_DT, '%Y.%m.%))
+				AND A.SRVY_STS = 'Y'
+			</if>
+			<if test="schEtc01 ==3">
+				AND A.SRVY_END_DT + 1 <![CDATA[ < ]]> NOW() AND SRVY_STS = 'Y'
+			</if>
+		</if>
+		<if test="schEtc02 != null and schEtc02 != ''">
+			AND A.SRVY_STS = #{schEtc02}
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition ==null or searchCondition ==''">
+				AND (UPPER(A.SRVY_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%') OR UPPER(A.SRVY_EXPL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition ==1">
+				AND UPPER(A.SRVY_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test="searchCondition !=null and searchCondition !='' and searchCondition ==2">
+				AND UPPER(A.SRVY_EXPL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+		</if>
+	</sql>
+	
+	<!-- 게시글 건수 조회 -->
+	<select id="selectCount" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectCount */
+		SELECT COUNT(A.SRVY_SERNO)  srvyCount
+		  FROM T_SRVY_MNG A
+	    <where> 
+		     <include refid="Where"/>
+		 AND A.USE_YN = 'Y'
+		</where>
+	</select>
+
+	<!-- 게시글 목록 조회 -->
+	<select id="selectList" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+	   /* standard.mapper.component.SrvyMngMapper.selectList */
+		SELECT
+			   A.SRVY_SERNO 													srvySerno
+			 , A.SRVY_NM 														srvyNm
+			 , A.SRVY_EXPL 														srvyExpl
+			 , A.ATCH_FILE_ID													atchFileId
+			 , DATE_FORMAT(A.SRVY_STRT_DT, '%Y.%m.%d')							srvyStrtDt
+			 , DATE_FORMAT(A.SRVY_END_DT, '%Y.%m.%d')							srvyEndDt
+			 , A.REGR_SERNO 													regrSeno
+			 , FNC_USER_NM(A.REGR_SERNO) 										regrNm
+			 , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')	 							regDt
+			 , A.SRVY_MTHD 														srvyMthd
+			 , A.SRVY_OVLP_YN 													srvyOvlpYn
+			 , A.SRVY_OVLP_CNT 													srvyOvlpCnt
+			 , A.SRVY_RSLT_YN 													srvyRsltYn
+			 , A.SRVY_STS 														srvySts
+			 , CASE WHEN A.SRVY_END_DT + 1 <![CDATA[ < ]]> NOW() AND A.SRVY_STS = 'Y' THEN '종료'
+	  		        ELSE CASE WHEN DATE_FORMAT(NOW(), '%Y.%m.%d') BETWEEN DATE_FORMAT(A.SRVY_STRT_DT, '%Y.%m.%d') AND DATE_FORMAT(A.SRVY_END_DT, '%Y.%m.%d')
+			   	    	           AND A.SRVY_STS = 'Y' THEN '진행중'
+		   	             ELSE '대기'
+		   	   		END
+	  		   END 																srvyIng
+	  		 , ( SELECT COUNT(B.SRVY_ANS_SERNO) FROM T_SRVY_RPLY_MNG B WHERE B.SRVY_SERNO = A.SRVY_SERNO AND B.REGR_SERNO = IFNULL(#{loginSerno},0)) srvyAnsCnt 
+		  FROM T_SRVY_MNG A
+	     <where> 
+	           <include refid="Where"/>
+	       AND A.USE_YN = 'Y'
+	     </where>
+	  ORDER BY A.SRVY_SERNO DESC
+	     LIMIT #{firstRecordIndex} , #{recordCountPerPage}	
+	</select>
+	
+	<!-- 게시글 엑셀 다운로드 -->
+	<select id="selectExcelList" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+	   /* standard.mapper.component.SrvyMngMapper.selectExcelList */
+		SELECT
+			   IFNULL(A.SRVY_NM,'-') 											srvyNm
+			 , IFNULL(A.SRVY_EXPL,'-') 											srvyExpl
+			 , IFNULL(DATE_FORMAT(A.SRVY_STRT_DT, '%Y.%m.%d'),'-')				srvyStrtDt
+			 , IFNULL(DATE_FORMAT(A.SRVY_END_DT, '%Y.%m.%d'),'-')				srvyEndDt
+			 , IFNULL(FNC_USER_NM(A.REGR_SERNO),'-') 							regrNm
+			 , IFNULL(DATE_FORMAT(A.REG_DT, '%Y.%m.%d'),'-')	 				regDt
+			 , IFNULL(FNC_USER_NM(A.UPDR_SERNO),'-') 							updrNm
+			 , IFNULL(DATE_FORMAT(A.UPD_DT, '%Y.%m.%d'),'-')	 				updDt
+			 , CASE WHEN A.SRVY_END_DT + 1 <![CDATA[ < ]]> NOW() AND A.SRVY_STS = 'Y' THEN '종료'
+	  		        ELSE CASE WHEN DATE_FORMAT(NOW(), '%Y.%m.%d') BETWEEN DATE_FORMAT(A.SRVY_STRT_DT, '%Y.%m.%d') AND DATE_FORMAT(A.SRVY_END_DT, '%Y.%m.%d')
+			   	    	           AND A.SRVY_STS = 'Y' THEN '진행중'
+		   	             ELSE '대기'
+		   	   		END
+	  		   END 																srvyIng
+		  FROM T_SRVY_MNG A
+	     <where> 
+	           <include refid="Where"/>
+	       AND A.USE_YN = 'Y'
+	     </where>
+	  ORDER BY A.SRVY_SERNO DESC
+	</select>
+	
+	<!-- 설문조사 상세보기 항목별 엑셀 다운로드 -->
+	<select id="selectQstExcelList" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectQstExcelList */
+    	SELECT A.SRVY_QST_TITL srvyQstTitl
+             , CASE WHEN A.SRVY_ANS_CG_VAL = '1' THEN CONCAT('단답형(',B.SRVY_ITM_TP_VAL_1,'자)')
+                    WHEN A.SRVY_ANS_CG_VAL = '2' THEN '장문형'
+                    WHEN A.SRVY_ANS_CG_VAL = '3' THEN B.SRVY_QST_ITM_CTT
+                    WHEN A.SRVY_ANS_CG_VAL = '4' THEN B.SRVY_QST_ITM_CTT
+                    WHEN A.SRVY_ANS_CG_VAL = '5' THEN CONCAT('파일첨부',B.SRVY_QST_ITM_CTT)
+                    WHEN A.SRVY_ANS_CG_VAL = '6' THEN CONCAT('이미지',B.SRVY_QST_ITM_CTT)
+                    WHEN A.SRVY_ANS_CG_VAL = '7' THEN CONCAT(B.SRVY_ITM_TP_VAL_1,': ',B.SRVY_ITM_TP_VAL_2,'~',B.SRVY_ITM_TP_VAL_3,' :',B.SRVY_ITM_TP_VAL_4)
+                    WHEN A.SRVY_ANS_CG_VAL = '8' THEN CONCAT(B.SRVY_ITM_TP_VAL_1,' / ',B.SRVY_ITM_TP_VAL_2)
+					WHEN A.SRVY_ANS_CG_VAL = '9' THEN B.SRVY_QST_ITM_CTT
+                ELSE ''   
+                END srvyQstItmCtt 
+              , CONCAT(CAST((SELECT COUNT(SRVY_ANS_SERNO) 
+                    		   FROM T_SRVY_RPLY_MNG
+                              WHERE A.SRVY_QST_SERNO = SRVY_QST_SERNO 
+                                AND SRVY_QST_ITM_SERNO = SRVY_ANS_CTT 
+                                AND USE_YN = 'Y' ) AS VARCHAR(5)),'건') srvyAnsCnt
+           FROM T_SRVY_QST_MNG A
+LEFT OUTER JOIN T_SRVY_QST_ITM_MNG B
+             ON A.SRVY_QST_SERNO = B.SRVY_QST_SERNO
+            AND B.USE_YN = 'Y'
+          WHERE A.SRVY_SERNO = #{srvySerno}
+            AND A.USE_YN = 'Y'
+       ORDER BY A.SRVY_QST_SERNO, B.SRVY_QST_ITM_SERNO
+	</select>
+	
+	<!-- 설문조사 상세보기 참여자별 엑셀 다운로드 -->
+	<select id="selectRplyExcelList" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectRplyExcelList */
+    	SELECT
+               FNC_USER_NM(E.REGR_SERNO) regrNm
+             , E.REG_DT regDt
+             , <foreach collection="qstList" item="item" separator="," index="index">
+			   MAX(IF(E.SRVY_QST_SERNO = #{item.srvyQstSerno}, E.SRVY_QST_ITM_CTT, NULL))  q${index}
+               </foreach>
+          FROM ( SELECT  
+                        B.REGR_SERNO REGR_SERNO
+                      , B.REG_DT REG_DT
+                      , B.SRVY_QST_SERNO SRVY_QST_SERNO
+                      , CASE WHEN A.SRVY_ANS_CG_VAL IN ('1','2','7') THEN B.SRVY_ANS_CTT
+                     		 WHEN A.SRVY_ANS_CG_VAL IN ('3') THEN IF(C.SRVY_QST_ITM_CTT = '기타',CONCAT('기타 : ',B.SRVY_ANS_CTT_ETC),C.SRVY_QST_ITM_CTT)
+                    		 WHEN A.SRVY_ANS_CG_VAL IN ('4') THEN GROUP_CONCAT(IF(C.SRVY_QST_ITM_CTT = '기타',CONCAT('기타 : ',B.SRVY_ANS_CTT_ETC),C.SRVY_QST_ITM_CTT))
+                    		 WHEN A.SRVY_ANS_CG_VAL = '5' THEN ( SELECT RL_FILE_NM FROM t_atch_file_mng WHERE ATCH_FILE_ID = B.SRVY_ANS_CTT AND FILE_SEQO = 0)
+                    		 WHEN A.SRVY_ANS_CG_VAL = '6' THEN ( SELECT RL_FILE_NM FROM t_atch_file_mng WHERE ATCH_FILE_ID = C.SRVY_QST_ITM_CTT AND FILE_SEQO = 0)
+                    		 WHEN A.SRVY_ANS_CG_VAL = '8' THEN GROUP_CONCAT(CONCAT(C.SRVY_ITM_TP_VAL_1,' ',C.SRVY_ITM_TP_VAL_2))
+                    		 WHEN A.SRVY_ANS_CG_VAL = '9' THEN GROUP_CONCAT(C.SRVY_QST_ITM_CTT)
+                        ELSE ''
+                    END SRVY_QST_ITM_CTT
+                   FROM T_SRVY_RPLY_MNG B
+        LEFT OUTER JOIN T_SRVY_QST_MNG A
+                     ON B.SRVY_SERNO = A.SRVY_SERNO
+                    AND B.SRVY_QST_SERNO = A.SRVY_QST_SERNO
+        LEFT OUTER JOIN ( SELECT 
+								 SRVY_QST_ITM_SERNO
+							   , SRVY_SERNO
+							   , SRVY_QST_SERNO
+							   , SRVY_ITM_TP_VAL_1
+							   , SRVY_ITM_TP_VAL_2
+							   , SRVY_QST_ITM_CTT
+						    FROM T_SRVY_QST_ITM_MNG D
+						   WHERE SRVY_SERNO = D.SRVY_SERNO
+							 AND D.SRVY_QST_SERNO IN (SELECT SRVY_QST_SERNO FROM T_SRVY_QST_MNG WHERE SRVY_SERNO = #{srvySerno} AND SRVY_ANS_CG_VAL IN ('3','4','6','7','8','9'))
+	           		  ) C
+                     ON B.SRVY_ANS_CTT = CAST(C.SRVY_QST_ITM_SERNO AS VARCHAR(5))
+                    AND B.SRVY_SERNO = C.SRVY_SERNO
+                  WHERE B.SRVY_SERNO = #{srvySerno}
+                    AND A.SRVY_ANS_CG_VAL IN ('1','2','3','4','5','6','7','8','9')
+       	       GROUP BY B.REGR_SERNO, B.REG_DT, B.SRVY_QST_SERNO,A.SRVY_ANS_CG_VAL      	 
+       	       ) E
+        GROUP BY E.REGR_SERNO,E.REG_DT
+	</select>
+	
+	<!-- 게시글 상세조회 -->
+	<select id="selectContents" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectContents */
+		SELECT
+			   A.SRVY_SERNO 								srvySerno
+			 , A.SRVY_NM 									srvyNm
+			 , A.SRVY_EXPL 									srvyExpl
+			 , A.ATCH_FILE_ID 								atchFileId
+			 , DATE_FORMAT(A.SRVY_STRT_DT, '%Y.%m.%d')		srvyStrtDt
+			 , DATE_FORMAT(A.SRVY_END_DT, '%Y.%m.%d')		srvyEndDt
+			 , A.REGR_SERNO 								regrSeno
+			 , FNC_USER_NM(A.REGR_SERNO) 					regrNm
+			 , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')	 		regDt
+			 , A.SRVY_MTHD 									srvyMthd
+			 , A.SRVY_OVLP_YN 								srvyOvlpYn
+			 , A.SRVY_OVLP_CNT 								srvyOvlpCnt
+			 , A.SRVY_RSLT_YN 								srvyRsltYn
+			 , A.SRVY_STS 									srvySts
+			 , CASE WHEN DATE_FORMAT(A.SRVY_STRT_DT, '%Y.%m.%d') <![CDATA[ <= ]]> DATE_FORMAT(NOW(),'%Y.%m.%d') AND DATE_FORMAT(A.SRVY_END_DT, '%Y.%m.%d') <![CDATA[ >= ]]> DATE_FORMAT(NOW(),'%Y.%m.%d') THEN 'Y'
+					ELSE 'N'
+			   END 											srvyYn
+			 , CASE WHEN COUNT(B.SRVY_ANS_SERNO) >  0 THEN 'N'
+				    ELSE 'Y'
+			   END 											srvyUpdateYn
+		  FROM T_SRVY_MNG A
+	 LEFT JOIN T_SRVY_RPLY_MNG B
+	 		ON A.SRVY_SERNO = B.SRVY_SERNO
+	 	   AND B.USE_YN = 'Y'
+		<where>
+			   A.SRVY_SERNO = #{srvySerno}
+		   AND A.USE_YN = 'Y'
+		</where>
+	</select>
+	
+	<!-- 설문조사 섹션 목록 조회 -->
+	<select id="selectSctnList" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectSctncList */
+		SELECT
+			   SRVY_SCTN_SERNO 		srvySctnSerno
+			 , SRVY_SERNO 		 	srvySerno
+			 , SRVY_NEXT_SCTN_NO 	srvyNextSctnNo
+			 , SRVY_SCTN_TITL 		srvySctnTitl
+			 , SRVY_SCTN_CTT 		srvySctnCtt
+			 , SRVY_SCTN_NO 		srvySctnNo
+		  FROM T_SRVY_SCTN_MNG
+		 <where>
+		 	   SRVY_SERNO = #{srvySerno}
+		   AND USE_YN ='Y'
+		 </where>
+	  ORDER BY SRVY_SCTN_SERNO
+	</select>
+	
+	<!-- 설문조사 항목 목록조회 -->
+	<select id="selectQstList" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectQstList */
+		SELECT
+			   SRVY_QST_SERNO 			srvyQstSerno
+			 , SRVY_SERNO 				srvySerno
+			 , SRVY_SCTN_SERNO 			srvySctnSerno
+			 , SRVY_QST_TITL 			srvyQstTitl
+			 , SRVY_QST_CTT 			srvyQstCtt
+			 , SRVY_ANS_CG_VAL 			srvyAnsCgVal
+			 , SRVY_NCSR_YN 			srvyNcsrYn
+			 , ATCH_FILE_ID 			atchFileId
+			 , SRVY_NEXT_SCTN_YN 		srvyNextSctnYn
+			 , SRVY_CHC_CNT 			srvyChcCnt
+			 , CASE WHEN SRVY_ANS_CG_VAL = '1' THEN '단답형'
+			 		WHEN SRVY_ANS_CG_VAL = '2' THEN '장문형'
+			 		WHEN SRVY_ANS_CG_VAL = '3' THEN '객관식'
+			 		WHEN SRVY_ANS_CG_VAL = '4' THEN '체크박스'
+			 		WHEN SRVY_ANS_CG_VAL = '5' THEN '파일'
+			 		WHEN SRVY_ANS_CG_VAL = '6' THEN '이미지'
+			 		WHEN SRVY_ANS_CG_VAL = '7' THEN '선호도'
+			 		WHEN SRVY_ANS_CG_VAL = '8' THEN '날짜/시간'
+			 		WHEN SRVY_ANS_CG_VAL = '9' THEN '동영상'
+			  ELSE '1'
+			  END 						srvyAnsCgValNm
+		 FROM T_SRVY_QST_MNG
+		<where>
+		  <choose>
+		    <when test="schEtc00 == 'viewPop'">
+			  SRVY_SERNO = #{srvySerno}
+			</when>
+			<otherwise>
+			  SRVY_SCTN_SERNO = #{srvySctnSerno}
+			</otherwise>
+		  </choose>
+		  AND USE_YN ='Y'
+		</where>
+	 ORDER BY SRVY_QST_SERNO
+	</select>
+	
+	<!-- 설문조사 항목 유형 목록조회 -->
+	<select id="selectQstItmList" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectQstItmList */
+		SELECT
+			   A.SRVY_QST_ITM_SERNO	 	srvyQstItmSerno
+			 , A.SRVY_SERNO			 	srvySerno
+			 , A.SRVY_QST_SERNO		 	srvyQstSerno
+			 , A.SRVY_SCTN_SERNO	 	srvySctnSerno
+			 , A.SRVY_QST_ITM_CTT 		srvyQstItmCtt
+			 , A.SRVY_ITM_TP_VAL_1 		srvyItmTpVal1
+			 , A.SRVY_ITM_TP_VAL_2 		srvyItmTpVal2
+			 , A.SRVY_ITM_TP_VAL_3 		srvyItmTpVal3
+			 , A.SRVY_ITM_TP_VAL_4 		srvyItmTpVal4
+			 , A.SRVY_ITM_TP_VAL_5 		srvyItmTpVal5
+			 , A.ATCH_FILE_ID 			atchFileId
+			 , B.FILE_SEQO		  		fileSeqo
+			 , B.PHCL_FILE_NM 			fileNmPhclFileNm
+			 , A.SRVY_NEXT_SCTN_NO 		srvyNextSctnNo
+		  FROM T_SRVY_QST_ITM_MNG A
+	 LEFT JOIN T_ATCH_FILE_MNG B
+	        ON B.ATCH_FILE_ID = A.SRVY_QST_ITM_CTT 
+	       AND B.FILE_SEQO = ( SELECT MAX(FILE_SEQO) FROM T_ATCH_FILE_MNG WHERE ATCH_FILE_ID = A.SRVY_QST_ITM_CTT AND DEL_YN = 'N')
+	       AND B.DEL_YN = 'N'
+		 <where>
+		   <choose>
+			  <when test="schEtc00 == 'viewPop'">
+			   A.SRVY_SERNO = #{srvySerno}
+			  </when>
+			  <otherwise> 
+			   A.SRVY_QST_SERNO = #{srvyQstSerno}
+			  </otherwise>
+		   </choose>
+		   AND A.USE_YN ='Y'
+		 </where>
+	  ORDER BY
+			<if test="srvyAnsCgVal == 3 or srvyAnsCgVal == 4">
+				IF(IFNULL(A.SRVY_QST_ITM_CTT,'') = '기타',1,0 ), 
+			</if>
+			A.SRVY_QST_ITM_SERNO
+	</select>
+	
+	
+	
+	<!-- 다음 섹션 이동여부 조회 -->
+	<select id="selectNextSctnYn" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectNextSecYn */
+		SELECT CASE WHEN MAX(IFNULL(SRVY_NEXT_SCTN_NO,0)) > 0 THEN 'Y'
+		 	        ELSE 'N'
+			   END srvyNextYn
+		  FROM T_SRVY_QST_ITM_MNG
+		 <where>
+		   <choose>
+			 <when test="schEtc00 == 'viewPop'">
+			   SRVY_SERNO = #{srvySerno}
+			 </when>
+			 <otherwise> 
+			   SRVY_QST_SERNO = #{srvyQstSerno}
+			 </otherwise>
+		   </choose>
+		  AND USE_YN ='Y'
+		 </where>
+	</select>
+	
+	<!-- 응답 수 조회 -->
+	<select id="getRplyCnt" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.getRplyCnt */
+		SELECT
+			COUNT(SRVY_ANS_SERNO) srvyAnsCnt
+		FROM T_SRVY_RPLY_MNG
+	 <where> 
+		     SRVY_SERNO = #{srvySerno}
+			<choose>
+				<when test="schEtc00 == 'viewPop'">
+					AND REGR_SERNO = #{loginSerno}
+				</when>
+				<otherwise>
+					AND SRVY_QST_SERNO = #{srvyQstSerno}
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	
+	<!-- 응답건수 목록 조회 -->
+	<select id="selectRplyCntList" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectRplyCntList */
+		SELECT
+			   COUNT(SRVY_ANS_SERNO) srvyAnsCnt
+		  FROM T_SRVY_RPLY_MNG
+	   <where> 
+		       SRVY_SERNO = #{srvySerno}
+		   AND SRVY_QST_SERNO = #{srvyQstSerno}
+		   <if test="srvyAnsCgVal == 7">
+		   AND SRVY_ANS_CTT = #{srvyQstItmCtt}
+		   </if>
+		   <if test="srvyAnsCgVal != 7">
+		   AND SRVY_ANS_CTT = #{srvyQstItmSerno}
+		   </if>
+	  </where>
+	  ORDER BY SRVY_ANS_SERNO
+	</select>
+	
+	<!-- 항목 유형내용 조회 -->
+	<select id="getSrvyRplyCtt" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.getSrvyRplyCtt */
+		SELECT
+			   SRVY_QST_ITM_CTT srvyQstItmCtt
+		  FROM T_SRVY_QST_ITM_MNG
+		 WHERE SRVY_QST_ITM_SERNO = #{srvyQstItmSerno}
+	</select>
+	
+	<!-- 항목 내용 상세조회 -->
+	<select id="selectQstItmContents" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectQstItmContents */
+		SELECT
+			   SRVY_QST_ITM_SERNO 	srvyQstItmSerno
+			 , SRVY_SERNO 			srvySerno
+			 , SRVY_QST_SERNO 		srvyQstSerno
+			 , SRVY_SCTN_SERNO 		srvySctnSerno
+			 , SRVY_QST_ITM_CTT 	srvyQstItmCtt
+			 , SRVY_ITM_TP_VAL_1 	srvyItmTpVal1
+			 , SRVY_ITM_TP_VAL_2 	srvyItmTpVal2
+			 , SRVY_ITM_TP_VAL_3 	srvyItmTpVal3
+			 , SRVY_ITM_TP_VAL_4 	srvyItmTpVal4
+			 , SRVY_ITM_TP_VAL_5 	srvyItmTpVal5
+			 , SRVY_NEXT_SCTN_NO 	srvyNextSctnNo 
+		  FROM T_SRVY_QST_ITM_MNG
+	   <where> 
+		       SRVY_SERNO = #{srvySerno}
+		   AND SRVY_QST_SERNO = #{srvyQstSerno}
+	  </where>
+	  ORDER BY 
+			<if test="srvyAnsCgVal == 3 or srvyAnsCgVal == 4">
+			   IF(IFNULL(SRVY_QST_ITM_CTT,'') = '기타',1,0 ), 
+			</if>
+			SRVY_QST_ITM_SERNO
+	</select>
+	
+	<!-- 응답 목록 조회 -->
+	<select id="getRplyList" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.getRplyList */
+		SELECT 
+			   A.SRVY_ANS_SERNO 						srvyAnsSerno
+			 , A.SRVY_SERNO 							srvySerno
+			 , A.SRVY_SCTN_SERNO 						srvySctnSerno
+			 , A.SRVY_QST_SERNO 						srvyQstSerno
+			 , A.SRVY_ANS_CTT 							srvyAnsCtt
+			 , A.SRVY_ANS_CTT_ETC 						srvyAnsCnEtc
+			 , DATE_FORMAT(A.REG_DT, '%Y.%m.%d') 		regDt
+			 , FNC_USER_NM(A.REGR_SERNO) 				regrNm
+			 , A.REGR_SERNO								regrSerno
+		<if test="schEtc00 == 'PAGE'">
+			 , (SELECT B.SRVY_ANS_CG_VAL FROM T_SRVY_QST_MNG B WHERE B.SRVY_QST_SERNO = A.SRVY_QST_SERNO) srvyAnsCgVal
+			<if test="srvyAnsCgVal == 3 or srvyAnsCgVal == 4">
+			 , B.SRVY_QST_ITM_CTT 					srvyQstItmCtt
+			</if>
+			<if test="srvyAnsCgVal == 6">
+		  	 , B.SRVY_QST_ITM_CTT 					srvyQstItmCtt
+		     , C.FILE_SEQO		  					fileSeqo
+			 , C.PHCL_FILE_NM 						fileNmPhclFileNm 
+		  </if>
+		</if>
+		  FROM T_SRVY_RPLY_MNG A
+		  LEFT JOIN T_SRVY_QST_ITM_MNG B
+		    ON B.SRVY_QST_ITM_SERNO = A.SRVY_ANS_CTT
+	 LEFT JOIN T_ATCH_FILE_MNG C
+	        ON C.ATCH_FILE_ID = B.SRVY_QST_ITM_CTT 
+	       AND C.FILE_SEQO = ( SELECT MAX(FILE_SEQO) FROM T_ATCH_FILE_MNG WHERE ATCH_FILE_ID = B.SRVY_QST_ITM_CTT AND DEL_YN = 'N')
+	       AND C.DEL_YN = 'N'
+	   <where> 
+		       A.SRVY_QST_SERNO = #{srvyQstSerno}
+	  </where>
+	  ORDER BY A.SRVY_ANS_SERNO
+		 LIMIT #{firstRecordIndex} , #{recordCountPerPage}	
+	</select>
+	
+	
+	<!-- 항목 목록 조회 -->
+	<select id="getQstList" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.getQstList */
+		SELECT
+			   SRVY_QST_SERNO 		srvyQstSerno
+			 , SRVY_SERNO 			srvySerno
+			 , SRVY_SCTN_SERNO 		srvySctnSerno
+			 , SRVY_QST_TITL 		srvyQstTitl
+			 , SRVY_QST_CTT 		srvyQstCtt
+			 , SRVY_ANS_CG_VAL 		srvyAnsCgVal
+			 , SRVY_NCSR_YN			srvyNcsrYn
+			 , SRVY_CHC_CNT			srvyChcCnt
+		  FROM T_SRVY_QST_MNG
+	   <where> 
+	 		   SRVY_SERNO = #{srvySerno}
+	 	   AND USE_YN = 'Y'
+	  </where>
+		ORDER BY SRVY_QST_SERNO
+	</select>
+	
+	<!-- 항목별 응답 수 조회-->
+	<select id="selectRplyCount" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.selectRplyCount */
+		SELECT
+			   COUNT(SRVY_ANS_SERNO) srvyCount
+		  FROM T_SRVY_RPLY_MNG
+	   <where> 
+	   		   SRVY_QST_SERNO = #{srvyQstSerno}
+	   	   AND USE_YN = 'Y'	
+	  </where>
+	</select>
+	
+	
+	<!-- 항목별 응답상세 조회 -->
+	<select id="selectRplyContents" parameterType="cmSrvyVO" resultType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.seletRplyContents */
+		SELECT
+			   A.SRVY_ANS_SERNO 					srvyAnsSerno
+			 , A.SRVY_SERNO 						srvySerno
+			 , A.SRVY_SCTN_SERNO 					srvySctnSerno
+			 , A.SRVY_QST_SERNO 					srvyQstSerno
+			 , A.SRVY_ANS_CTT 						srvyAnsCtt
+			 , A.SRVY_ANS_CTT_ETC 					srvyAnsCttEtc
+			 , FNC_USER_NM(A.REGR_SERNO) 			regrNm
+			 , DATE_FORMAT(A.REG_DT, '%Y.%m.%d')  	regDt
+			 , D.SRVY_ANS_CG_VAL 					srvyAnsCgVal
+		  <if test="srvyAnsCgVal == 3 or srvyAnsCgVal == 4">
+			 , B.SRVY_QST_ITM_CTT 					srvyQstItmCtt
+		  </if>
+		  <if test="srvyAnsCgVal == 6">
+		  	 , B.SRVY_QST_ITM_CTT 					srvyQstItmCtt
+		     , C.FILE_SEQO		  					fileSeqo
+			 , C.PHCL_FILE_NM 						fileNmPhclFileNm 
+		  </if>
+		  FROM T_SRVY_RPLY_MNG A
+	 LEFT JOIN T_SRVY_QST_ITM_MNG B
+		    ON B.SRVY_QST_ITM_SERNO = A.SRVY_ANS_CTT
+	 LEFT JOIN T_ATCH_FILE_MNG C
+	        ON C.ATCH_FILE_ID = B.SRVY_QST_ITM_CTT 
+	       AND C.FILE_SEQO = ( SELECT MAX(FILE_SEQO) FROM T_ATCH_FILE_MNG WHERE ATCH_FILE_ID = B.SRVY_QST_ITM_CTT AND DEL_YN = 'N')
+	       AND C.DEL_YN = 'N'
+	 LEFT JOIN T_SRVY_QST_MNG D
+	        ON D.SRVY_QST_SERNO = A.SRVY_QST_SERNO
+	   <where> 
+	   	       A.SRVY_ANS_SERNO = #{srvyAnsSerno}
+	  </where>
+	  ORDER BY A.SRVY_ANS_SERNO
+	</select>
+	
+	
+	<!-- 설문조사 등록 -->
+	<insert id="insertContents" parameterType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.insertContents */
+		<selectKey keyProperty="srvySerno" order="AFTER" resultType="String">
+		SELECT IFNULL(MAX(SRVY_SERNO),0) srvySerno FROM T_SRVY_MNG 
+		</selectKey>
+	    INSERT INTO T_SRVY_MNG(
+				    SRVY_NM
+				  , SRVY_EXPL
+				  , SRVY_STRT_DT
+				  , SRVY_END_DT
+				  , SRVY_MTHD
+				  , ATCH_FILE_ID
+				  , REGR_SERNO
+				  , REG_DT
+				  , SRVY_RSLT_YN
+				  , SRVY_STS
+			      ) VALUES (
+				    #{srvyNm}
+				  , #{srvyExpl}
+				  , #{srvyStrtDt}
+				  , #{srvyEndDt}
+				  , #{srvyMthd}
+				  , #{atchFileId}
+				  , #{loginSerno}
+				  , NOW()
+				  , #{srvyRsltYn}
+				  , #{srvySts}
+			)
+	</insert>
+	
+	<!-- 설문조사 섹션 등록 -->
+	<insert id="insertSctnContents" parameterType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.insertSctnContents */
+		<selectKey keyProperty="srvySctnSerno" order="AFTER" resultType="String">
+		SELECT IFNULL(MAX(SRVY_SCTN_SERNO),0) srvySctnSerno FROM T_SRVY_SCTN_MNG 
+		</selectKey>
+		INSERT INTO T_SRVY_SCTN_MNG(
+				    SRVY_SERNO
+				  , SRVY_NEXT_SCTN_NO
+				  , SRVY_SCTN_TITL
+				  , SRVY_SCTN_CTT
+				  , SRVY_SCTN_NO
+				  , REGR_SERNO
+				  , REG_DT
+			      ) VALUES (
+				    #{srvySerno}
+				  , #{srvyNextSctnNo}
+				  , #{srvySctnTitl}
+				  , #{srvySctnCtt}
+				  , #{srvySctnNo}
+				  , #{loginSerno}
+				  , NOW()
+			      )
+	</insert>
+	
+	<!-- 설문조사 항목 등록 -->
+	<insert id="insertQstContents" parameterType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.insertQstContents */
+		<selectKey keyProperty="srvyQstSerno" order="AFTER" resultType="String">
+			SELECT IFNULL(MAX(SRVY_QST_SERNO),0) srvyQstSerno FROM T_SRVY_QST_MNG 
+		</selectKey>
+		INSERT INTO T_SRVY_QST_MNG(
+					SRVY_SERNO
+				  , SRVY_SCTN_SERNO
+				  , SRVY_QST_TITL
+				  , SRVY_QST_CTT
+				  , SRVY_ANS_CG_VAL
+				  , SRVY_NCSR_YN
+				  , ATCH_FILE_ID		
+				  , SRVY_NEXT_SCTN_YN	
+				  , SRVY_CHC_CNT
+				  , REGR_SERNO
+				  , REG_DT
+			      ) VALUES (
+				    #{srvySerno}
+				  , #{srvySctnSerno}
+				  , #{srvyQstTitl}
+				  , #{srvyQstCtt}
+				  , #{srvyAnsCgVal}
+				  , #{srvyNcsrYn}
+				  , #{atchFileId}
+				  , #{srvyNextSctnYn}
+				  , #{srvyChcCnt}
+				  , #{loginSerno}
+				  , NOW()
+			)
+	</insert>
+	
+	<!-- 설문조사 항목유형 등록 -->
+	<insert id="insertQstItmContents" parameterType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.insertQstItmContents */
+	  INSERT INTO T_SRVY_QST_ITM_MNG(
+				  SRVY_SERNO
+				, SRVY_QST_SERNO
+				, SRVY_SCTN_SERNO
+				, SRVY_QST_ITM_CTT
+				, SRVY_ITM_TP_VAL_1
+				, SRVY_ITM_TP_VAL_2
+				, SRVY_ITM_TP_VAL_3
+				, SRVY_ITM_TP_VAL_4
+				, SRVY_ITM_TP_VAL_5
+				, SRVY_NEXT_SCTN_NO
+				, REGR_SERNO
+				, REG_DT
+			    ) VALUES (
+				  #{srvySerno}
+				, #{srvyQstSerno}
+				, #{srvySctnSerno}
+				, #{srvyQstItmCtt}
+				, #{srvyItmTpVal1}
+				, #{srvyItmTpVal2}
+				, #{srvyItmTpVal3}
+				, #{srvyItmTpVal4}
+				, #{srvyItmTpVal5}
+				, #{srvyNextSctnNo}
+				, #{loginSerno}
+				, NOW()
+			)
+	</insert>
+	
+	<!-- 설문조사 응답 등록 -->
+	<insert id="insertAnsContents" parameterType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.insertAnsContents */
+	  INSERT INTO T_SRVY_RPLY_MNG(
+				  SRVY_SERNO
+				, SRVY_SCTN_SERNO
+				, SRVY_QST_SERNO
+				, SRVY_TRGT_SERNO
+				, SRVY_ANS_CTT
+			<if test="rplyCtt == '기타'">
+				, SRVY_ANS_CTT_ETC
+			</if>
+				, REGR_SERNO
+				, REG_DT
+			)VALUES(
+				  #{srvySerno}
+				, #{srvySctnSerno}
+				, #{srvyQstSerno}
+				, #{loginSerno}
+				, #{srvyAnsCtt}
+			<if test="rplyCtt == '기타'">
+			   	, #{srvyAnsCttEtc}
+			</if>
+				, #{loginSerno}
+				, NOW()
+			)
+	</insert>
+	
+	<!-- 설문조사 수정 -->
+	<update id="updateContents" parameterType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.updateContents */
+		UPDATE T_SRVY_MNG
+		   SET
+			   SRVY_NM 			= #{srvyNm}
+			 , SRVY_EXPL 		= #{srvyExpl}
+			 , SRVY_STRT_DT 	= #{srvyStrtDt}
+			 , SRVY_END_DT 		= #{srvyEndDt}
+			 , UPDR_SERNO 		= #{loginSerno}
+			 , UPD_DT 			= NOW()
+			 , SRVY_RSLT_YN  	= #{srvyRsltYn}
+			 , SRVY_STS 		= #{srvySts}
+			 , ATCH_FILE_ID 	= #{atchFileId}
+			 , SRVY_MTHD 		= #{srvyMthd}
+	   <where> 
+	   	       SRVY_SERNO 		= #{srvySerno}
+	  </where>
+		   AND USE_YN			= 'Y'
+	</update>
+	
+	<!-- 설문조사 삭제 -->
+	<update id="deleteContents" parameterType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.deleteContents */
+		UPDATE T_SRVY_MNG
+		   SET
+			   USE_YN = 'N'
+			 , UPDR_SERNO = #{loginSerno}
+			 , UPD_DT = NOW()
+	   <where> 
+	   	       SRVY_SERNO = #{srvySerno}
+	   </where>
+	</update>
+	
+	<!-- 설문조사 섹션 삭제-->
+	<update id="deleteSctnContents" parameterType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.deleteSctnContents */
+		UPDATE T_SRVY_SCTN_MNG
+		   SET USE_YN = 'N'
+		     , UPDR_SERNO = #{loginSerno}
+			 , UPD_DT = NOW()
+	   <where> 
+	   	       SRVY_SERNO = #{srvySerno}
+	  </where>
+	</update>
+	
+	<!-- 설문조사 항목 삭제 -->
+	<update id="deleteQstContents" parameterType="cmSrvyVO">
+		/* srvyMngMapper.deleteQstContents */
+		UPDATE T_SRVY_QST_MNG
+		   SET USE_YN = 'N'
+		     , UPDR_SERNO = #{loginSerno}
+			 , UPD_DT = NOW()
+	   <where> 
+	   	       SRVY_SERNO = #{srvySerno}
+	  </where>
+	</update>
+	
+	<!-- 설문조사 항목 유형 삭제 -->
+	<update id="deleteQstItmContents" parameterType="cmSrvyVO">
+		/* standard.mapper.component.SrvyMngMapper.deleteQstItmContents */
+		UPDATE T_SRVY_QST_ITM_MNG
+		   SET USE_YN = 'N'
+		     , UPDR_SERNO = #{loginSerno}
+			 , UPD_DT = NOW()
+		<where> 
+	   	       SRVY_SERNO = #{srvySerno}
+	   </where>
+	</update>
+	
+</mapper>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.opennote.standard.mapper.component.SchdMngMapper">
+
+	<!-- 검색 조건 -->
+	<sql id="Where">
+		<if test="schEtc04 != null and schEtc04 != '' or schEtc05 != null and schEtc05 != '' or schEtc06 != null and schEtc06 != '' or schEtc07 != null and schEtc07 != '' or schEtc08 != null and schEtc08 != ''">
+			AND SCHD_CL_CD IN ( ''
+			<if test="schEtc04 != null and schEtc04 != ''">
+				,'personal_work'
+			</if>
+			<if test="schEtc05 != null and schEtc05 != ''">
+				,'department_work'
+			</if>
+			<if test="schEtc06 != null and schEtc06 != ''">
+				,'company_work'
+			</if>
+			<if test="schEtc07 != null and schEtc07 != ''">
+				,'meeting'
+			</if>
+			<if test="schEtc08 != null and schEtc08 != ''">
+				,'director_work'
+			</if>
+			)
+		</if>
+		<if test='searchStartDate != null and searchStartDate != "" and searchEndDate != null and searchEndDate != ""'>
+			AND (
+				   ( #{searchStartDate} <![CDATA[ <= ]]> SCHD_STRT_DT 
+				   AND SCHD_STRT_DT <![CDATA[ <= ]]> #{searchEndDate}
+				   )
+				OR ( #{searchStartDate} <![CDATA[ <= ]]> SCHD_END_DT 
+				   AND SCHD_END_DT <![CDATA[ <= ]]> #{searchEndDate} 
+				   )
+				OR ( SCHD_STRT_DT <![CDATA[ <= ]]> #{searchStartDate} 
+				   AND #{searchEndDate} <![CDATA[ <= ]]> SCHD_END_DT 
+				   )
+				)
+		</if>
+		<if test='searchKeyword !=null and searchKeyword !=""'>
+			<if test='searchCondition == null or searchCondition == ""'>
+				AND (UPPER(SCHD_TITL_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+				 OR UPPER(SCHD_CTT) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+			</if>
+			<if test='searchCondition != null and searchCondition != "" and searchCondition == 1'>
+				AND UPPER(SCHD_TITL_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+			<if test='searchCondition != null and searchCondition != "" and searchCondition == 2'>
+				AND UPPER(SCHD_CTT) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+			</if>
+		</if>
+	</sql>
+
+	<!-- 일정 건수 조회 -->
+	<select id="selectCount" parameterType="cmSchdVO" resultType="cmSchdVO">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.selectCount */
+		SELECT COUNT(1)  schdCount
+		  FROM T_SCHD_MNG
+		 WHERE REGR_SERNO = #{loginSerno}
+		 <include refid="Where" />
+    	   AND USE_YN = 'Y'
+	</select>
+	
+	<!-- 일정 목록 조회 -->
+	<select id="selectList" parameterType="cmSchdVO" resultType="cmSchdVO">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.selectList */
+		SELECT SCHD_SERNO									schdSerno
+			 , SCHD_CL_CD									schdClCd
+			 , SCHD_HH_CD									schdHhCd
+			 , DATE_FORMAT(SCHD_STRT_DT, '%Y.%m.%d %H:%i')	schdStrtDt
+			 , DATE_FORMAT(SCHD_END_DT, '%Y.%m.%d %H:%i')	schdEndDt
+			 , SCHD_TITL_NM									schdTitlNm
+			 , SCHD_CTT										schdCtt
+			 , JOB_CON_YN									jobConYn
+			 , REGR_SERNO									regrSerno
+			 , FNC_USER_NM(REGR_SERNO)						regrNm
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 				regDt
+		  FROM T_SCHD_MNG
+		 WHERE REGR_SERNO = #{loginSerno}
+		 <include refid="Where" />
+    	   AND USE_YN = 'Y'
+      ORDER BY SCHD_STRT_DT, SCHD_END_DT, SCHD_TITL_NM
+    	 LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+	</select>
+	
+	<!-- 일정 상세 조회 -->
+	<select id="selectContents" parameterType="cmSchdVO" resultType="cmSchdVO">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.selectContents */
+		SELECT SCHD_SERNO									schdSerno
+			 , SCHD_CL_CD									schdClCd
+			 , SCHD_HH_CD									schdHhCd
+			 , DATE_FORMAT(SCHD_STRT_DT, '%Y.%m.%d')		schdStrtYmd
+			 , DATE_FORMAT(SCHD_END_DT, '%Y.%m.%d')			schdEndYmd
+			 , DATE_FORMAT(SCHD_STRT_DT, '%H:%i')			schdStrtHhMn
+			 , DATE_FORMAT(SCHD_END_DT, '%H:%i')			schdEndHhMn
+			 , SCHD_TITL_NM									schdTitlNm
+			 , SCHD_CTT										schdCtt
+			 , JOB_CON_YN									jobConYn
+			 , REGR_SERNO									regrSerno
+			 , FNC_USER_NM(REGR_SERNO)						regrNm
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 				regDt
+		  FROM T_SCHD_MNG
+		 WHERE SCHD_SERNO = #{schdSerno}
+    	   AND USE_YN = 'Y'
+	</select>
+	
+	<!-- 일정 월별 목록 조회 -->
+	<select id="selectMonthList" parameterType="cmSchdVO" resultType="cmSchdVO">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.selectMonthList */
+		SELECT SCHD_SERNO									schdSerno
+			 , SCHD_CL_CD									schdClCd
+			 , SCHD_HH_CD									schdHhCd
+			 , IF(SCHD_END_DT <![CDATA[ < ]]> NOW(), 'Y', 'N') schdEndYn
+			 , DATE_FORMAT(SCHD_STRT_DT, '%Y.%m.%d')		schdStrtYmd
+			 , DATE_FORMAT(SCHD_END_DT, '%Y.%m.%d')			schdEndYmd
+			 , DATE_FORMAT(SCHD_STRT_DT, '%H:%i')			schdStrtHhMn
+			 , DATE_FORMAT(SCHD_END_DT, '%H:%i')			schdEndHhMn
+			 , SCHD_TITL_NM									schdTitlNm
+			 , SCHD_CTT										schdCtt
+			 , JOB_CON_YN									jobConYn
+			 , REGR_SERNO									regrSerno
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 				regDt
+		  FROM T_SCHD_MNG 
+		 WHERE REGR_SERNO = #{loginSerno}
+		   AND DATE_FORMAT(SCHD_STRT_DT, '%Y%m') AND DATE_FORMAT(SCHD_STRT_DT, '%Y%m') = CONCAT(#{schEtc01}, #{schEtc02})
+		 <include refid="Where" />
+    	   AND USE_YN = 'Y'
+	  ORDER BY SCHD_CL_CD, SCHD_STRT_DT, SCHD_TITL_NM
+	</select>
+
+	<!-- 일정 일별 목록 조회 -->
+	<select id="selectTodayList" parameterType="cmSchdVO" resultType="cmSchdVO">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.selectTodayList */
+		SELECT SCHD_SERNO									schdSerno
+			 , SCHD_CL_CD									schdClCd
+			 , CD_DTLS_EXPL									cdDtlsExpl
+			 , SCHD_HH_CD									schdHhCd
+			 , DATE_FORMAT(SCHD_STRT_DT, '%Y.%m.%d')		schdStrtYmd
+			 , DATE_FORMAT(SCHD_END_DT, '%Y.%m.%d')			schdEndYmd
+			 , DATE_FORMAT(SCHD_STRT_DT, '%H:%i')			schdStrtHhMn
+			 , DATE_FORMAT(SCHD_END_DT, '%H:%i')			schdEndHhMn
+			 , SCHD_TITL_NM									schdTitlNm
+			 , SCHD_CTT										schdCtt
+			 , JOB_CON_YN									jobConYn
+			 , REGR_SERNO									regrSerno
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 				regDt
+		  FROM T_SCHD_MNG 
+		 WHERE REGR_SERNO = #{loginSerno}
+		   AND #{currentDate} BETWEEN SCHD_STRT_DT AND SCHD_END_DT
+		 <include refid="Where" />
+		   AND USE_YN = 'Y'
+	  ORDER BY SCHD_CL_CD, SCHD_STRT_DT, SCHD_TITL_NM
+	</select>
+	
+	<!-- 일정 엑셀 목록 조회 -->
+	<select id="selectExcelList" parameterType="cmSchdVO" resultType="cmSchdVO">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.selectExcelList */
+		SELECT SCHD_SERNO									schdSerno
+			 , SCHD_CL_CD									schdClCd
+			 , CASE SCHD_CL_CD 
+				 	WHEN 'personal_work' THEN '개인업무'
+				 	WHEN 'department_work' THEN '부서업무'
+				 	WHEN 'company_work' THEN '회사업무'
+				 	WHEN 'meeting' THEN '회의'
+			 		ELSE '경영진일정' 
+			   END schdClNm
+			 , SCHD_HH_CD									schdHhCd
+			 , DATE_FORMAT(SCHD_STRT_DT, '%Y.%m.%d %H:%i')	schdStrtDt
+			 , DATE_FORMAT(SCHD_END_DT, '%Y.%m.%d %H:%i')	schdEndDt
+			 , SCHD_TITL_NM									schdTitlNm
+			 , SCHD_CTT										schdCtt
+			 , JOB_CON_YN									jobConYn
+			 , REGR_SERNO									regrSerno
+			 , FNC_USER_NM(REGR_SERNO)						regrNm
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d') 				regDt
+		  FROM T_SCHD_MNG
+		 WHERE REGR_SERNO = #{loginSerno}
+		 <include refid="Where" />
+    	   AND USE_YN = 'Y'
+      ORDER BY SCHD_STRT_DT, SCHD_END_DT, SCHD_TITL_NM
+	</select>
+
+	<!-- 일정 본인글 여부 -->
+	<select id="regrCheck" parameterType="cmSchdVO" resultType="cmSchdVO">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.regrCheck */
+		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
+					ELSE 0
+			   END isRegrCheck
+		  FROM T_SCHD_MNG 
+		 WHERE SCHD_SERNO = #{schdSerno}
+	</select>
+	
+	<!-- 일정 등록 -->
+	<insert id="insertContents" parameterType="cmSchdVO" useGeneratedKeys="true" keyProperty="schdSerno">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.insertContents */
+		INSERT INTO T_SCHD_MNG 
+			 ( SCHD_CL_CD
+			 , SCHD_HH_CD
+			 , SCHD_STRT_DT
+			 , SCHD_END_DT
+			 , SCHD_TITL_NM
+			 , SCHD_CTT
+			 , JOB_CON_YN
+			 , REGR_SERNO
+			 , REG_DT
+	    	 )
+	    VALUES 
+	    	 ( #{schdClCd}
+			 , #{schdHhCd}
+			 , #{schdStrtDt}
+			 , #{schdEndDt}
+			 , #{schdTitlNm}
+			 , #{schdCtt}
+			 , #{jobConYn}
+			 , #{loginSerno}
+			 , NOW()
+			 )
+	</insert>
+
+	<!-- 일정 수정 -->
+	<update id="updateContents" parameterType="cmSchdVO">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.updateContents */
+		UPDATE T_SCHD_MNG
+		   SET SCHD_CL_CD 	= #{schdClCd}
+		   	 , SCHD_HH_CD 	= #{schdHhCd}
+		   	 , SCHD_STRT_DT = #{schdStrtDt}
+		   	 , SCHD_END_DT 	= #{schdEndDt}
+		   	 , SCHD_TITL_NM = #{schdTitlNm}
+		   	 , SCHD_CTT 	= #{schdCtt}
+		   	 , JOB_CON_YN 	= #{jobConYn}
+		   	 , UPDR_SERNO	= #{loginSerno}
+		   	 , UPD_DT		= NOW()
+		 WHERE SCHD_SERNO 	= #{schdSerno}
+	</update>
+
+	<!-- 일정 삭제 -->
+	<update id="deleteContents" parameterType="cmSchdVO">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.deleteContents */
+		UPDATE T_SCHD_MNG
+		   SET USE_YN 	   = 'N'
+		 WHERE SCHD_SERNO 	= #{schdSerno}
+	</update>
+
+	<!-- 휴일 일괄 등록 -->
+    <insert id="mergeHolidayList" parameterType="java.util.List">
+        /* com.opennote.standard.mapper.component.SchdMngMapper.mergeHolidayList */
+        INSERT INTO T_HDAY_MNG
+        	 ( HDAY_DT
+             , HDAY_NM
+             , HDAY_YN
+             , REG_DT
+             , USE_YN
+        	 )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+             ( #{item.locdate}
+             , #{item.dateName}
+             , #{item.isHoliday}
+             , NOW()
+             , 'Y'
+             )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+               HDAY_DT  = VALUES(HDAY_DT)
+             , HDAY_NM  = VALUES(HDAY_NM)
+             , HDAY_YN  = VALUES(HDAY_YN)
+             , UPD_DT   = NOW()
+             , USE_YN	= 'Y'
+    </insert>
+    
+    <!-- 휴일 목록 조회 -->
+	<select id="selectHolidayList" parameterType="cmSchdVO" resultType="cmHdayVO">
+		/* com.opennote.standard.mapper.component.SchdMngMapper.selectHolidayList */
+		SELECT HDAY_SERNO						hdaySerno
+			 , DATE_FORMAT(HDAY_DT, '%Y.%m.%d')	hdayDt
+			 , HDAY_NM							hdayNm
+			 , HDAY_YN							hdayYn
+			 , REGR_SERNO						regrSerno
+			 , DATE_FORMAT(REG_DT, '%Y.%m.%d')  regDt
+		  FROM T_HDAY_MNG 
+		 WHERE DATE_FORMAT(HDAY_DT, '%Y%m') = CONCAT(#{schEtc01}, #{schEtc02})
+    	   AND USE_YN = 'Y'
+	  ORDER BY HDAY_DT, HDAY_YN 
+	</select>
+</mapper>

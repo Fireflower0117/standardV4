@@ -4,7 +4,7 @@ package kr.or.standard.appinit.config;
 import kr.or.standard.appinit.interceptor.FtInterceptor;
 import kr.or.standard.appinit.interceptor.MaInterceptor;
 import kr.or.standard.appinit.interceptor.MyInterceptor;
-import kr.or.standard.basic.system.lginPlcy.service.LginPlcyService;
+import kr.or.standard.basic.usersupport.lginPlcy.service.LginPlcyService;
 import kr.or.standard.basic.system.logo.service.LogoService;
 import kr.or.standard.basic.system.menu.servie.MenuService;
 import lombok.RequiredArgsConstructor;
