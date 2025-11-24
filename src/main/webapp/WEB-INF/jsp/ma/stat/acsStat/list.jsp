@@ -1,7 +1,7 @@
 <%--@elvariable id="searchVO" type="com.opennote.standard.ma.cmmn.domain.CmmnDefaultVO"--%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:directive.include file="/WEB-INF/jsp/common/incTagLib.jsp"/>
-<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/ma/js/highcharts.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/highcharts/highcharts.js"></script>
 <script type="text/javascript">
 const colorArr = ["#79A5E9","#378846","#5ca8b4","#f78b24","#2c9673","#893a8d","#9ed1e1","#16a8c0","#5f338d","#c83c6d"];
 const columnColorArr = ["#9FD4DD","#16A8C0","#C9E79B","#84B932","#2c9673","#378846","#f78b24","#893a8d","#5f338d","#c83c6d"];

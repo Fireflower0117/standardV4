@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.standard.mapper.component.DbDataMapper">
+
+    <!-- DB데이터 검색 조건 -->
+    <sql id="Where">
+        <if test='searchKeyword !=null and searchKeyword !=""'>
+            <if test='searchCondition ==null or searchCondition == ""'>
+                AND (
+                       UPPER(A.TABLE_NAME) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                    OR UPPER(A.TABLE_COMMENT) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                )
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==1'>
+                AND UPPER(A.TABLE_NAME) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==2'>
+                AND UPPER(A.TABLE_COMMENT) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+        </if>
+    </sql>
+
+    <!-- 용어진단 검색 조건 -->
+    <sql id="termWhere">
+        <if test='searchKeyword !=null and searchKeyword !=""'>
+            <if test='searchCondition ==null or searchCondition == ""'>
+                AND (
+                       UPPER(B.TABLE_NAME) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                    OR UPPER(B.COLUMN_NAME) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                )
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==1'>
+                AND UPPER(B.TABLE_NAME) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==2'>
+                AND UPPER(B.COLUMN_NAME) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+        </if>
+        <!-- 표준미준수 상태 -->
+        <if test='schEtc00 !=null and schEtc00 !="" and schEtc01 == "02"'>
+            AND B.stdCd = #{schEtc00}
+        </if>
+    </sql>
+
+    <!-- DB 테이블 건수 -->
+    <select id="selectCount" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectCount */
+        SELECT COUNT(1) tableCount
+          FROM INFORMATION_SCHEMA.TABLES A
+         WHERE A.TABLE_SCHEMA = #{tableSchema}
+           AND A.TABLE_TYPE = 'BASE TABLE'
+        <include refid="Where"/>
+    </select>
+
+    <!-- DB 테이블 조회 -->
+    <select id="selectList" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectList */
+        SELECT A.TABLE_SCHEMA                           tableSchema         <!-- 스키마 -->
+             , A.TABLE_NAME                             tableName           <!-- 테이블명 -->
+             , A.TABLE_COMMENT                          tableComment        <!-- 테이블한글명 -->
+             , A.TABLE_ROWS                             tableRows           <!-- 데이터개수 -->
+             , DATE_FORMAT(A.CREATE_TIME, '%Y.%m.%d')   createTime          <!-- 테이블생성일 -->
+             , DATE_FORMAT(A.UPDATE_TIME, '%Y.%m.%d')   updateTime          <!-- 테이블수정일 -->
+             , COUNT(B.COLUMN_NAME)                     columnCnt           <!-- 컬럼개수 -->
+          FROM INFORMATION_SCHEMA.TABLES A
+     LEFT JOIN INFORMATION_SCHEMA.COLUMNS B
+            ON A.TABLE_SCHEMA = B.TABLE_SCHEMA AND A.TABLE_NAME = B.TABLE_NAME
+         WHERE A.TABLE_SCHEMA = #{tableSchema}
+           AND A.TABLE_TYPE = 'BASE TABLE'
+        <include refid="Where"/>
+      GROUP BY A.TABLE_NAME
+      ORDER BY A.TABLE_NAME DESC
+        <if test='schEtc10 != "Y"'>
+         LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+        </if>
+    </select>
+
+    <!-- DB 테이블 상세조회 -->
+    <select id="selectContents" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectContents */
+        SELECT A.TABLE_SCHEMA                           tableSchema         <!-- 스키마 -->
+             , A.TABLE_NAME                             tableName           <!-- 테이블명 -->
+             , A.TABLE_COMMENT                          tableComment        <!-- 테이블한글명 -->
+             , A.TABLE_ROWS                             tableRows           <!-- 데이터개수 -->
+             , (SELECT COUNT(1)
+                  FROM INFORMATION_SCHEMA.COLUMNS B
+                 WHERE B.TABLE_NAME = #{tableName}
+                   AND B.TABLE_SCHEMA = #{tableSchema}
+              GROUP BY B.TABLE_NAME)                    columnCnt           <!-- 컬럼개수 -->
+          FROM INFORMATION_SCHEMA.TABLES A
+         WHERE A.TABLE_NAME = #{tableName}
+           AND A.TABLE_SCHEMA = #{tableSchema}
+           AND A.TABLE_TYPE = 'BASE TABLE'
+    </select>
+
+    <!-- DB 테이블 컬럼 목록 조회 -->
+    <select id="selectColList" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectColList */
+        SELECT COLUMN_NAME                  columnName          <!-- 컬럼영문명 -->
+             , COLUMN_COMMENT               columnComment       <!-- 컬럼한글명 -->
+             , COLUMN_TYPE                  columnType          <!-- 데이터타입(길이) -->
+             , IS_NULLABLE                  isNullable          <!-- NULL여부 -->
+             , COLUMN_KEY                   columnKey           <!-- PK여부 -->
+             , COLUMN_DEFAULT               columnDefault       <!-- 기본값 -->
+          FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE TABLE_NAME = #{tableName}
+           AND TABLE_SCHEMA = #{tableSchema}
+    </select>
+
+    <!-- DB 테이블 컬럼 상세 조회 -->
+    <select id="selectColContents" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectColContents */
+        SELECT TABLE_SCHEMA                 tableSchema         <!-- 스키마 -->
+             , TABLE_NAME                   tableName           <!-- 테이블명 -->
+             , COLUMN_NAME                  columnName          <!-- 컬럼영문명 -->
+             , COLUMN_COMMENT               columnComment       <!-- 컬럼한글명 -->
+             , COLUMN_TYPE                  columnType          <!-- 데이터타입(길이) -->
+             , IS_NULLABLE                  isNullable          <!-- NULL여부 -->
+             , COLUMN_KEY                   columnKey           <!-- PK여부 -->
+             , COLUMN_DEFAULT               columnDefault       <!-- 기본값 -->
+          FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE COLUMN_NAME = #{columnName}
+           AND TABLE_NAME = #{tableName}
+           AND TABLE_SCHEMA = #{tableSchema}
+    </select>
+
+    <!-- DB 테이블 데이터 목록 조회 -->
+    <select id="selectDataList" parameterType="cmDbDataVO" resultType="CommonMap">
+        /* com.standard.mapper.component.DbDataMapper.selectDataList */
+        SELECT
+        <foreach collection="colList" item="item" index="index" separator=",">
+            ${item.columnName} col#{index}
+        </foreach>
+          FROM ${tableName}
+         LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+    </select>
+
+    <!-- DB 테이블 설명 미표시 건수 -->
+    <select id="selectTblDgnsCount" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectTblDgnsCount */
+        SELECT COUNT(1) tableCount
+          FROM INFORMATION_SCHEMA.TABLES
+         WHERE TABLE_SCHEMA = #{tableSchema}
+           AND TABLE_TYPE = 'BASE TABLE'
+           AND TABLE_COMMENT = ''
+        <if test='searchKeyword !=null and searchKeyword !=""'>
+           AND (UPPER(TABLE_NAME) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+        </if>
+    </select>
+
+    <!-- DB 테이블 설명 미표시 조회 -->
+    <select id="selectTblDgnsList" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectTblDgnsList */
+        SELECT TABLE_SCHEMA                             tableSchema         <!-- 스키마 -->
+             , TABLE_NAME                               tableName           <!-- 테이블명 -->
+             , DATE_FORMAT(CREATE_TIME, '%Y.%m.%d')     createTime          <!-- 테이블생성일 -->
+             , DATE_FORMAT(UPDATE_TIME, '%Y.%m.%d')     updateTime          <!-- 테이블수정일 -->
+          FROM INFORMATION_SCHEMA.TABLES
+         WHERE TABLE_SCHEMA = #{tableSchema}
+           AND TABLE_TYPE = 'BASE TABLE'
+           AND TABLE_COMMENT = ''
+        <if test='searchKeyword !=null and searchKeyword !=""'>
+           AND (UPPER(TABLE_NAME) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%'))
+        </if>
+      ORDER BY TABLE_NAME DESC
+        <if test='schEtc10 != "Y"'>
+         LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+        </if>
+    </select>
+
+    <!-- DB 컬럼 설명 미표시 건수 -->
+    <select id="selectColExplCount" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectColExplCount */
+        SELECT COUNT(1) termCount
+          FROM INFORMATION_SCHEMA.TABLES A
+    INNER JOIN INFORMATION_SCHEMA.COLUMNS B
+            ON A.TABLE_SCHEMA = B.TABLE_SCHEMA AND A.TABLE_NAME = B.TABLE_NAME
+         WHERE A.TABLE_SCHEMA = #{tableSchema}
+           AND A.TABLE_TYPE = 'BASE TABLE'
+           AND B.COLUMN_COMMENT = ''
+        <include refid="termWhere"/>
+    </select>
+
+    <!-- DB 컬럼 설명 미표시 조회 -->
+    <select id="selectColExplList" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectColExplList */
+        SELECT B.TABLE_SCHEMA                           tableSchema         <!-- 스키마 -->
+             , B.TABLE_NAME                             tableName           <!-- 테이블명 -->
+             , B.COLUMN_NAME                            columnName          <!-- 컬럼영문명 -->
+             , B.COLUMN_COMMENT                         columnComment       <!-- 컬럼한글명 -->
+             , B.COLUMN_TYPE                            columnType          <!-- 데이터타입(길이) -->
+          FROM INFORMATION_SCHEMA.TABLES A
+    INNER JOIN INFORMATION_SCHEMA.COLUMNS B
+            ON A.TABLE_SCHEMA = B.TABLE_SCHEMA AND A.TABLE_NAME = B.TABLE_NAME
+         WHERE A.TABLE_SCHEMA = #{tableSchema}
+           AND A.TABLE_TYPE = 'BASE TABLE'
+           AND B.COLUMN_COMMENT = ''
+        <include refid="termWhere"/>
+      ORDER BY A.TABLE_NAME DESC
+        <if test='schEtc10 != "Y"'>
+         LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+        </if>
+    </select>
+
+    <!-- DB 컬럼 표준미준수 조회 -->
+    <select id="selectColStdList" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectColStdList */
+        SELECT B.TABLE_SCHEMA               tableSchema         <!-- 스키마 -->
+             , B.TABLE_NAME                 tableName           <!-- 테이블명 -->
+             , B.COLUMN_NAME                columnName          <!-- 컬럼영문명 -->
+             , B.COLUMN_COMMENT             columnComment       <!-- 컬럼한글명 -->
+             , B.COLUMN_TYPE                columnType          <!-- 데이터타입(길이) -->
+             , B.stdCd                                          <!-- 표준미준수코드 -->
+             , CASE
+                 WHEN B.stdCd = 'ST01' THEN '미등록데이터'
+                 ELSE '컬럼한글명불일치'
+               END                          stdCdNm             <!-- 표준미준수코드명 -->
+          FROM (SELECT E.*
+                     , CASE
+                         WHEN F.TERM_ENG_NM IS NULL THEN 'ST01'
+                         WHEN REPLACE(E.COLUMN_COMMENT, ' ', '') != REPLACE(F.TERM_NM, ' ', '') THEN 'ST02'
+                         ELSE 'ST03'
+                       END stdCd
+                  FROM (SELECT D.*
+                          FROM INFORMATION_SCHEMA.TABLES C
+                    INNER JOIN INFORMATION_SCHEMA.COLUMNS D
+                            ON C.TABLE_SCHEMA = D.TABLE_SCHEMA AND C.TABLE_NAME = D.TABLE_NAME
+                         WHERE D.TABLE_SCHEMA = #{tableSchema}
+                           AND C.TABLE_TYPE = 'BASE TABLE'
+                  ) E
+             LEFT JOIN T_TERM_MNG F
+                    ON E.COLUMN_NAME = F.TERM_ENG_NM AND F.USE_YN = 'Y'
+         ) B
+         WHERE B.stdCd != 'ST03'
+        <include refid="termWhere"/>
+        <if test='schEtc10 != "Y"'>
+         LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+        </if>
+    </select>
+
+    <!-- DB 컬럼 표준미준수 건수 -->
+    <select id="selectColStdCount" parameterType="cmDbDataVO" resultType="cmDbDataVO">
+        /* com.standard.mapper.component.DbDataMapper.selectColStdCount */
+        SELECT COUNT(1) termCount
+          FROM (SELECT E.*
+                     , CASE
+                         WHEN F.TERM_ENG_NM IS NULL THEN 'ST01'
+                         WHEN REPLACE(E.COLUMN_COMMENT, ' ', '') != REPLACE(F.TERM_NM, ' ', '') THEN 'ST02'
+                         ELSE 'ST03'
+                       END stdCd
+                  FROM (SELECT D.*
+                          FROM INFORMATION_SCHEMA.TABLES C
+                    INNER JOIN INFORMATION_SCHEMA.COLUMNS D
+                            ON C.TABLE_SCHEMA = D.TABLE_SCHEMA AND C.TABLE_NAME = D.TABLE_NAME
+                         WHERE D.TABLE_SCHEMA = #{tableSchema}
+                           AND C.TABLE_TYPE = 'BASE TABLE'
+                  ) E
+             LEFT JOIN T_TERM_MNG F
+                    ON E.COLUMN_NAME = F.TERM_ENG_NM AND F.USE_YN = 'Y'
+         ) B
+         WHERE B.stdCd != 'ST03'
+        <include refid="termWhere"/>
+    </select>
+
+</mapper>

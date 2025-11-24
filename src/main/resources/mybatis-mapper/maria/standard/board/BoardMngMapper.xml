@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.kps.partners.mapper.BoardMngMapper">
+<mapper namespace="com.standard.mapper.board.BoardMngMapper">
 
 	<!-- 검색 조건 -->
 	<sql id="Where">
@@ -19,9 +19,9 @@
 	</sql>
 
 	<!-- 게시글 건수 조회 -->
-	<select id="selectCount" parameterType="boardVO" resultType="int">
-		/* BoardMapper.selectCount */
-		SELECT COUNT(1)
+	<select id="selectCount" parameterType="boardVO" resultType="boardVO">
+		/* com.standard.mapper.board.BoardMngMapper.selectCount */
+		SELECT COUNT(1) boardCount
 		  FROM T_BOARD_MNG
 		<where>
 		   <include refid="Where"/>
@@ -31,7 +31,7 @@
 
 	<!-- 게시글 목록 조회 -->
 	<select id="selectList" parameterType="boardVO" resultType="boardVO">
-		/* BoardMapper.selectList */
+		/* com.standard.mapper.board.BoardMngMapper.selectList */
 		SELECT BOARD_SERNO						boardSerno
 			 , BOARD_TITL						boardTitl
 			 , BOARD_CTT						boardCtt
@@ -49,7 +49,7 @@
 
 	<!-- 게시글 상세 조회 -->
 	<select id="selectContents" parameterType="boardVO" resultType="boardVO">
-		/* BoardMapper.selectContents */
+		/* com.standard.mapper.board.BoardMngMapper.selectContents */
 		SELECT BOARD_SERNO							boardSerno
 			 , BOARD_TITL							boardTitl
 			 , BOARD_CTT							boardCtt
@@ -63,7 +63,7 @@
 
 	<!-- 게시글 등록 -->
 	<insert id="insertContents" parameterType="boardVO">
-		/* BoardMapper.insertContents */
+		/* com.standard.mapper.board.BoardMngMapper.insertContents */
 		INSERT INTO T_BOARD_MNG(
 			   BOARD_TITL
 			 , BOARD_CTT
@@ -80,7 +80,7 @@
 
 	<!-- 게시글 수정 -->
 	<update id="updateContents" parameterType="boardVO">
-		/* BoardMapper.updateContents */
+		/* com.standard.mapper.board.BoardMngMapper.updateContents */
 		UPDATE T_BOARD_MNG
 		   SET BOARD_TITL 	= #{boardTitl}
 		   	 , BOARD_CTT 	= #{boardCtt}
@@ -91,25 +91,25 @@
 
 	<!-- 게시글 삭제 -->
 	<update id="deleteContents" parameterType="boardVO">
-		/* BoardMapper.deleteContents */
+		/* com.standard.mapper.board.BoardMngMapper.deleteContents */
 		UPDATE T_BOARD_MNG
 		   SET USE_YN 	   = 'N'
 		 WHERE BOARD_SERNO = #{boardSerno}
 	</update>
 	
 	<!-- 게시글 본인글 여부 -->
-	<select id="regrCheck" parameterType="regepsVO" resultType="boolean">
-		/* BoardMapper.regrCheck */
+	<select id="regrCheck" parameterType="boardVO" resultType="boardVO">
+		/* com.standard.mapper.board.BoardMngMapper.regrCheck */
 		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
 					ELSE 0
-			   END
+			   END AS isRegrChk
 		  FROM T_BOARD_MNG 
 		 WHERE BOARD_SERNO = #{boardSerno}
 	</select>
 
 	<!-- 게시글 엑셀 목록 조회 -->
 	<select id="selectExcelList" parameterType="boardVO" resultType="boardVO">
-		/* BoardMapper.selectExcelList */
+		/* com.standard.mapper.board.BoardMngMapper.selectExcelList */
 		SELECT BOARD_SERNO						boardSerno
 			 , BOARD_TITL						boardTitl
 			 , BOARD_CTT						boardCtt

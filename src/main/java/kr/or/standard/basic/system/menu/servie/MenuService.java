@@ -6,8 +6,8 @@ import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.system.auth.service.AuthService;
 import kr.or.standard.basic.system.auth.vo.AuthVO; 
-import kr.or.standard.basic.system.menu.vo.MenuVO;
-import kr.or.standard.basic.system.stat.acsStat.vo.AcsStatVO;
+import kr.or.standard.basic.system.menu.vo.MenuVO; 
+import kr.or.standard.basic.statistics.acsstat.vo.AcsStatVO; 
 import kr.or.standard.basic.usersupport.contTmpl.vo.ContTmplVO;
 import lombok.RequiredArgsConstructor;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -41,39 +41,41 @@ public class MenuService extends EgovAbstractServiceImpl {
 	private final CmmnDefaultDao defaultDao;
 	private final AuthService authService;
 	
+	private final String sqlNs = "com.standard.mapper.basic.menuMngMapper.";
+	
 	
 	// 메뉴관리 메뉴목록 조회
 	public List<MenuVO> selectList(MenuVO vo) {
-		return (List<MenuVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.menuMngMapper.selectList", vo); 
+		return (List<MenuVO>)defaultDao.selectList(sqlNs+"selectList", vo); 
 	};
 	
 	
 	// Excel 메뉴목록 조회
 	public List<MenuVO> selectExcelList(MenuVO vo) {
-		return (List<MenuVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.menuMngMapper.selectExcelList", vo); 
+		return (List<MenuVO>)defaultDao.selectList(sqlNs+"selectExcelList", vo); 
 	};
 	
 	// header 공통게시판 리스트 조회
 	@Cacheable("bltnbMenuList")
 	public List<MenuVO> selectMenuBltnbList(String grpAuthId) {
-		return (List<MenuVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.menuMngMapper.selectMenuBltnbList", grpAuthId); 
+		return (List<MenuVO>)defaultDao.selectList(sqlNs+"selectMenuBltnbList", grpAuthId); 
 	};
 	
 	
 	// header 메뉴목록 조회
 	public List<MenuVO> selectMenuList(MenuVO vo) {
-		return (List<MenuVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.menuMngMapper.selectMenuList", vo); 
+		return (List<MenuVO>)defaultDao.selectList(sqlNs+"selectMenuList", vo); 
 	};
 	
 	
 	// 메뉴 상세 조회
 	public MenuVO selectContents(MenuVO vo) {
-		return (MenuVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.menuMngMapper.selectContents", vo); 
+		return (MenuVO)defaultDao.selectOne(sqlNs+"selectContents", vo); 
 	};
 	
 	// 메뉴 게시판 유형 조회
 	public String selectBltnbCl(CommonMap condiMap){
-		BltnbVO bltnbVo = (BltnbVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.menuMngMapper.selectBltnbCl", condiMap);
+		BltnbVO bltnbVo = (BltnbVO)defaultDao.selectOne(sqlNs+"selectBltnbCl", condiMap);
 		if(bltnbVo == null){ return null; }
 		else return bltnbVo.getBltnbCl();
 	}
@@ -83,7 +85,7 @@ public class MenuService extends EgovAbstractServiceImpl {
 	public String selectMenuNm(String menuCd) {
 		MenuVO menuvo = new MenuVO();
 		menuvo.setMenuCd(menuCd);
-		MenuVO rtnVo = (MenuVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.menuMngMapper.selectMenuNm", menuvo);
+		MenuVO rtnVo = (MenuVO)defaultDao.selectOne(sqlNs+"selectMenuNm", menuvo);
 		if(rtnVo == null){ return null; }
 		else return rtnVo.getMenuNm(); 
 	};
@@ -91,7 +93,7 @@ public class MenuService extends EgovAbstractServiceImpl {
 	
 	// 메뉴 등록
 	public int insertContents(MenuVO vo){	 
-		int resultInt = defaultDao.insert("com.opennote.standard.mapper.basic.menuMngMapper.insertContents", vo); 
+		int resultInt = defaultDao.insert(sqlNs+"insertContents", vo); 
 		// 수정 성공, 컨텐츠 유형 일때
 		if(resultInt > 0 && "C".equals(vo.getMenuTpCl())) {
 			// 에디터 내용 등록
@@ -102,7 +104,7 @@ public class MenuService extends EgovAbstractServiceImpl {
 
 	// 메뉴 수정
 	public int updateContents(MenuVO vo) {
-		int resultInt = defaultDao.update("com.opennote.standard.mapper.basic.menuMngMapper.updateContents", vo); 
+		int resultInt = defaultDao.update(sqlNs+"updateContents", vo); 
 		// 수정 성공, 컨텐츠 유형 일때
 		if(resultInt > 0 &&  "C".equals(vo.getMenuTpCl())) {
 			// 에디터 내용 수정
@@ -113,7 +115,7 @@ public class MenuService extends EgovAbstractServiceImpl {
 
 	// 메뉴 삭제
 	public int deleteContents(HttpServletRequest request, MenuVO vo) throws Exception{
-		int resultInt = defaultDao.delete("com.opennote.standard.mapper.basic.menuMngMapper.deleteContents", vo); 
+		int resultInt = defaultDao.delete(sqlNs+"deleteContents", vo); 
 		// 삭제 성공시
 		if(resultInt > 0) {
 			// 게시판 유형이 컨텐츠 유형 일때
@@ -127,7 +129,7 @@ public class MenuService extends EgovAbstractServiceImpl {
 				}
 			}
 			//메뉴 순서 재정비
-			defaultDao.update("com.opennote.standard.mapper.basic.menuMngMapper.menuDeleteOrderUpdateContents", vo); 
+			defaultDao.update(sqlNs+"menuDeleteOrderUpdateContents", vo); 
 			
 			//하위메뉴 조회 후 해당 메뉴를 상위로 가지고 있는 메뉴 삭제 반복
 			vo.setDivn(vo.getMenuCd());
@@ -143,37 +145,37 @@ public class MenuService extends EgovAbstractServiceImpl {
 	
 	// 메뉴 중복확인
 	public int menuCdDuplCheck(MenuVO vo) {
-		MenuVO rtnVo = (MenuVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.menuMngMapper.menuCdDuplCheck" , vo);
+		MenuVO rtnVo = (MenuVO)defaultDao.selectOne(sqlNs+"menuCdDuplCheck" , vo);
 		if(rtnVo == null){ return 0; }
 		else return rtnVo.getMenuCnt();  
 	};
 	
 	// 메뉴 본인글 여부 
 	public boolean regrCheck(MenuVO vo) {
-		MenuVO rtnVo = (MenuVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.menuMngMapper.regrCheck" , vo);
+		MenuVO rtnVo = (MenuVO)defaultDao.selectOne(sqlNs+"regrCheck" , vo);
 		return rtnVo.getIsMyRegr() == 1 ? true : false; 
 	}
 	
 	// 메뉴 컨텐츠 조회
 	public String selectContContents(String menuCd) {
-		MenuVO rtnVo = (MenuVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.menuMngMapper.selectContContents" , menuCd);
+		MenuVO rtnVo = (MenuVO)defaultDao.selectOne(sqlNs+"selectContContents" , menuCd);
 		if(rtnVo == null){ return ""; }
 		else return rtnVo.getEditrCont();   
 	};
 	
 	// 메뉴 컨텐츠내용 등록
 	public int insertContContents(MenuVO vo){
-		return defaultDao.insert("com.opennote.standard.mapper.basic.menuMngMapper.insertContContents" , vo); 
+		return defaultDao.insert(sqlNs+"insertContContents" , vo); 
 	}
 
 	// 메뉴 컨텐츠내용 수정
 	public int updateContContents(MenuVO vo){
-		return defaultDao.update("com.opennote.standard.mapper.basic.menuMngMapper.updateContContents" , vo); 
+		return defaultDao.update(sqlNs+"updateContContents" , vo); 
 	};
 
 	// 메뉴 컨텐츠내용 삭제
 	public int deleteContContents(MenuVO vo){
-		return defaultDao.update("com.opennote.standard.mapper.basic.menuMngMapper.deleteContContents" , vo); 
+		return defaultDao.update(sqlNs+"deleteContContents" , vo); 
 	};
 	
 	//컨텐츠 pop 건수 조회
@@ -298,16 +300,16 @@ public class MenuService extends EgovAbstractServiceImpl {
 	// menu 순서 up
 	public int orderUp(MenuVO vo) {
         int reuslt = 0; 
-        reuslt += defaultDao.update("com.opennote.standard.mapper.basic.menuMngMapper.orderUpTargetUpdateContents" , vo);
-        reuslt += defaultDao.update("com.opennote.standard.mapper.basic.menuMngMapper.orderUpSelfUpdateContents" , vo);
+        reuslt += defaultDao.update(sqlNs+"orderUpTargetUpdateContents" , vo);
+        reuslt += defaultDao.update(sqlNs+"orderUpSelfUpdateContents" , vo);
         return reuslt;
     }
 
 	// menu 순서 down
     public int orderDown(MenuVO vo) {
         int reuslt = 0;
-        reuslt += defaultDao.update("com.opennote.standard.mapper.basic.menuMngMapper.orderDownTargetUpdateContents" , vo);
-        reuslt += defaultDao.update("com.opennote.standard.mapper.basic.menuMngMapper.orderDownSelfUpdateContents" , vo);
+        reuslt += defaultDao.update(sqlNs+"orderDownTargetUpdateContents" , vo);
+        reuslt += defaultDao.update(sqlNs+"orderDownSelfUpdateContents" , vo);
         return reuslt;
     }
     
@@ -458,27 +460,27 @@ public class MenuService extends EgovAbstractServiceImpl {
 
 	// 메뉴접속 로그 등록
 	public int insertLogContents(AcsStatVO vo) {
-		return defaultDao.insert("com.opennote.standard.mapper.basic.menuMngMapper.insertLogContents" , vo); 
+		return defaultDao.insert(sqlNs+"insertLogContents" , vo); 
 	}
 
 	// 메뉴별 접속수 Top5
 	public List<CommonMap> selectMenuRank() {
-		return basicDao.selectList("com.opennote.standard.mapper.basic.menuMngMapper.selectMenuRank");
+		return basicDao.selectList(sqlNs+"selectMenuRank");
 		// return menuMngMapper.selectMenuRank();
 	}
 
 	// 메뉴별 접속수 Top5 상세
 	public List<CommonMap> selectMenuRankDetail(AcsStatVO vo) {
-		return basicDao.selectList( "com.opennote.standard.mapper.basic.menuMngMapper.selectMenuRankDetail", vo ); 
+		return basicDao.selectList( sqlNs+"selectMenuRankDetail", vo ); 
 	}
 
 	// 메뉴별 접속수(현재날짜)
 	public List<CommonMap> selectMenuNow() {
-		return basicDao.selectList("com.opennote.standard.mapper.basic.menuMngMapper.selectMenuNow");
+		return basicDao.selectList(sqlNs+"selectMenuNow");
 	}
 
 	// 메뉴별 접속수(현재날짜) 상세
 	public List<CommonMap> selectMenuNowDetail(AcsStatVO vo) {
-		return basicDao.selectList("com.opennote.standard.mapper.basic.menuMngMapper.selectMenuNowDetail", vo); 
+		return basicDao.selectList(sqlNs+"selectMenuNowDetail", vo); 
 	}
 }

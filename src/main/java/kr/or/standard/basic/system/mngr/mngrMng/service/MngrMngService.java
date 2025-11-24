@@ -7,6 +7,7 @@ import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.common.view.excel.ExcelView;
 import kr.or.standard.basic.module.EncryptUtil;
+import kr.or.standard.basic.statistics.acsstat.vo.AcsStatVO;
 import kr.or.standard.basic.system.auth.service.AuthService;
 import kr.or.standard.basic.usersupport.user.service.UserService;
 import kr.or.standard.basic.usersupport.user.vo.UserVO;
@@ -37,6 +38,8 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 	private final MessageSource messageSource;
 	private final ExcelView excelView;
 	
+	private final String sqlNs = "com.opennote.standard.mapper.basic.UserIpMngMapper.";
+	
 	
 	public void addList(UserVO searchVO, Model model) throws Exception { 
 	
@@ -64,7 +67,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 				userVO = userService.selectContents(searchVO);
 
 				// IP 리스트
-				List<UserVO> rtnVoListr = (List<UserVO>)defaultDao.selectList( "com.opennote.standard.mapper.basic.UserIpMngMapper.selectList" , searchVO); 
+				List<UserVO> rtnVoListr = (List<UserVO>)defaultDao.selectList( sqlNs+"selectList" , searchVO); 
 				model.addAttribute("ipList", rtnVoListr);
 			}else{
 				return "redirect:list.do";
@@ -207,14 +210,14 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		int effCnt = defaultDao.insert("com.opennote.standard.mapper.basic.UserMngMapper.insertContents", vo);
 
 		// IP 삭제 
-		defaultDao.delete("com.opennote.standard.mapper.basic.UserIpMngMapper.deleteIpContents", vo); 
+		defaultDao.delete(sqlNs+"deleteIpContents", vo); 
 
 		List<UserVO> ipList = vo.getIpList();
 
 		if (ipList != ipList && ipList.size() > 0) {
 			for (UserVO ipVO : ipList) {
 				ipVO.setUserSerno(vo.getUserSerno()); 
-				defaultDao.insert("com.opennote.standard.mapper.basic.UserIpMngMapper.insertIpContents", vo); 
+				defaultDao.insert(sqlNs+"insertIpContents", vo); 
 			}
 		}
 
@@ -235,14 +238,14 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		int cnt = defaultDao.update("com.opennote.standard.mapper.basic.UserMngMapper.updateContents", vo); 
 
 		// IP 삭제
-		defaultDao.delete("com.opennote.standard.mapper.basic.UserIpMngMapper.deleteIpContents" , vo);
+		defaultDao.delete(sqlNs+"deleteIpContents" , vo);
 		  
 		List<UserVO> ipList = vo.getIpList(); 
 		if (ipList != null && ipList.size() > 0) {
 			for (UserVO ipVO : ipList) {
 				ipVO.setUserSerno(vo.getUserSerno());
 				
-				defaultDao.delete("com.opennote.standard.mapper.basic.UserIpMngMapper.insertIpContents" , vo); 
+				defaultDao.delete(sqlNs+"insertIpContents" , vo); 
 			}
 		}
 
@@ -270,19 +273,19 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 	}
 
 	// 일별 탈퇴추이
-	/*public List<CommonMap> selectScssUserDay(AcsStatVO vo) {
+	public List<CommonMap> selectScssUserDay(AcsStatVO vo) {
 		return basicDao.selectList("com.opennote.standard.mapper.basic.UserScssMngMapper.selectScssUserDay", vo); 
-	}*/
+	}
 
 	// 탈퇴회원 목록
-	/*public List<UserVO> selectScssUserList(AcsStatVO vo) {
+	public List<UserVO> selectScssUserList(AcsStatVO vo) {
 		return (List<UserVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserScssMngMapper.selectScssUserList", vo); 
-	}*/
+	}
 
 	// 탈퇴회원 건수
-	/*public int selectScssUserCount(AcsStatVO vo) {
+	public int selectScssUserCount(AcsStatVO vo) {
 		AcsStatVO rtnVo = (AcsStatVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserScssMngMapper.selectScssUserCount" , vo);
 		return Integer.parseInt( rtnVo.getUserCount() ); 
-	};*/
+	};
 
 }

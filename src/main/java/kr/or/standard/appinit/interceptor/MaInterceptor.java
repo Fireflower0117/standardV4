@@ -47,6 +47,7 @@ public class MaInterceptor implements HandlerInterceptor {
 		if(lginPlcyVO == null) { 
 			session.setAttribute("lginPlcy_info", lginPlcyService.selectOne()); 
 		}
+		log.info("====== lginPlcy_info CheckPass ======");
 
 		/* ================================== 로고 정보 세션에 저장 ==================================== */
 		if(session.getAttribute("logoInfo") == null){
@@ -58,7 +59,7 @@ public class MaInterceptor implements HandlerInterceptor {
 			}
 			session.setAttribute("logoInfo", logoMap);
 		}
-
+		log.info("====== session.setAttribute logoInfo CheckPass ======");
 
 		/* ================================== 예외 처리 ==================================== */
 		// 로그인, 로그아웃
@@ -68,8 +69,11 @@ public class MaInterceptor implements HandlerInterceptor {
 			return true;
 		}
 		
+		log.info("====== ma login logout .do CheckPass ======");
+		
 		LoginVO loginVO = (LoginVO) session.getAttribute("ma_user_info");
-
+		
+		log.info("====== ma loginVO isNotNull (loginVO != null) : {} ======" , (loginVO != null) ); 
 		// 로그인 정보 있을 경우
 		if(loginVO != null) {
 			// 권한 정보
@@ -89,6 +93,8 @@ public class MaInterceptor implements HandlerInterceptor {
 					}
 				}
 			}
+			log.info("====== ma loginVO isNotNull Pass menuCd: {} ======" , menuCd );
+			
 			 
 			// 일반 쓰기 권한
 			boolean authWrtTF = false;
@@ -104,13 +110,18 @@ public class MaInterceptor implements HandlerInterceptor {
 			Boolean bltnbCheck = false;
 			// 메뉴 포함시 true
 			if(userAuth.contains(menuCd)){
+				log.info("====== ma authCheck contains menuCd : {} ======" , true );
 				authCheck = true;
 			}else {
 				//공통게사판 권한이 있을때 해당하는 게시판인지 체크
 				if(userAuth.contains("bltnb")){
+					log.info("====== ma authCheck contains bltnb : {} ======" , true );
 					List<String> bltnbAuth = (List<String>) session.getAttribute("ma_bltnb_auth");
-					//공통게사판 메뉴 포함시 true
+					
+					//공통게시판 메뉴 포함시 true
+					log.info("====== ma (bltnbAuth.contains(menuCd)) : {} ======" , (bltnbAuth.contains(menuCd)) );
 					if(bltnbAuth.contains(menuCd)){
+						log.info("====== ma authCheck Common Board Contain menuCd ");
 						authCheck = true;
 						bltnbCheck = true;
 					}
@@ -118,6 +129,7 @@ public class MaInterceptor implements HandlerInterceptor {
 			}
 			// 권한이 존재하지 않는데 접근 시 메세지
 			if(!authCheck){
+				log.info("====== ma Access Permission Denied : ======");
 				PrintWriter pw = response.getWriter();
 				pw.println("<script>alert(\"비정상적인 접근입니다.\");history.back();</script>");
 				pw.flush();
@@ -138,6 +150,8 @@ public class MaInterceptor implements HandlerInterceptor {
 				 || request.getRequestURI().toLowerCase().indexOf("proc") != -1) {
 					// 읽기 권한만 있는 경우 비정상적인 접근 메세지
 					if ("R".equals(wrtVal)) {
+					
+						log.info("====== ma Access Permission wrtVal = R ======"); 
 						response.setContentType("text/html;charset=UTF-8");
 						PrintWriter pw = response.getWriter();
 						pw.println("<script>alert(\"비정상적인 접근입니다.\");history.back();</script>");
@@ -159,10 +173,15 @@ public class MaInterceptor implements HandlerInterceptor {
 				}
 				
 				// 쓰기 권한 셋팅
+				log.info("====== SESSION_WRITE_BTN_KEY : {} ", authWrtTF); 
 				session.setAttribute("SESSION_WRITE_BTN_KEY", authWrtTF);
+				
 				// 관리자 권한 셋팅
+				log.info("====== SESSION_MANAGER_WRITE_BTN_KEY : {} ", managerWrtAuthTF);
 				session.setAttribute("SESSION_MANAGER_WRITE_BTN_KEY", managerWrtAuthTF);
+				
 				// 권한 String R,W,M
+				log.info("====== SESSION_WRITE_KEY : {} ", wrtVal);
 				session.setAttribute("SESSION_WRITE_KEY", wrtVal);
 			}
 		}else {

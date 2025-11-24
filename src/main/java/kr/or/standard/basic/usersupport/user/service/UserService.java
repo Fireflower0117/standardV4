@@ -7,6 +7,7 @@ import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.common.view.excel.ExcelView;
 import kr.or.standard.basic.module.EncryptUtil;
+import kr.or.standard.basic.statistics.acsstat.vo.AcsStatVO;
 import kr.or.standard.basic.system.auth.service.AuthService;
 import kr.or.standard.basic.usersupport.lginPlcy.service.LginPlcyService;
 import kr.or.standard.basic.usersupport.lginPlcy.vo.LginPlcyVO;
@@ -56,17 +57,19 @@ public class UserService extends EgovAbstractServiceImpl   {
 	private final MessageSource messageSource;
 	private final ExcelView excelView;
 	
+	private final String sqlNs = "com.standard.mapper.basic.UserMngMapper." ;
+	
 	
 	
 	// 사용자 건수 조회
 	public int selectCount(UserVO vo) { 
-		UserVO rtnVo = (UserVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserMngMapper.selectUserCount" ,vo);
+		UserVO rtnVo = (UserVO)defaultDao.selectOne(sqlNs+"selectUserCount" ,vo);
 		return Integer.parseInt(rtnVo.getUserCount());  
 	}
 	
 	// 사용자 목록 조회
 	public List<UserVO> selectList(UserVO vo) {
-	    return (List<UserVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserMngMapper.selectUsertList" , vo); 
+	    return (List<UserVO>)defaultDao.selectList(sqlNs+"selectUsertList" , vo); 
 	}
 	
 	public void addList(UserVO userVo, Model model) throws Exception{
@@ -86,14 +89,14 @@ public class UserService extends EgovAbstractServiceImpl   {
 	
 	// 사용자 상세 조회
 	public void view(UserVO vo, Model model){ 
-		UserVO userVO = (UserVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserMngMapper.selectContents", vo);
+		UserVO userVO = (UserVO)defaultDao.selectOne(sqlNs+"selectContents", vo);
 		model.addAttribute("userVO", userVO); 
 	} 
 	
 	// 사용자 수정 페이지 기본정보 
 	public void updateForm(UserVO vo, Model model){
 	
-		UserVO userVO = (UserVO) defaultDao.selectOne("com.opennote.standard.mapper.basic.UserMngMapper.selectContents", vo);
+		UserVO userVO = (UserVO) defaultDao.selectOne(sqlNs+"selectContents", vo);
 		model.addAttribute("userVO", userVO);
 		
 		// 회원 권한 목록
@@ -116,7 +119,7 @@ public class UserService extends EgovAbstractServiceImpl   {
 			vo.setUserPswd(EncryptUtil.getEncryptBCrypt(vo.getUserPswd()));
 		}
 		
-		int updateRowCount =  defaultDao.update("com.opennote.standard.mapper.basic.UserMngMapper.updateContents" ,vo); 
+		int updateRowCount =  defaultDao.update(sqlNs+"updateContents" ,vo); 
 		 
 		if(updateRowCount > 0) {
 			returnMap.put("message", messageSource.getMessage("update.message", null, null));
@@ -150,7 +153,7 @@ public class UserService extends EgovAbstractServiceImpl   {
 	public CommonMap unlockProc(UserVO searchVO){
 		CommonMap returnMap = new CommonMap();
 		  
-		int result =  defaultDao.update("com.opennote.standard.mapper.basic.UserMngMapper.userUnLock" ,searchVO);
+		int result =  defaultDao.update(sqlNs+"userUnLock" ,searchVO);
 		String message = searchVO.getSchEtc11().length + "건에 대하여 잠금을 해제하였습니다.";
 		
 		if(result == 0) {
@@ -371,12 +374,12 @@ public class UserService extends EgovAbstractServiceImpl   {
 
 	 
 	public UserVO selectContents(UserVO vo) { 
-		return (UserVO) defaultDao.selectOne("com.opennote.standard.mapper.basic.UserMngMapper.selectContents", vo); 
+		return (UserVO) defaultDao.selectOne(sqlNs+"selectContents", vo); 
 	}
 
     // (작성자 == 로그인사용자) 판단 
 	public boolean regrCheck(UserVO vo) {
-		 UserVO rtnVo = (UserVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserMngMapper.regrCheck" , vo);
+		 UserVO rtnVo = (UserVO)defaultDao.selectOne(sqlNs+"regrCheck" , vo);
 		 if(rtnVo == null) return false;
 		 else { return Integer.parseInt(rtnVo.getIsRegrCheck()) == 0 ? false : true; } 
 	}
@@ -400,7 +403,7 @@ public class UserService extends EgovAbstractServiceImpl   {
 	
 	// 사용자 잠금 해제
 	public int userUnLock(UserVO vo) {
-		return defaultDao.update("com.opennote.standard.mapper.basic.UserMngMapper.userUnLock" ,vo); 
+		return defaultDao.update(sqlNs+"userUnLock" ,vo); 
 	}
 
 	// 사용자 데이터 삭제
@@ -415,25 +418,25 @@ public class UserService extends EgovAbstractServiceImpl   {
 		if(!StringUtils.isEmpty(lginPlcyVO.getScssAccPssnPrdCd())) {
 			
 			// 탈퇴 유저 테이블로 이동  
-			result = defaultDao.insert("com.opennote.standard.mapper.basic.UserMngMapper.moveUserContents", vo);
+			result = defaultDao.insert(sqlNs+"moveUserContents", vo);
 			
 			// 회원정보 delete
 			if(result > 0) {
-				defaultDao.delete("com.opennote.standard.mapper.basic.UserMngMapper.deleteUserContents", vo);
+				defaultDao.delete(sqlNs+"deleteUserContents", vo);
 						
 				if(!CollectionUtils.isEmpty(vo.getTermsList())) {
 					// 사용자별 약관 저장
 					for(TermsVO.Terms termsVO : vo.getTermsList()) {
 						if("Y".equals(termsVO.getTermsAgreeYn())) {
 							termsVO.setUserSerno(vo.getUserSerno());
-							defaultDao.insert("com.opennote.standard.mapper.basic.UserMngMapper.mergeUserTermsContents" , termsVO); 
+							defaultDao.insert(sqlNs+"mergeUserTermsContents" , termsVO); 
 						}
 					}
 				}
 			}
 		} else {
 			// 회원정보 delete
-			defaultDao.delete("com.opennote.standard.mapper.basic.UserMngMapper.deleteUserContents" , vo); 
+			defaultDao.delete(sqlNs+"deleteUserContents" , vo); 
 		}
 		
 		return result;
@@ -441,7 +444,7 @@ public class UserService extends EgovAbstractServiceImpl   {
 	
 	// ID 중복체크
 	public int idOvlpSelectCount(UserVO vo) {
-		UserVO rtnVo = (UserVO) defaultDao.selectOne("com.opennote.standard.mapper.basic.UserMngMapper.idOvlpSelectCount" , vo); 
+		UserVO rtnVo = (UserVO) defaultDao.selectOne(sqlNs+"idOvlpSelectCount" , vo); 
 		return Integer.parseInt( rtnVo.getUserCount()); 
 	}
 
@@ -450,7 +453,7 @@ public class UserService extends EgovAbstractServiceImpl   {
 		List<UserVO> userList = new ArrayList<>();
 		
 		// 핸드폰번호 복호화
-		List<UserVO> rtnList = (List<UserVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserMngMapper.selectExcelList", vo);
+		List<UserVO> rtnList = (List<UserVO>)defaultDao.selectList(sqlNs+"selectExcelList", vo);
 		for(UserVO userVO : rtnList) {
 			userVO.setUserTelNo(EncryptUtil.getDecryptAES256HyPhen(userVO.getUserTelNo()));
 			userList.add(userVO);
@@ -460,25 +463,26 @@ public class UserService extends EgovAbstractServiceImpl   {
 	}
 
 	// 월별 가입추이(현재년도)
-	/*public List<CommonMap> selectScrbUserMon() {
-		return basicDao.selectList("com.opennote.standard.mapper.basic.UserMngMapper.selectScrbUserMon"); 
-	}*/
+	public List<CommonMap> selectScrbUserMon() {
+		return basicDao.selectList(sqlNs+"selectScrbUserMon"); 
+	}
 
 	// 일별 가입추이
-	/*public List<CommonMap> selectScrbUserDay(AcsStatVO vo) {
-		return basicDao.selectList("com.opennote.standard.mapper.basic.UserMngMapper.selectScrbUserDay", vo); 
-	}*/
+	public List<CommonMap> selectScrbUserDay(AcsStatVO vo) {
+		return basicDao.selectList(sqlNs+"selectScrbUserDay", vo); 
+	}
 
 	// 가입회원 목록
-	/*public List<UserVO> selectScrbUserList(AcsStatVO vo) {
-		return (List<UserVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserMngMapper.selectScrbUserList", vo); 
-	}*/
+	public List<UserVO> selectScrbUserList(AcsStatVO vo) {
+		return (List<UserVO>)defaultDao.selectList(sqlNs+"selectScrbUserList", vo); 
+	}
 
 
 	// 가입회원 건수
-	/*public int selectScrbUserCount(AcsStatVO vo) { 
-		return userMngMapper.selectScrbUserCount(vo);
-	};*/
+	public int selectScrbUserCount(AcsStatVO vo) { 
+		AcsStatVO rtnVo = (AcsStatVO)defaultDao.selectOne(sqlNs+"selectScrbUserCount", vo);
+		return Integer.parseInt(rtnVo.getUserCount());  
+	};
 
 	public List<UserVO> selectHwpList(UserVO vo) {
 		return (List<UserVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserMngMapper.selectHwpList" , vo); 

@@ -13,559 +13,6 @@
     <ul class="gnb js_gnb">
     	
 			  
-		        <li id="li_depth1_sys" data-menunm="시스템"> 
-			        
-			        	
-			        	
-					        
-					           
-					        
-					            
-					        		
-					            	
-					            		 <a href="/ma/sys/menu/list.do" target="">
-					            	
-					            	
-					           	
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-					           
-					        
-			        	
-			        
-		            <span class="gnb_i01"></span>시스템</a> 
-		            
-				        <div class="subwrap js_subwrap">
-						  	<ul class="deps2">
-				        	
-				        		
-				            
-				        		
-						            <li id="li_depth2_menu" class="" data-menunm="메뉴관리">
-						             
-						            	
-										
-							              	
-											    
-											    	<a href="/ma/sys/menu/list.do" target="">
-											    
-											    
-												
-										
-									
-									메뉴관리</a>
-									
-										
-										
-					                	
-						            </li>
-					            
-				            
-				        		
-				            
-				        		
-				            
-				        		
-						            <li id="li_depth2_mngr" class="has_sub" data-menunm="관리자">
-						             
-						            	
-										
-							              	
-											    
-											    
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													    	
-													            
-													            	<a href="/ma/sys/mngr/mngrMng/list.do" target="">
-													            
-													            
-													        
-													    
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-											    
-												
-										
-									
-									관리자</a>
-									
-										
-										
-					                        <ul class="deps3">
-							                    
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-							                    		<li id="li_depth3_mngrMng" data-menunm="관리자관리">
-							                    			
-												        	
-												        		 <a href="/ma/sys/mngr/mngrMng/list.do" target="">
-												        	
-												        	
-												        
-														관리자관리</a>
-							                    		</li>
-						                        	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-							                    		<li id="li_depth3_rstMng" data-menunm="제한관리">
-							                    			
-												        	
-												        		 <a href="/ma/sys/mngr/rstMng/list.do" target="">
-												        	
-												        	
-												        
-														제한관리</a>
-							                    		</li>
-						                        	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-					                    	</ul>
-						                	
-					                	
-						            </li>
-					            
-				            
-				        		
-				            
-				        		
-						            <li id="li_depth2_auth" class="" data-menunm="권한관리">
-						             
-						            	
-										
-							              	
-											    
-											    	<a href="/ma/sys/auth/list.do" target="">
-											    
-											    
-												
-										
-									
-									권한관리</a>
-									
-										
-										
-					                	
-						            </li>
-					            
-				            
-				        		
-						            <li id="li_depth2_code" class="" data-menunm="코드관리">
-						             
-						            	
-										
-							              	
-											    
-											    	<a href="/ma/sys/code/list.do" target="">
-											    
-											    
-												
-										
-									
-									코드관리</a>
-									
-										
-										
-					                	
-						            </li>
-					            
-				            
-				        		
-				            
-				        		
-						            <li id="li_depth2_log" class="has_sub" data-menunm="로그관리">
-						             
-						            	
-										
-							              	
-											    
-											    
-													
-														
-													
-														
-													
-														
-													
-														
-													    	
-													            
-													            	<a href="/ma/sys/log/errlog/list.do" target="">
-													            
-													            
-													        
-													    
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-											    
-												
-										
-									
-									로그관리</a>
-									
-										
-										
-					                        <ul class="deps3">
-							                    
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-							                    		<li id="li_depth3_errlog" data-menunm="에러로그">
-							                    			
-												        	
-												        		 <a href="/ma/sys/log/errlog/list.do" target="">
-												        	
-												        	
-												        
-														에러로그</a>
-							                    		</li>
-						                        	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-							                    		<li id="li_depth3_acs" data-menunm="접속로그">
-							                    			
-												        	
-												        		 <a href="/ma/sys/log/acs/list.do" target="">
-												        	
-												        	
-												        
-														접속로그</a>
-							                    		</li>
-						                        	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-					                    	</ul>
-						                	
-					                	
-						            </li>
-					            
-				            
-				        		
-						            <li id="li_depth2_logo" class="" data-menunm="로고관리">
-						             
-						            	
-										
-							              	
-											    
-											    	<a href="/ma/sys/logo/list.do" target="">
-											    
-											    
-												
-										
-									
-									로고관리</a>
-									
-										
-										
-					                	
-						            </li>
-					            
-				            
-				        		
-				            
-				        		
-						            <li id="li_depth2_regeps" class="" data-menunm="정규표현식 관리">
-						             
-						            	
-										
-							              	
-											    
-											    	<a href="/ma/sys/regeps/list.do" target="">
-											    
-											    
-												
-										
-									
-									정규표현식 관리</a>
-									
-										
-										
-					                	
-						            </li>
-					            
-				            
-				        		
-				            
-				        		
-						            <li id="li_depth2_mnl" class="" data-menunm="매뉴얼관리">
-						             
-						            	
-										
-							              	
-											    
-											    	<a href="/ma/sys/mnl/list.do" target="">
-											    
-											    
-												
-										
-									
-									매뉴얼관리</a>
-									
-										
-										
-					                	
-						            </li>
-					            
-				            
-				        		
-				            
-				        		
-						            <li id="li_depth2_dm" class="has_sub" data-menunm="데이터관리">
-						             
-						            	
-										
-							              	
-											    
-											    
-													
-														
-													    	
-													            
-													            	<a href="/ma/sys/dm/regCd/list.do" target="">
-													            
-													            
-													        
-													    
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-														
-													
-											    
-												
-										
-									
-									데이터관리</a>
-									
-										
-										
-					                        <ul class="deps3">
-							                    
-							                    	
-							                    		<li id="li_depth3_regCd" data-menunm="법정동코드">
-							                    			
-												        	
-												        		 <a href="/ma/sys/dm/regCd/list.do" target="">
-												        	
-												        	
-												        
-														법정동코드</a>
-							                    		</li>
-						                        	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-							                    	
-						                        
-					                    	</ul>
-						                	
-					                	
-						            </li>
-					            
-				            
-				        		
-						            <li id="li_depth2_seo" class="" data-menunm="SEO">
-						             
-						            	
-										
-							              	
-											    
-											    	<a href="/ma/sys/seo/list.do" target="">
-											    
-											    
-												
-										
-									
-									SEO</a>
-									
-										
-										
-					                	
-						            </li>
-					            
-				            
-				        		
-				            
-				        		
-				            
-				        		
-				            
-				        		
-				            
-							</ul>
-						</div>
-		            
-		        </li>
-	          
 		        <li id="li_depth1_us" data-menunm="사용자지원"> 
 			        
 			        	
@@ -580,8 +27,6 @@
 					            	
 					            	
 					            		
-								            
-							            
 								             
 							            		
 									            	
@@ -615,6 +60,8 @@
 							            
 								            
 							            
+								            
+							            
 					            	
 					           	
 					           
@@ -657,9 +104,15 @@
 					        
 					           
 					        
+					           
+					        
+					           
+					        
+					           
+					        
 			        	
 			        
-		            <span class="gnb_i02"></span>사용자지원</a> 
+		            <span class="gnb_i01"></span>사용자지원</a> 
 		            
 				        <div class="subwrap js_subwrap">
 						  	<ul class="deps2">
@@ -678,8 +131,6 @@
 											    
 													
 														
-													
-														
 													    	
 													            
 													            	<a href="/ma/us/mem/user/list.do" target="">
@@ -687,6 +138,8 @@
 													            
 													        
 													    
+													
+														
 													
 														
 													
@@ -723,8 +176,6 @@
 					                        <ul class="deps3">
 							                    
 							                    	
-						                        
-							                    	
 							                    		<li id="li_depth3_user" data-menunm="사용자">
 							                    			
 												        	
@@ -735,6 +186,10 @@
 														사용자</a>
 							                    		</li>
 						                        	
+						                        
+							                    	
+						                        
+							                    	
 						                        
 							                    	
 						                        
@@ -763,10 +218,6 @@
 							                    	
 						                        
 							                    	
-						                        
-							                    	
-						                        
-							                    	
 							                    		<li id="li_depth3_terms" data-menunm="약관관리">
 							                    			
 												        	
@@ -786,11 +237,19 @@
 						                        
 							                    	
 						                        
+							                    	
+						                        
 					                    	</ul>
 						                	
 					                	
 						            </li>
 					            
+				            
+				        		
+				            
+				        		
+				            
+				        		
 				            
 				        		
 						            <li id="li_depth2_bltnb" class="has_sub" data-menunm="공통게시판관리">
@@ -801,13 +260,9 @@
 					                    		
 											
 					                    		
-											
-					                    		
-													<a href="/ma/us/bltnb/nt0101/list.do" target="">
+													<a href="/ma/us/bltnb/nt01/list.do" target="">
 					                    			
 												
-											
-					                    		
 											
 					                    		
 											
@@ -830,25 +285,16 @@
 													
 												
 													
-												
-													
-									                	<li id="li_depth3_nt0101" data-menunm="공지0101">
-															<a href="/ma/us/bltnb/nt0101/list.do" target="">
-															공지0101</a>
+									                	<li id="li_depth3_nt01" data-menunm="공지사항">
+															<a href="/ma/us/bltnb/nt01/list.do" target="">
+															공지사항</a>
 									                    </li>
 								                    
 												
 													
-									                	<li id="li_depth3_nt0102" data-menunm="공지0102">
-															<a href="/ma/us/bltnb/nt0102/list.do" target="">
-															공지0102</a>
-									                    </li>
-								                    
-												
-													
-									                	<li id="li_depth3_nt02" data-menunm="공지02">
-															<a href="/ma/us/bltnb/nt02/list.do" target="">
-															공지02</a>
+									                	<li id="li_depth3_nt03" data-menunm="공지사항3">
+															<a href="/ma/us/bltnb/nt03/list.do" target="">
+															공지사항3</a>
 									                    </li>
 								                    
 												
@@ -890,6 +336,10 @@
 				        		
 				            
 				        		
+				            
+				        		
+				            
+				        		
 						            <li id="li_depth2_contTmpl" class="" data-menunm="컨텐츠관리">
 						             
 						            	
@@ -909,8 +359,6 @@
 					                	
 						            </li>
 					            
-				            
-				        		
 				            
 				        		
 				            
@@ -963,6 +411,8 @@
 				        		
 				            
 				        		
+				            
+				        		
 						            <li id="li_depth2_hwp" class="" data-menunm="한글(hwp)">
 						             
 						            	
@@ -984,8 +434,6 @@
 					            
 				            
 				        		
-				            
-				        		
 						            <li id="li_depth2_popup" class="" data-menunm="팝업관리">
 						             
 						            	
@@ -1005,8 +453,6 @@
 					                	
 						            </li>
 					            
-				            
-				        		
 				            
 				        		
 				            
@@ -1070,8 +516,6 @@
 														
 													
 														
-													
-														
 													    	
 													            
 													            	<a href="/ma/us/std/term/list.do" target="">
@@ -1079,6 +523,8 @@
 													            
 													        
 													    
+													
+														
 													
 														
 													
@@ -1115,8 +561,6 @@
 							                    	
 						                        
 							                    	
-						                        
-							                    	
 							                    		<li id="li_depth3_term" data-menunm="용어관리">
 							                    			
 												        	
@@ -1127,6 +571,10 @@
 														용어관리</a>
 							                    		</li>
 						                        	
+						                        
+							                    	
+						                        
+							                    	
 						                        
 							                    	
 						                        
@@ -1149,10 +597,6 @@
 							                    	
 						                        
 							                    	
-						                        
-							                    	
-						                        
-							                    	
 							                    		<li id="li_depth3_wrd" data-menunm="단어관리">
 							                    			
 												        	
@@ -1163,6 +607,8 @@
 														단어관리</a>
 							                    		</li>
 						                        	
+						                        
+							                    	
 						                        
 					                    	</ul>
 						                	
@@ -1182,8 +628,6 @@
 														
 													
 														
-													
-														
 													    	
 													            
 													            	<a href="/ma/us/dbQlt/dbData/list.do" target="">
@@ -1191,6 +635,8 @@
 													            
 													        
 													    
+													
+														
 													
 														
 													
@@ -1227,8 +673,6 @@
 							                    	
 						                        
 							                    	
-						                        
-							                    	
 							                    		<li id="li_depth3_dbData" data-menunm="DB데이터">
 							                    			
 												        	
@@ -1239,6 +683,10 @@
 														DB데이터</a>
 							                    		</li>
 						                        	
+						                        
+							                    	
+						                        
+							                    	
 						                        
 							                    	
 						                        
@@ -1267,6 +715,8 @@
 							                    	
 						                        
 							                    	
+						                        
+							                    	
 							                    		<li id="li_depth3_termDgns" data-menunm="용어진단">
 							                    			
 												        	
@@ -1277,10 +727,6 @@
 														용어진단</a>
 							                    		</li>
 						                        	
-						                        
-							                    	
-						                        
-							                    	
 						                        
 					                    	</ul>
 						                	
@@ -1293,10 +739,581 @@
 		            
 		        </li>
 	          
+		        <li id="li_depth1_sys" data-menunm="시스템"> 
+			        
+			        	
+			        	
+					        
+					            
+					        		
+					            	
+					            		 <a href="/ma/sys/menu/list.do" target="">
+					            	
+					            	
+					           	
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+			        	
+			        
+		            <span class="gnb_i02"></span>시스템</a> 
+		            
+				        <div class="subwrap js_subwrap">
+						  	<ul class="deps2">
+				        	
+				        		
+						            <li id="li_depth2_menu" class="" data-menunm="메뉴관리">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/sys/menu/list.do" target="">
+											    
+											    
+												
+										
+									
+									메뉴관리</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+						            <li id="li_depth2_mngr" class="has_sub" data-menunm="관리자">
+						             
+						            	
+										
+							              	
+											    
+											    
+													
+														
+													
+														
+													
+														
+													
+														
+													    	
+													            
+													            	<a href="/ma/sys/mngr/mngrMng/list.do" target="">
+													            
+													            
+													        
+													    
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+											    
+												
+										
+									
+									관리자</a>
+									
+										
+										
+					                        <ul class="deps3">
+							                    
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+							                    		<li id="li_depth3_mngrMng" data-menunm="관리자관리">
+							                    			
+												        	
+												        		 <a href="/ma/sys/mngr/mngrMng/list.do" target="">
+												        	
+												        	
+												        
+														관리자관리</a>
+							                    		</li>
+						                        	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+							                    		<li id="li_depth3_rstMng" data-menunm="제한관리">
+							                    			
+												        	
+												        		 <a href="/ma/sys/mngr/rstMng/list.do" target="">
+												        	
+												        	
+												        
+														제한관리</a>
+							                    		</li>
+						                        	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+					                    	</ul>
+						                	
+					                	
+						            </li>
+					            
+				            
+				        		
+						            <li id="li_depth2_auth" class="" data-menunm="권한관리">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/sys/auth/list.do" target="">
+											    
+											    
+												
+										
+									
+									권한관리</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+				        		
+				            
+				        		
+				            
+				        		
+						            <li id="li_depth2_code" class="" data-menunm="코드관리">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/sys/code/list.do" target="">
+											    
+											    
+												
+										
+									
+									코드관리</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+				        		
+				            
+				        		
+				            
+				        		
+						            <li id="li_depth2_log" class="has_sub" data-menunm="로그관리">
+						             
+						            	
+										
+							              	
+											    
+											    
+													
+														
+													
+														
+													
+														
+													    	
+													            
+													            	<a href="/ma/sys/log/errlog/list.do" target="">
+													            
+													            
+													        
+													    
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+											    
+												
+										
+									
+									로그관리</a>
+									
+										
+										
+					                        <ul class="deps3">
+							                    
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+							                    		<li id="li_depth3_errlog" data-menunm="에러로그">
+							                    			
+												        	
+												        		 <a href="/ma/sys/log/errlog/list.do" target="">
+												        	
+												        	
+												        
+														에러로그</a>
+							                    		</li>
+						                        	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+							                    		<li id="li_depth3_acs" data-menunm="접속로그">
+							                    			
+												        	
+												        		 <a href="/ma/sys/log/acs/list.do" target="">
+												        	
+												        	
+												        
+														접속로그</a>
+							                    		</li>
+						                        	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+					                    	</ul>
+						                	
+					                	
+						            </li>
+					            
+				            
+				        		
+				            
+				        		
+						            <li id="li_depth2_logo" class="" data-menunm="로고관리">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/sys/logo/list.do" target="">
+											    
+											    
+												
+										
+									
+									로고관리</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+				        		
+						            <li id="li_depth2_regeps" class="" data-menunm="정규표현식 관리">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/sys/regeps/list.do" target="">
+											    
+											    
+												
+										
+									
+									정규표현식 관리</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+				        		
+				            
+				        		
+						            <li id="li_depth2_mnl" class="" data-menunm="매뉴얼관리">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/sys/mnl/list.do" target="">
+											    
+											    
+												
+										
+									
+									매뉴얼관리</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+				        		
+						            <li id="li_depth2_dm" class="has_sub" data-menunm="데이터관리">
+						             
+						            	
+										
+							              	
+											    
+											    
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													    	
+													            
+													            	<a href="/ma/sys/dm/regCd/list.do" target="">
+													            
+													            
+													        
+													    
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+														
+													
+											    
+												
+										
+									
+									데이터관리</a>
+									
+										
+										
+					                        <ul class="deps3">
+							                    
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+							                    		<li id="li_depth3_regCd" data-menunm="법정동코드">
+							                    			
+												        	
+												        		 <a href="/ma/sys/dm/regCd/list.do" target="">
+												        	
+												        	
+												        
+														법정동코드</a>
+							                    		</li>
+						                        	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+							                    	
+						                        
+					                    	</ul>
+						                	
+					                	
+						            </li>
+					            
+				            
+				        		
+				            
+				        		
+				            
+				        		
+						            <li id="li_depth2_seo" class="" data-menunm="SEO">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/sys/seo/list.do" target="">
+											    
+											    
+												
+										
+									
+									SEO</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+							</ul>
+						</div>
+		            
+		        </li>
+	          
 		        <li id="li_depth1_stat" data-menunm="통계"> 
 			        
 			        	
 			        	
+					        
+					           
+					        
+					           
+					        
+					           
 					        
 					            
 					        		
@@ -1356,6 +1373,12 @@
 				        <div class="subwrap js_subwrap">
 						  	<ul class="deps2">
 				        	
+				        		
+				            
+				        		
+				            
+				        		
+				            
 				        		
 						            <li id="li_depth2_acsStat" class="" data-menunm="접속통계">
 						             
@@ -1438,11 +1461,239 @@
 		        <li id="li_depth1_guide" data-menunm="퍼블가이드"> 
 			        
 			        	 
-			        		 <a href="/guide/index.html" target="_blank">
+			        		 <a href="/internal/guide/index.html" target="_blank"> 
 			        	
 			        	
 			        
 		            <span class="gnb_i05"></span>퍼블가이드</a> 
+		            
+		        </li>
+	          
+		        <li id="li_depth1_ocr" data-menunm="ocr"> 
+			        
+			        	
+			        	
+					        
+					           
+					        
+					            
+					        		
+					            	
+					            		 <a href="/ma/ocr/ocrJoin/list.do" target="">
+					            	
+					            	
+					           	
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+					           
+					        
+			        	
+			        
+		            <span class="gnb_i06"></span>ocr</a> 
+		            
+				        <div class="subwrap js_subwrap">
+						  	<ul class="deps2">
+				        	
+				        		
+				            
+				        		
+						            <li id="li_depth2_ocrJoin" class="" data-menunm="회원가입">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/ocr/ocrJoin/list.do" target="">
+											    
+											    
+												
+										
+									
+									회원가입</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+						            <li id="li_depth2_statMng" class="" data-menunm="상태관리">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/ocr/statMng/list.do" target="">
+											    
+											    
+												
+										
+									
+									상태관리</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+				        		
+				            
+				        		
+						            <li id="li_depth2_menuMng" class="" data-menunm="메뉴 및 상품관리">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/ocr/menuMng/list.do" target="">
+											    
+											    
+												
+										
+									
+									메뉴 및 상품관리</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+				        		
+				            
+							</ul>
+						</div>
+		            
+		        </li>
+	          
+		        <li id="li_depth1_info" data-menunm="정보게시판"> 
+			        
+			        	
+			        	
+					        
+					            
+					        		
+					            	
+					            		 <a href="/ma/info/phr/list.do" target="">
+					            	
+					            	
+					           	
+					           
+					        
+			        	
+			        
+		            <span class="gnb_i07"></span>정보게시판</a> 
+		            
+				        <div class="subwrap js_subwrap">
+						  	<ul class="deps2">
+				        	
+				        		
+						            <li id="li_depth2_phr" class="" data-menunm="약국게시판">
+						             
+						            	
+										
+							              	
+											    
+											    	<a href="/ma/info/phr/list.do" target="">
+											    
+											    
+												
+										
+									
+									약국게시판</a>
+									
+										
+										
+					                	
+						            </li>
+					            
+				            
+							</ul>
+						</div>
 		            
 		        </li>
 	        
@@ -1462,7 +1713,23 @@
 							
 								<li id="tab1_01" class="tab_uprMenuCd_terms tab_menuCd_termsScrb" data-menunm="회원가입 약관" style="display: none" role="tab"><a href="/ma/us/mem/terms/termsScrb/form.do" target="">회원가입 약관</a></li>
 							
-								<li id="tab1_02" class="tab_uprMenuCd_terms tab_menuCd_termsScss" data-menunm="회원탈퇴 약관" style="display: none" role="tab"><a href="/ma/us/mem/terms/termsScss/form.do" target="">회원탈퇴 약관</a></li>
+								<li id="tab1_02" class="tab_uprMenuCd_ma tab_menuCd_us" data-menunm="사용자지원" style="display: none" role="tab"><a href="" target="">사용자지원</a></li>
+							
+								<li id="tab1_03" class="tab_uprMenuCd_info tab_menuCd_phr" data-menunm="약국게시판" style="display: none" role="tab"><a href="/ma/info/phr/list.do" target="">약국게시판</a></li>
+							
+								<li id="tab1_04" class="tab_uprMenuCd_ma tab_menuCd_sys" data-menunm="시스템" style="display: none" role="tab"><a href="" target="">시스템</a></li>
+							
+								<li id="tab1_05" class="tab_uprMenuCd_terms tab_menuCd_termsScss" data-menunm="회원탈퇴 약관" style="display: none" role="tab"><a href="/ma/us/mem/terms/termsScss/form.do" target="">회원탈퇴 약관</a></li>
+							
+								<li id="tab1_06" class="tab_uprMenuCd_ma tab_menuCd_stat" data-menunm="통계" style="display: none" role="tab"><a href="/ma/stat/" target="">통계</a></li>
+							
+								<li id="tab1_07" class="tab_uprMenuCd_ma tab_menuCd_board" data-menunm="샘플게시판" style="display: none" role="tab"><a href="/ma/board/list.do" target="">샘플게시판</a></li>
+							
+								<li id="tab1_08" class="tab_uprMenuCd_ma tab_menuCd_guide" data-menunm="퍼블가이드" style="display: none" role="tab"><a href="/guide/index.html" target="_blank">퍼블가이드</a></li>
+							
+								<li id="tab1_09" class="tab_uprMenuCd_ma tab_menuCd_ocr" data-menunm="ocr" style="display: none" role="tab"><a href="/ma/ocr/list.do" target="">ocr</a></li>
+							
+								<li id="tab1_010" class="tab_uprMenuCd_ma tab_menuCd_info" data-menunm="정보게시판" style="display: none" role="tab"><a href="/ma/info/list.do" target="">정보게시판</a></li>
 							
 						</ul>
 					</div>
@@ -1478,7 +1745,7 @@ var depthNm1 = "";
 var depthNm2 = "";
 var depthNm3 = "";
 var depthNm4 = "";
- 
+
 
 if($(".tab_menuCd_"+depth4).length){
 	depthLi4 = "<li class='last'>" + $(".tab_menuCd_"+depth4).data("menunm") + "</li>";

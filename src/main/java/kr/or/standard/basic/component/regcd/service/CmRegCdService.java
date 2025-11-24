@@ -1,10 +1,10 @@
-package kr.or.standard.basic.component.regCd.service;
+package kr.or.standard.basic.component.regcd.service;
   
 import kr.or.standard.appinit.pagination.service.PaginationService;
 import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
 import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.view.excel.ExcelView; 
-import kr.or.standard.basic.component.regCd.vo.CmRegCdVO; 
+import kr.or.standard.basic.component.regcd.vo.CmRegCdVO; 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;

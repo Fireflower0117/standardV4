@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +35,6 @@ import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
  
@@ -327,9 +325,9 @@ public class TermService  extends EgovAbstractServiceImpl {
 
 
 	// 용어 등록
-	/*public int insertContents(CmTermVO vo) {
-		return termMngMapper.insertContents(vo);
-	};*/
+	public int insertContents(CmTermVO vo) {
+		return defaultDao.insert(sqlNs + "insertContents" , vo); 
+	};
 
 	// 용어 수정
 	/*public int updateContents(CmTermVO vo) {
@@ -352,9 +350,9 @@ public class TermService  extends EgovAbstractServiceImpl {
 	}*/
 	
 	// 용어명 조회
-	/*public CmTermVO selectTermContents(String termEngNm) {
-		return termMngMapper.selectTermContents(termEngNm);
-	}*/
+	public CmTermVO selectTermContents(String termEngNm) {
+		return (CmTermVO)defaultDao.selectOne(sqlNs+"selectTermContents", termEngNm); 
+	}
 	/**
 	 * 엑셀 생성
 	 * @param resultList : 데이터

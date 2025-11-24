@@ -65,6 +65,8 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
     private final MessageSource messageSource;
     private final ExcelView excelView;
     
+    private final String sqlNs = "com.standard.mapper.component.SchdMngMapper.";
+    
     public void list(CmmnDefaultVO searchVO){
     	
 		// default 년 월
@@ -96,11 +98,11 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 		model.addAttribute("lastDayOfMonth", selDate.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth());
 		
 		// 월간 목록 
-		List<CmSchdVO> resultList = (List<CmSchdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.SchdMngMapper.selectMonthList", searchVO); 
+		List<CmSchdVO> resultList = (List<CmSchdVO>)defaultDao.selectList(sqlNs+"selectMonthList", searchVO); 
 		model.addAttribute("resultList", resultList);
 		
 		// 휴일 목록
-		List<CmSchdVO> holidayList = (List<CmSchdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.SchdMngMapper.selectHolidayList", searchVO); 
+		List<CmSchdVO> holidayList = (List<CmSchdVO>)defaultDao.selectList(sqlNs+"selectHolidayList", searchVO); 
 		model.addAttribute("holidayList", holidayList);
 	}
 	
@@ -114,11 +116,11 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 		model.addAttribute("lastDayOfMonth", selDate.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth());
 		
 		// 월간 목록
-		List<CmSchdVO> resultList = (List<CmSchdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.SchdMngMapper.selectMonthList", searchVO); 
+		List<CmSchdVO> resultList = (List<CmSchdVO>)defaultDao.selectList(sqlNs+"selectMonthList", searchVO); 
 		model.addAttribute("resultList", resultList);
 		
 		// 휴일 목록
-		List<CmSchdVO> holidayList = (List<CmSchdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.SchdMngMapper.selectHolidayList", searchVO); 
+		List<CmSchdVO> holidayList = (List<CmSchdVO>)defaultDao.selectList(sqlNs+"selectHolidayList", searchVO); 
 		model.addAttribute("holidayList", holidayList);
 	}
 	
@@ -135,13 +137,13 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 		
 		// 스케줄 건수 조회
 		PaginationInfo paginationInfo = paginationService.procPagination(searchVO);
-		CmSchdVO rtnVo = (CmSchdVO)defaultDao.selectOne("com.opennote.standard.mapper.component.SchdMngMapper.selectCount" , searchVO);
+		CmSchdVO rtnVo = (CmSchdVO)defaultDao.selectOne(sqlNs+"selectCount" , searchVO);
 		int schdCount =  Integer.parseInt(rtnVo.getSchdCount());
 		paginationInfo.setTotalRecordCount(schdCount);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
 		// 스케줄 목록 조회
-		List<CmSchdVO> resultList = (List<CmSchdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.SchdMngMapper.selectList",searchVO ); 
+		List<CmSchdVO> resultList = (List<CmSchdVO>)defaultDao.selectList(sqlNs+"selectList",searchVO ); 
 		model.addAttribute("resultList", resultList);
 	}
 	
@@ -157,7 +159,7 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 					return "redirect:list.do";
 				}
 				
-				cmSchdVO = (CmSchdVO)defaultDao.selectOne("com.opennote.standard.mapper.component.SchdMngMapper.selectContents", searchVO); 
+				cmSchdVO = (CmSchdVO)defaultDao.selectOne(sqlNs+"selectContents", searchVO); 
 			} else {
 				return "redirect:list.do";
 			}
@@ -176,7 +178,7 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 	public CommonMap insertProc(CmSchdVO searchVO, BindingResult result){
 		
 		CommonMap returnMap = new CommonMap(); 
-		int resultCnt = defaultDao.insert("com.opennote.standard.mapper.component.SchdMngMapper.insertContents" , searchVO); 
+		int resultCnt = defaultDao.insert(sqlNs+"insertContents" , searchVO); 
 		if(resultCnt > 0) {
 			returnMap.put("message", messageSource.getMessage("insert.message", null, null));
 		} else {
@@ -193,7 +195,7 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 		// 관리자 또는 본인글인 경우
 		if((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || regrCheck(searchVO)) {
 			
-			int resultCnt = defaultDao.update("com.opennote.standard.mapper.component.SchdMngMapper.updateContents" ,searchVO ); 
+			int resultCnt = defaultDao.update(sqlNs+"updateContents" ,searchVO ); 
 			if(resultCnt > 0) {
 				returnMap.put("message", messageSource.getMessage("update.message", null, null));
 			} else {
@@ -212,7 +214,7 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 
 		// 관리자 또는 본인글인 경우
 		if((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || regrCheck(searchVO)) { 
-			int resultCnt = defaultDao.update("com.opennote.standard.mapper.component.SchdMngMapper.deleteContents" ,searchVO );
+			int resultCnt = defaultDao.update(sqlNs+"deleteContents" ,searchVO );
 			if(resultCnt > 0) {
 				returnMap.put("message", messageSource.getMessage("delete.message", null, null));
 			} else {
@@ -244,9 +246,9 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 		
 		ModelAndView mav = new ModelAndView(excelView);
 		String tit = "일정_목록";
-		String url = "/standard/component/schedule/schdList.xlsx";  
+		String url = "/standard/component/Schedule/schdList.xlsx";  
 		
-		List<CmMnlVO> resultList = (List<CmMnlVO>)defaultDao.selectList("com.opennote.standard.mapper.component.SchdMngMapper.selectExcelList", searchVO); 
+		List<CmMnlVO> resultList = (List<CmMnlVO>)defaultDao.selectList(sqlNs+"selectExcelList", searchVO); 
 		
 		mav.addObject("target", tit);
 		mav.addObject("source", url);
@@ -289,7 +291,7 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 	
 	// 일정 본인글 여부
 	public boolean regrCheck(CmSchdVO vo) {
-		CmSchdVO rtnVo = (CmSchdVO)defaultDao.selectOne("com.opennote.standard.mapper.component.SchdMngMapper.regrCheck", vo);
+		CmSchdVO rtnVo = (CmSchdVO)defaultDao.selectOne(sqlNs+"regrCheck", vo);
 		return Integer.parseInt(rtnVo.getIsRegrCheck()) == 1 ? true : false; 
 	}
 
@@ -332,7 +334,7 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 			return returnMap;
 		} else {
 			List<CmHdayResponseItem> holidayList = (List<CmHdayResponseItem>) getHolideInfoResult.get("itemList"); 
-			defaultDao.insertList( "com.opennote.standard.mapper.component.SchdMngMapper.mergeHolidayList", holidayList ); 
+			defaultDao.insertList( sqlNs+"mergeHolidayList", holidayList ); 
 			returnMap.put("holidayMessage", selYear + "년도 공휴일이 저장되었습니다.");
 		}
 
@@ -344,7 +346,7 @@ public class ScheduleService extends EgovAbstractServiceImpl  {
 			return returnMap;
 		} else {
 			List<CmHdayResponseItem> anniversaryList = (List<CmHdayResponseItem>) getAnniversaryInfoResult.get("itemList");
-			defaultDao.insertList( "com.opennote.standard.mapper.component.SchdMngMapper.mergeHolidayList", anniversaryList );  
+			defaultDao.insertList( sqlNs+"mergeHolidayList", anniversaryList );  
 			returnMap.put("anniversaryMessage", selYear + "년도 기념일이 저장되었습니다.");
 		}
 		return returnMap;

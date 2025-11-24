@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.standard.mapper.usersupport.WrdMngMapper">
+
+    <!-- 검색 조건 -->
+    <sql id="Where">
+        <if test='searchKeyword !=null and searchKeyword !=""'>
+            <if test='searchCondition ==null or searchCondition == ""'>
+                AND (
+                       UPPER(WRD_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                    OR UPPER(ENG_ABRV_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                    OR UPPER(ENG_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                )
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==1'>
+                AND UPPER(WRD_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==2'>
+                AND UPPER(ENG_ABRV_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==3'>
+                AND UPPER(ENG_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+        </if>
+        <if test='schEtc00 !=null and schEtc00 !=""'>
+            AND WRD_TP = #{schEtc00}
+        </if>
+    </sql>
+
+    <!-- 단어 건수 조회 -->
+    <select id="selectCount" parameterType="cmWrdVO" resultType="cmWrdVO">
+        /* com.standard.mapper.usersupport.WrdMngMapper.selectCount */
+        SELECT COUNT(1) wrdCount
+          FROM T_WRD_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+        </where>
+    </select>
+
+    <!-- 단어 목록 조회 -->
+    <select id="selectList" parameterType="cmWrdVO" resultType="cmWrdVO">
+        /* com.standard.mapper.usersupport.WrdMngMapper.selectList */
+        SELECT WRD_SERNO						 	wrdSerno
+             , WRD_NM						        wrdNm
+             , ENG_NM						 	    engNm
+             , ENG_ABRV_NM                          engAbrvNm
+             , WRD_EXPL						 	    wrdExpl
+             , STD_WRD						 	    stdWrd
+             , WRD_TP						 	    wrdTp
+             , REGR_SERNO						 	regrSerno
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	    regDt
+             , UPDR_SERNO						 	updrSerno
+             , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	    updDt
+          FROM T_WRD_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+        </where>
+      ORDER BY WRD_SERNO DESC
+         LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+    </select>
+
+    <!-- 단어 상세 조회 -->
+    <select id="selectContents" parameterType="cmWrdVO" resultType="cmWrdVO">
+        /* com.standard.mapper.usersupport.WrdMngMapper.selectContents */
+        SELECT WRD_SERNO						 	wrdSerno
+             , WRD_NM						        wrdNm
+             , ENG_NM						 	    engNm
+             , ENG_ABRV_NM                          engAbrvNm
+             , WRD_EXPL						 	    wrdExpl
+             , STD_WRD						 	    stdWrd
+             , WRD_TP						 	    wrdTp
+             , REGR_SERNO						 	regrSerno
+             , (SELECT USER_NM
+                  FROM T_USER_MNG B
+                 WHERE B.USER_SERNO = A.REGR_SERNO) regrNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	    regDt
+             , (SELECT USER_NM
+                FROM T_USER_MNG B
+                WHERE B.USER_SERNO = A.UPDR_SERNO)  updrNm
+             , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	    updDt
+          FROM T_WRD_MNG A
+         WHERE WRD_SERNO = #{wrdSerno}
+    </select>
+
+    <!-- 단어 등록 -->
+    <insert id="insertContents" parameterType="boardVO">
+        /* com.standard.mapper.usersupport.WrdMngMapper.insertContents */
+        INSERT INTO T_WRD_MNG(
+                     WRD_NM
+                   , ENG_NM
+                   , ENG_ABRV_NM
+                   , WRD_EXPL
+                   , STD_WRD
+                   , WRD_TP
+                   , REGR_SERNO
+                   , UPDR_SERNO
+        )
+        VALUES (
+                  #{wrdNm}
+                , #{engNm}
+                , #{engAbrvNm}
+                , #{wrdExpl}
+                , #{stdWrd}
+                , #{wrdTp}
+                , #{loginSerno}
+                , #{loginSerno}
+               )
+    </insert>
+
+    <!-- 단어 수정 -->
+    <update id="updateContents" parameterType="boardVO">
+        /* com.standard.mapper.usersupport.WrdMngMapper.updateContents */
+        UPDATE T_WRD_MNG
+           SET WRD_NM 	        = #{wrdNm}
+             , ENG_NM 	        = #{engNm}
+             , ENG_ABRV_NM      = #{engAbrvNm}
+             , WRD_EXPL         = #{wrdExpl}
+             , STD_WRD 	        = #{stdWrd}
+             , WRD_TP 	        = #{wrdTp}
+             , UPDR_SERNO 	    = #{loginSerno}
+             , UPD_DT 	        = NOW()
+         WHERE WRD_SERNO        = #{wrdSerno}
+    </update>
+
+    <!-- 단어 삭제 -->
+    <delete id="deleteContents" parameterType="boardVO">
+        /* com.standard.mapper.usersupport.WrdMngMapper.deleteContents */
+        DELETE FROM T_WRD_MNG
+         WHERE WRD_SERNO = #{wrdSerno}
+    </delete>
+
+    <!-- 단어 목록 엑셀 조회 -->
+    <select id="selectExcleList" parameterType="cmWrdVO" resultType="cmWrdVO">
+        /* com.standard.mapper.usersupport.WrdMngMapper.selectExcleList */
+        SELECT WRD_SERNO						 	wrdSerno
+             , WRD_NM						        wrdNm
+             , ENG_NM						 	    engNm
+             , ENG_ABRV_NM                          engAbrvNm
+             , WRD_EXPL						 	    wrdExpl
+             , STD_WRD						 	    stdWrd
+             , WRD_TP						 	    wrdTp
+             , REGR_SERNO						 	regrSerno
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	    regDt
+             , UPDR_SERNO						 	updrSerno
+             , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	    updDt
+          FROM T_WRD_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+            </where>
+      ORDER BY WRD_SERNO DESC
+    </select>
+
+</mapper>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.opennote.standard.mapper.usersupport.contTmplMngMapper">
+<mapper namespace="com.standard.mapper.usersupport.contTmplMngMapper">
 	
 	<sql id="Where">
 		<if test="schEtc00 !=null and schEtc00 !=''">
@@ -35,7 +35,7 @@
 	
 	<!-- 컨텐츠 건수 조회-->
 	<select id="selectCount" parameterType="bltnbVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectCount */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.selectCount */
 		SELECT COUNT(1) contTmplCount
 		  FROM T_CONT_TMPL_MNG
 	   <where>
@@ -46,7 +46,7 @@
 	
 	<!-- 컨텐츠 목록 조회-->
 	<select id="selectList" parameterType="contTmplVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectList */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.selectList */
 		SELECT 
 			   TMPL_SERNO								tmplSerno
 			 , FNC_CODE_NM(TMPL_CL)						tmplCl
@@ -65,7 +65,7 @@
 	
 	<!-- 컨텐츠 목록 조회-->
 	<select id="selectExcelList" parameterType="contTmplVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectExcelList */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.selectExcelList */
 		SELECT 
 			   FNC_CODE_NM(TMPL_CL)						tmplCl
 			 , FNC_CODE_NM(TMPL_TP)						tmplTp
@@ -85,7 +85,7 @@
 	
 	<!-- 컨텐츠 상세 조회-->
 	<select id="selectContents" parameterType="contTmplVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectContents */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.selectContents */
 		SELECT 
 		       TMPL_SERNO								tmplSerno
 			 , CONCAT('TMPL_', LPAD(TMPL_SERNO,'5',0))  tmplCd
@@ -105,7 +105,7 @@
 	
 	<!-- 컨텐츠 등록 -->
 	<insert id="insertContents" parameterType="contTmplVO" useGeneratedKeys="true" keyProperty="tmplSerno" keyColumn="TMPL_SERNO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.insertContents */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.insertContents */
 		INSERT INTO T_CONT_TMPL_MNG (
 			    TMPL_EXPL
 			  , EDITR_CONT
@@ -130,7 +130,7 @@
 	
 	<!-- 컨텐츠 수정 -->
 	<update id="updateContents" parameterType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.updateContents */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.updateContents */
 		UPDATE T_CONT_TMPL_MNG
 		   SET TMPL_EXPL 		= #{tmplExpl}
 			 , EDITR_CONT		= #{editrCont}
@@ -147,7 +147,7 @@
 	
 	<!-- 컨텐츠 삭제 -->
 	<update id="deleteContents" parameterType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.deleteContents */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.deleteContents */
 		UPDATE T_CONT_TMPL_MNG
 		   SET USE_YN 	= 'N'
 		<where>
@@ -157,7 +157,7 @@
 	
 	<!-- 컨텐츠 등록시 tmplSerno replace -->
 	<update id="editrContReplace" parameterType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.editrContReplace */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.editrContReplace */
 		UPDATE T_CONT_TMPL_MNG
 		   SET EDITR_CONT = REPLACE(EDITR_CONT, 'TMPL_TEMP', CONCAT('TMPL_', LPAD(#{tmplSerno},'5',0)))
 		<where> 
@@ -168,7 +168,7 @@
 	
 	<!-- 컨텐츠 popup 건수 조회-->
 	<select id="popSelectCount" parameterType="contTmplVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.popSelectCount */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.popSelectCount */
 		SELECT COUNT(1) tmplCnt
 		  FROM T_CONT_TMPL_MNG
 	   <where>
@@ -182,7 +182,7 @@
 	
 	<!-- 컨텐츠 popup 목록 조회-->
 	<select id="popSelectList" parameterType="contTmplVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.popSelectList */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.popSelectList */
 		SELECT 
 			   A.TMPL_SERNO								tmplSerno
 			 , FNC_CODE_NM(A.TMPL_CL)					tmplCl
@@ -209,7 +209,7 @@
 	
 	<!-- 컨텐츠 즐겨찾기 목록 조회-->
 	<select id="fvrtSelectList" parameterType="contTmplVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.fvrtSelectList */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.fvrtSelectList */
 		SELECT B.TMPL_SERNO								tmplSerno
 		  	 , B.TMPL_EXPL								tmplExpl          
 		   	 , B.EDITR_CONT								editrCont
@@ -236,7 +236,7 @@
 	
 	<!-- 컨텐츠 즐겨찾기 건수 조회-->
 	<select id="fvrtSelectCount" parameterType="contTmplVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.fvrtSelectCount */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.fvrtSelectCount */
 		SELECT COUNT(1) tmplCnt
 		  FROM T_CONT_TMPL_FVRT_MNG A
 	 LEFT JOIN T_CONT_TMPL_MNG B
@@ -253,7 +253,7 @@
 	
 	<!-- 컨텐츠 즐겨찾기 등록 -->
 	<insert id="insertFvrtContents" parameterType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.insertFvrtContents */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.insertFvrtContents */
 		INSERT INTO T_CONT_TMPL_FVRT_MNG (
 			        TMPL_SERNO
 		          , REGR_SERNO
@@ -267,7 +267,7 @@
 	
 	<!-- 컨텐츠 즐겨찾기 삭제 -->
 	<update id="deleteFvrtContents" parameterType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.deleteFvrtContents */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.deleteFvrtContents */
 		UPDATE T_CONT_TMPL_FVRT_MNG
 		   SET UPDR_SERNO		= #{loginSerno}    
 			 , UPD_DT			= NOW()     
@@ -281,7 +281,7 @@
 	
 	<!-- 컨텐츠 게시글 본인글 여부 -->
 	<select id="regrCheck" parameterType="contTmplVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.regrCheck */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.regrCheck */
 		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
 					ELSE 0
 			   END isRegrCheck
@@ -294,7 +294,7 @@
 	
 	<!-- 컨텐츠 업로드파일  본인 여부 -->
 	<select id="fileRegrCheck" parameterType="contTmplVO" resultType="boolean">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.fileRegrCheck */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.fileRegrCheck */
 		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
 					ELSE 0
 			   END isFileRegrCheck
@@ -308,7 +308,7 @@
 	
 	<!-- 컨텐츠 첫번째 파일 등록 -->
 	<insert id="insertContTmplFileFirst" parameterType="contTmplVO" useGeneratedKeys="true" keyProperty="tmplFileSerno" keyColumn="TMPL_FILE_SERNO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.insertContTmplFileFirst */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.insertContTmplFileFirst */
 			INSERT INTO T_CONT_TMPL_FILE_MNG (
 				  TMPL_FILE_SERNO
 				, FILE_SEQO
@@ -337,7 +337,7 @@
 	
 	<!-- 컨텐츠 파일 목록 등록 -->
 	<insert id="insertContTmplFileList" parameterType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.insertContTmplFileList */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.insertContTmplFileList */
 			<selectKey resultType="String" keyProperty="fileSeqo" order="BEFORE">
 		        SELECT IFNULL(MAX(FILE_SEQO)+1,0) fileSeqo FROM T_CONT_TMPL_FILE_MNG WHERE TMPL_FILE_SERNO = #{tmplFileSerno}
 		    </selectKey>
@@ -369,7 +369,7 @@
 	
 	<!-- 컨텐츠 파일 목록 조회 -->
 	<select id="selectContTmplFileList" parameterType="contTmplVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectCntntFileList */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.selectCntntFileList */
 		SELECT TMPL_FILE_SERNO												tmplFileSerno
 			 , FILE_SEQO													fileSeqo
 			 , RL_FILE_NM													rlFileNm
@@ -385,7 +385,7 @@
 	
 	<!-- 컨텐츠 파일 상세 조회 -->
 	<select id="selectContTmplFileContents" parameterType="contTmplVO" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectFileInfo */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.selectFileInfo */
 		SELECT
 			   TMPL_FILE_SERNO	tmplFileSerno
 			 , FILE_SEQO		fileSeqo
@@ -402,7 +402,7 @@
 	
 	<!-- 컨텐츠 파일 삭제 -->
 	<update id="deleteContTmplFile" parameterType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.deleteCntntFile */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.deleteCntntFile */
 		UPDATE T_CONT_TMPL_FILE_MNG
 		   SET DEL_YN = 'Y'
 		<where>
@@ -417,7 +417,7 @@
 	
 	<!-- 컨텐츠 파일 수정 -->
 	<update id="updateContTmplFile" parameterType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.updateCntntFile */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.updateCntntFile */
 		UPDATE T_CONT_TMPL_FILE_MNG
 		   SET FILE_BYTE = #{fileByte}
 		<where>
@@ -429,7 +429,7 @@
 	
 	<!-- 파일 일련번호 생성 -->
 	<select id="getTmplFileSerno" resultType="contTmplVO">
-		/* com.opennote.standard.mapper.usersupport.contTmplMngMapper.getTmplFileSerno */
+		/* com.standard.mapper.usersupport.contTmplMngMapper.getTmplFileSerno */
 		SELECT IFNULL(MAX(CAST(TMPL_FILE_SERNO  AS UNSIGNED)),0)+1 tmplFileSerno
 		  FROM T_CONT_TMPL_FILE_MNG
 	</select>

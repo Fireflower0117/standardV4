@@ -52,6 +52,10 @@ public class ContTmplService extends EgovAbstractServiceImpl {
     private final CmmnDefaultDao defaultDao;
     private final ExcelView excelView;
     
+    private final String sqlNs = "com.standard.mapper.usersupport.contTmplMngMapper.";
+    
+    
+    
     @Value("${file.env.divn}")
 	private String FILE_ENV_DIVN;
     
@@ -71,19 +75,19 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 		}
 		
 		PaginationInfo paginationInfo = paginationService.procPagination(searchVO); 
-		ContTmplVO rtnVo = (ContTmplVO)defaultDao.selectOne("com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectCount", searchVO);
+		ContTmplVO rtnVo = (ContTmplVO)defaultDao.selectOne(sqlNs+"selectCount", searchVO);
 		int contTmplCount = Integer.parseInt(rtnVo.getContTmplCount()); 
 		paginationInfo.setTotalRecordCount(contTmplCount);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		List<ContTmplVO> resultList = (List<ContTmplVO>)defaultDao.selectList("com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectList",searchVO); 
+		List<ContTmplVO> resultList = (List<ContTmplVO>)defaultDao.selectList(sqlNs+"selectList",searchVO); 
 		model.addAttribute("resultList", resultList);
     }
     
     public void insertUpdateForm(ContTmplVO searchVO, ModelMap model, String procType){
 		ContTmplVO contTmplVO = new ContTmplVO();
 		if("update".equals(procType)) { 
-		    contTmplVO = (ContTmplVO) defaultDao.selectOne("com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectContents", searchVO); 
+		    contTmplVO = (ContTmplVO) defaultDao.selectOne(sqlNs+"selectContents", searchVO); 
 		}
 		model.addAttribute("contTmplVO", contTmplVO);
     }
@@ -92,11 +96,11 @@ public class ContTmplService extends EgovAbstractServiceImpl {
         
 		CommonMap returnMap = new CommonMap();
         
-        int resultCnt = defaultDao.insert("com.opennote.standard.mapper.usersupport.contTmplMngMapper.insertContents" , searchVO); 
+        int resultCnt = defaultDao.insert(sqlNs+"insertContents" , searchVO); 
 		// 컨텐츠 저장후 해당 serno값으로 데이터 replace update
 
 		if(resultCnt > 0) {
-		    defaultDao.update("com.opennote.standard.mapper.usersupport.contTmplMngMapper.editrContReplace", searchVO); 
+		    defaultDao.update(sqlNs+"editrContReplace", searchVO); 
 			returnMap.put("message", messageSource.getMessage("insert.message", null, null));
 		} else {
 			returnMap.put("message", messageSource.getMessage("insert.fail.message", null, null));
@@ -112,7 +116,7 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 		// 관리자권한이 있거나 사용자가 작성자 본인일때만 update
 		if((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || regrCheck(searchVO)) {
 
-			int resultCnt = defaultDao.update("com.opennote.standard.mapper.usersupport.contTmplMngMapper.updateContents", searchVO);
+			int resultCnt = defaultDao.update(sqlNs+"updateContents", searchVO);
 			if(resultCnt > 0) {
 				returnMap.put("message", messageSource.getMessage("update.message", null, null));
 			} else {
@@ -133,7 +137,7 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 		// 관리자권한이 있거나 사용자가 작성자 본인일때만 update
 		if((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || regrCheck(searchVO)) { 
 		
-			int resultCnt = defaultDao.update("com.opennote.standard.mapper.usersupport.contTmplMngMapper.deleteContents", searchVO); 
+			int resultCnt = defaultDao.update(sqlNs+"deleteContents", searchVO); 
 			if(resultCnt > 0) {
 				returnMap.put("message", messageSource.getMessage("delete.message", null, null));
 			} else {
@@ -211,19 +215,19 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 						
 						if (idx == 0 && (tmplFileSerno == null || "".equals(tmplFileSerno))) {
 							// atchFileId 구함 (최초 등록 시)
-							ContTmplVO contTmplVO = (ContTmplVO)defaultDao.selectOne("com.opennote.standard.mapper.usersupport.contTmplMngMapper.getTmplFileSerno");
+							ContTmplVO contTmplVO = (ContTmplVO)defaultDao.selectOne(sqlNs+"getTmplFileSerno");
 							tmplFileSerno = contTmplVO.getTmplFileSerno();  
 							
 							fileVO.setTmplFileSerno(tmplFileSerno);
 							
-							defaultDao.insert("com.opennote.standard.mapper.usersupport.contTmplMngMapper.insertContTmplFileFirst", fileVO); 
+							defaultDao.insert(sqlNs+"insertContTmplFileFirst", fileVO); 
 						}else{
 							fileVO.setTmplFileSerno(tmplFileSerno);
 							if(divn.equals("preview")){
 								fileVO.setFileSeqo("0");
-								defaultDao.update("com.opennote.standard.mapper.usersupport.contTmplMngMapper.updateContTmplFile", fileVO);
+								defaultDao.update(sqlNs+"updateContTmplFile", fileVO);
 							}else{
-							    defaultDao.insert("com.opennote.standard.mapper.usersupport.contTmplMngMapper.insertContTmplFileList", fileVO); 
+							    defaultDao.insert(sqlNs+"insertContTmplFileList", fileVO); 
 							}
 						}
 
@@ -238,7 +242,7 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 	
 	
 	public void uploadTmplFile(ContTmplVO searchVO, ModelMap model){ 
-	    List<ContTmplVO> fileList = (List<ContTmplVO>)defaultDao.selectList("com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectContTmplFileList", searchVO); 
+	    List<ContTmplVO> fileList = (List<ContTmplVO>)defaultDao.selectList(sqlNs+"selectContTmplFileList", searchVO); 
 		model.addAttribute("fileList", fileList);
 	}
 	
@@ -247,7 +251,7 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 		CommonMap returnMap = new CommonMap(); 
 		 
 		if((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || fileRegrCheck(searchVO)) { 
-			int resultCnt = defaultDao.update("com.opennote.standard.mapper.usersupport.contTmplMngMapper.deleteContTmplFile", searchVO);
+			int resultCnt = defaultDao.update(sqlNs+"deleteContTmplFile", searchVO);
 			if(resultCnt > 0) {
 				returnMap.put("message", messageSource.getMessage("delete.message", null, null));
 				returnMap.put("result", "success");
@@ -343,13 +347,13 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 	
 	// 컨텐츠게시글 본인글 여부 
 	public boolean regrCheck(ContTmplVO vo) {
-	    ContTmplVO rtnVo = (ContTmplVO)defaultDao.selectOne("com.opennote.standard.mapper.usersupport.contTmplMngMapper.regrCheck", vo);
+	    ContTmplVO rtnVo = (ContTmplVO)defaultDao.selectOne(sqlNs+"regrCheck", vo);
 		return Integer.parseInt(rtnVo.getIsRegrCheck()) == 1 ? true : false; 
 	}
 	
 	// 컨텐츠 업로드 파일 본인 여부 
 	public boolean fileRegrCheck(ContTmplVO vo) {
-	    ContTmplVO rtnVo = (ContTmplVO)defaultDao.selectOne("com.opennote.standard.mapper.usersupport.contTmplMngMapper.fileRegrCheck", vo);
+	    ContTmplVO rtnVo = (ContTmplVO)defaultDao.selectOne(sqlNs+"fileRegrCheck", vo);
 	    return Integer.parseInt(rtnVo.getIsFileRegrCheck()) == 1 ? true : false; 
 	}
 	
@@ -363,7 +367,7 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 		    ContTmplVO contTmplVO = new ContTmplVO(); 
             contTmplVO.setTmplFileSerno(tmplFileSerno);
             contTmplVO.setFileSeqo(fileSeqo); 
-            ContTmplVO fileVO = (ContTmplVO)defaultDao.selectOne("com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectContTmplFileContents", contTmplVO);
+            ContTmplVO fileVO = (ContTmplVO)defaultDao.selectOne(sqlNs+"selectContTmplFileContents", contTmplVO);
 		
 		
 			String contentType = ""; 
@@ -414,7 +418,7 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 		String tit = "컨텐츠목록";
 		String url = "/standard/usersupport/contTmplList.xlsx";
 		
-		List<ContTmplVO> resultList = (List<ContTmplVO>)defaultDao.selectList("com.opennote.standard.mapper.usersupport.contTmplMngMapper.selectExcelList", searchVO);
+		List<ContTmplVO> resultList = (List<ContTmplVO>)defaultDao.selectList(sqlNs+"selectExcelList", searchVO);
 		 
 		
 		//HTML 태그 제거

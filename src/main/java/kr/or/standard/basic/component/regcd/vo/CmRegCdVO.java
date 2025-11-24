@@ -1,4 +1,4 @@
-package kr.or.standard.basic.component.regCd.vo;
+package kr.or.standard.basic.component.regcd.vo;
 
 import kr.or.standard.basic.common.domain.CmmnDefaultVO;
 import lombok.Data;

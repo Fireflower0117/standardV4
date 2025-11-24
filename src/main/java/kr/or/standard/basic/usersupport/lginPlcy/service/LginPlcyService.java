@@ -29,17 +29,20 @@ public class LginPlcyService extends EgovAbstractServiceImpl  {
 	private final CmmnDefaultDao defaultDao;
     private final AuthService authService;
     private final MessageSource messageSource;
+    private final String sqlNs = "com.standard.mapper.basic.LginPlcyMngMapper.";
+    
+    
     
     public void form(Model model){
     	
 		LginPlcyVO lginPlcyVO = new LginPlcyVO();
 		
 		// 로그인정책 있는경우 조회
-		LginPlcyVO rtnVo = (LginPlcyVO) defaultDao.selectOne( "com.opennote.standard.mapper.basic.LginPlcyMngMapper.selectPlcyCount");
+		LginPlcyVO rtnVo = (LginPlcyVO) defaultDao.selectOne( sqlNs+"selectPlcyCount");
 	    int lginPlcyCount = Integer.parseInt(rtnVo.getPlcyCount()); 
 		if(lginPlcyCount > 0) {
 		
-			lginPlcyVO = (LginPlcyVO) defaultDao.selectOne( "com.opennote.standard.mapper.basic.LginPlcyMngMapper.selectPlcyOne");
+			lginPlcyVO = (LginPlcyVO) defaultDao.selectOne( sqlNs+"selectPlcyOne");
 		}
 		model.addAttribute("lginPlcyVO", lginPlcyVO);
 		
@@ -55,12 +58,12 @@ public class LginPlcyService extends EgovAbstractServiceImpl  {
     	
 		CommonMap returnMap = new CommonMap();
 		int resultCnt = 0;
-		LginPlcyVO rtnVo = (LginPlcyVO) defaultDao.selectOne( "com.opennote.standard.mapper.basic.LginPlcyMngMapper.selectPlcyCount");
+		LginPlcyVO rtnVo = (LginPlcyVO) defaultDao.selectOne( sqlNs+"selectPlcyCount");
 	    int lginPlcyCount = Integer.parseInt(rtnVo.getPlcyCount()); 
 		if(lginPlcyCount > 0) {
 			returnMap.put("message", "등록된 로그인정책이 존재합니다. \n관리자에게 문의하세요.");
 		}else {
-			resultCnt = defaultDao.insert("com.opennote.standard.mapper.basic.LginPlcyMngMapper.insertContents",searchVO);  
+			resultCnt = defaultDao.insert(sqlNs+"insertContents",searchVO);  
 			if(resultCnt > 0) {
 				returnMap.put("message", messageSource.getMessage("insert.message", null, null));
 			} else {
@@ -97,12 +100,12 @@ public class LginPlcyService extends EgovAbstractServiceImpl  {
 	
 	// 로그인정책 단건 조회
 	public LginPlcyVO selectOne() {
-	    return (LginPlcyVO) defaultDao.selectOne( "com.opennote.standard.mapper.basic.LginPlcyMngMapper.selectPlcyOne");
+	    return (LginPlcyVO) defaultDao.selectOne( sqlNs+"selectPlcyOne");
 	}
 
 	// 로그인정책 등록
 	public int insertContents(LginPlcyVO vo) {
-		int result =defaultDao.insert("com.opennote.standard.mapper.basic.LginPlcyMngMapper.insertContents" , vo);
+		int result =defaultDao.insert(sqlNs+"insertContents" , vo);
 
 		// 탈퇴약관 정보보유기간 코드 수정
 		if(result > 0) {
@@ -116,7 +119,7 @@ public class LginPlcyService extends EgovAbstractServiceImpl  {
 
 	// 로그인정책 수정
 	public int updateContents(LginPlcyVO vo) {
-		int result =defaultDao.update("com.opennote.standard.mapper.basic.LginPlcyMngMapper.updateContents" , vo);
+		int result =defaultDao.update(sqlNs+"updateContents" , vo);
 		
 		// 탈퇴약관 정보보유기간 코드 수정
 		if(result > 0) {

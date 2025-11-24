@@ -1,8 +1,8 @@
-package kr.or.standard.basic.component.regCd.controller;
+package kr.or.standard.basic.component.regcd.controller;
 
  
-import kr.or.standard.basic.component.regCd.service.CmRegCdService;
-import kr.or.standard.basic.component.regCd.vo.CmRegCdVO;
+import kr.or.standard.basic.component.regcd.service.CmRegCdService;
+import kr.or.standard.basic.component.regcd.vo.CmRegCdVO;
 import lombok.RequiredArgsConstructor; 
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;

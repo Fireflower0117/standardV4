@@ -28,7 +28,7 @@ public class TermsService extends EgovAbstractServiceImpl  {
 	private final CmmnDefaultDao defaultDao; 
     private final MessageSource messageSource;
 	
-	private final String sqlNs = "com.opennote.standard.mapper.usersupport.TermsMngMapper.";
+	private final String sqlNs = "com.standard.mapper.usersupport.TermsMngMapper.";
 	
 	public void form(Model model, String menuId) {
         TermsVO termsVO = new TermsVO();

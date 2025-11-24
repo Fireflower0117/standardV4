@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.opennote.standard.mapper.usersupport.TermsMngMapper">
+<mapper namespace="com.standard.mapper.usersupport.TermsMngMapper">
 
 	<!-- 약관 건수 조회 -->
 	<select id="selectCount" parameterType="termsVO" resultType="termsVO">
-		/* com.opennote.standard.mapper.usersupport.TermsMngMapper.selectCount */
+		/* com.standard.mapper.usersupport.TermsMngMapper.selectCount */
 		SELECT COUNT(1) termCount
 		  FROM T_TERMS_MNG
 		 WHERE TERMS_CL_CD 	= #{termsClCd}
@@ -16,7 +16,7 @@
 	
 	<!-- 약관 목록 조회 -->
 	<select id="selectList" parameterType="termsVO" resultType="kr.or.standard.basic.usersupport.terms.vo.TermsVO$Terms">
-		/* com.opennote.standard.mapper.usersupport.TermsMngMapper.selectList */
+		/* com.standard.mapper.usersupport.TermsMngMapper.selectList */
 		SELECT TERMS_SERNO         						termsSerno
 			 , TERMS_CL_CD         						termsClCd
 			 , SEQO                						seqo
@@ -40,7 +40,7 @@
 
 	<!-- 약관 등록 -->
 	<insert id="insertContents" parameterType="kr.or.standard.basic.usersupport.terms.vo.TermsVO$Terms">
-		/* com.opennote.standard.mapper.usersupport.TermsMngMapper.insertContents */
+		/* com.standard.mapper.usersupport.TermsMngMapper.insertContents */
 		INSERT INTO T_TERMS_MNG
 			 ( TERMS_CL_CD
 			 , SEQO
@@ -71,7 +71,7 @@
 
 	<!-- 약관 수정 -->
 	<update id="updateContents" parameterType="kr.or.standard.basic.usersupport.terms.vo.TermsVO$Terms">
-		/* com.opennote.standard.mapper.usersupport.TermsMngMapper.updateContents */
+		/* com.standard.mapper.usersupport.TermsMngMapper.updateContents */
 		UPDATE T_TERMS_MNG
 		   SET TERMS_CL_CD              = #{termsClCd}
 			 , SEQO                     = #{seqo}
@@ -90,14 +90,14 @@
 	
 	<!-- 탈퇴약관 정보보유기간 코드 수정 -->
 	<update id="updateScssContents" parameterType="termsVO">
-		/* com.opennote.standard.mapper.usersupport.TermsMngMapper.updateScssContents */
+		/* com.standard.mapper.usersupport.TermsMngMapper.updateScssContents */
 		UPDATE T_TERMS_MNG
 		   SET PRD_UNIT_CD              = #{schEtc01}
 		 WHERE TERMS_CL_CD              = 'termsScss'
 	</update>
 	
 	<update id="deleteContents" parameterType="termsVO">
-		/* com.opennote.standard.mapper.usersupport.TermsMngMapper.deleteContents */
+		/* com.standard.mapper.usersupport.TermsMngMapper.deleteContents */
 		UPDATE T_TERMS_MNG
 		   SET USE_YN   	= 'N'
 		   	 , UPDR_SERNO	= #{loginSerno}

@@ -1,13 +1,9 @@
 package kr.or.standard.basic.system.log.acs.service;
-
-//import com.opennote.standard.ma.sys.log.acs.vo.AcsVO;
-//import com.opennote.standard.mapper.AcsLogMngMapper;
-
+ 
 import kr.or.standard.appinit.pagination.service.PaginationService;
 import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
 import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CommonMap;
-import kr.or.standard.basic.common.view.excel.ExcelView;
 import kr.or.standard.basic.system.log.acs.vo.AcsVO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -28,13 +24,7 @@ public class AcsService extends EgovAbstractServiceImpl  {
     private final BasicCrudDao basicDao; 
 	private final CmmnDefaultDao defaultDao;
 	private final PaginationService paginationService; 
-	private final ExcelView excelView;
-    
-	/*private final AcsLogMngMapper acsLogMngMapper; 
-	public MaAcsService(AcsLogMngMapper acsLogMngMapper) {
-		this.acsLogMngMapper = acsLogMngMapper;
-	}*/
-	
+      
 	public void addList(AcsVO searchVO, Model model) throws Exception{
 		 
 		// 탭 메뉴 최초 세팅

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.standard.mapper.usersupport.DmnMngMapper">
+
+    <!-- 검색 조건 -->
+    <sql id="Where">
+        <if test='searchKeyword !=null and searchKeyword !=""'>
+            <if test='searchCondition ==null or searchCondition == ""'>
+                AND (
+                       UPPER(DMN_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                    OR UPPER(DMN_ENG_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                    OR UPPER(DMN_EXPL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+                )
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==1'>
+                AND UPPER(DMN_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==2'>
+                AND UPPER(DMN_ENG_NM) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+            <if test='searchCondition !=null and searchCondition !="" and searchCondition==3'>
+                AND UPPER(DMN_EXPL) LIKE CONCAT('%',UPPER(#{searchKeyword}),'%')
+            </if>
+        </if>
+        <if test='schEtc00 !=null and schEtc00 !=""'>
+            AND DMN_TP = #{schEtc00}
+        </if>
+        <if test='schEtc01 !=null and schEtc01 !=""'>
+            AND DMN_GRP = #{schEtc01}
+        </if>
+        <if test='schEtc02 !=null and schEtc02 !=""'>
+            AND CD_TP = #{schEtc02}
+        </if>
+    </sql>
+
+    <!-- 도메인 건수 조회 -->
+    <select id="selectCount" parameterType="cmDmnVO" resultType="cmDmnVO">
+        /* com.standard.mapper.usersupport.DmnMngMapper.selectCount */
+        SELECT COUNT(1) dmnCount
+          FROM T_DMN_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+        </where>
+    </select>
+
+    <!-- 도메인 목록 조회 -->
+    <select id="selectList" parameterType="cmDmnVO" resultType="cmDmnVO">
+        /* com.standard.mapper.usersupport.DmnMngMapper.selectList */
+        SELECT DMN_SERNO						 	dmnSerno
+             , DMN_NM						        dmnNm
+             , DMN_ENG_NM                           dmnEngNm
+             , DMN_GRP                              dmnGrp
+             , LGCL_DATA_TP                         lgclDataTp
+             , DATA_LEN						 	    dataLen
+             , DATA_LEN_DCPT                        dataLenDcpt
+             , CG_CD						 	    cgCd
+             , DMN_EXPL						 	    dmnExpl
+             , CD_TP						 	    cdTp
+             , CD_DTLS_TP                           cdDtlsTp
+             , UPPO_DMN_NM                          uppoDmnNm
+             , LWPO_DMN_NM                          lwpoDmnNm
+             , ECH_CD_SCHM                          echCdSchm
+             , ECH_CD_TBL                           echCdTbl
+             , DMN_TP						 	    dmnTp
+             , SYS_NM						 	    sysNm
+             , PINF_YN						 	    pinfYn
+             , ENC_YN						 	    encYn
+             , REGR_SERNO						 	regrSerno
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	    regDt
+             , UPDR_SERNO						 	updrSerno
+             , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	    updDt
+          FROM T_DMN_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+        </where>
+      ORDER BY DMN_SERNO DESC
+         LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+    </select>
+
+    <!-- 도메인 상세 조회 -->
+    <select id="selectContents" parameterType="cmDmnVO" resultType="cmDmnVO">
+        /* com.standard.mapper.usersupport.DmnMngMapper.selectContents */
+        SELECT DMN_SERNO						 	dmnSerno
+             , DMN_NM						        dmnNm
+             , DMN_ENG_NM                           dmnEngNm
+             , DMN_GRP                              dmnGrp
+             , LGCL_DATA_TP                         lgclDataTp
+             , DATA_LEN						 	    dataLen
+             , DATA_LEN_DCPT                        dataLenDcpt
+             , CG_CD						 	    cgCd
+             , DMN_EXPL						 	    dmnExpl
+             , CD_TP						 	    cdTp
+             , CD_DTLS_TP                           cdDtlsTp
+             , UPPO_DMN_NM                          uppoDmnNm
+             , LWPO_DMN_NM                          lwpoDmnNm
+             , ECH_CD_SCHM                          echCdSchm
+             , ECH_CD_TBL                           echCdTbl
+             , DMN_TP						 	    dmnTp
+             , SYS_NM						 	    sysNm
+             , PINF_YN						 	    pinfYn
+             , ENC_YN						 	    encYn
+             , REGR_SERNO						 	regrSerno
+             , (SELECT USER_NM
+                  FROM T_USER_MNG B
+                 WHERE B.USER_SERNO = A.REGR_SERNO) regrNm
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	    regDt
+             , (SELECT USER_NM
+                FROM T_USER_MNG B
+                WHERE B.USER_SERNO = A.UPDR_SERNO)  updrNm
+             , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	    updDt
+          FROM T_DMN_MNG A
+         WHERE DMN_SERNO = #{dmnSerno}
+    </select>
+
+    <!-- 도메인 등록 -->
+    <insert id="insertContents" parameterType="cmDmnVO">
+        /* com.standard.mapper.usersupport.DmnMngMapper.insertContents */
+        INSERT INTO T_DMN_MNG(
+                     DMN_NM
+                   , DMN_ENG_NM
+                   , DMN_GRP
+                   , LGCL_DATA_TP
+                   , DATA_LEN
+                   , DATA_LEN_DCPT
+                   , CG_CD
+                   , DMN_EXPL
+                   , CD_TP
+                   , CD_DTLS_TP
+                   , UPPO_DMN_NM
+                   , LWPO_DMN_NM
+                   , ECH_CD_SCHM
+                   , ECH_CD_TBL
+                   , DMN_TP
+                   , SYS_NM
+                   , PINF_YN
+                   , ENC_YN
+                   , REGR_SERNO
+                   , UPDR_SERNO
+        )
+        VALUES (
+                  #{dmnNm}
+                , #{dmnEngNm}
+                , #{dmnGrp}
+                , #{lgclDataTp}
+                , NULLIF(#{dataLen}, '')
+                , NULLIF(#{dataLenDcpt}, '')
+                , #{cgCd}
+                , #{dmnExpl}
+                , #{cdTp}
+                , #{cdDtlsTp}
+                , #{uppoDmnNm}
+                , #{lwpoDmnNm}
+                , #{echCdSchm}
+                , #{echCdTbl}
+                , #{dmnTp}
+                , #{sysNm}
+                , #{pinfYn}
+                , #{encYn}
+                , #{loginSerno}
+                , #{loginSerno}
+               )
+    </insert>
+
+    <!-- 도메인 수정 -->
+    <update id="updateContents" parameterType="cmDmnVO">
+        /* com.standard.mapper.usersupport.DmnMngMapper.updateContents */
+        UPDATE T_DMN_MNG
+           SET DMN_NM 	        = #{dmnNm}
+             , DMN_ENG_NM       = #{dmnEngNm}
+             , DMN_GRP          = #{dmnGrp}
+             , LGCL_DATA_TP     = #{lgclDataTp}
+             , DATA_LEN         = NULLIF(#{dataLen}, '')
+             , DATA_LEN_DCPT    = NULLIF(#{dataLenDcpt}, '')
+             , CG_CD 	        = #{cgCd}
+             , DMN_EXPL         = #{dmnExpl}
+             , CD_TP 	        = #{cdTp}
+             , CD_DTLS_TP       = #{cdDtlsTp}
+             , UPPO_DMN_NM      = #{uppoDmnNm}
+             , LWPO_DMN_NM      = #{lwpoDmnNm}
+             , ECH_CD_SCHM      = #{echCdSchm}
+             , ECH_CD_TBL       = #{echCdTbl}
+             , DMN_TP 	        = #{dmnTp}
+             , SYS_NM 	        = #{sysNm}
+             , PINF_YN 	        = #{pinfYn}
+             , ENC_YN 	        = #{encYn}
+             , UPDR_SERNO 	    = #{loginSerno}
+             , UPD_DT 	        = NOW()
+         WHERE DMN_SERNO        = #{dmnSerno}
+    </update>
+
+    <!-- 도메인 삭제 -->
+    <delete id="deleteContents" parameterType="cmDmnVO">
+        /* com.standard.mapper.usersupport.DmnMngMapper.deleteContents */
+        DELETE FROM T_DMN_MNG
+         WHERE DMN_SERNO = #{dmnSerno}
+    </delete>
+
+    <!-- 도메인 목록 엑셀 조회 -->
+    <select id="selectExcleList" parameterType="cmDmnVO" resultType="cmDmnVO">
+        /* com.standard.mapper.usersupport.DmnMngMapper.selectExcleList */
+        SELECT DMN_SERNO						 	dmnSerno
+             , DMN_NM						        dmnNm
+             , DMN_ENG_NM                           dmnEngNm
+             , DMN_GRP                              dmnGrp
+             , LGCL_DATA_TP                         lgclDataTp
+             , DATA_LEN						 	    dataLen
+             , DATA_LEN_DCPT                        dataLenDcpt
+             , CG_CD						 	    cgCd
+             , DMN_EXPL						 	    dmnExpl
+             , CD_TP						 	    cdTp
+             , CD_DTLS_TP                           cdDtlsTp
+             , UPPO_DMN_NM                          uppoDmnNm
+             , LWPO_DMN_NM                          lwpoDmnNm
+             , ECH_CD_SCHM                          echCdSchm
+             , ECH_CD_TBL                           echCdTbl
+             , DMN_TP						 	    dmnTp
+             , SYS_NM						 	    sysNm
+             , PINF_YN						 	    pinfYn
+             , ENC_YN						 	    encYn
+             , REGR_SERNO						 	regrSerno
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d') 	    regDt
+             , UPDR_SERNO						 	updrSerno
+             , DATE_FORMAT(UPD_DT, '%Y.%m.%d') 	    updDt
+          FROM T_DMN_MNG
+        <where>
+            <include refid="Where"/>
+           AND USE_YN = 'Y'
+        </where>
+      ORDER BY DMN_SERNO DESC
+    </select>
+
+</mapper>

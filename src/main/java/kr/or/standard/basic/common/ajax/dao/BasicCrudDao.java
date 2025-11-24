@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class BasicCrudDao {
     
     @Autowired
+    @Resource(name = "sqlSessionTemplate")
     public SqlSession sqlsession;  
     
      /***************************************************************************************************************/
