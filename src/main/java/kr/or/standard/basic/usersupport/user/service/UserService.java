@@ -393,12 +393,12 @@ public class UserService extends EgovAbstractServiceImpl   {
 		if(!StringUtils.isEmpty(vo.getUserPswd())) {
 			vo.setUserPswd(EncryptUtil.getEncryptBCrypt(vo.getUserPswd()));
 		}
-		return defaultDao.update("com.opennote.standard.mapper.basic.UserMngMapper.updateContents" ,vo); 
+		return defaultDao.update("com.standard.mapper.basic.UserMngMapper.updateContents" ,vo); 
 	}*/
 	
 	// 사용자 사용여부 삭제
 	/*public int deleteContents(UserVO vo) {
-		return defaultDao.update("com.opennote.standard.mapper.basic.UserMngMapper.deleteContents" ,vo); 
+		return defaultDao.update("com.standard.mapper.basic.UserMngMapper.deleteContents" ,vo); 
 	}*/
 	
 	// 사용자 잠금 해제
@@ -485,7 +485,7 @@ public class UserService extends EgovAbstractServiceImpl   {
 	};
 
 	public List<UserVO> selectHwpList(UserVO vo) {
-		return (List<UserVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserMngMapper.selectHwpList" , vo); 
+		return (List<UserVO>)defaultDao.selectList("com.standard.mapper.basic.UserMngMapper.selectHwpList" , vo); 
 	} 
 	
 }

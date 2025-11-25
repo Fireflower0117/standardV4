@@ -1,6 +1,4 @@
-    package kr.or.standard.basic.system.code.service;
-
-
+package kr.or.standard.basic.system.code.service;
  
 import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
 import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
@@ -15,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -26,14 +23,10 @@ public class CodeService extends EgovAbstractServiceImpl {
 	private final BasicCrudDao basicDao; 
 	private final CmmnDefaultDao defaultDao;
 	private final MessageSource messageSource;
-	
-    /*private final CdMngMapper cdMngMapper; 
-    public MaCodeService(CdMngMapper cdMngMapper) {
-        this.cdMngMapper = cdMngMapper;
-    }*/
+	private final String sqlNs = "com.standard.mapper.basic.CdMngMapper."; 
     
     public void codeList(CodeVO searchVO, Model model){
-        List<CodeVO> codeList = (List<CodeVO>)defaultDao.selectList( "kr.or.kps.partners.mapper.CdMngMapper.selectList" , searchVO);
+        List<CodeVO> codeList = (List<CodeVO>)defaultDao.selectList( sqlNs+"selectList" , searchVO);
 		model.addAttribute("codeList", codeList);
     }
     
@@ -48,10 +41,10 @@ public class CodeService extends EgovAbstractServiceImpl {
 		// 관리자인 경우
 		if ((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY")) {
             
-            CodeVO rtnVo = (CodeVO)defaultDao.selectOne("kr.or.kps.partners.mapper.CdMngMapper.selectOvlpCount" , searchVO); 
+            CodeVO rtnVo = (CodeVO)defaultDao.selectOne(sqlNs+"selectOvlpCount" , searchVO); 
             int ovlpCnt = Integer.parseInt(rtnVo.getRowCnt());
 			if (ovlpCnt < 1) {
-			    resultCnt = defaultDao.insert("kr.or.kps.partners.mapper.CdMngMapper.insertContents" , searchVO); 
+			    resultCnt = defaultDao.insert(sqlNs+"insertContents" , searchVO); 
 
 				if (resultCnt > 0) {
 					returnMap.put("message", messageSource.getMessage("insert.message", null, null));
@@ -76,7 +69,7 @@ public class CodeService extends EgovAbstractServiceImpl {
 		int resultCnt = 0 ;
 		// 관리자인 경우
 		if ((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY")) { 
-			resultCnt = defaultDao.update("kr.or.kps.partners.mapper.CdMngMapper.updateContents" , searchVO); 
+			resultCnt = defaultDao.update(sqlNs+"updateContents" , searchVO); 
 			if (resultCnt > 0) {
 				returnMap.put("message", messageSource.getMessage("update.message", null, null));
 			} else {
@@ -98,7 +91,7 @@ public class CodeService extends EgovAbstractServiceImpl {
 		int resultCnt = 0 ;
 		// 관리자인 경우
 		if ((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY")) { 
-			resultCnt = defaultDao.delete("kr.or.kps.partners.mapper.CdMngMapper.deleteContents" , searchVO);
+			resultCnt = defaultDao.delete(sqlNs+"deleteContents" , searchVO);
 
 			if (resultCnt > 0) {
 				returnMap.put("message", messageSource.getMessage("delete.message", null, null));
@@ -143,32 +136,32 @@ public class CodeService extends EgovAbstractServiceImpl {
      
 
     public List<CodeVO> selectList(CodeVO vo) {
-        return (List<CodeVO>)defaultDao.selectList( "kr.or.kps.partners.mapper.CdMngMapper.selectList" , vo); 
+        return (List<CodeVO>)defaultDao.selectList( sqlNs+"selectList" , vo); 
     }
 
 	/*public CodeVO selectContents(CodeVO vo) {
-	   return (CodeVO)defaultDao.selectOne( "kr.or.kps.partners.mapper.CdMngMapper.selectContents" , vo);
+	   return (CodeVO)defaultDao.selectOne( sqlNs+"selectContents" , vo);
        //return cdMngMapper.selectContents(vo);
     }*/
 
 	/*public int insertContents(CodeVO vo) {
-	   return defaultDao.insert("kr.or.kps.partners.mapper.CdMngMapper.insertContents" , vo);
+	   return defaultDao.insert(sqlNs+"insertContents" , vo);
      //return cdMngMapper.insertContents(vo);
 	}*/
 
 	/*public int updateContents(CodeVO vo) {
-	    return defaultDao.update("kr.or.kps.partners.mapper.CdMngMapper.updateContents" , vo);
+	    return defaultDao.update(sqlNs+"updateContents" , vo);
 		//return cdMngMapper.updateContents(vo);
 	}*/
 
 	/*public int deleteContents(CodeVO vo) {
-	    return defaultDao.delete("kr.or.kps.partners.mapper.CdMngMapper.deleteContents" , vo);
+	    return defaultDao.delete(sqlNs+"deleteContents" , vo);
       //return cdMngMapper.deleteContents(vo);
 	}*/
 
     // 코드 중복 체크
     public int selectOvlpCount(CodeVO vo) {
-       CodeVO rtnVo = (CodeVO)defaultDao.selectOne("kr.or.kps.partners.mapper.CdMngMapper.selectOvlpCount" , vo);
+       CodeVO rtnVo = (CodeVO)defaultDao.selectOne(sqlNs+"selectOvlpCount" , vo);
        return Integer.parseInt(rtnVo.getRowCnt()); 
        //return cdMngMapper.selectOvlpCount(vo);
     }
@@ -178,16 +171,16 @@ public class CodeService extends EgovAbstractServiceImpl {
         // 순서 수정 시 A~F 중 F가 B자리로 이동 시
 
         // F는 B의 순서를 갖는다
-        int cnt = defaultDao.update("kr.or.kps.partners.mapper.CdMngMapper.codeSortSource" , vo);
+        int cnt = defaultDao.update(sqlNs+"codeSortSource" , vo);
         //int cnt = cdMngMapper.codeSortSource(vo);
         
         
         // F를 제외한 B ~ E까지 순서 + 1
-        defaultDao.update("kr.or.kps.partners.mapper.CdMngMapper.codeSortTarget" , vo);
+        defaultDao.update(sqlNs+"codeSortTarget" , vo);
         //cdMngMapper.codeSortTarget(vo);
         
         // 순서 재정렬
-        defaultDao.update("kr.or.kps.partners.mapper.CdMngMapper.codeSortSeqo" , vo);
+        defaultDao.update(sqlNs+"codeSortSeqo" , vo);
         //cdMngMapper.codeSortSeqo(vo);
 
         return cnt;

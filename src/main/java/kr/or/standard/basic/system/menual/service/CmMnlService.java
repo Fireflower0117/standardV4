@@ -41,6 +41,8 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 	private final MessageSource messageSource;
 	private final ExcelView excelView;
 	private final FileService fileService;
+	private final String sqlNs = "com.standard.mapper.basic.MnlMngMapper.";
+	
 	
 	private final String CM_FOLDER_PATH = "/component/cm_mnl/";
 	
@@ -53,13 +55,13 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 		PaginationInfo paginationInfo = paginationService.procPagination(searchVO);
 		
 		// 매뉴얼 건수 조회
-		CmMnlVO rtnVo = (CmMnlVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MnlMngMapper.selectCount" , searchVO);
+		CmMnlVO rtnVo = (CmMnlVO)defaultDao.selectOne(sqlNs+"selectCount" , searchVO);
 		int cmMnlCnt = Integer.parseInt(rtnVo.getMnlCnt()); 
 		paginationInfo.setTotalRecordCount(cmMnlCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
 		//  매뉴얼 목록 조회
-		List<CmMnlVO> resultList = (List<CmMnlVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MnlMngMapper.selectList" , searchVO); 
+		List<CmMnlVO> resultList = (List<CmMnlVO>)defaultDao.selectList(sqlNs+"selectList" , searchVO); 
 
 		model.addAttribute("resultList", resultList);
 		model.addAttribute("totalRecordCount", cmMnlCnt);
@@ -75,7 +77,7 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 			return "redirect:list.do";
 		}
 
-		CmMnlVO cmMnlVO = (CmMnlVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MnlMngMapper.selectContents", searchVO);
+		CmMnlVO cmMnlVO = (CmMnlVO)defaultDao.selectOne(sqlNs+"selectContents", searchVO);
 		model.addAttribute("cmMnlVO", cmMnlVO);
 		
 		// 매뉴얼 항목 조회   
@@ -97,7 +99,7 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 				if(StringUtils.isEmpty(searchVO.getMnlSerno())) {
 					return "redirect:list.do";
 				}
-				cmMnlVO = (CmMnlVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MnlMngMapper.selectContents", searchVO);
+				cmMnlVO = (CmMnlVO)defaultDao.selectOne(sqlNs+"selectContents", searchVO);
 
 				// 매뉴얼 항목 조회
 				List<CmMnlItmVO> itemList = selectItemList(searchVO);
@@ -185,7 +187,7 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 		String tit = "매뉴얼_목록";
 		String url = "/standard/system/mnlList.xlsx";  
 			
-		List<CmMnlVO> resultList = (List<CmMnlVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MnlMngMapper.selectExcelList",searchVO ); 
+		List<CmMnlVO> resultList = (List<CmMnlVO>)defaultDao.selectList(sqlNs+"selectExcelList",searchVO ); 
 		
 		mav.addObject("target", tit);
 		mav.addObject("source", url);
@@ -214,7 +216,7 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 	// 매뉴얼 항목 조회
 	public List<CmMnlItmVO> selectItemList(CmMnlVO vo) {
  
-		List<CmMnlItmVO> itemList = (List<CmMnlItmVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MnlMngMapper.selectItemList", vo);
+		List<CmMnlItmVO> itemList = (List<CmMnlItmVO>)defaultDao.selectList(sqlNs+"selectItemList", vo);
 		
 		// 이미지 목록 조회
 		if(!CollectionUtils.isEmpty(itemList)) {
@@ -234,7 +236,7 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 	
 	// 매뉴얼 본인글 여부 체크
 	public boolean regrCheck(CmMnlVO vo) {
-		CmMnlVO rtnVo = (CmMnlVO) defaultDao.selectOne("com.opennote.standard.mapper.basic.MnlMngMapper.regrCheck", vo); 
+		CmMnlVO rtnVo = (CmMnlVO) defaultDao.selectOne(sqlNs+"regrCheck", vo); 
 		return Integer.parseInt(rtnVo.getIsRegrCheck()) == 1 ? true : false; 
 	}
 
@@ -244,13 +246,13 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 		int result = 0;
 		
 		// 매뉴얼 등록
-		defaultDao.insert("com.opennote.standard.mapper.basic.MnlMngMapper.insertContents", vo); 
+		defaultDao.insert(sqlNs+"insertContents", vo); 
 		
 		// 매뉴얼 항목 등록
 		for(CmMnlItmVO itemVO : vo.getItemList()) {
 			// 매뉴얼 일련번호 세팅 후 등록
 			itemVO.setMnlSerno(vo.getMnlSerno());
-			result += defaultDao.insert("com.opennote.standard.mapper.basic.MnlMngMapper.insertItemContents", itemVO); 
+			result += defaultDao.insert(sqlNs+"insertItemContents", itemVO); 
 		}
 		
 		return result;
@@ -262,19 +264,19 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 		int result = 0;
 		
 		// 매뉴얼 수정
-		defaultDao.update("com.opennote.standard.mapper.basic.MnlMngMapper.updateContents", vo);
+		defaultDao.update(sqlNs+"updateContents", vo);
 		
 		// 매뉴얼 항목 전체 삭제
-		defaultDao.update("com.opennote.standard.mapper.basic.MnlMngMapper.deleteAllItemContents", vo);
+		defaultDao.update(sqlNs+"deleteAllItemContents", vo);
 		
 		// 매뉴얼 항목 수정
 		for(CmMnlItmVO itemVO : vo.getItemList()) {
 			// 매뉴얼 일련번호 세팅 후 수정
 			itemVO.setMnlSerno(vo.getMnlSerno());
 			if(StringUtils.isEmpty(itemVO.getMnlItmSerno())) {
-				result += defaultDao.insert("com.opennote.standard.mapper.basic.MnlMngMapper.insertItemContents", itemVO); 
+				result += defaultDao.insert(sqlNs+"insertItemContents", itemVO); 
 			} else {
-				result += defaultDao.update("com.opennote.standard.mapper.basic.MnlMngMapper.updateItemContents", itemVO); 
+				result += defaultDao.update(sqlNs+"updateItemContents", itemVO); 
 			}
 		}
 		
@@ -287,10 +289,10 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 		int result = 0;
 		
 		// 매뉴얼 삭제 
-		result = defaultDao.update("com.opennote.standard.mapper.basic.MnlMngMapper.deleteContents", vo);
+		result = defaultDao.update(sqlNs+"deleteContents", vo);
 		
 		// 매뉴얼 항목 전체 삭제
-		defaultDao.update("com.opennote.standard.mapper.basic.MnlMngMapper.deleteAllItemContents", vo); 
+		defaultDao.update(sqlNs+"deleteAllItemContents", vo); 
 		
 		return result;
 		
@@ -298,7 +300,7 @@ public class CmMnlService extends EgovAbstractServiceImpl {
 
 	// 엑셀 목록 조회
 	public List<CmMnlVO> selectExcelList(CmMnlVO vo) {
-		return (List<CmMnlVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MnlMngMapper.selectExcelList", vo); 
+		return (List<CmMnlVO>)defaultDao.selectList(sqlNs+"selectExcelList", vo); 
 	}
 
 }

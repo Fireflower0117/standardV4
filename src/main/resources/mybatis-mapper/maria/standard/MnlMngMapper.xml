@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.opennote.standard.mapper.basic.MnlMngMapper">
+<mapper namespace="com.standard.mapper.basic.MnlMngMapper">
 
 	<!-- 검색 조건 -->
 	<sql id="Where">
@@ -20,7 +20,7 @@
 
 	<!-- 메뉴얼 목록 건수 조회 -->
 	<select id="selectCount" parameterType="cmMnlVO" resultType="cmMnlVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.selectCount */
+		/* com.standard.mapper.basic.MnlMngMapper.selectCount */
 		SELECT COUNT(1) mnlCnt
 		  FROM T_MNL_MNG 
 		<where>
@@ -32,7 +32,7 @@
 
 	<!-- 메뉴얼 목록 조회 -->
 	<select id="selectList" parameterType="cmMnlVO" resultType="cmMnlVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.selectList */
+		/* com.standard.mapper.basic.MnlMngMapper.selectList */
 		SELECT MNL_SERNO						mnlSerno
 			 , MENU_CL_NM						menuClNm
 			 , TCHGR_NM							tchgrNm
@@ -52,7 +52,7 @@
 	
 	<!-- 메뉴얼 상세 조회 -->
 	<select id="selectContents" parameterType="cmMnlVO" resultType="cmMnlVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.selectContents */
+		/* com.standard.mapper.basic.MnlMngMapper.selectContents */
 		SELECT A.MNL_SERNO							mnlSerno
 			 , A.MENU_CL_NM							menuClNm
 			 , A.TCHGR_NM							tchgrNm
@@ -68,7 +68,7 @@
 	
 	<!-- 매뉴얼 본인글 여부 -->
 	<select id="regrCheck" parameterType="cmMnlVO" resultType="cmMnlVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.regrCheck */
+		/* com.standard.mapper.basic.MnlMngMapper.regrCheck */
 		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1
 					ELSE 0
 			   END isRegrCheck
@@ -78,7 +78,7 @@
 	
 	<!-- 메뉴얼 등록 -->
 	<insert id="insertContents" parameterType="cmMnlVO" useGeneratedKeys="true" keyProperty="mnlSerno">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.insertContents */
+		/* com.standard.mapper.basic.MnlMngMapper.insertContents */
 		INSERT INTO T_MNL_MNG
 			 ( MENU_CL_NM
 			 , TCHGR_NM
@@ -99,7 +99,7 @@
 	
 	<!-- 메뉴얼 수정 -->
 	<update id="updateContents" parameterType="cmMnlVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.updateContents */
+		/* com.standard.mapper.basic.MnlMngMapper.updateContents */
 		UPDATE T_MNL_MNG
 		   SET MENU_CL_NM 	= #{menuClNm}
 		   	 , TCHGR_NM 	= #{tchgrNm}
@@ -112,7 +112,7 @@
 	
 	<!-- 메뉴얼 삭제 -->
 	<update id="deleteContents" parameterType="cmMnlVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.deleteContents */
+		/* com.standard.mapper.basic.MnlMngMapper.deleteContents */
 		UPDATE T_MNL_MNG
 		   SET USE_YN = 'N'
 		 WHERE MNL_SERNO = #{mnlSerno}
@@ -120,7 +120,7 @@
 	
 	<!-- 메뉴얼 항목 목록 조회 -->
 	<select id="selectItemList" parameterType="cmMnlItmVO" resultType="cmMnlItmVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.selectItemList */
+		/* com.standard.mapper.basic.MnlMngMapper.selectItemList */
 		SELECT MNL_ITM_SERNO					mnlItmSerno
 			 , MNL_SERNO						mnlSerno
 			 , MNL_ITM_CL_CD					mnlItmClCd
@@ -146,7 +146,7 @@
 	
 	<!-- 메뉴얼 항목 등록 -->
 	<insert id="insertItemContents" parameterType="cmMnlItmVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.insertItemContents */
+		/* com.standard.mapper.basic.MnlMngMapper.insertItemContents */
 		INSERT INTO T_MNL_ITM_MNG
 			 ( MNL_SERNO
 			 , MNL_ITM_CL_CD
@@ -185,7 +185,7 @@
 	
 	<!-- 메뉴얼 항목 전체 삭제 -->
 	<update id="deleteAllItemContents" parameterType="cmMnlItmVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.deleteAllItemContents */
+		/* com.standard.mapper.basic.MnlMngMapper.deleteAllItemContents */
 		UPDATE T_MNL_ITM_MNG
 		   SET USE_YN = 'N'
 		 WHERE MNL_SERNO = #{mnlSerno}
@@ -193,7 +193,7 @@
 	
 	<!-- 메뉴얼 항목 수정 -->
 	<update id="updateItemContents" parameterType="cmMnlItmVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.updateItemContents */
+		/* com.standard.mapper.basic.MnlMngMapper.updateItemContents */
 		UPDATE T_MNL_ITM_MNG
 		   SET MNL_ITM_CL_CD 	= #{mnlItmClCd}
 		     , MNL_ITM_SEQO 	= #{mnlItmSeqo}
@@ -215,7 +215,7 @@
 	
 	<!-- 메뉴얼 엑셀 목록 조회 -->
 	<select id="selectExcelList" parameterType="cmMnlVO" resultType="cmMnlVO">
-		/* com.opennote.standard.mapper.basic.MnlMngMapper.selectExcelList */
+		/* com.standard.mapper.basic.MnlMngMapper.selectExcelList */
 		SELECT MNL_SERNO						mnlSerno
 			 , MENU_CL_NM						menuClNm
 			 , TCHGR_NM							tchgrNm

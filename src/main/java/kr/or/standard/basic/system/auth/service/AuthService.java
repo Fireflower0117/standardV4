@@ -36,24 +36,20 @@ public class AuthService  extends EgovAbstractServiceImpl {
 	private final PaginationService paginationService;
 	private final MessageSource messageSource; 
 	private final ExcelView excelView;
-	//private final MenuService menuService;
-	
-	/*private final MenuAuthMngMapper menuAuthMngMapper; 
-	public MaAuthService(MenuAuthMngMapper menuAuthMngMapper) {
-		this.menuAuthMngMapper = menuAuthMngMapper;
-	}*/
+	private final String sqlNs = "com.standard.mapper.basic.MenuAuthMngMapper.";
+ 
 	
 	public void addList(AuthVO searchVO, Model model) throws Exception{
 		
 		
-		AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectCount", searchVO);
+		AuthVO rtnVo = (AuthVO)defaultDao.selectOne(sqlNs+"selectCount", searchVO);
 		int count = Integer.parseInt(rtnVo.getAuthCount()); 
 		
 		PaginationInfo paginationInfo = paginationService.procPagination(searchVO);
 		paginationInfo.setTotalRecordCount(count);
 		model.addAttribute("paginationInfo", paginationInfo);
 
-		List<AuthVO> resultList = (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectList", searchVO);  
+		List<AuthVO> resultList = (List<AuthVO>)defaultDao.selectList(sqlNs+"selectList", searchVO);  
 		model.addAttribute("resultList", resultList);
 		model.addAttribute("totalRecordCount", count);
 	} 
@@ -72,7 +68,7 @@ public class AuthService  extends EgovAbstractServiceImpl {
 	
 				// 관리자 또는 본인글인 경우
 				if ((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || regrCheck(searchVO)) {
-					authVO = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectContents", searchVO);
+					authVO = (AuthVO)defaultDao.selectOne(sqlNs+"selectContents", searchVO);
 				}else{
 					return "redirect:list.do";
 				}
@@ -101,7 +97,7 @@ public class AuthService  extends EgovAbstractServiceImpl {
 		CommonMap returnMap = new CommonMap();
 
 		// 그룹권한ID 중복체크 
-		AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.idOvlpSelectCount", searchVO);
+		AuthVO rtnVo = (AuthVO)defaultDao.selectOne(sqlNs+"idOvlpSelectCount", searchVO);
 		int ovlpCnt = Integer.parseInt( rtnVo.getAuthCount()); 
 		if(ovlpCnt > 0){
 			// message는 properties
@@ -152,7 +148,7 @@ public class AuthService  extends EgovAbstractServiceImpl {
 
 		// 관리자 또는 본인글인경우
 		if ((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || regrCheck(searchVO)) {
-			int resultCnt = defaultDao.update("com.opennote.standard.mapper.basic.MenuAuthMngMapper.deleteContents", searchVO);
+			int resultCnt = defaultDao.update(sqlNs+"deleteContents", searchVO);
 
 			if(resultCnt > 0) {
 				// 생성된 layout HTML삭제
@@ -176,7 +172,7 @@ public class AuthService  extends EgovAbstractServiceImpl {
 		String tit = "권한목록";
 		String url = "/standard/system/authList.xlsx"; 
 		
-		List<AuthVO> resultList = (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectExcelList" , searchVO);
+		List<AuthVO> resultList = (List<AuthVO>)defaultDao.selectList(sqlNs+"selectExcelList" , searchVO);
 		  
 		mav.addObject("target", tit);
 		mav.addObject("source", url);
@@ -187,38 +183,38 @@ public class AuthService  extends EgovAbstractServiceImpl {
 	public CommonMap idOvlpChk(AuthVO searchVO){
 		
 		CommonMap returnMap = new CommonMap();
-		AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.idOvlpSelectCount", searchVO);
+		AuthVO rtnVo = (AuthVO)defaultDao.selectOne(sqlNs+"idOvlpSelectCount", searchVO);
 		int ovlpCnt = Integer.parseInt( rtnVo.getAuthCount()); 
 		returnMap.put("ovlpCnt", ovlpCnt);
 		return returnMap;
 	}
 	
 	/*public int selectCount(AuthVO vo) {
-		AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectCount", vo);
+		AuthVO rtnVo = (AuthVO)defaultDao.selectOne(sqlNs+"selectCount", vo);
 		return Integer.parseInt(rtnVo.getAuthCount()); 
 	};*/
 	
 	/*public List<AuthVO> selectList(AuthVO vo) {
-		return (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectList", vo); 
+		return (List<AuthVO>)defaultDao.selectList(sqlNs+"selectList", vo); 
 	};*/
 
 	public List<AuthVO> selectAllList() {
-		return (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectAllList"); 
+		return (List<AuthVO>)defaultDao.selectList(sqlNs+"selectAllList"); 
 	};
 
 	/*public AuthVO selectContents(AuthVO vo) {
-		return (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectContents", vo); 
+		return (AuthVO)defaultDao.selectOne(sqlNs+"selectContents", vo); 
 	};*/
 
 	public boolean regrCheck(AuthVO vo) {
-		AuthVO rtnVo =  (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.regrCheck", vo); 
+		AuthVO rtnVo =  (AuthVO)defaultDao.selectOne(sqlNs+"regrCheck", vo); 
 		return Integer.parseInt(rtnVo.getIsMyRegr()) == 1 ? true : false; 
 	}
 	
 	public int insertContents(AuthVO vo){
 		 
 		// 그룹 권한 입력
-		int result = defaultDao.insert("com.opennote.standard.mapper.basic.MenuAuthMngMapper.insertContents" , vo); 
+		int result = defaultDao.insert(sqlNs+"insertContents" , vo); 
 
 		List<AuthVO> maAuthList = vo.getMaAuthList();
 
@@ -228,7 +224,7 @@ public class AuthService  extends EgovAbstractServiceImpl {
 				for (AuthVO authVO : maAuthList) {
 					authVO.setGrpAuthId(vo.getGrpAuthId());
 					authVO.setMenuSeCd("MA");
-					defaultDao.insert("com.opennote.standard.mapper.basic.MenuAuthMngMapper.authInsertContents" ,authVO ); 
+					defaultDao.insert(sqlNs+"authInsertContents" ,authVO ); 
 				}
 			}
 		}
@@ -241,7 +237,7 @@ public class AuthService  extends EgovAbstractServiceImpl {
 				for (AuthVO authVO : ftAuthFtList) {
 					authVO.setGrpAuthId(vo.getGrpAuthId());
 					authVO.setMenuSeCd("FT");
-					defaultDao.insert("com.opennote.standard.mapper.basic.MenuAuthMngMapper.authInsertContents" ,authVO );  
+					defaultDao.insert(sqlNs+"authInsertContents" ,authVO );  
 				}
 			}
 		}
@@ -254,7 +250,7 @@ public class AuthService  extends EgovAbstractServiceImpl {
 				for (AuthVO authVO : myAuthFtList) {
 					authVO.setGrpAuthId(vo.getGrpAuthId());
 					authVO.setMenuSeCd("MY"); 
-					defaultDao.insert("com.opennote.standard.mapper.basic.MenuAuthMngMapper.authInsertContents" ,authVO );  
+					defaultDao.insert(sqlNs+"authInsertContents" ,authVO );  
 				}
 			}
 		}
@@ -266,10 +262,10 @@ public class AuthService  extends EgovAbstractServiceImpl {
 	public int updateContents(AuthVO vo) {
 		 
 		// 그룹 권한 수정
-		int result = defaultDao.update("com.opennote.standard.mapper.basic.MenuAuthMngMapper.updateContents" , vo);
+		int result = defaultDao.update(sqlNs+"updateContents" , vo);
 		  
 		// 기존 등록된 메뉴 권한 삭제
-		defaultDao.delete("com.opennote.standard.mapper.basic.MenuAuthMngMapper.authDeleteContents", vo);
+		defaultDao.delete(sqlNs+"authDeleteContents", vo);
 		  
 		List<AuthVO> maAuthList = vo.getMaAuthList();
 
@@ -279,7 +275,7 @@ public class AuthService  extends EgovAbstractServiceImpl {
 				for (AuthVO authVO : maAuthList) {
 					authVO.setGrpAuthId(vo.getGrpAuthId());
 					authVO.setMenuSeCd("MA");
-					defaultDao.insert("com.opennote.standard.mapper.basic.MenuAuthMngMapper.authInsertContents" ,authVO ); 
+					defaultDao.insert(sqlNs+"authInsertContents" ,authVO ); 
 				}
 			}
 		}
@@ -292,7 +288,7 @@ public class AuthService  extends EgovAbstractServiceImpl {
 				for (AuthVO authVO : ftAuthFtList) {
 					authVO.setGrpAuthId(vo.getGrpAuthId());
 					authVO.setMenuSeCd("FT");
-					defaultDao.insert("com.opennote.standard.mapper.basic.MenuAuthMngMapper.authInsertContents" ,authVO ); 
+					defaultDao.insert(sqlNs+"authInsertContents" ,authVO ); 
 				}
 			}
 		}
@@ -305,7 +301,7 @@ public class AuthService  extends EgovAbstractServiceImpl {
 				for (AuthVO authVO : myAuthFtList) {
 					authVO.setGrpAuthId(vo.getGrpAuthId());
 					authVO.setMenuSeCd("MY");
-					defaultDao.insert("com.opennote.standard.mapper.basic.MenuAuthMngMapper.authInsertContents" ,authVO ); 
+					defaultDao.insert(sqlNs+"authInsertContents" ,authVO ); 
 					 
 				}
 			}
@@ -315,22 +311,22 @@ public class AuthService  extends EgovAbstractServiceImpl {
 	};
 
 	/*public int deleteContents(AuthVO vo) {
-		return defaultDao.update("com.opennote.standard.mapper.basic.MenuAuthMngMapper.deleteContents", vo); 
+		return defaultDao.update(sqlNs+"deleteContents", vo); 
 	};*/
 
 	/*public int idOvlpSelectCount(AuthVO vo) {
-		 AuthVO rtnVo = (AuthVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.MenuAuthMngMapper.idOvlpSelectCount", vo);
+		 AuthVO rtnVo = (AuthVO)defaultDao.selectOne(sqlNs+"idOvlpSelectCount", vo);
 		 return Integer.parseInt( rtnVo.getAuthCount());  
 	};*/
 
 	public List<AuthVO> selectMenuList(AuthVO vo) {
-		return (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectMenuList", vo); 
+		return (List<AuthVO>)defaultDao.selectList(sqlNs+"selectMenuList", vo); 
 	};
 
 
 	// 관리자 권한 취득
 	public List<String> getAuthList(LoginVO vo){ 
-		 List<AuthVO> rtnList = (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.getAuthList", vo);
+		 List<AuthVO> rtnList = (List<AuthVO>)defaultDao.selectList(sqlNs+"getAuthList", vo);
 		 List<String> authList = new ArrayList<String>();
 		 for (AuthVO authVo : rtnList){
 		 	authList.add(authVo.getMenuCd()); 
@@ -341,22 +337,22 @@ public class AuthService  extends EgovAbstractServiceImpl {
 
 	// 관리자 작성 권한
 	public List<AuthVO> getWrtAuthList(LoginVO vo) {
-		return (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.getWrtAuthList" , vo); 
+		return (List<AuthVO>)defaultDao.selectList(sqlNs+"getWrtAuthList" , vo); 
 	}
 
 
 	public List<AuthVO> selectExcelList(AuthVO vo){
-		return (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectExcelList" , vo); 
+		return (List<AuthVO>)defaultDao.selectList(sqlNs+"selectExcelList" , vo); 
 	}
 	
 	
 	// 권한이 가지고 있는 메뉴 조회
 	public List<AuthVO> getGrpAuthIdList(AuthVO vo){
-		return (List<AuthVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.MenuAuthMngMapper.getGrpAuthIdList" , vo); 
+		return (List<AuthVO>)defaultDao.selectList(sqlNs+"getGrpAuthIdList" , vo); 
 	}
 	
 	// 메뉴 권한 삭제
 	public int menuAuthDeleteContents(String menuCd) {
-		return defaultDao.delete("com.opennote.standard.mapper.basic.MenuAuthMngMapper.getGrpAuthIdList" , menuCd); 
+		return defaultDao.delete(sqlNs+"getGrpAuthIdList" , menuCd); 
 	}
 }

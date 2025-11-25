@@ -42,7 +42,7 @@ public class SrvyService {
     private final CmmnDefaultDao defaultDao;
     private final ExcelView excelView;
     
-    private final String mapperNs = "standard.mapper.component.SrvyMngMapper.";
+    private final String mapperNs = "com.standard.mapper.component.SrvyMngMapper.";
     
     /*****************************************************************************************************/
     /**************************                 MA  영억                 *********************************/

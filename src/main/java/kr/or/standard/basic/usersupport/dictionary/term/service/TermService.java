@@ -59,7 +59,7 @@ public class TermService  extends EgovAbstractServiceImpl {
     private final ExcelUtil excelUtil;
     private final FileService fileService;
     	 
-    private final String sqlNs = "com.opennote.standard.mapper.usersupport.TermMngMapper.";
+    private final String sqlNs = "com.standard.mapper.usersupport.TermMngMapper.";
     
     public void addList(CmTermVO searchVO, Model model) throws Exception {
         PaginationInfo paginationInfo = paginationService.procPagination(searchVO);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.opennote.standard.mapper.basic.MenuAuthMngMapper">
+<mapper namespace="com.standard.mapper.basic.MenuAuthMngMapper">
 	<!-- 조건 -->
 	<sql id="Where">
 		<if test="searchKeyword !=null and searchKeyword !=''">
@@ -23,7 +23,7 @@
 
 	<!-- 그룹권한 건수 -->
 	<select id="selectCount" parameterType="authVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectCount */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.selectCount */
 		SELECT COUNT(1) authCount
 		  FROM T_GRP_AUTH_MNG
 		<where>
@@ -34,7 +34,7 @@
 
 	<!-- 그룹권한 리스트-->
 	<select id="selectList" parameterType="authVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectList */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.selectList */
 		SELECT GRP_AUTH_SERNO 					grpAuthSerno
 			 , GRP_AUTH_ID 						grpAuthId
 			 , GRP_AUTH_NM 						grpAuthNm
@@ -56,7 +56,7 @@
 
 	<!-- 그룹권한 전체 리스트-->
 	<select id="selectAllList" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectAllList */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.selectAllList */
 		SELECT GRP_AUTH_SERNO 					grpAuthSerno
 			 , GRP_AUTH_ID 						grpAuthId
 			 , GRP_AUTH_NM 						grpAuthNm
@@ -74,7 +74,7 @@
 
 	<!-- 그룹권한내용 -->
 	<select id="selectContents" parameterType="authVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectContents */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.selectContents */
 		SELECT GRP_AUTH_SERNO 					grpAuthSerno
 			 , GRP_AUTH_ID 						grpAuthId
 			 , GRP_AUTH_NM 						grpAuthNm
@@ -91,7 +91,7 @@
 
 	<!-- 그룹권한등록 -->
 	<insert id="insertContents" parameterType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.insertContents */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.insertContents */
 		INSERT INTO T_GRP_AUTH_MNG
 		     ( GRP_AUTH_ID
 			 , GRP_AUTH_NM
@@ -110,7 +110,7 @@
 
 	<!-- 그룹권한수정 -->
 	<update id="updateContents" parameterType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.updateContents */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.updateContents */
 		UPDATE T_GRP_AUTH_MNG
 		   SET GRP_AUTH_NM 	  = #{grpAuthNm		}
 		   	 , GRP_AUTH_EXPL  = #{grpAuthExpl	}
@@ -122,7 +122,7 @@
 
 	<!-- 그룹권한삭제 -->
 	<update id="deleteContents" parameterType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.deleteContents */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.deleteContents */
 		UPDATE T_GRP_AUTH_MNG
 		   SET DEL_YN 		  = 'Y'
 		 WHERE GRP_AUTH_SERNO = #{grpAuthSerno}
@@ -130,7 +130,7 @@
 
 	<!-- 그룹권한ID중복체크 -->
 	<select id="idOvlpSelectCount" parameterType="authVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.idOvlpSelectCount */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.idOvlpSelectCount */
 		SELECT COUNT(1) authCount
 		  FROM T_GRP_AUTH_MNG
 		 WHERE GRP_AUTH_ID = #{grpAuthId}
@@ -138,7 +138,7 @@
 
 	<!-- 전체 메뉴 및 권한 조회 -->
 	<select id="selectMenuList" parameterType="authVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectMenuList */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.selectMenuList */
 		SELECT A.MENU_SERNO 																				menuSerno
 			 , A.UPR_MENU_CD 																				uprMenuCd
 			 , A.MENU_LVL 																					menuLvl
@@ -160,7 +160,7 @@
 	</select>
 	
 	<select id="selectMenuListRecursive" parameterType="authVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectMenuListRecursive */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.selectMenuListRecursive */
 			WITH RECURSIVE TB_RECUR_MENUS AS (
 			   <![CDATA[	
 			   SELECT  A.MENU_SERNO
@@ -223,7 +223,7 @@
 
 	<!-- 메뉴 권한 입력 -->
 	<insert id="authInsertContents" parameterType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.authInsertContents */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.authInsertContents */
 		INSERT INTO T_MENU_AUTH_MNG
 		     ( GRP_AUTH_ID
 			 , MENU_CD
@@ -242,14 +242,14 @@
 
 	<!-- 메뉴 권한 삭제 -->
 	<delete id="authDeleteContents" parameterType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.authDeleteContents */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.authDeleteContents */
 		DELETE FROM T_MENU_AUTH_MNG
 		 WHERE GRP_AUTH_ID = #{grpAuthId}
 	</delete>
 
 	<!-- 관리자 권한 취득 -->
 	<select id="getAuthList" parameterType="loginVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.getAuthList */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.getAuthList */
 		SELECT MENU_CD  menuCd
 		  FROM T_MENU_AUTH_MNG
 		 WHERE GRP_AUTH_ID 	= #{grpAuthId	}
@@ -258,7 +258,7 @@
 
 	<!-- 관리자 작성 권한 취득 -->
 	<select id="getWrtAuthList" parameterType="loginVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.getWrtAuthList */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.getWrtAuthList */
 		SELECT MENU_CD				menuCd
 			 , WRT_AUTH_YN			wrtAuthYn
 		  FROM T_MENU_AUTH_MNG
@@ -268,7 +268,7 @@
 
 	<!-- 본인글 여부 -->
 	<select id="regrCheck" parameterType="authVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.regrCheck */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.regrCheck */
 		SELECT CASE WHEN REGR_SERNO = #{loginSerno} THEN 1 ELSE 0 END isMyRegr
 		  FROM T_GRP_AUTH_MNG
 		 WHERE GRP_AUTH_SERNO = #{grpAuthSerno}
@@ -276,7 +276,7 @@
 
 	<!-- 엑셀 다운로드 용 -->
 	<select id="selectExcelList" parameterType="authVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.selectExcelList */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.selectExcelList */
 		SELECT GRP_AUTH_SERNO 					grpAuthSerno
 			 , GRP_AUTH_ID 						grpAuthId
 			 , GRP_AUTH_NM 						grpAuthNm
@@ -306,7 +306,7 @@
 	
 	<!-- 특정 메뉴를 권한으로 가지고 있는 그룹 ID 찾기 -->
 	<select id="getGrpAuthIdList" parameterType="authVO" resultType="authVO">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.getGrpAuthIdList */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.getGrpAuthIdList */
 		SELECT GRP_AUTH_ID grpAuthId
 		  FROM T_MENU_AUTH_MNG
 		 WHERE MENU_SE_CD = #{menuSeCd}
@@ -316,7 +316,7 @@
 	
 	<!-- 메뉴 권한 삭제 -->
 	<delete id="menuAuthDeleteContents" parameterType="java.lang.String">
-		/* com.opennote.standard.mapper.basic.MenuAuthMngMapper.menuAuthDeleteContents */
+		/* com.standard.mapper.basic.MenuAuthMngMapper.menuAuthDeleteContents */
 		DELETE FROM T_MENU_AUTH_MNG
 		 WHERE MENU_CD = #{menuCd}
 	</delete>

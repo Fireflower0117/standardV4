@@ -29,17 +29,18 @@ public class ErrlogService extends EgovAbstractServiceImpl {
 	private final CmmnDefaultDao defaultDao;
 	private final PaginationService paginationService; 
 	private final ExcelView excelView;
+    private final String sqlNs = "com.standard.mapper.basic.ErrLogMngMapper.";
     
     // 에러 유형 목록 조회
     public void list(Model model){ 
-		List<ErrlogVO> errTpList = (List<ErrlogVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.ErrLogMngMapper.errTpSelectList");
+		List<ErrlogVO> errTpList = (List<ErrlogVO>)defaultDao.selectList(sqlNs+"errTpSelectList");
 		model.addAttribute("errTpList",errTpList); 
     }
     
     // 에러 목록 조회
     public void addList(ErrlogVO searchVO, Model model) throws Exception {
         
-        ErrlogVO rtnVo = (ErrlogVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.ErrLogMngMapper.selectCount" ,searchVO ); 
+        ErrlogVO rtnVo = (ErrlogVO)defaultDao.selectOne(sqlNs+"selectCount" ,searchVO ); 
 		int count = Integer.parseInt(rtnVo.getErrLogCnt()); 
 		model.addAttribute("totalRecordCount", count);
 
@@ -47,13 +48,13 @@ public class ErrlogService extends EgovAbstractServiceImpl {
 		paginationInfo.setTotalRecordCount(count);
 		model.addAttribute("paginationInfo", paginationInfo);
         
-        List<ErrlogVO> resultList = (List<ErrlogVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.ErrLogMngMapper.selectList"  , searchVO); 
+        List<ErrlogVO> resultList = (List<ErrlogVO>)defaultDao.selectList(sqlNs+"selectList"  , searchVO); 
 		model.addAttribute("resultList", resultList);
     }
     
     // 에러 로그 상세
     public void view(ErrlogVO searchVO, Model model){ 
-		ErrlogVO errlogVO = (ErrlogVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.ErrLogMngMapper.selectContents" ,searchVO );
+		ErrlogVO errlogVO = (ErrlogVO)defaultDao.selectOne(sqlNs+"selectContents" ,searchVO );
 		model.addAttribute("errlogVO", errlogVO);
     
     }
@@ -67,7 +68,7 @@ public class ErrlogService extends EgovAbstractServiceImpl {
 		String url = "/standard/system/errlogList.xlsx";
 
 		// 엑셀 리스트 조회 
-		List<ErrlogVO> resultList = (List<ErrlogVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.ErrLogMngMapper.selectExcelList"  , searchVO);
+		List<ErrlogVO> resultList = (List<ErrlogVO>)defaultDao.selectList(sqlNs+"selectExcelList"  , searchVO);
 		  
 		mav.addObject("target", tit);
 		mav.addObject("source", url);
@@ -79,17 +80,17 @@ public class ErrlogService extends EgovAbstractServiceImpl {
     
 	// 에러 로그 등록
 	public int insertContents(ErrlogVO vo) {
-	    return defaultDao.insert("com.opennote.standard.mapper.basic.ErrLogMngMapper.insertContents" , vo); 
+	    return defaultDao.insert(sqlNs+"insertContents" , vo); 
 	}
 
 	// 메뉴별 에러 건수
 	public List<CommonMap> selectMenuErr() {
-	    return basicDao.selectList("com.opennote.standard.mapper.basic.ErrLogMngMapper.selectMenuErr"); 
+	    return basicDao.selectList(sqlNs+"selectMenuErr"); 
 	}
 
 	// 메뉴별 에러 건수 상세
 	public List<CommonMap> selectMenuErrDetail(AcsStatVO vo) {
-		return basicDao.selectList("com.opennote.standard.mapper.basic.ErrLogMngMapper.selectMenuErrDetail", vo); 
+		return basicDao.selectList(sqlNs+"selectMenuErrDetail", vo); 
 	}
 
 	// 에러 로그 건수

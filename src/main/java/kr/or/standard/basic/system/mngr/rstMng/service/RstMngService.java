@@ -31,11 +31,9 @@ public class RstMngService extends EgovAbstractServiceImpl {
 	private final PaginationService paginationService;
 	private final MessageSource messageSource;
 	private final ExcelView excelView;
-        
-    // private final UserIdRstMngMapper userIdRstMngMapper; 
-	/*public MaRstMngService(UserIdRstMngMapper userIdRstMngMapper) {
-		this.userIdRstMngMapper = userIdRstMngMapper;
-	}*/
+	
+	private final String sqlNs = "com.standard.mapper.basic.UserIdRstMngMapper.";
+         
 	
 	public void addList(RstMngVO searchVO, Model model) throws Exception{
 	    
@@ -89,7 +87,7 @@ public class RstMngService extends EgovAbstractServiceImpl {
 		String tit = "제한목록";
 		String url = "/standard/rstMngList.xlsx";
 
-		List<RstMngVO> resultList = (List<RstMngVO>) defaultDao.selectList("com.opennote.standard.mapper.basic.UserIdRstMngMapper.selectExcelList", searchVO);
+		List<RstMngVO> resultList = (List<RstMngVO>) defaultDao.selectList(sqlNs+"selectExcelList", searchVO);
 
 		mav.addObject("target", tit);
 		mav.addObject("source", url);
@@ -109,12 +107,12 @@ public class RstMngService extends EgovAbstractServiceImpl {
 
 		if ("allBlk".equals(searchVO.getProcType())) {
 			if(searchVO.getSchEtc12() != null && searchVO.getSchEtc12().length > 0) {
-				result = defaultDao.update("com.opennote.standard.mapper.basic.UserIdRstMngMapper.allBlock", searchVO);
+				result = defaultDao.update(sqlNs+"allBlock", searchVO);
 				message = searchVO.getSchEtc12().length + "건에 대하여 제한하였습니다.";
 			}
 		} else if ("allClear".equals(searchVO.getProcType())) {
 			if(searchVO.getSchEtc11() != null && searchVO.getSchEtc11().length > 0) {
-				result = defaultDao.update("com.opennote.standard.mapper.basic.UserIdRstMngMapper.allClear", searchVO);
+				result = defaultDao.update(sqlNs+"allClear", searchVO);
 				message = searchVO.getSchEtc11().length + "건에 대하여 제한 해제하였습니다.";
 			}
 		}
@@ -129,7 +127,7 @@ public class RstMngService extends EgovAbstractServiceImpl {
 	public CommonMap idOvlpChk(RstMngVO searchVO){
 		CommonMap returnMap = new CommonMap(); 
 		
-		RstMngVO rtnVo = (RstMngVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserIdRstMngMapper.idOvlpSelectCount", searchVO);
+		RstMngVO rtnVo = (RstMngVO)defaultDao.selectOne(sqlNs+"idOvlpSelectCount", searchVO);
 		int rstCnt =  Integer.parseInt(rtnVo.getUserIdCount()); 
 		
 		returnMap.put("rstCnt", rstCnt); 
@@ -138,40 +136,40 @@ public class RstMngService extends EgovAbstractServiceImpl {
 	}
         
 	public int selectCount(RstMngVO vo) { 
-	   RstMngVO rtnVo = (RstMngVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserIdRstMngMapper.selectCount" , vo);
+	   RstMngVO rtnVo = (RstMngVO)defaultDao.selectOne(sqlNs+"selectCount" , vo);
 	   return Integer.parseInt(rtnVo.getUserIdCount()); 
 	}
 
 	public List<RstMngVO> selectList(RstMngVO vo) {
-	    return (List<RstMngVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserIdRstMngMapper.selectList", vo); 
+	    return (List<RstMngVO>)defaultDao.selectList(sqlNs+"selectList", vo); 
 	}
 
 	public int insertContents(RstMngVO vo) {
-	    return defaultDao.insert("com.opennote.standard.mapper.basic.UserIdRstMngMapper.insertContents", vo); 
+	    return defaultDao.insert(sqlNs+"insertContents", vo); 
 	}
 
 	public int deleteContents(RstMngVO vo) {
-	    return defaultDao.delete("com.opennote.standard.mapper.basic.UserIdRstMngMapper.deleteContents", vo); 
+	    return defaultDao.delete(sqlNs+"deleteContents", vo); 
 	}
 
 	/*public List<RstMngVO> selectExcelList(RstMngVO vo) {
-        return (List<RstMngVO>) defaultDao.selectList("com.opennote.standard.mapper.basic.UserIdRstMngMapper.selectExcelList", vo); 
+        return (List<RstMngVO>) defaultDao.selectList(sqlNs+"selectExcelList", vo); 
 	}*/
 
 	// 중복체크
 	/*public int idOvlpSelectCount(RstMngVO vo) {
-		RstMngVO rtnVo = (RstMngVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserIdRstMngMapper.idOvlpSelectCount", vo);
+		RstMngVO rtnVo = (RstMngVO)defaultDao.selectOne(sqlNs+"idOvlpSelectCount", vo);
 		return Integer.parseInt(rtnVo.getUserIdCount());  
 	}*/
 	
 	// 일괄 제한
 	/*public int allBlock(RstMngVO vo) {
-	    return defaultDao.update("com.opennote.standard.mapper.basic.UserIdRstMngMapper.allBlock", vo); 
+	    return defaultDao.update(sqlNs+"allBlock", vo); 
 	}*/
 	
 	// 일괄 제한해제
 	/*public int allClear(RstMngVO vo) {
-	    return defaultDao.update("com.opennote.standard.mapper.basic.UserIdRstMngMapper.allClear", vo); 
+	    return defaultDao.update(sqlNs+"allClear", vo); 
 	}*/
     
 }

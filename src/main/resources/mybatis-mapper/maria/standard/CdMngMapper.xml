@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.kps.partners.mapper.CdMngMapper">
+<mapper namespace="com.standard.mapper.basic.CdMngMapper">
 
 	<select id="selectList" parameterType="codeVO" resultType="codeVO">
-		/* kr.or.kps.partners.mapper.CdMngMapper.selectList */
+		/* com.standard.mapper.basic.CdMngMapper.selectList */
 		SELECT A.CD_SERNO 																		cdSerno
 		     , A.CD_UPPO_VAL 																	cdUppoVal
 		     , A.CD_VAL 																		cdVal
@@ -26,7 +26,7 @@
 
 	<!-- 코드 등록 있는 경우 업데이트 -->
 	<insert id="insertContents" parameterType="codeVO">
-		/*CdMngMapper.insertContents  */
+		/* com.standard.mapper.basic.CdMngMapper.insertContents  */
 	   INSERT INTO T_CD_MNG
 	        ( CD_UPPO_VAL
 			, CD_VAL
@@ -53,7 +53,7 @@
 	</insert>
 
 	<update id="updateContents" parameterType="codeVO">
-		/* CdMngMapper.updateContents */
+		/* com.standard.mapper.basic.CdMngMapper.updateContents */
 		UPDATE T_CD_MNG
 		  SET CD_NM 		= #{cdNm}
 		    , CD_DTLS_EXPL 	= #{cdDtlsExpl}
@@ -62,7 +62,7 @@
 	</update>
 
 	<delete id="deleteContents" parameterType="codeVO">
-		/* CdMngMapper.deleteContents */
+		/* com.standard.mapper.basic.CdMngMapper.deleteContents */
 		UPDATE T_CD_MNG
 		   SET USE_YN 	   = 'N'
 		 WHERE 1=1
@@ -73,7 +73,7 @@
 
 	<!-- 코드 중복 체크 -->
 	<select id="selectOvlpCount" parameterType="codeVO" resultType="codeVO">
-		/* CdMngMapper.selectOvlpCount */
+		/* com.standard.mapper.basic.CdMngMapper.selectOvlpCount */
 		SELECT COUNT(1) rowCnt
 		  FROM T_CD_MNG
 		 WHERE CD_VAL = #{cdVal}
@@ -81,7 +81,7 @@
 
 	<!-- 코드 정렬 대상 -->
 	<update id="codeSortSource" parameterType="codeVO" >
-		/* OsrMapper.codeSortSource */
+		/* com.standard.mapper.basic.CdMngMapper.codeSortSource */
 		UPDATE T_CD_MNG
 		   SET CD_SORT_SEQO = IFNULL( (SELECT CD_SORT_SEQO FROM T_CD_MNG WHERE CD_SERNO = #{cdNextSerno})
 		       						, (SELECT COUNT(1)+1 FROM T_CD_MNG WHERE CD_LVL_VAL = #{cdLvlVal}))
@@ -91,7 +91,7 @@
 
 	<!-- 코드 정렬 타겟 -->
 	<update id="codeSortTarget" parameterType="codeVO" >
-		/* OsrMapper.codeSortTarget */
+		/* com.standard.mapper.basic.CdMngMapper.codeSortTarget */
 		UPDATE T_CD_MNG
 		   SET CD_SORT_SEQO = CD_SORT_SEQO + 1
 		 WHERE CD_SORT_SEQO	>= (SELECT CD_SORT_SEQO FROM T_CD_MNG WHERE CD_SERNO = #{cdNextSerno})
@@ -101,7 +101,7 @@
 
 	<!-- 코드 순서 재정렬 -->
 	<update id="codeSortSeqo" parameterType="codeVO" >
-		/* OsrMapper.codeSortSeqo */
+		/* com.standard.mapper.basic.CdMngMapper.codeSortSeqo */
 		UPDATE T_CD_MNG A
 		   SET A.CD_SORT_SEQO = (SELECT COUNT(1) + 1 FROM T_CD_MNG WHERE A.CD_SORT_SEQO > CD_SORT_SEQO AND CD_LVL_VAL = #{cdLvlVal})
 		 WHERE A.CD_LVL_VAL = #{cdLvlVal}

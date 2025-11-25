@@ -33,10 +33,11 @@ public class LogoService {
 	private final PaginationService paginationService;
     private final MessageSource messageSource;
     private final ExcelView excelView;
+    private final String sqlNs = "com.standard.mapper.basic.LogoMngMapper.";    
         
     public void addList(LogoVO searchVO, Model model) throws Exception {
         
-         LogoVO rtnVo = (LogoVO) defaultDao.selectOne("com.opennote.standard.mapper.basic.LogoMngMapper.selectCount" , searchVO);
+         LogoVO rtnVo = (LogoVO) defaultDao.selectOne(sqlNs+"selectCount" , searchVO);
          int count =  Integer.parseInt(rtnVo.getLogoCount());  
         model.addAttribute("totalRecordCount", count);
         
@@ -45,12 +46,12 @@ public class LogoService {
         paginationInfo.setTotalRecordCount(count);
         model.addAttribute("paginationInfo", paginationInfo);
 
-        List<LogoVO> resultList =  (List<LogoVO>) defaultDao.selectList("com.opennote.standard.mapper.basic.LogoMngMapper.selectList" , searchVO);
+        List<LogoVO> resultList =  (List<LogoVO>) defaultDao.selectList(sqlNs+"selectList" , searchVO);
         model.addAttribute("resultList", resultList);
     }
     
     public void view(LogoVO searchVO, Model model){
-        LogoVO logoVO = (LogoVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.LogoMngMapper.selectContents" , searchVO);
+        LogoVO logoVO = (LogoVO)defaultDao.selectOne(sqlNs+"selectContents" , searchVO);
         model.addAttribute("logoVO", logoVO);
     }
     
@@ -71,7 +72,7 @@ public class LogoService {
                 return "redirect:list.do";
             }
 
-            logoVO = (LogoVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.LogoMngMapper.selectContents" , searchVO);
+            logoVO = (LogoVO)defaultDao.selectOne(sqlNs+"selectContents" , searchVO);
         }
 
         model.addAttribute("logoVO", logoVO);
@@ -83,8 +84,8 @@ public class LogoService {
         CommonMap returnMap = new CommonMap();
         
         /* 활성화 등록, 수정 시 기존 활성화 항목 비활성화 */
-        defaultDao.update("com.opennote.standard.mapper.basic.LogoMngMapper.updateActvtYn" , searchVO);; /* 활성화 등록, 수정 시 기존 활성화 항목 비활성화 */ 
-        int resultCnt = defaultDao.insert("com.opennote.standard.mapper.basic.LogoMngMapper.insertContent" , searchVO); 
+        defaultDao.update(sqlNs+"updateActvtYn" , searchVO);; /* 활성화 등록, 수정 시 기존 활성화 항목 비활성화 */ 
+        int resultCnt = defaultDao.insert(sqlNs+"insertContent" , searchVO); 
 
         if(resultCnt > 0){
             returnMap.put("message", messageSource.getMessage("insert.message", null, null));
@@ -102,14 +103,14 @@ public class LogoService {
         CommonMap returnMap = new CommonMap();
         
         /* 활성화 등록, 수정 시 기존 활성화 항목 비활성화 */ /* 활성화 등록, 수정 시 기존 활성화 항목 비활성화 */
-        defaultDao.update("com.opennote.standard.mapper.basic.LogoMngMapper.updateActvtYn" , searchVO);
+        defaultDao.update(sqlNs+"updateActvtYn" , searchVO);
           
         // 관리자 또는 본인글이 아닌 경우
         if(!((boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY") || regrCheck(searchVO))) {
             returnMap.put("message", messageSource.getMessage("acs.error.message", null, null));
             returnMap.put("returnUrl", "list.do");
         } else {
-          int resultCnt = defaultDao.update("com.opennote.standard.mapper.basic.LogoMngMapper.updateContents" , searchVO);
+          int resultCnt = defaultDao.update(sqlNs+"updateContents" , searchVO);
 
             if(resultCnt > 0){
                 returnMap.put("message", messageSource.getMessage("update.message", null, null));
@@ -134,7 +135,7 @@ public class LogoService {
             returnMap.put("message", messageSource.getMessage("acs.error.message", null, null));
             returnMap.put("returnUrl", "list.do");
         } else {
-           int resultCnt = defaultDao.update("com.opennote.standard.mapper.basic.LogoMngMapper.deleteContents" , searchVO); 
+           int resultCnt = defaultDao.update(sqlNs+"deleteContents" , searchVO); 
 
             if(resultCnt > 0){
                 returnMap.put("message", messageSource.getMessage("delete.message", null, null));
@@ -152,7 +153,7 @@ public class LogoService {
         String tit = "로고목록";
         String url = "/standard/system/logoList.xlsx";
 
-        List<LogoVO> resultList = (List<LogoVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.LogoMngMapper.selectExcelList", searchVO);;
+        List<LogoVO> resultList = (List<LogoVO>)defaultDao.selectList(sqlNs+"selectExcelList", searchVO);;
 
         mav.addObject("target", tit);
         mav.addObject("source", url);
@@ -161,55 +162,55 @@ public class LogoService {
     }
     
    /* public int selectCount(LogoVO vo) {
-      LogoVO rtnVo = (LogoVO) defaultDao.selectOne("com.opennote.standard.mapper.basic.LogoMngMapper.selectCount" , vo);
+      LogoVO rtnVo = (LogoVO) defaultDao.selectOne(sqlNs+"selectCount" , vo);
       return Integer.parseInt(rtnVo.getLogoCount()); 
     }*/
 
     /*public List<LogoVO> selectList(LogoVO vo) {
-        return (List<LogoVO>) defaultDao.selectList("com.opennote.standard.mapper.basic.LogoMngMapper.selectList" , vo); 
+        return (List<LogoVO>) defaultDao.selectList(sqlNs+"selectList" , vo); 
     }*/
 
     /*public int insertContent(LogoVO vo) {
-        return  defaultDao.insert("com.opennote.standard.mapper.basic.LogoMngMapper.insertContent" , vo); 
+        return  defaultDao.insert(sqlNs+"insertContent" , vo); 
     }*/
 
     /*public LogoVO selectContents(LogoVO vo) { 
-        return (LogoVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.LogoMngMapper.selectContents" , vo); 
+        return (LogoVO)defaultDao.selectOne(sqlNs+"selectContents" , vo); 
     }*/
 
     /*public int updateContents(LogoVO vo) { 
-        return defaultDao.update("com.opennote.standard.mapper.basic.LogoMngMapper.updateContents" , vo); 
+        return defaultDao.update(sqlNs+"updateContents" , vo); 
     }*/
 
    /* public int deleteContents(LogoVO vo) {
-        return defaultDao.update("com.opennote.standard.mapper.basic.LogoMngMapper.deleteContents" , vo); 
+        return defaultDao.update(sqlNs+"deleteContents" , vo); 
     }*/
 
     /* 활성화 항목 중복 등록 판단 */
     public int itmActvtYnChk(LogoVO vo) {
-      LogoVO rtnVo = (LogoVO) defaultDao.selectOne("com.opennote.standard.mapper.basic.LogoMngMapper.itmActvtYnChk" , vo);
+      LogoVO rtnVo = (LogoVO) defaultDao.selectOne(sqlNs+"itmActvtYnChk" , vo);
       return Integer.parseInt(rtnVo.getLogoCount()); 
     }
 
     /* 활성화 등록, 수정 시 기존 활성화 항목 비활성화 */
     /*public int updateActvtYn(LogoVO vo) { 
-        return defaultDao.update("com.opennote.standard.mapper.basic.LogoMngMapper.updateActvtYn" , vo); 
+        return defaultDao.update(sqlNs+"updateActvtYn" , vo); 
         
     }*/
 
     /* 활성화 로고 정보 조회 */
     public List<LogoVO> selectActvYnItm(){ 
-       return (List<LogoVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.LogoMngMapper.selectActvYnItm"); 
+       return (List<LogoVO>)defaultDao.selectList(sqlNs+"selectActvYnItm"); 
     }
 
     /* 로고 엑셀 목록 조회 */
     /*public List<LogoVO> selectExcelList(LogoVO vo) {
-        return (List<LogoVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.LogoMngMapper.selectExcelList", vo); 
+        return (List<LogoVO>)defaultDao.selectList(sqlNs+"selectExcelList", vo); 
     }*/
 
     /* 본인글 여부 확인 */
     public boolean regrCheck(LogoVO vo) {
-       LogoVO rtnVo = (LogoVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.LogoMngMapper.regrCheck", vo);
+       LogoVO rtnVo = (LogoVO)defaultDao.selectOne(sqlNs+"regrCheck", vo);
        return Integer.parseInt(rtnVo.getIsRegrChk()) == 1 ? true : false; 
     }    
         

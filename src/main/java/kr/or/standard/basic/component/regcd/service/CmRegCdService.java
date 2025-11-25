@@ -52,6 +52,7 @@ public class CmRegCdService extends EgovAbstractServiceImpl {
     private final PaginationService paginationService; 
 	private final MessageSource messageSource;
 	private final ExcelView excelView;
+	private final String sqlNs = "com.standard.mapper.component.RegCdMngMapper.";
      
     @Value("${bcode.decodingkey}")
 	private String DECODINGKEY;
@@ -63,12 +64,12 @@ public class CmRegCdService extends EgovAbstractServiceImpl {
         
 		PaginationInfo paginationInfo = paginationService.procPagination(searchVO);
 		
-		CmRegCdVO rtnMap = (CmRegCdVO)defaultDao.selectOne("com.opennote.standard.mapper.component.RegCdMngMapper.selectCount" ,searchVO );
+		CmRegCdVO rtnMap = (CmRegCdVO)defaultDao.selectOne(sqlNs+"selectCount" ,searchVO );
 		int regCdCnt = Integer.parseInt(rtnMap.getRegCdCnt()); 
 		paginationInfo.setTotalRecordCount(regCdCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
-        List<CmRegCdVO> resultList = (List<CmRegCdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.RegCdMngMapper.selectList" ,searchVO ); 
+        List<CmRegCdVO> resultList = (List<CmRegCdVO>)defaultDao.selectList(sqlNs+"selectList" ,searchVO ); 
 		model.addAttribute("resultList", resultList); 
     }
     
@@ -79,19 +80,19 @@ public class CmRegCdService extends EgovAbstractServiceImpl {
 		// 시도
 		if("SIDO".equals(menuTp)) {
 			searchVO.setLvl("1");
-			selectList =  (List<CmRegCdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.RegCdMngMapper.selectRegList" ,searchVO ); 
+			selectList =  (List<CmRegCdVO>)defaultDao.selectList(sqlNs+"selectRegList" ,searchVO ); 
 		// 시군구
 		} else if("CGG".equals(menuTp)) {
 			searchVO.setLvl("2");
-			selectList =  (List<CmRegCdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.RegCdMngMapper.selectRegList" ,searchVO ); 
+			selectList =  (List<CmRegCdVO>)defaultDao.selectList(sqlNs+"selectRegList" ,searchVO ); 
 		// 읍면동
 		} else if("UMD".equals(menuTp)) {
 			searchVO.setLvl("3");
-			selectList =  (List<CmRegCdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.RegCdMngMapper.selectRegList" ,searchVO ); 
+			selectList =  (List<CmRegCdVO>)defaultDao.selectList(sqlNs+"selectRegList" ,searchVO ); 
 		// 리
 		} else if("RI".equals(menuTp)) {
 			searchVO.setLvl("4");
-			selectList =  (List<CmRegCdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.RegCdMngMapper.selectRegList" ,searchVO );  
+			selectList =  (List<CmRegCdVO>)defaultDao.selectList(sqlNs+"selectRegList" ,searchVO );  
 		}
 
 		model.addAttribute("selectList", selectList);
@@ -102,7 +103,7 @@ public class CmRegCdService extends EgovAbstractServiceImpl {
     public String regUpdate() {
 
 		String message = "오류가 발생하였습니다.\n관리자에게 문의하세요."; 
-		defaultDao.delete("com.opennote.standard.mapper.component.RegCdMngMapper.deleteTempContents"); 
+		defaultDao.delete(sqlNs+"deleteTempContents"); 
 
 		/** api 건수 */
 		int regCount = 0;
@@ -151,13 +152,13 @@ public class CmRegCdService extends EgovAbstractServiceImpl {
 		/** 임시테이블 2차작업 */
 		updateTempSet();
 	
-		defaultDao.delete("com.opennote.standard.mapper.component.RegCdMngMapper.deleteContents"); 
+		defaultDao.delete(sqlNs+"deleteContents"); 
 		  
 		/** 최종 인서트 */
-		defaultDao.insert("com.opennote.standard.mapper.component.RegCdMngMapper.insertContents"); 
+		defaultDao.insert(sqlNs+"insertContents"); 
 
 		/* del_ymd 셋팅 */
-		defaultDao.update("com.opennote.standard.mapper.component.RegCdMngMapper.updateDelYmdContents"); 
+		defaultDao.update(sqlNs+"updateDelYmdContents"); 
 
 		message = "법정동 코드의 갱신이 완료되었습니다."; 
 		return message;
@@ -186,7 +187,7 @@ public class CmRegCdService extends EgovAbstractServiceImpl {
 				SXSSFSheet objSheet = sxssfWorkbook.getSheetAt(0);
 				 
 				// 엑셀 목록 조회
-				List<CmRegCdVO> excelList = (List<CmRegCdVO>)defaultDao.selectList("com.opennote.standard.mapper.component.RegCdMngMapper.selectExcelList" ,searchVO ); 
+				List<CmRegCdVO> excelList = (List<CmRegCdVO>)defaultDao.selectList(sqlNs+"selectExcelList" ,searchVO ); 
 				
 				SXSSFRow objRow = null;		// 행
 				SXSSFCell objCell = null;   // 셀
@@ -328,12 +329,9 @@ public class CmRegCdService extends EgovAbstractServiceImpl {
 	};*/
 
 	public void updateTempSet() {
-		defaultDao.update("com.opennote.standard.mapper.component.RegCdMngMapper.updateTempSidoContents");
-		defaultDao.update("com.opennote.standard.mapper.component.RegCdMngMapper.updateTempCggContents");
-		defaultDao.update("com.opennote.standard.mapper.component.RegCdMngMapper.updateTempUmdContents");
-		/*regCdMngMapper.updateTempSidoContents();
-		regCdMngMapper.updateTempCggContents();
-		regCdMngMapper.updateTempUmdContents();*/
+		defaultDao.update(sqlNs+"updateTempSidoContents");
+		defaultDao.update(sqlNs+"updateTempCggContents");
+		defaultDao.update(sqlNs+"updateTempUmdContents");
 	}
 
 	
@@ -385,8 +383,7 @@ public class CmRegCdService extends EgovAbstractServiceImpl {
 				apiList.add(vo);
 			}
 			 
-			defaultDao.insertList("com.opennote.standard.mapper.component.RegCdMngMapper.insertList", apiList); 
-			//regCdMngMapper.insertList(apiList);
+			defaultDao.insertList(sqlNs+"insertList", apiList); 
 		}
 	}
 

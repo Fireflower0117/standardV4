@@ -38,7 +38,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 	private final MessageSource messageSource;
 	private final ExcelView excelView;
 	
-	private final String sqlNs = "com.opennote.standard.mapper.basic.UserIpMngMapper.";
+	private final String sqlNs = "com.standard.mapper.basic.UserIpMngMapper.";
 	
 	
 	public void addList(UserVO searchVO, Model model) throws Exception { 
@@ -153,7 +153,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		String tit = "관리자목록";
 		String url = "/excel/standard/mngrMngList.xlsx";
 		
-		List<UserVO> resultList =  (List<UserVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserMngMapper.selectExcelList" , searchVO); 
+		List<UserVO> resultList =  (List<UserVO>)defaultDao.selectList("com.standard.mapper.basic.UserMngMapper.selectExcelList" , searchVO); 
 
 		mav.addObject("target", tit);
 		mav.addObject("source", url);
@@ -191,7 +191,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		CommonMap returnMap = new CommonMap(); 
 		returnMap.put("ovlpCnt", userService.idOvlpSelectCount(searchVO));
 		
-		UserVO rtnVo = (UserVO)defaultDao.selectOne("com.opennote.standard.mapper.basic.UserIdRstMngMapper.idRstSelectCount" ,searchVO ); 
+		UserVO rtnVo = (UserVO)defaultDao.selectOne("com.standard.mapper.basic.UserIdRstMngMapper.idRstSelectCount" ,searchVO ); 
 		int userCnt = Integer.parseInt(rtnVo.getUserCount());
 		returnMap.put("rstCnt",  userCnt);
 		
@@ -207,7 +207,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		if(!StringUtils.isEmpty(vo.getUserPswd())) {
 			vo.setUserPswd(EncryptUtil.getEncryptBCrypt(vo.getUserPswd()));
 		} 
-		int effCnt = defaultDao.insert("com.opennote.standard.mapper.basic.UserMngMapper.insertContents", vo);
+		int effCnt = defaultDao.insert("com.standard.mapper.basic.UserMngMapper.insertContents", vo);
 
 		// IP 삭제 
 		defaultDao.delete(sqlNs+"deleteIpContents", vo); 
@@ -235,7 +235,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		}
 
 		// 생성
-		int cnt = defaultDao.update("com.opennote.standard.mapper.basic.UserMngMapper.updateContents", vo); 
+		int cnt = defaultDao.update("com.standard.mapper.basic.UserMngMapper.updateContents", vo); 
 
 		// IP 삭제
 		defaultDao.delete(sqlNs+"deleteIpContents" , vo);
@@ -261,7 +261,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		int result = defaultDao.insert("com.opennote.standard.mapper.basic.UserScssMngMapper.insertContents", vo);
 
 		// 사용자 테이블에서 삭제
-		defaultDao.delete("com.opennote.standard.mapper.basic.UserMngMapper.deleteUserContents" , vo);
+		defaultDao.delete("com.standard.mapper.basic.UserMngMapper.deleteUserContents" , vo);
 		
 		return result;
 	}
