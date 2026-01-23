@@ -13,7 +13,7 @@ import kr.or.standard.basic.usersupport.lginPlcy.service.LginPlcyService;
 import kr.or.standard.basic.usersupport.lginPlcy.vo.LginPlcyVO;
 
 import kr.or.standard.basic.usersupport.terms.vo.TermsVO;
-import kr.or.standard.basic.usersupport.user.vo.UserVO;
+import kr.or.standard.basic.usersupport.user.vo.UserVO_old;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,17 +62,17 @@ public class UserService extends EgovAbstractServiceImpl   {
 	
 	
 	// 사용자 건수 조회
-	public int selectCount(UserVO vo) { 
-		UserVO rtnVo = (UserVO)defaultDao.selectOne(sqlNs+"selectUserCount" ,vo);
+	public int selectCount(UserVO_old vo) {
+		UserVO_old rtnVo = (UserVO_old)defaultDao.selectOne(sqlNs+"selectUserCount" ,vo);
 		return Integer.parseInt(rtnVo.getUserCount());  
 	}
 	
 	// 사용자 목록 조회
-	public List<UserVO> selectList(UserVO vo) {
-	    return (List<UserVO>)defaultDao.selectList(sqlNs+"selectUsertList" , vo); 
+	public List<UserVO_old> selectList(UserVO_old vo) {
+	    return (List<UserVO_old>)defaultDao.selectList(sqlNs+"selectUsertList" , vo);
 	}
 	
-	public void addList(UserVO userVo, Model model) throws Exception{
+	public void addList(UserVO_old userVo, Model model) throws Exception{
 		
 		// 사용자 건수 조회
 		PaginationInfo paginationInfo = paginationService.procPagination(userVo); 
@@ -81,22 +81,22 @@ public class UserService extends EgovAbstractServiceImpl   {
 		model.addAttribute("paginationInfo", paginationInfo);
 		
 		// 사용자 목록 조회
-		List<UserVO> resultList = selectList(userVo); 
+		List<UserVO_old> resultList = selectList(userVo);
 		
 		model.addAttribute("resultList", resultList);
 		model.addAttribute("totalRecordCount", paginationInfo.getTotalRecordCount());
 	}
 	
 	// 사용자 상세 조회
-	public void view(UserVO vo, Model model){ 
-		UserVO userVO = (UserVO)defaultDao.selectOne(sqlNs+"selectContents", vo);
+	public void view(UserVO_old vo, Model model){
+		UserVO_old userVO = (UserVO_old)defaultDao.selectOne(sqlNs+"selectContents", vo);
 		model.addAttribute("userVO", userVO); 
 	} 
 	
 	// 사용자 수정 페이지 기본정보 
-	public void updateForm(UserVO vo, Model model){
+	public void updateForm(UserVO_old vo, Model model){
 	
-		UserVO userVO = (UserVO) defaultDao.selectOne(sqlNs+"selectContents", vo);
+		UserVO_old userVO = (UserVO_old) defaultDao.selectOne(sqlNs+"selectContents", vo);
 		model.addAttribute("userVO", userVO);
 		
 		// 회원 권한 목록
@@ -107,7 +107,7 @@ public class UserService extends EgovAbstractServiceImpl   {
 	}
 	
 	// 사용자 정보 수정
-	public CommonMap updateProc(UserVO vo) throws Exception {
+	public CommonMap updateProc(UserVO_old vo) throws Exception {
 		
 		CommonMap returnMap = new CommonMap(); 
 		
@@ -133,7 +133,7 @@ public class UserService extends EgovAbstractServiceImpl   {
 	}
 	
 	// 사용자 정보 삭제 
-	public CommonMap deleteProc(UserVO vo){
+	public CommonMap deleteProc(UserVO_old vo){
 		
 		CommonMap returnMap = new CommonMap(); 
 		int resultCnt = deleteUserContents(vo);
@@ -150,7 +150,7 @@ public class UserService extends EgovAbstractServiceImpl   {
 	}
 	
 	
-	public CommonMap unlockProc(UserVO searchVO){
+	public CommonMap unlockProc(UserVO_old searchVO){
 		CommonMap returnMap = new CommonMap();
 		  
 		int result =  defaultDao.update(sqlNs+"userUnLock" ,searchVO);
@@ -166,7 +166,7 @@ public class UserService extends EgovAbstractServiceImpl   {
 		return returnMap;
 	}
 	
-	public void bigExcelDownload(UserVO searchVO, HttpServletRequest request, HttpServletResponse response)  throws Exception {
+	public void bigExcelDownload(UserVO_old searchVO, HttpServletRequest request, HttpServletResponse response)  throws Exception {
 		
 		
 		int ROW_ACCESS_WINDOW_SIZE = 1000;
@@ -189,9 +189,9 @@ public class UserService extends EgovAbstractServiceImpl   {
 		try {
 			
 			// 엑셀 목록 조회
-			List<UserVO> excelList = selectExcelList(searchVO);
+			List<UserVO_old> excelList = selectExcelList(searchVO);
 			
-			for(UserVO excelVO : excelList) {
+			for(UserVO_old excelVO : excelList) {
 				// 행 생성
 				objRow = objSheet.createRow(rowNum);
 				objRow.setHeight((short) 0x150);
@@ -357,13 +357,13 @@ public class UserService extends EgovAbstractServiceImpl   {
 		} 
 	}
 	
-	public ModelAndView excelDownload(UserVO searchVO)  throws Exception {
+	public ModelAndView excelDownload(UserVO_old searchVO)  throws Exception {
 		
 		ModelAndView mav = new ModelAndView(excelView);
 		String tit = "사용자목록";
 		String url = "/excel/standard/usersupport/userList.xlsx";
 		
-		List<UserVO> resultList = selectExcelList(searchVO);
+		List<UserVO_old> resultList = selectExcelList(searchVO);
 		
 		mav.addObject("target", tit);
 		mav.addObject("source", url);
@@ -373,13 +373,13 @@ public class UserService extends EgovAbstractServiceImpl   {
 	}
 
 	 
-	public UserVO selectContents(UserVO vo) { 
-		return (UserVO) defaultDao.selectOne(sqlNs+"selectContents", vo); 
+	public UserVO_old selectContents(UserVO_old vo) {
+		return (UserVO_old) defaultDao.selectOne(sqlNs+"selectContents", vo);
 	}
 
     // (작성자 == 로그인사용자) 판단 
-	public boolean regrCheck(UserVO vo) {
-		 UserVO rtnVo = (UserVO)defaultDao.selectOne(sqlNs+"regrCheck" , vo);
+	public boolean regrCheck(UserVO_old vo) {
+		 UserVO_old rtnVo = (UserVO_old)defaultDao.selectOne(sqlNs+"regrCheck" , vo);
 		 if(rtnVo == null) return false;
 		 else { return Integer.parseInt(rtnVo.getIsRegrCheck()) == 0 ? false : true; } 
 	}
@@ -402,12 +402,12 @@ public class UserService extends EgovAbstractServiceImpl   {
 	}*/
 	
 	// 사용자 잠금 해제
-	public int userUnLock(UserVO vo) {
+	public int userUnLock(UserVO_old vo) {
 		return defaultDao.update(sqlNs+"userUnLock" ,vo); 
 	}
 
 	// 사용자 데이터 삭제
-	public int deleteUserContents(UserVO vo) {
+	public int deleteUserContents(UserVO_old vo) {
 		
 		int result = 0;
 		
@@ -443,18 +443,18 @@ public class UserService extends EgovAbstractServiceImpl   {
 	}
 	
 	// ID 중복체크
-	public int idOvlpSelectCount(UserVO vo) {
-		UserVO rtnVo = (UserVO) defaultDao.selectOne(sqlNs+"idOvlpSelectCount" , vo); 
+	public int idOvlpSelectCount(UserVO_old vo) {
+		UserVO_old rtnVo = (UserVO_old) defaultDao.selectOne(sqlNs+"idOvlpSelectCount" , vo);
 		return Integer.parseInt( rtnVo.getUserCount()); 
 	}
 
-	public List<UserVO> selectExcelList(UserVO vo) throws Exception {
+	public List<UserVO_old> selectExcelList(UserVO_old vo) throws Exception {
 		
-		List<UserVO> userList = new ArrayList<>();
+		List<UserVO_old> userList = new ArrayList<>();
 		
 		// 핸드폰번호 복호화
-		List<UserVO> rtnList = (List<UserVO>)defaultDao.selectList(sqlNs+"selectExcelList", vo);
-		for(UserVO userVO : rtnList) {
+		List<UserVO_old> rtnList = (List<UserVO_old>)defaultDao.selectList(sqlNs+"selectExcelList", vo);
+		for(UserVO_old userVO : rtnList) {
 			userVO.setUserTelNo(EncryptUtil.getDecryptAES256HyPhen(userVO.getUserTelNo()));
 			userList.add(userVO);
 		}
@@ -473,8 +473,8 @@ public class UserService extends EgovAbstractServiceImpl   {
 	}
 
 	// 가입회원 목록
-	public List<UserVO> selectScrbUserList(AcsStatVO vo) {
-		return (List<UserVO>)defaultDao.selectList(sqlNs+"selectScrbUserList", vo); 
+	public List<UserVO_old> selectScrbUserList(AcsStatVO vo) {
+		return (List<UserVO_old>)defaultDao.selectList(sqlNs+"selectScrbUserList", vo);
 	}
 
 
@@ -484,8 +484,8 @@ public class UserService extends EgovAbstractServiceImpl   {
 		return Integer.parseInt(rtnVo.getUserCount());  
 	};
 
-	public List<UserVO> selectHwpList(UserVO vo) {
-		return (List<UserVO>)defaultDao.selectList("com.standard.mapper.basic.UserMngMapper.selectHwpList" , vo); 
+	public List<UserVO_old> selectHwpList(UserVO_old vo) {
+		return (List<UserVO_old>)defaultDao.selectList("com.standard.mapper.basic.UserMngMapper.selectHwpList" , vo);
 	} 
 	
 }

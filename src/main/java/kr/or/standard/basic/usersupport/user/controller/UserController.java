@@ -7,7 +7,7 @@ import kr.or.standard.basic.common.view.excel.ExcelView;
 import kr.or.standard.basic.system.auth.service.AuthService;
 import kr.or.standard.basic.usersupport.lginPlcy.service.LginPlcyService;
 import kr.or.standard.basic.usersupport.user.service.UserService;
-import kr.or.standard.basic.usersupport.user.vo.UserVO;
+import kr.or.standard.basic.usersupport.user.vo.UserVO_old;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
@@ -47,14 +47,14 @@ public class UserController {
 	
 	@RequestMapping(URL_PATH + "addList.do") 
 	/* /ma/us/mem/user/addList.do */
-	public String addList(@ModelAttribute("searchVO") UserVO searchVO, Model model) throws Exception { 
+	public String addList(@ModelAttribute("searchVO") UserVO_old searchVO, Model model) throws Exception {
 		userService.addList(searchVO , model); 
 		return URL_PATH + "addList";
 	}
 	
 	@RequestMapping(URL_PATH + "view.do") 
 	/* /ma/us/mem/user/view.do */
-	public String view(@ModelAttribute("searchVO") UserVO searchVO, Model model) {
+	public String view(@ModelAttribute("searchVO") UserVO_old searchVO, Model model) {
 
 		// 사용자 일련번호 비어있는 경우
 		if(StringUtils.isEmpty(searchVO.getUserSerno())) {
@@ -67,7 +67,7 @@ public class UserController {
 	
 	@RequestMapping(URL_PATH + "updateForm.do") 
 	/* /ma/us/mem/user/updateForm.do */
-	public String form(@ModelAttribute("searchVO") UserVO searchVO, Model model, HttpSession session) {
+	public String form(@ModelAttribute("searchVO") UserVO_old searchVO, Model model, HttpSession session) {
 
 		// 관리자가 아닌 경우
 		if(!(boolean) session.getAttribute("SESSION_MANAGER_WRITE_BTN_KEY")) {
@@ -86,7 +86,7 @@ public class UserController {
 	@ResponseBody
 	@PatchMapping(URL_PATH + "proc")
 	/* /ma/us/mem/user/proc */
-	public ResponseEntity<?> updateProc(@Validated(UserVO.updateCheck.class) @ModelAttribute("searchVO") UserVO searchVO, BindingResult result, HttpSession session) throws Exception {
+	public ResponseEntity<?> updateProc(@Validated(UserVO_old.updateCheck.class) @ModelAttribute("searchVO") UserVO_old searchVO, BindingResult result, HttpSession session) throws Exception {
 		if(result.hasErrors()) {
 			List<ObjectError> errors = result.getAllErrors();				
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
@@ -99,7 +99,7 @@ public class UserController {
 	@ResponseBody
 	@DeleteMapping(URL_PATH + "proc")
 	/* /ma/us/mem/user/proc */
-	public ResponseEntity<?> deleteProc(@Validated(UserVO.deleteCheck.class) @ModelAttribute("searchVO") UserVO searchVO, BindingResult result, HttpSession session) {
+	public ResponseEntity<?> deleteProc(@Validated(UserVO_old.deleteCheck.class) @ModelAttribute("searchVO") UserVO_old searchVO, BindingResult result, HttpSession session) {
 		if(result.hasErrors()) {
 			List<ObjectError> errors = result.getAllErrors();				
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
@@ -112,21 +112,21 @@ public class UserController {
 	@ResponseBody
 	@PatchMapping(URL_PATH + "unlockProc")
 	/* /ma/us/mem/user/unlockProc */
-	public CommonMap unlockProc(@ModelAttribute("searchVO") UserVO searchVO){ 
+	public CommonMap unlockProc(@ModelAttribute("searchVO") UserVO_old searchVO){
 		return userService.unlockProc(searchVO); 
 	}
 	
 	/* Excel - 대용량 엑셀 다운로드 */
 	@RequestMapping(URL_PATH + "bigExcelDownload.do")
 	/* /ma/us/mem/user/bigExcelDownload.do */
-	public void bigExcelDownload(@ModelAttribute("searchVO") UserVO searchVO, HttpServletRequest request, HttpServletResponse response) throws Exception { 
+	public void bigExcelDownload(@ModelAttribute("searchVO") UserVO_old searchVO, HttpServletRequest request, HttpServletResponse response) throws Exception {
         userService.bigExcelDownload(searchVO , request , response); 
 	}
 	
 	/* Excel - 엑셀 다운로드 */
 	@RequestMapping(URL_PATH + "excelDownload.do")
 	/* /ma/us/mem/user/excelDownload.do */
-	public ModelAndView excelDownload(@ModelAttribute("searchVO") UserVO searchVO, Model model) throws Exception { 
+	public ModelAndView excelDownload(@ModelAttribute("searchVO") UserVO_old searchVO, Model model) throws Exception {
 		return userService.excelDownload(searchVO); 
 	}
 

@@ -4,8 +4,8 @@
     <!-- property name="CONSOLE_PATTERN_OLD" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight([%-3level]) %logger{5} - %msg%n" / -->
     <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
     <property name="ROLLING_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
-    <property name="FILE_NAME" value="D:\\logs\\standardV4\\application.log"/>
-    <property name="LOG_NAME_PATTERN" value="D:\\logs\\standardV4\\application-%d{yyyy-MM-dd-HH-mm}.%i.log" /> 
+    <property name="FILE_NAME" value="D:\\OpenNoteStandard_V4\\logs\\standardV4\\application.log"/>
+    <property name="LOG_NAME_PATTERN" value="D:\\OpenNoteStandard_V4\\logs\\standardV4\\application-%d{yyyy-MM-dd-HH-mm}.%i.log" />
     <!--property name="FILE_NAME" value="//kpsp//logs//application.log" / -->
     <!--property name="LOG_NAME_PATTERN" value="//kpsp//logs//application-%d{yyyy-MM-dd-HH}.%i.log" / --> 
     <property name="MAX_FILE_SIZE" value="10MB" />
@@ -31,8 +31,10 @@
             <totalSizeCap>${TOTAL_SIZE}</totalSizeCap>
         </rollingPolicy>
     </appender>
- 
-    
+
+    <logger name="org.springframework.jdbc.datasource.DataSourceTransactionManager" level="DEBUG"/>
+    <logger name="org.springframework.transaction.interceptor" level="TRACE"/>
+
     <logger name="jdbc" level="OFF" additive="false">
         <appender-ref ref="ROLLING_LOG_FILE"/>
     </logger>

@@ -9,9 +9,12 @@ import static kr.or.kps.partners.common.module.JacksonParsing.getBody;
 */
 
 import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
+import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
+import kr.or.standard.basic.common.domain.CmmnDefaultVO;
 import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.login.vo.LoginVO;
 import kr.or.standard.basic.module.JacksonParsing;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,12 +36,12 @@ import java.util.*;
 @Slf4j
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BasicCrudService {
-    
-    
-    @Autowired 
-    private BasicCrudDao basicCrudDao; 
-      
+
+    private final BasicCrudDao basicCrudDao;
+
+    private final CmmnDefaultDao defaultDao;
     /***************************************************************************************************************/
     /*******************************            SELECT     SELECT      SELECT       ********************************/
     /***************************************************************************************************************/
@@ -52,6 +55,10 @@ public class BasicCrudService {
         return basicCrudDao.selectList(qid, condiMap);
     }
 
+    public List<? extends CmmnDefaultVO> selectList(String qid, CmmnDefaultVO defaultCondiVo) {
+        return defaultDao.selectList(qid, defaultCondiVo);
+    }
+
     public CommonMap selectOne(String qid) {
         return selectOne(qid, new CommonMap());
     }
@@ -59,6 +66,10 @@ public class BasicCrudService {
     public CommonMap selectOne(String qid, CommonMap condiMap) {
         setSessionUserInfo(condiMap);
         return basicCrudDao.selectOne(qid, condiMap);
+    }
+
+    public CmmnDefaultVO selectOne(String qid, CmmnDefaultVO defaultCondiVo) {
+        return defaultDao.selectOne(qid, defaultCondiVo);
     }
     
      public List<CommonMap> multiSelect(CommonMap paramMap) {
@@ -93,7 +104,7 @@ public class BasicCrudService {
         } 
         return rtnList;
     }
-    
+
 
     /***************************************************************************************************************/
     /*******************************            INSERT     INSERT      INSERT       ********************************/
@@ -116,6 +127,9 @@ public class BasicCrudService {
         return basicCrudDao.insert(qid, insertData); 
     }
 
+    public boolean batchInsert(String qid, List<? extends CmmnDefaultVO> listMap) {
+        return defaultDao.batchInsert(qid, listMap);
+    }
 
     /***************************************************************************************************************/
     /*******************************            UPDATE     UPDATE      UPDATE       ********************************/
@@ -135,7 +149,11 @@ public class BasicCrudService {
         List<CommonMap> upateData = JacksonParsing.toList(""+actionAttrs.get("updateData")); 
         setSessionUserInfo(upateData);
         return basicCrudDao.update(qid, upateData);
-    } 
+    }
+
+    public boolean batchUpdate(String qid, List<? extends CmmnDefaultVO> listMap) {
+        return defaultDao.batchUpdate(qid, listMap);
+    }
     
     
     
@@ -157,6 +175,10 @@ public class BasicCrudService {
         List<CommonMap> deleteData = JacksonParsing.toList(""+actionAttrs.get("deleteData")); 
         setSessionUserInfo(deleteData);
         return basicCrudDao.delete(qid, deleteData); 
+    }
+
+    public boolean batchDelete(String qid, List<? extends CmmnDefaultVO> listMap) {
+        return defaultDao.batchDelete(qid, listMap);
     }
  
     /***************************************************************************************************************/

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="opnt.standard.systeminit.systempolicy">
+    <select id="inqSystemPolicy" parameterType="CommonMap" resultType="systemPolicyVO">
+        SELECT PWD_ENC_ALGORITHM    pwdEncAlgorithm
+             , PWD_CHG_CYCL_USE_YN  pwdChgCycleUseYn
+             , PWD_CHG_CYCL_DD      pwdChgCyclDd
+             , LGIN_LMT_USE_YN      lginLmtUseYn
+             , LGIN_FAIL_LMT_CNT    LginFailLmtCnt
+             , ITSM_USE_YN          itsmUseYn
+             , BASE_AUTH_ID         baseAuthId
+             , PSSN_PRD_CD          pwssPrdCd
+             , ATCH_FILE_SAVE_DIV   AtchFileSaveDiv
+             , ATCH_FILE_PATH       AtchFilePath
+         FROM STB_B_SYSTEM_POLICY_MNG
+    </select>
+
+</mapper>

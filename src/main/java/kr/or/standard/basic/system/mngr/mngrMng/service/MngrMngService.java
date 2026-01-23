@@ -10,7 +10,7 @@ import kr.or.standard.basic.module.EncryptUtil;
 import kr.or.standard.basic.statistics.acsstat.vo.AcsStatVO;
 import kr.or.standard.basic.system.auth.service.AuthService;
 import kr.or.standard.basic.usersupport.user.service.UserService;
-import kr.or.standard.basic.usersupport.user.vo.UserVO;
+import kr.or.standard.basic.usersupport.user.vo.UserVO_old;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -41,20 +41,20 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 	private final String sqlNs = "com.standard.mapper.basic.UserIpMngMapper.";
 	
 	
-	public void addList(UserVO searchVO, Model model) throws Exception { 
+	public void addList(UserVO_old searchVO, Model model) throws Exception {
 	
 		PaginationInfo paginationInfo = paginationService.procPagination(searchVO);
 		paginationInfo.setTotalRecordCount(userService.selectCount(searchVO));
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		List<UserVO> resultList = userService.selectList(searchVO); 
+		List<UserVO_old> resultList = userService.selectList(searchVO);
 		model.addAttribute("resultList", resultList);
 	}
 	
-	public String insertUpdateForm(UserVO searchVO, Model model, String procType, HttpSession session){
+	public String insertUpdateForm(UserVO_old searchVO, Model model, String procType, HttpSession session){
 		
 		
-		UserVO userVO = new UserVO();
+		UserVO_old userVO = new UserVO_old();
 
 		if("update".equals(procType)) {
 
@@ -67,7 +67,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 				userVO = userService.selectContents(searchVO);
 
 				// IP 리스트
-				List<UserVO> rtnVoListr = (List<UserVO>)defaultDao.selectList( sqlNs+"selectList" , searchVO); 
+				List<UserVO_old> rtnVoListr = (List<UserVO_old>)defaultDao.selectList( sqlNs+"selectList" , searchVO);
 				model.addAttribute("ipList", rtnVoListr);
 			}else{
 				return "redirect:list.do";
@@ -80,7 +80,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		return "";
 	}
 	
-	public CommonMap proc(UserVO searchVO, BindingResult result) throws Exception {
+	public CommonMap proc(UserVO_old searchVO, BindingResult result) throws Exception {
 		
 		CommonMap returnMap = new CommonMap();
 		int resultCnt = 0;
@@ -97,7 +97,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		return returnMap;
 	}
 	
-	public CommonMap updateProc(UserVO searchVO, BindingResult result, HttpSession session) throws Exception {
+	public CommonMap updateProc(UserVO_old searchVO, BindingResult result, HttpSession session) throws Exception {
 		
 		 CommonMap returnMap = new CommonMap();
 
@@ -120,7 +120,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		return returnMap; 
 	}
 	
-	public CommonMap deleteProc(UserVO searchVO, BindingResult result, HttpSession session){
+	public CommonMap deleteProc(UserVO_old searchVO, BindingResult result, HttpSession session){
 		
 		
 		CommonMap returnMap = new CommonMap();
@@ -148,12 +148,12 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		
 	}
 	
-	public ModelAndView excelDownload(UserVO searchVO, Model model){
+	public ModelAndView excelDownload(UserVO_old searchVO, Model model){
 		ModelAndView mav = new ModelAndView(excelView);
 		String tit = "관리자목록";
 		String url = "/excel/standard/mngrMngList.xlsx";
 		
-		List<UserVO> resultList =  (List<UserVO>)defaultDao.selectList("com.standard.mapper.basic.UserMngMapper.selectExcelList" , searchVO); 
+		List<UserVO_old> resultList =  (List<UserVO_old>)defaultDao.selectList("com.standard.mapper.basic.UserMngMapper.selectExcelList" , searchVO);
 
 		mav.addObject("target", tit);
 		mav.addObject("source", url);
@@ -162,7 +162,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		return mav;
 	}
 	
-	public CommonMap unlockProc(UserVO searchVO, HttpSession session){
+	public CommonMap unlockProc(UserVO_old searchVO, HttpSession session){
 		
 		CommonMap returnMap = new CommonMap();
 		int result = 0;
@@ -186,12 +186,12 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		return returnMap;
 	}
 	
-	public CommonMap idOvlpChk(UserVO searchVO, BindingResult result){
+	public CommonMap idOvlpChk(UserVO_old searchVO, BindingResult result){
 		 
 		CommonMap returnMap = new CommonMap(); 
 		returnMap.put("ovlpCnt", userService.idOvlpSelectCount(searchVO));
 		
-		UserVO rtnVo = (UserVO)defaultDao.selectOne("com.standard.mapper.basic.UserIdRstMngMapper.idRstSelectCount" ,searchVO ); 
+		UserVO_old rtnVo = (UserVO_old)defaultDao.selectOne("com.standard.mapper.basic.UserIdRstMngMapper.idRstSelectCount" ,searchVO );
 		int userCnt = Integer.parseInt(rtnVo.getUserCount());
 		returnMap.put("rstCnt",  userCnt);
 		
@@ -199,7 +199,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 	}
 	  
 
-	public int insertContents(UserVO vo) throws Exception {
+	public int insertContents(UserVO_old vo) throws Exception {
 		// 전화번호 암호화
 		vo.setUserTelNo(EncryptUtil.getEncryptAES256(vo.getUserTelNo()));
 
@@ -212,10 +212,10 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		// IP 삭제 
 		defaultDao.delete(sqlNs+"deleteIpContents", vo); 
 
-		List<UserVO> ipList = vo.getIpList();
+		List<UserVO_old> ipList = vo.getIpList();
 
 		if (ipList != ipList && ipList.size() > 0) {
-			for (UserVO ipVO : ipList) {
+			for (UserVO_old ipVO : ipList) {
 				ipVO.setUserSerno(vo.getUserSerno()); 
 				defaultDao.insert(sqlNs+"insertIpContents", vo); 
 			}
@@ -225,7 +225,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 	}
 
 	// 수정
-	public int updateContents(UserVO vo) throws Exception {
+	public int updateContents(UserVO_old vo) throws Exception {
 		// 전화번호 암호화
 		vo.setUserTelNo(EncryptUtil.getEncryptAES256(vo.getUserTelNo()));
 
@@ -240,9 +240,9 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		// IP 삭제
 		defaultDao.delete(sqlNs+"deleteIpContents" , vo);
 		  
-		List<UserVO> ipList = vo.getIpList(); 
+		List<UserVO_old> ipList = vo.getIpList();
 		if (ipList != null && ipList.size() > 0) {
-			for (UserVO ipVO : ipList) {
+			for (UserVO_old ipVO : ipList) {
 				ipVO.setUserSerno(vo.getUserSerno());
 				
 				defaultDao.delete(sqlNs+"insertIpContents" , vo); 
@@ -256,7 +256,7 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 		return userIdRstMngMapper.idRstSelectCount(vo);
 	}*/
 
-	public int deleteUser(UserVO vo){
+	public int deleteUser(UserVO_old vo){
 		// 탈퇴 테이블로 이동
 		int result = defaultDao.insert("com.opennote.standard.mapper.basic.UserScssMngMapper.insertContents", vo);
 
@@ -278,8 +278,8 @@ public class MngrMngService extends EgovAbstractServiceImpl  {
 	}
 
 	// 탈퇴회원 목록
-	public List<UserVO> selectScssUserList(AcsStatVO vo) {
-		return (List<UserVO>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserScssMngMapper.selectScssUserList", vo); 
+	public List<UserVO_old> selectScssUserList(AcsStatVO vo) {
+		return (List<UserVO_old>)defaultDao.selectList("com.opennote.standard.mapper.basic.UserScssMngMapper.selectScssUserList", vo);
 	}
 
 	// 탈퇴회원 건수

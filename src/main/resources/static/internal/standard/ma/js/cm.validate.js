@@ -581,35 +581,7 @@ function wrestSubmit(form)
             // 필드가 null 이 아니라면 오류메세지 출력후 포커스를 해당 오류 필드로 옮김
             // 오류 필드는 배경색상을 바꾼다.
 
-            /*var array_css = el.className.split(" "); // class 를 공백으로 나눔
-
-            el.style.backgroundColor = wrestFldDefaultColor;
-
-            // 배열의 길이만큼 돌려라
-            for (var k=0; k<array_css.length; k++) {
-                var css = array_css[k];
-                switch (css) {
-                    case "required"     : wrestRequired(el); break;
-                    case "trim"         : wrestTrim(el); break;
-                    case "email"        : wrestEmail(el); break;
-                    case "hangul"       : wrestHangul(el); break;
-                    case "hangul2"      : wrestHangul2(el); break;
-                    case "hangulalpha"  : wrestHangulAlpha(el); break;
-                    case "hangulalnum"  : wrestHangulAlNum(el); break;
-                    case "nospace"      : wrestNospace(el); break;
-                    case "numeric"      : wrestNumeric(el); break;
-                    case "alpha"        : wrestAlpha(el); break;
-                    case "alnum"        : wrestAlNum(el); break;
-                    case "alnum_"       : wrestAlNum_(el); break;
-                    case "telnum"       : wrestTelNum(el); break; // 김선용 2006.3 - 전화번호 형식 검사
-                    case "imgext"       : wrestImgExt(el); break;
-                    default :
-                        if (/^extension\=/.test(css)) {
-                            wrestExtension(el, css); break;
-                        }
-                } // switch (css)
-            } // for (k)
-*/        } // if (el)
+        } // if (el)
     } // for (i)
 
     //console.log(req_chk);

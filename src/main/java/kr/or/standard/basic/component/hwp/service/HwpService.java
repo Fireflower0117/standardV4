@@ -44,7 +44,7 @@ import kr.or.standard.basic.component.hwp.vo.RGBColor;
 import kr.or.standard.basic.system.auth.service.AuthService;
 import kr.or.standard.basic.usersupport.lginPlcy.service.LginPlcyService;
 import kr.or.standard.basic.usersupport.user.service.UserService;
-import kr.or.standard.basic.usersupport.user.vo.UserVO;
+import kr.or.standard.basic.usersupport.user.vo.UserVO_old;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -54,7 +54,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -96,14 +95,14 @@ public class HwpService {
     private int fontStyle = Font.PLAIN;
     private int fontSize = 10;
 	
-	public void addList(UserVO searchVO, Model model) throws Exception {
+	public void addList(UserVO_old searchVO, Model model) throws Exception {
 	    userService.addList(searchVO, model); 
 	}
 	
-	public void hwpView(UserVO searchVO, String downType, Model model){ 
+	public void hwpView(UserVO_old searchVO, String downType, Model model){
         
          // downType -> Down이 붙으면 다운로드
-        List<UserVO> hwpList = userService.selectHwpList(searchVO); 
+        List<UserVO_old> hwpList = userService.selectHwpList(searchVO);
         model.addAttribute("hwpList", hwpList);
         model.addAttribute("downType", downType);
 	

@@ -3,7 +3,9 @@ package kr.or.standard.appinit.config;
 
 import kr.or.standard.appinit.interceptor.FtInterceptor;
 import kr.or.standard.appinit.interceptor.MaInterceptor;
+import kr.or.standard.appinit.interceptor.MaInterceptor_asis;
 import kr.or.standard.appinit.interceptor.MyInterceptor;
+import kr.or.standard.basic.common.ajax.service.BasicCrudService;
 import kr.or.standard.basic.usersupport.lginPlcy.service.LginPlcyService;
 import kr.or.standard.basic.system.logo.service.LogoService;
 import kr.or.standard.basic.system.menu.servie.MenuService;
@@ -22,10 +24,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	private final MenuService menuService;
 	private final LginPlcyService lginPlcyService;
 	private final LogoService logoService;
+	private final BasicCrudService crudService;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new MaInterceptor(menuService , lginPlcyService, logoService )).addPathPatterns("/ma/**/*.do"); 
+		registry.addInterceptor(new MaInterceptor(crudService)).addPathPatterns("/ma/**/*.do");
 		registry.addInterceptor(new FtInterceptor()).addPathPatterns("/ft/**/*.do");
 		registry.addInterceptor(new MyInterceptor()).addPathPatterns("/my/**/*.do");
 	}

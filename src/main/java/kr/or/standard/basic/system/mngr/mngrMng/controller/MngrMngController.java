@@ -3,7 +3,7 @@ package kr.or.standard.basic.system.mngr.mngrMng.controller;
 import kr.or.standard.basic.common.domain.CmmnDefaultVO;
 import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.system.mngr.mngrMng.service.MngrMngService;
-import kr.or.standard.basic.usersupport.user.vo.UserVO;
+import kr.or.standard.basic.usersupport.user.vo.UserVO_old;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +34,7 @@ public class MngrMngController {
 	
 	@RequestMapping(URL_PATH + "addList.do") 
 	/* /ma/sys/mngr/mngrMng/addList.do */
-	public String addList(@ModelAttribute("searchVO") UserVO searchVO, Model model) throws Exception {
+	public String addList(@ModelAttribute("searchVO") UserVO_old searchVO, Model model) throws Exception {
 		mngrMngService.addList(searchVO, model);
 		return URL_PATH + "addList";
 	}
@@ -44,7 +44,7 @@ public class MngrMngController {
 	@RequestMapping(URL_PATH + "{procType:insert|update}Form.do")
 	/* /ma/sys/auth/insertForm.do | /ma/sys/auth/updateForm.do */
 	/* /ma/sys/mngr/mngrMng/updateForm.do */
-	public String form(@ModelAttribute("searchVO") UserVO searchVO, Model model, @PathVariable String procType, HttpSession session) {
+	public String form(@ModelAttribute("searchVO") UserVO_old searchVO, Model model, @PathVariable String procType, HttpSession session) {
 		
 		String rtnUrl = mngrMngService.insertUpdateForm(searchVO,  model , procType , session);
 		if(! "".equals(rtnUrl)){
@@ -56,7 +56,7 @@ public class MngrMngController {
 	@ResponseBody
 	@PostMapping(URL_PATH + "proc")
 	/* /ma/sys/mngr/mngrMng/proc */
-	public ResponseEntity<?> insertProc(@Validated(UserVO.insertCheck.class) @ModelAttribute("searchVO") UserVO searchVO, BindingResult result) throws Exception {
+	public ResponseEntity<?> insertProc(@Validated(UserVO_old.insertCheck.class) @ModelAttribute("searchVO") UserVO_old searchVO, BindingResult result) throws Exception {
 		if(result.hasErrors()) {
 			List<ObjectError> errors = result.getAllErrors();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
@@ -69,7 +69,7 @@ public class MngrMngController {
 	@ResponseBody
 	@PatchMapping(URL_PATH + "proc")
 	/* /ma/sys/mngr/mngrMng/proc */
-	public ResponseEntity<?> updateProc(@Validated(UserVO.updateCheck.class) @ModelAttribute("searchVO") UserVO searchVO, BindingResult result, HttpSession session) throws Exception {
+	public ResponseEntity<?> updateProc(@Validated(UserVO_old.updateCheck.class) @ModelAttribute("searchVO") UserVO_old searchVO, BindingResult result, HttpSession session) throws Exception {
 		if(result.hasErrors()) {
 			List<ObjectError> errors = result.getAllErrors();				
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
@@ -82,7 +82,7 @@ public class MngrMngController {
 	@ResponseBody
 	@DeleteMapping(URL_PATH + "proc")
 	/* /ma/sys/mngr/mngrMng/proc */
-	public ResponseEntity<?> deleteProc(@Validated(UserVO.deleteCheck.class) @ModelAttribute("searchVO") UserVO searchVO, BindingResult result, HttpSession session) {
+	public ResponseEntity<?> deleteProc(@Validated(UserVO_old.deleteCheck.class) @ModelAttribute("searchVO") UserVO_old searchVO, BindingResult result, HttpSession session) {
 		if(result.hasErrors()) {
 			List<ObjectError> errors = result.getAllErrors();				
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
@@ -95,20 +95,20 @@ public class MngrMngController {
 	/* Excel - 엑셀 다운로드 */
 	@RequestMapping(URL_PATH + "excelDownload.do")
 	/* /ma/sys/auth/excelDownload.do */
-	public ModelAndView excelDownload(@ModelAttribute("searchVO") UserVO searchVO, Model model) throws Exception { 
+	public ModelAndView excelDownload(@ModelAttribute("searchVO") UserVO_old searchVO, Model model) throws Exception {
 		return mngrMngService.excelDownload(searchVO, model); 
 	}
 	
 	@ResponseBody
 	@PatchMapping(URL_PATH + "unlockProc")
 	/* /ma/sys/mngr/mngrMng/unlockProc */
-	public CommonMap unlockProc(@ModelAttribute("searchVO") UserVO searchVO, HttpSession session){ 
+	public CommonMap unlockProc(@ModelAttribute("searchVO") UserVO_old searchVO, HttpSession session){
 		return mngrMngService.unlockProc(searchVO, session); 
 	}
 
 	@RequestMapping(URL_PATH + "addIpForm.do")
 	/* /ma/sys/mngr/mngrMng/addIpFrom.do */
-	public String addIpFrom(@ModelAttribute("searchVO") UserVO searchVO,@RequestParam String cnt, Model model) throws Exception { 
+	public String addIpFrom(@ModelAttribute("searchVO") UserVO_old searchVO, @RequestParam String cnt, Model model) throws Exception {
 		model.addAttribute("cnt", cnt); 
 		return URL_PATH + "addIpForm";
 	}
@@ -117,7 +117,7 @@ public class MngrMngController {
 	@ResponseBody
 	@RequestMapping(URL_PATH + "idOvlpChk")
 	/* /ma/sys/mngr/mngrMng/idOvlpChk */
-	public ResponseEntity<?> idOvlpChk(@Validated(UserVO.idCheck.class) @ModelAttribute("searchVO") UserVO searchVO, BindingResult result){
+	public ResponseEntity<?> idOvlpChk(@Validated(UserVO_old.idCheck.class) @ModelAttribute("searchVO") UserVO_old searchVO, BindingResult result){
 		if(result.hasErrors()) {
 			List<ObjectError> errors = result.getAllErrors();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);

@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 public class myBatisConfig {
     
     
-    @Bean
+    @Bean("SqlSessionFactory")
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ApplicationContext applicationContext) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource); 
@@ -29,7 +29,7 @@ public class myBatisConfig {
         return sqlSessionFactoryBean.getObject();   
     }
 
-    @Bean("sqlSessionTemplate")
+    @Bean("SqlSessionTemplate")
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }

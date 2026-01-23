@@ -20,7 +20,7 @@ import java.util.List;
 public class BasicCrudDao {
     
     @Autowired
-    @Resource(name = "sqlSessionTemplate")
+    @Resource(name = "SqlSessionTemplate")
     public SqlSession sqlsession;  
     
      /***************************************************************************************************************/

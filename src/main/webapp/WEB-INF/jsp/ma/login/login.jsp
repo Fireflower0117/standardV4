@@ -18,80 +18,36 @@
 			<link rel="icon" href="/file/getByteImage.do?atchFileId=<c:out value='${logoInfo.LGFC.atchFileId}'/>&fileSeqo=<c:out value='${logoInfo.LGFC.fileSeqo}'/>&fileNmPhclFileNm=<c:out value='${logoInfo.LGFC.fileNmPhclFileNm}'/>" type="image/x-icon">
 		</c:when>
 		<c:otherwise>
-			<!--  Internal Project Libs -->
-			<link rel="icon" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/images/logo.png" type="image/x-icon"> 
+			<link rel="icon" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/images/logo.png" type="image/x-icon">
 		</c:otherwise>
-	</c:choose> 
-	
+	</c:choose>
+
+
 	<!--  External Libs -->
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery/jquery.min.js"></script>
 	<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.css">
+	<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/bootstrap/4_1_0/css/bootstrap.min.css">
+	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.js"></script>
-	
-	
-	
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-validate/1_19_5/dist/jquery.validate.js"></script>
 	<!--  Internal Standard Libs -->
 	<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/css/basic.css">
 	<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/css/member.css">  
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/js/cm.validate.js" charset="utf-8"></script>
-	
+
 	<!--  Internal Project Libs -->
 	<style>.login_wrap{position: absolute;top: 20%;}</style>
+
+	<script type="module">
+		import opnt from '<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/clientbase.js';
+		window.opnt = opnt;
+	</script>
 </head>
 <body>
-	<script type="text/javascript">
-		const fncLoadingStart = function(){
-			$(".loading_wrap").show();
-		}
-	
-		/* 로딩 종료 */
-		const fncLoadingEnd = function(){
-			setTimeout(function(){ 
-				$(".loading_wrap").hide();
-		    }, 300);
-				
-		}
-		const fncLogin = function () {
-		   if(wrestSubmit(document.defaultFrm)){
-				<%-- 로그인 처리 --%>
-		        $.ajax({
-		            url: "/ma/login.do",
-		            type: "post",
-		            data: $("#defaultFrm").serialize(),
-		            dataType: "json",
-		            success: function(data){
-						
-		            	if (data.result) {
-<!--		                    location.href = data.returnUrl;-->
-							location.href = "/ma/sys/menu/list.do";
-							
-		                } else {
-		                    alert(data.message);
-		                }
-		            },
-		            error: function (xhr, status, error) {
-		    			$('.error_txt').text('');
-		    			let errors = xhr.responseJSON;
-		    			errors.forEach(function(e){
-		    				$("[data-name="+ e.field+"]").text(e.defaultMessage);
-				        });
-		    	    }
-		            ,beforeSend : function(){
-						fncLoadingStart();
-					}
-				    ,complete 	: function(){
-				    	fncLoadingEnd();
-						return false;
-					}
-		        });
-		   }
-			
-	    };
-	    function enterkey() {
-            if (window.event.keyCode == 13) {
-            	fncLogin();
-            }
-        }
+	<script type="module">
+
+
+
+
 		$(document).ready(function(){
 			$('.login_box .input_box input').focusout(function () {
 		        $(".login_box .input_box .btn_del").removeClass("on");
@@ -110,20 +66,82 @@
 		        }
 		    });
 		    
-			<%-- 로그인 클릭시 --%>
-			$('#btn_login').on('click', function(){
-				fncLogin(); 
+			/* 로그인 클릭시 */
+			$("#btn_login").on('click', function(){
+				fncLogin();
 				return false;
 			});
-			
+
+			/* ID나 PassWord 엔터키 press */
+			$("#userId,#userPswd").on("keyup", (evt) => {
+				if (evt.key === "Enter" || evt.keyCode === 13) {
+					fncLogin();
+					return false;
+				}
+			});
+
+			/* Login Process 수행 */
+			const fncLogin = function () {
+
+				// Validation List (유효성 검증 대상 )
+		        let loginValidateObj = { formWrapperEle : ".input_box"
+								       , validateList  : [ {name : "userId"   , label : "아이디"   ,  rule: {"required":true} }
+										     		     , {name : "userPswd" , label : "비밀번호" ,  rule: {"required":true, minlength : 5 } }
+												         ]
+				} ;
+
+				// Form Validation Check 수행
+				let isValidationSuccess = opnt.valid.cmValidationCheck(loginValidateObj);
+				if(isValidationSuccess === false){ return false; }
+
+
+				// 입력Data수기 생성
+				let sendData = [{name:"userId", val: opnt.html.getEleVal("#userId") }
+							   ,{name:"userPswd", val: opnt.html.getEleVal("#userPswd") }
+					]
+
+                // 입력데이터 자동 생성
+				// let targetDataArray = opnt.html.serializeDataArray({target : ".input_box"})
+
+				// Login수행
+				opnt.xhr.ajax({ sid  : "loginProc"
+							  , url : "/ma/loginProcess.do"
+							  , data : sendData
+							  , successFn : function (rs){
+									 opnt.msg.alertMsg("로그인성공");
+
+										if (data.result) {
+											//location.href = data.returnUrl;
+											//location.href = "/ma/sys/menu/list.do";
+
+										} else {
+											alert(data.message);
+										}
+								}
+							  , failFn    : function (err){
+									opnt.msg.alertMsg("로그인실패");
+
+									$('.error_txt').text('');
+									let errors = err.responseJSON;
+									errors.forEach(function(e){
+										$("[data-name="+ e.field+"]").text(e.defaultMessage);
+									});
+								}
+
+				});
+			};
+
+
+
+
 			<%-- 아이디찾기, 비밀번호찾기 클릭시 --%>
 			$('.btn_find').on('click', function(){
-				$("#defaultFrm").attr({"action" : "/ma/findInfoForm.do", data : {},"method" : "post", "target" : "_self", "onsubmit" : ""}).submit();
+				// $("#defaultFrm").attr({"action" : "/ma/findInfoForm.do", data : {},"method" : "post", "target" : "_self", "onsubmit" : ""}).submit();
 			});
 			
 			<%-- 사용자화면 클릭시 --%>
 			$('#btn_user').on('click', function(){
-				location.href = '/ft/main.do';
+				// location.href = '/ft/main.do';
 			});
 		});
 	</script>
@@ -141,25 +159,21 @@
 					</c:otherwise>
 				</c:choose>
 			</h1>
-			<form id="defaultFrm" name="defaultFrm" onsubmit="return false;" onkeydown="enterkey();">
-				<fieldset>
-					<div class="input_box">
-						<ul>
-							<li>
-								<label for="userId">아이디</label> 
-								<input type="text" id="userId" name="userId" tabindex="1" title="아이디" placeholder="아이디를 입력해주세요." class="text" maxlength="30" value="standard_ms" required="true" />
-							</li>
-							<li>
-								<label for="userPswd">비밀번호</label> 
-								<input type="password" id="userPswd" name="userPswd" tabindex="2" title="비밀번호" placeholder="비밀번호를 입력해주세요." class="text" maxlength="20" value="open1010!" autocomplete="off" required="true" />
-							</li>
-						</ul>
-					</div>
-					<div class="btn_area">
-						<button type="button" id="btn_login" class="btn blue btn_login">로그인</button>
-					</div>
-				</fieldset>
-			</form>
+				<div class="input_box">
+					 <ul>
+						<li>
+							<label for="userId">아이디</label>
+							<input type="text" id="userId" name="userId"  tabindex="1" title="아이디" placeholder="아이디를 입력해주세요." class="text form-control"  value="standard_ms"  />
+						</li>
+						<li>
+							<label for="userPswd">비밀번호</label>
+							<input type="password" id="userPswd" name="userPswd" tabindex="2" title="비밀번호" placeholder="비밀번호를 입력해주세요." class="text form-control"  value="open1010!" autocomplete="off"  />
+						</li>
+					</ul>
+				</div>
+				<div class="btn_area">
+					<button type="button" id="btn_login" class="btn blue btn_login">로그인</button>
+				</div>
 		</div>
 	</div>
 </body>

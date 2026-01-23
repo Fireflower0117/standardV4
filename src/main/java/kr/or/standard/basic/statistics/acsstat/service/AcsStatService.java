@@ -13,7 +13,7 @@ import kr.or.standard.basic.system.log.errlog.service.ErrlogService;
 import kr.or.standard.basic.system.menu.servie.MenuService;
 import kr.or.standard.basic.system.mngr.mngrMng.service.MngrMngService;
 import kr.or.standard.basic.usersupport.user.service.UserService;
-import kr.or.standard.basic.usersupport.user.vo.UserVO;
+import kr.or.standard.basic.usersupport.user.vo.UserVO_old;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -95,7 +95,7 @@ public class AcsStatService extends EgovAbstractServiceImpl {
         HashMap<String, Object> returnMap = new HashMap<>();
 
         PaginationInfo paginationInfo = paginationService.procPagination(searchVO);
-        List<UserVO> resultList;
+        List<UserVO_old> resultList;
         if ("scrb".equals(searchVO.getProcType())) {  
             paginationInfo.setTotalRecordCount(userService.selectScrbUserCount(searchVO)); 
             resultList = userService.selectScrbUserList(searchVO);  

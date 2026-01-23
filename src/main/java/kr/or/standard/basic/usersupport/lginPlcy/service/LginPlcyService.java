@@ -23,16 +23,13 @@ import org.springframework.validation.BindingResult;
 @RequiredArgsConstructor
 @Transactional
 public class LginPlcyService extends EgovAbstractServiceImpl  {
-    
-    
+
 	private final BasicCrudDao basicDao; 
 	private final CmmnDefaultDao defaultDao;
     private final AuthService authService;
     private final MessageSource messageSource;
     private final String sqlNs = "com.standard.mapper.basic.LginPlcyMngMapper.";
-    
-    
-    
+
     public void form(Model model){
     	
 		LginPlcyVO lginPlcyVO = new LginPlcyVO();
@@ -41,7 +38,6 @@ public class LginPlcyService extends EgovAbstractServiceImpl  {
 		LginPlcyVO rtnVo = (LginPlcyVO) defaultDao.selectOne( sqlNs+"selectPlcyCount");
 	    int lginPlcyCount = Integer.parseInt(rtnVo.getPlcyCount()); 
 		if(lginPlcyCount > 0) {
-		
 			lginPlcyVO = (LginPlcyVO) defaultDao.selectOne( sqlNs+"selectPlcyOne");
 		}
 		model.addAttribute("lginPlcyVO", lginPlcyVO);

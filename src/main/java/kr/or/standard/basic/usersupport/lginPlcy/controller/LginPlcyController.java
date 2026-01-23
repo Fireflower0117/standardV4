@@ -30,8 +30,7 @@ public class LginPlcyController {
 	private final LginPlcyService lginPlcyService;
 	private final AuthService maAuthService;
 	private final MessageSource messageSource;
-    
-    
+
 	private final String URL_PATH = "/ma/us/mem/lginPlcy/";
 	
 	@RequestMapping(URL_PATH + "form.do") 

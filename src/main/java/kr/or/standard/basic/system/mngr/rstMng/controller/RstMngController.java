@@ -5,7 +5,7 @@ import kr.or.standard.basic.common.domain.CmmnDefaultVO;
 import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.system.mngr.rstMng.service.RstMngService;
 import kr.or.standard.basic.system.mngr.rstMng.vo.RstMngVO;
-import kr.or.standard.basic.usersupport.user.vo.UserVO;
+import kr.or.standard.basic.usersupport.user.vo.UserVO_old;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +65,7 @@ public class RstMngController {
 	@ResponseBody
 	@DeleteMapping(URL_PATH + "proc")
 	/* /ma/sys/mngr/rstMng/proc */
-	public ResponseEntity<?> deleteProc(@Validated(UserVO.deleteCheck.class) @ModelAttribute("searchVO") RstMngVO searchVO, BindingResult result, HttpSession session) {
+	public ResponseEntity<?> deleteProc(@Validated(UserVO_old.deleteCheck.class) @ModelAttribute("searchVO") RstMngVO searchVO, BindingResult result, HttpSession session) {
 		if(result.hasErrors()) {
 			List<ObjectError> errors = result.getAllErrors();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);

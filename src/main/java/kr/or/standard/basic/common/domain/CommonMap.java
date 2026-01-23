@@ -14,15 +14,11 @@ public class CommonMap  extends LinkedHashMap{
     }
 
     public CommonMap(HttpServletRequest req){
-
-        log.info("===========================================================");
         Enumeration<String> paramNames = req.getParameterNames();
         while(paramNames.hasMoreElements()){
             String key = paramNames.nextElement();
-            log.info("key ==>> "+key+" , value = "+req.getParameter(key));
             super.put(key, req.getParameter(key));
         }
-        log.info("==========================================================="); 
     }
     
     public CommonMap(HashMap hMap){
@@ -47,7 +43,7 @@ public class CommonMap  extends LinkedHashMap{
          if(rsltVal instanceof String){
             return getString(key , "");
          }
-         if(rsltVal instanceof  Integer){
+         if(rsltVal instanceof Integer){
              return getInt(key , 0);
          }
          else if(rsltVal instanceof Double){
