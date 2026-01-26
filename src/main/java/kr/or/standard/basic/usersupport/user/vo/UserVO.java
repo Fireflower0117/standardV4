@@ -58,7 +58,7 @@ public class UserVO extends CmmnDefaultVO {
     private String brkComment;
 
     private String authId;
-    private List<String> authIdList;
+    private String authIdList;
     private String remoteAddr;
     private String loginDivCd;
     private String loginCommnet;

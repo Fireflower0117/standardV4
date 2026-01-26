@@ -38,8 +38,8 @@
 	<style>.login_wrap{position: absolute;top: 20%;}</style>
 
 	<script type="module">
-		import opnt from '<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/clientbase.js';
-		window.opnt = opnt;
+		import on from '<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/clientbase.js';
+		window.on = on;
 	</script>
 </head>
 <body>
@@ -91,43 +91,32 @@
 				} ;
 
 				// Form Validation Check 수행
-				let isValidationSuccess = opnt.valid.cmValidationCheck(loginValidateObj);
+				let isValidationSuccess = on.valid.cmValidationCheck(loginValidateObj);
 				if(isValidationSuccess === false){ return false; }
 
 
 				// 입력Data수기 생성
-				let sendData = [{name:"userId", val: opnt.html.getEleVal("#userId") }
-							   ,{name:"userPswd", val: opnt.html.getEleVal("#userPswd") }
+				let sendData = [{name:"userId", val: on.html.getEleVal("#userId") }
+							   ,{name:"userPswd", val: on.html.getEleVal("#userPswd") }
 					]
 
                 // 입력데이터 자동 생성
-				// let targetDataArray = opnt.html.serializeDataArray({target : ".input_box"})
+				// let targetDataArray = on.html.serializeDataArray({target : ".input_box"})
 
 				// Login수행
-				opnt.xhr.ajax({ sid  : "loginProc"
+				on.xhr.ajax({ sid  : "loginProc"
 							  , url : "/ma/loginProcess.do"
 							  , data : sendData
-							  , successFn : function (rs){
-									 opnt.msg.alertMsg("로그인성공");
-
-										if (data.result) {
-											//location.href = data.returnUrl;
-											//location.href = "/ma/sys/menu/list.do";
-
+							  , successFn : function (sid, rs){
+										if (rs?.returnUrl) {
+                                            on.html.dynaGenHiddenForm({ formDefine : { fid:"mainForm" , action:rs.returnUrl , method : "post" , isSubmit : true  } }); // HiddenForm 생성및 전송
 										} else {
-											alert(data.message);
+											on.msg.alertMsg(rs.message);
 										}
 								}
 							  , failFn    : function (err){
-									opnt.msg.alertMsg("로그인실패");
-
-									$('.error_txt').text('');
-									let errors = err.responseJSON;
-									errors.forEach(function(e){
-										$("[data-name="+ e.field+"]").text(e.defaultMessage);
-									});
+								    on.msg.alertMsg(rs.message);
 								}
-
 				});
 			};
 

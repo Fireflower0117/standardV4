@@ -12,7 +12,9 @@
              , PSSN_PRD_CD          pwssPrdCd
              , ATCH_FILE_SAVE_DIV   AtchFileSaveDiv
              , ATCH_FILE_PATH       AtchFilePath
-         FROM STB_B_SYSTEM_POLICY_MNG
+             , MA_DIRECT_PAGE       maDirectPage
+             , FT_DIRECT_PAGE       ftDirectPage
+          FROM STB_B_SYSTEM_POLICY_MNG
     </select>
 
 </mapper>

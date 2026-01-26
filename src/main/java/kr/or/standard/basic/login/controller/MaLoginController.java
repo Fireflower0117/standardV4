@@ -39,25 +39,18 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class MaLoginController {
 
-	private final MessageSource messageSource;
 	private final LoginService loginService;
-	private final AcsService maAcsService;
-
-	private final AuthService authService;
-	private final MenuService menuService;
-	  
-	private static final String FOLDER_PATH = "/ma/login/";
+	private final String FOLDER_PATH = "/ma/login/";
 	
 	@GetMapping("/") 
 	public String maLoginPage() {
-		return "redirect:/ma/login.do";
+		return "redirect:/ma/login.do";  // 운영환경에서는  ft/main으로 수정
 	}
 	
 	// 로그인 화면
 	@GetMapping("/ma/login.do") 
 	public String maGetLoginPage() {
 		log.info("getMapping /ma/login.do ==>> {}login", FOLDER_PATH );
-
 		return FOLDER_PATH + "login";
 	}
 	
@@ -71,16 +64,13 @@ public class MaLoginController {
 		}
 
 		CommonMap rtnMap = loginService.maLoginProcess(loginVO ,  request);
-
-
-		
 		return ResponseEntity.ok(rtnMap);
 	}
 	
 	// 로그아웃
 	@RequestMapping("/ma/logout.do")
-	public String logout(HttpServletRequest request) {
-		request.getSession().invalidate();
+	public String maLogout(HttpServletRequest request) {
+		loginService.maLogout(request);
 		return "redirect:/ma/login.do";
 	}
 }

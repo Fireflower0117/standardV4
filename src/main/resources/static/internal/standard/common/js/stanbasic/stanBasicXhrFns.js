@@ -15,7 +15,7 @@ const xhrFns = {
 
                      2)  단순 Data 입력 , 출력, 갱신 , 삭제
                         var  callAjaxObj =   { sid       : "callAjax_Uniq_Id"
-                                              , cmd       : "selectPageList" , sql       : "opnt.common.sql_test"
+                                              , cmd       : "selectPageList" , sql       : "on.common.sql_test"
                                               , data      : [{},{}, .....]
                                               , attchFileId : "1234"
                                               , ..........
@@ -55,7 +55,7 @@ const xhrFns = {
             var ajaxPostOptions = {data: {}};
             /* Custom Success Function Init */
 
-            if (!opnt.valid.isEmpty(callAjaxObj.successFn) && typeof callAjaxObj.successFn === 'function') {
+            if (!on.valid.isEmpty(callAjaxObj.successFn) && typeof callAjaxObj.successFn === 'function') {
                 ajaxPostOptions.success = function (rs) {
                     if (typeof callAjaxObj.sid == "string") {
                         isReturn = false;
@@ -68,7 +68,7 @@ const xhrFns = {
             }
 
             /* Custom Fail Function Init */
-            if (!opnt.valid.isEmpty(callAjaxObj.failFn) && typeof callAjaxObj.failFn === 'function') {
+            if (!on.valid.isEmpty(callAjaxObj.failFn) && typeof callAjaxObj.failFn === 'function') {
                 ajaxPostOptions.error = function (errObj, errMsg, errCause) {
                     isReturn = false;
                     callAjaxObj.failFn(errObj, errMsg, errCause);
@@ -76,8 +76,8 @@ const xhrFns = {
             }
 
             /* callAjaxObj.url */
-            if(!opnt.valid.isEmpty(callAjaxObj.url)){
-                if(!opnt.valid.isEmpty(callAjaxObj.data)){  // form.serialize때 사용
+            if(!on.valid.isEmpty(callAjaxObj.url)){
+                if(!on.valid.isEmpty(callAjaxObj.data)){  // form.serialize때 사용
                     for(let dataAttr of callAjaxObj.data){
                         ajaxPostOptions.data[dataAttr.name] = dataAttr.val;
                     }
@@ -88,20 +88,20 @@ const xhrFns = {
                     }
                 }
                 ajaxPostOptions.url = callAjaxObj.url; // Request Mapping URL
-                ajaxPostOptions.contentType = opnt.str.nvl( callAjaxObj.contentType  , "application/x-www-form-urlencoded;charset=UTF-8");
+                ajaxPostOptions.contentType = on.str.nvl( callAjaxObj.contentType  , "application/x-www-form-urlencoded;charset=UTF-8");
             }
             else {
                 /* Ajax 호출 기본값 SelectList */
-                var sqlCmd = opnt.str.nvl(callAjaxObj.cmd, "selectList");
+                var sqlCmd = on.str.nvl(callAjaxObj.cmd, "selectList");
                 if (sqlCmd == "selectPage") {
 
                     // sql Attribute 없으면 return
-                    if (opnt.valid.isEmpty(callAjaxObj.sql)) return {};
+                    if (on.valid.isEmpty(callAjaxObj.sql)) return {};
 
                     //ajaxPostOptions.url = getContextPath() +'/query/json?qid='+ callAjaxObj.sql+'_page';
                     ajaxPostOptions.url = '/com/query/selectList.ajx?qid=' + callAjaxObj.sql;
-                    var pageNo = Number(opnt.str.nvl(callAjaxObj.pageNo, 1));
-                    var pageSize = Number(opnt.str.nvl(callAjaxObj.pageSize, 10));
+                    var pageNo = Number(on.str.nvl(callAjaxObj.pageNo, 1));
+                    var pageSize = Number(on.str.nvl(callAjaxObj.pageSize, 10));
                     ajaxPostOptions.data.rn_bottom = (pageNo * pageSize) - pageSize;
                     ajaxPostOptions.data.rn_top = (pageNo * pageSize);
                     ajaxPostOptions.data.rn_deorder = ajaxPostOptions.data.rn_bottom + ajaxPostOptions.data.rn_top;
@@ -113,7 +113,7 @@ const xhrFns = {
                     }
                 } else if (sqlCmd == "selectList") {
                     // sql Attribute 없으면 return
-                    if (opnt.valid.isEmpty(callAjaxObj.sql)) return {};
+                    if (on.valid.isEmpty(callAjaxObj.sql)) return {};
 
                     ajaxPostOptions.url = '/com/query/selectList.ajx?qid=' + callAjaxObj.sql;
                     for (const [key, value] of Object.entries(callAjaxObj)) {
@@ -124,7 +124,7 @@ const xhrFns = {
                 } else if (sqlCmd == "selectOne") {
 
                     // sql Attribute 없으면 return
-                    if (opnt.valid.isEmpty(callAjaxObj.sql)) return {};
+                    if (on.valid.isEmpty(callAjaxObj.sql)) return {};
 
                     ajaxPostOptions.url = '/com/query/selectOne.ajx?qid=' + callAjaxObj.sql;
                     for (const [key, value] of Object.entries(callAjaxObj)) {
@@ -142,7 +142,7 @@ const xhrFns = {
                 } else if (sqlCmd == "insert") {
 
                     // sql Attribute 없으면 return
-                    if (opnt.valid.isEmpty(callAjaxObj.sql)) return {};
+                    if (on.valid.isEmpty(callAjaxObj.sql)) return {};
 
                     ajaxPostOptions.url = '/com/query/insert.ajx?qid=' + callAjaxObj.sql;
                     for (const [key, value] of Object.entries(callAjaxObj)) {
@@ -153,7 +153,7 @@ const xhrFns = {
                 } else if (sqlCmd == "update") {
 
                     // sql Attribute 없으면 return
-                    if (opnt.valid.isEmpty(callAjaxObj.sql)) return {};
+                    if (on.valid.isEmpty(callAjaxObj.sql)) return {};
 
                     ajaxPostOptions.url = '/com/query/update.ajx?qid=' + callAjaxObj.sql;
                     for (const [key, value] of Object.entries(callAjaxObj)) {
@@ -165,7 +165,7 @@ const xhrFns = {
                 else if (sqlCmd == "delete") {
 
                     // sql Attribute 없으면 return
-                    if (opnt.valid.isEmpty(callAjaxObj.sql)) return {};
+                    if (on.valid.isEmpty(callAjaxObj.sql)) return {};
 
                     ajaxPostOptions.url = '/com/query/delete.ajx?qid=' + callAjaxObj.sql;
                     for (const [key, value] of Object.entries(callAjaxObj)) {
@@ -186,10 +186,10 @@ const xhrFns = {
             }
 
             /* 동기 호출 여부 세팅 */
-            ajaxPostOptions.async = opnt.str.nvl(callAjaxObj.async, ajaxPostOptions.success ? true : false);
+            ajaxPostOptions.async = on.str.nvl(callAjaxObj.async, ajaxPostOptions.success ? true : false);
 
             // How to dynamic make[{},{},{}]
-            ajaxPostOptions.type = opnt.str.nvl(ajaxPostOptions.methodType , "post");
+            ajaxPostOptions.type = on.str.nvl(ajaxPostOptions.methodType , "post");
 
 
 
@@ -200,17 +200,17 @@ const xhrFns = {
                 , dataType: "json"
                 //, contentType : 'application/json;charset=UTF-8'
                 , beforeSend: function (xhr, settings) {
-                    opnt.msg.showProgressBar();
+                    on.msg.showProgressBar();
                 }
                 , complete: function (xhr, sts) {
-                    opnt.msg.hideProgressBar();
+                    on.msg.hideProgressBar();
                 }
                 , success: function (rs) {
                     isReturn = true;
                     resultData = rs;
                 }
                 , error: function (err) {
-                    opnt.msg.alertMsg("처리중 에러발생.");
+                    on.msg.alertMsg("처리중 에러발생.");
                 }
             }
 

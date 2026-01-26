@@ -66,7 +66,7 @@
           /*  opnt.standard.systeminit.usermanage.insUserLoginHist */
           INSERT INTO STB_H_USER_LOGIN_LOG
                       (USER_ID  , AUTH_AREA_CD , USER_AUTH_CD ,REMOTE_ADDR , LOGIN_DIV_CD , LOGIN_COMMENT   )
-               VALUES (#{userId}, #{authAreaCd}, #{authCdList},#{remoteAddr} #{loginDivCd}, #{loginCommnet} )
+               VALUES (#{userId}, #{authAreaCd}, #{authIdList},#{remoteAddr}, #{loginDivCd}, #{loginCommnet} )
     </insert>
 
 </mapper>

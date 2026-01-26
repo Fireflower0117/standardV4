@@ -1,7 +1,7 @@
 const stringFns = {
     nvl  : function (chkObj, repStr) {
-        repStr = opnt.valid.isEmpty(repStr) ? "" : repStr;
-        if (opnt.valid.isEmpty(chkObj)) return repStr;
+        repStr = on.valid.isEmpty(repStr) ? "" : repStr;
+        if (on.valid.isEmpty(chkObj)) return repStr;
         else return chkObj;
     },
     trim : function(tarTrimStr) {
@@ -19,7 +19,7 @@ const stringFns = {
         return trimSplitArr.join("");
     },
     searchConditionParse : function(JsonSearchCondi) {
-        return JSON.parse(opnt.str.replaceAll(JsonSearchCondi, "&#034;", '"'));
+        return JSON.parse(on.str.replaceAll(JsonSearchCondi, "&#034;", '"'));
     },
     replaceAll : function(tarStr, tarSplitStr, tarRepStr = "") {
         var trimSplitArr = tarStr.split(tarSplitStr);
@@ -27,11 +27,11 @@ const stringFns = {
     },
     lPad : function (tarStr, paddLen, paddStr) {
         tarStr = tarStr.toString();
-        return tarStr.length < paddLen ? opnt.str.lPad(paddStr + tarStr, paddLen, paddStr) : tarStr;
+        return tarStr.length < paddLen ? on.str.lPad(paddStr + tarStr, paddLen, paddStr) : tarStr;
     },
     rPad : function(tarStr, paddLen, paddStr) {
         tarStr = tarStr.toString();
-        return tarStr.length < paddLen ? opnt.str.rPad(tarStr + paddStr, paddLen, paddStr) : tarStr;
+        return tarStr.length < paddLen ? on.str.rPad(tarStr + paddStr, paddLen, paddStr) : tarStr;
     },
     subString : function (orgStr, beginIndx, endIndx) {
         return orgStr.substring(beginIndx, endIndx);

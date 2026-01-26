@@ -1,11 +1,11 @@
 const encryptionFns = {
 
     encrypt (encInfo){
-        if( opnt.valid.isEmpty(encInfo.encVal) ) return null;
+        if( on.valid.isEmpty(encInfo.encVal) ) return null;
 
-        let encAlType = opnt.str.nvl(encInfo.encAlgorithm , "sha512"); // 암호화 기본값 ( SHA 512 )
+        let encAlType = on.str.nvl(encInfo.encAlgorithm , "sha512"); // 암호화 기본값 ( SHA 512 )
         if(encAlType === "sha512"){
-            return opnt.enc.shaEncrypt512(encInfo.encVal)
+            return on.enc.shaEncrypt512(encInfo.encVal)
         }
     }
     , shaEncrypt512 (orgStr) {
@@ -16,7 +16,7 @@ const encryptionFns = {
         }
 
         var shaObj = new jsSHA("SHA-512", "TEXT"); // v3라면 옵션 추가 가능: , { encoding: "UTF8" }
-        shaObj.update(opnt.str.trimAll(orgStr));
+        shaObj.update(on.str.trimAll(orgStr));
         return shaObj.getHash("HEX");
     }
 }

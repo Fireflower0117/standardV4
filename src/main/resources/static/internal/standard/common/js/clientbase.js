@@ -26,7 +26,7 @@
     import encFns from './stanbasic/stanBasicEncryptionFns.js';
 
     // DOM 준비되면 $.opnt 정의
-    let opnt = {
+    let on = {
            xhr : xhrFns
          , str : stringFns
          , valid : validateFns
@@ -38,4 +38,4 @@
          , enc  : encFns
     };
 
-    export default opnt;
+    export default on;

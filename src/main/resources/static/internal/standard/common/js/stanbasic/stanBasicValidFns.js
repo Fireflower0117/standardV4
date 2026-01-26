@@ -26,13 +26,13 @@ const validateFns = {
   // 지정항목 유효성 체크  
   , cmValidationCheck : function(validateObj){
 
-        if( opnt.valid.isEmpty(validateObj?.validateList)  ){
-            opnt.messageFns.consoleLog('유효성 검증할 목록이 없습니다.');
+        if( on.valid.isEmpty(validateObj?.validateList)  ){
+            on.messageFns.consoleLog('유효성 검증할 목록이 없습니다.');
             return false;
         }
 
         let validateWrapNm = validateObj?.formWrapperEle;
-        if( opnt.valid.isEmpty(validateWrapNm) ){
+        if( on.valid.isEmpty(validateWrapNm) ){
             console.log('cmValidationCheck를 하려면 formWrapperEle 속성은 필수값입니다. (form Element or Wrapper Element)\n' 
                        +'자세한 내용은 개발가이드 Validation을 참고하세요 ');
             return false;
@@ -40,7 +40,7 @@ const validateFns = {
 
         // messageOption : "feedbackType"
 
-        let findEleType = opnt.html.getEleType(validateWrapNm);  // Wrapper 대상 Element Type조회
+        let findEleType = on.html.getEleType(validateWrapNm);  // Wrapper 대상 Element Type조회
         let $formEle = null; // Wrapper 대상 Element
         let isFnGenForm;  // form 동적 생성여부
         if(findEleType === "form") {
@@ -57,7 +57,7 @@ const validateFns = {
             let validateOptions;
 
             // 필요에따라 cmValidationCheck함수 호출시 validateOption속성을 추가 해서 messageOption을 변경할수있다.
-            let selMessageOption = opnt.valid.isEmpty(validateObj?.messageOption) ? 'feedbackType' : validateObj.messageOption;
+            let selMessageOption = on.valid.isEmpty(validateObj?.messageOption) ? 'feedbackType' : validateObj.messageOption;
             if(selMessageOption === 'feedbackType'){
                 validateOptions = {
                     errorElement: "em"
@@ -91,9 +91,9 @@ const validateFns = {
             let attrLabel =  validAttr?.label;
             let attrRule =  validAttr?.rule;
 
-            if(opnt.valid.isEmpty(attrName) || opnt.valid.isEmpty(attrLabel)  || opnt.valid.isEmpty(attrRule) ){
-                opnt.msg.consoleLog("name : "+attrName+", attrLabel : "+attrLabel+" , attrRule : "+attrRule);
-                opnt.msg.consoleLog('validateList 내부에 name, label, rule 속성을 입력하지 않는 Object가 있습니다.');
+            if(on.valid.isEmpty(attrName) || on.valid.isEmpty(attrLabel)  || on.valid.isEmpty(attrRule) ){
+                on.msg.consoleLog("name : "+attrName+", attrLabel : "+attrLabel+" , attrRule : "+attrRule);
+                on.msg.consoleLog('validateList 내부에 name, label, rule 속성을 입력하지 않는 Object가 있습니다.');
                 validateStatus = 'fail';
             }
 
@@ -111,7 +111,7 @@ const validateFns = {
             }
             else {
                 validateStatus = 'fail';
-                opnt.msg.consoleLog('유효성 검증 rule 은 반드시 Object형태로 입력하세요.');
+                on.msg.consoleLog('유효성 검증 rule 은 반드시 Object형태로 입력하세요.');
             }
         }
 

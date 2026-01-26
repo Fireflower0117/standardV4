@@ -39,9 +39,9 @@ public class MaInterceptor implements HandlerInterceptor {
         log.info("===================        접근 가능 메뉴 여부 체크        ===================");
 
         HttpSession session = request.getSession();
-        LoginVO loginVO = (LoginVO) session.getAttribute("user_info");  // Spring Security Details로 전환대상 ...
+        LoginVO loginVO = (LoginVO) session.getAttribute("LoginUserDetails");  // Spring Security Details로 전환대상 ...
 
-        if(loginVO == null) {
+        if(loginVO != null) {
              // 접근가능 Public 메뉴 URL인지 확인
             crudService.selectOne("" , loginVO);
         }

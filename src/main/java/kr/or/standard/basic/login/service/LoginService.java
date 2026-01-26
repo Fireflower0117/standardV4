@@ -41,12 +41,12 @@ public class LoginService extends EgovAbstractServiceImpl  {
 	private final EncryptUtil encryptUtil;
 	
 	// private final String userMngSqlNs = "com.standard.mapper.basic.UserMngMapper.";
-	private final String userMngSqlNs = "opnt.standard.systeminit.systempolicy.";
+	private final String userMngSqlNs = "opnt.standard.systeminit.usermanage.";
 
 
 	/** 시스템 정책 정보 조회  **/
 	private SystemPolicyVO getSystemConfig(){
-		return (SystemPolicyVO)defaultDao.selectOne(userMngSqlNs+"inqSystemPolicy");
+		return (SystemPolicyVO)defaultDao.selectOne("opnt.standard.systeminit.systempolicy.inqSystemPolicy");
 	}
 
 
@@ -117,7 +117,7 @@ public class LoginService extends EgovAbstractServiceImpl  {
 				for(UserVO userAUthVo : userAUthList){
 					authCdList.add(userAUthVo.getAuthId());
 				}
-				userInfoVo.setAuthIdList(authCdList);
+				userInfoVo.setAuthIdList(authCdList.toString());
 
 				/* 로그인 기록 남기기  */
 				userInfoVo.setAuthAreaCd("MA");
@@ -136,7 +136,7 @@ public class LoginService extends EgovAbstractServiceImpl  {
 				/* IP차단 여부 */
 
 				/* 세션저장 ma_user_info */
-				session.setAttribute("userUserInfo", userInfoVo);
+				session.setAttribute("LoginUserDetails", userInfoVo);
 
 				/*  시스템 정책의 첫 Page로 이동 */
 				rtnMap.put("returnUrl", systemPolicyVo.getMaDirectPage());
@@ -146,6 +146,10 @@ public class LoginService extends EgovAbstractServiceImpl  {
 		return rtnMap;
 	}
 
+
+	public void maLogout(HttpServletRequest request){
+		request.getSession().invalidate();
+	}
 
 
 

@@ -41,12 +41,13 @@ public class MenuService extends EgovAbstractServiceImpl {
 	private final CmmnDefaultDao defaultDao;
 	private final AuthService authService;
 	
-	private final String sqlNs = "com.standard.mapper.basic.menuMngMapper.";
-	
+	// private final String sqlNs = "com.standard.mapper.basic.menuMngMapper.";
+	private final String sqlNs = "on.standard.systeminit.menu.";
+
 	
 	// 메뉴관리 메뉴목록 조회
 	public List<MenuVO> selectList(MenuVO vo) {
-		return (List<MenuVO>)defaultDao.selectList(sqlNs+"selectList", vo); 
+		return (List<MenuVO>)defaultDao.selectList(sqlNs+"selectList", vo);
 	};
 	
 	
@@ -70,7 +71,7 @@ public class MenuService extends EgovAbstractServiceImpl {
 	
 	// 메뉴 상세 조회
 	public MenuVO selectContents(MenuVO vo) {
-		return (MenuVO)defaultDao.selectOne(sqlNs+"selectContents", vo); 
+		return (MenuVO)defaultDao.selectOne(sqlNs+"selectContents", vo);
 	};
 	
 	// 메뉴 게시판 유형 조회
@@ -92,7 +93,7 @@ public class MenuService extends EgovAbstractServiceImpl {
 	
 	
 	// 메뉴 등록
-	public int insertContents(MenuVO vo){	 
+	public int insertContents(MenuVO vo){
 		int resultInt = defaultDao.insert(sqlNs+"insertContents", vo); 
 		// 수정 성공, 컨텐츠 유형 일때
 		if(resultInt > 0 && "C".equals(vo.getMenuTpCl())) {
@@ -165,17 +166,17 @@ public class MenuService extends EgovAbstractServiceImpl {
 	
 	// 메뉴 컨텐츠내용 등록
 	public int insertContContents(MenuVO vo){
-		return defaultDao.insert(sqlNs+"insertContContents" , vo); 
+		return defaultDao.insert(sqlNs+"insertContContents" , vo);
 	}
 
 	// 메뉴 컨텐츠내용 수정
 	public int updateContContents(MenuVO vo){
-		return defaultDao.update(sqlNs+"updateContContents" , vo); 
+		return defaultDao.update(sqlNs+"updateContContents" , vo);
 	};
 
 	// 메뉴 컨텐츠내용 삭제
 	public int deleteContContents(MenuVO vo){
-		return defaultDao.update(sqlNs+"deleteContContents" , vo); 
+		return defaultDao.update(sqlNs+"deleteContContents" , vo);
 	};
 	
 	//컨텐츠 pop 건수 조회
@@ -460,7 +461,7 @@ public class MenuService extends EgovAbstractServiceImpl {
 
 	// 메뉴접속 로그 등록
 	public int insertLogContents(AcsStatVO vo) {
-		return defaultDao.insert(sqlNs+"insertLogContents" , vo); 
+		return defaultDao.insert(sqlNs+"insertLogContents" , vo);
 	}
 
 	// 메뉴별 접속수 Top5
@@ -482,5 +483,16 @@ public class MenuService extends EgovAbstractServiceImpl {
 	// 메뉴별 접속수(현재날짜) 상세
 	public List<CommonMap> selectMenuNowDetail(AcsStatVO vo) {
 		return basicDao.selectList(sqlNs+"selectMenuNowDetail", vo); 
+	}
+
+
+	/***********************************************************************************/
+	/****************************   On FrameWork V4   **********************************/
+	/***********************************************************************************/
+
+	public CommonMap selectMenuByUrl(String pageUrl) {
+		CommonMap paramMap = new CommonMap();
+		paramMap.put("pageUrl", pageUrl);
+		return basicDao.selectOne(sqlNs+"selectMenuByUrl", paramMap);
 	}
 }

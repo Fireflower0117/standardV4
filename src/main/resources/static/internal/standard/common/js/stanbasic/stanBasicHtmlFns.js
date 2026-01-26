@@ -43,13 +43,13 @@
         var targetHtml = "";
         var colInfoLength = colInfo.length;
 
-        if (!opnt.valid.isEmpty(colInfo)) {
+        if (!on.valid.isEmpty(colInfo)) {
             var resourceRowsLenght = tarDispObj.resource.length;
             if (resourceRowsLenght == 0) {
                 $(tarDispObj.dispTarget).html("<tr><td colSpan='"+colInfoLength+"' class='no_data'>데이터가 없습니다.</td></tr>");
-                if (!validateFns.isEmpty(tarDispObj.paginginfo)) {
+                if (!on.valid.isEmpty(tarDispObj.paginginfo)) {
                     $(tarDispObj.paginginfo.targetId).html("");
-                    if (!validateFns.isEmpty(tarDispObj.paginginfo.totRowsCntId)) {
+                    if (!on.valid.isEmpty(tarDispObj.paginginfo.totRowsCntId)) {
                         $(tarDispObj.paginginfo.totRowsCntId).text("0");
                     }
                 }
@@ -61,18 +61,18 @@
                     for (var j = 0; j < colInfoLength; j++) {
                         let resourceRow = tarDispObj.resource[i];
                         let colId = colInfo[j].id;
-                        let colType = stringFns.nvl(colInfo[j].colType, "string");
-                        let colAlign = stringFns.nvl(colInfo[j].align, "center");
-                        let colStyle = stringFns.nvl(colInfo[j].style, "");
-                        //var colClassNm  = stringFns.nvl(colInfo[j].classNm  , "");
-                        let uniqId = colInfo[j].id + "_" + stringFns.nvl(resourceRow.rownum_, i);
+                        let colType = on.str.nvl(colInfo[j].colType, "string");
+                        let colAlign = on.str.nvl(colInfo[j].align, "center");
+                        let colStyle = on.str.nvl(colInfo[j].style, "");
+                        //var colClassNm  = on.str.nvl(colInfo[j].classNm  , "");
+                        let uniqId = colInfo[j].id + "_" + on.str.nvl(resourceRow.rownum_, i);
                         let tarUniqId = " id='" + uniqId + "' ";
                         let tarUniqNm = " name='" + uniqId + "' ";
                         let tarUniqFor = " for='" + uniqId + "' ";
-                        let tarClassNm = stringFns.nvl(colInfo[j].classNm) == "" ? "" : " class='" + colInfo[j].classNm + "'";
-                        let tarStyleNm = stringFns.nvl(colInfo[j].styleNm) == "" ? "" : " style='" + colInfo[j].styleNm + "'";
-                        let tarColValue = stringFns.nvl(resourceRow[colInfo[j].id], "");
-                        //var nullDisp    = stringFns.nvl(colInfo[j].nullDisp , "Y");
+                        let tarClassNm = on.str.nvl(colInfo[j].classNm) == "" ? "" : " class='" + colInfo[j].classNm + "'";
+                        let tarStyleNm = on.str.nvl(colInfo[j].styleNm) == "" ? "" : " style='" + colInfo[j].styleNm + "'";
+                        let tarColValue = on.str.nvl(resourceRow[colInfo[j].id], "");
+                        //var nullDisp    = on.str.nvl(colInfo[j].nullDisp , "Y");
 
                         var dataPropsHtml = "";
                         if (i == 0 && j == 0) {
@@ -80,21 +80,21 @@
                         }
 
                         for (var k = 1; k <= 10; k++) {
-                            var dataProp = stringFns.nvl(colInfo[j]["data_id" + k], "anonymous");
+                            var dataProp = on.str.nvl(colInfo[j]["data_id" + k], "anonymous");
                             if ("anonymous" != dataProp) {
                                 tarDispObj.resource[i][dataProp]
-                                var dataPropVal = stringFns.nvl(tarDispObj.resource[i][dataProp], "");
+                                var dataPropVal = on.str.nvl(tarDispObj.resource[i][dataProp], "");
                                 dataPropsHtml += " data-" + dataProp + "='" + dataPropVal + "' ";
                             }
                         }
                         if (colType == "string") {
                             targetHtml += "<td " + tarUniqId + " " + tarStyleNm + " " + tarClassNm + " " + dataPropsHtml + ">" + tarColValue + "</td>";
                         } else if (colType == "double") {
-                            var colDblPattrn = stringFns.nvl(colInfo[j].pattern, ".##");
+                            var colDblPattrn = on.str.nvl(colInfo[j].pattern, ".##");
                             var colDblPattrnLen = opntInStrCount(colDblPattrn, "#");
 
-                            var colDblVal = Number(stringFns.nvl(tarColValue, 0)).toFixed(colDblPattrnLen);
-                            if (colDblVal == 0) colDblVal = validateFns.isEmpty(colInfo[j].zero) ? colDblVal : colInfo[j].zero;
+                            var colDblVal = Number(on.str.nvl(tarColValue, 0)).toFixed(colDblPattrnLen);
+                            if (colDblVal == 0) colDblVal = on.valid.isEmpty(colInfo[j].zero) ? colDblVal : colInfo[j].zero;
 
                             targetHtml += "   <td " + tarUniqId + " " + tarUniqNm + " " + dataPropsHtml + ">" + colDblVal.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + "</td>";
 
@@ -102,17 +102,17 @@
                             if ($.isNumeric(tarColValue)) {
                                 targetHtml += "   <td " + tarUniqId + " " + dataPropsHtml + " " + tarStyleNm + " " + tarClassNm + ">" + ("" + Math.round(tarColValue, 1)).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + "</td>";
                             } else {
-                                targetHtml += "   <td " + tarUniqId + " " + dataPropsHtml + " " + tarStyleNm + " " + tarClassNm + ">" + (validateFns.isEmpty(colInfo[j].zero) ? "0" : colInfo[j].zero) + "</td>";
+                                targetHtml += "   <td " + tarUniqId + " " + dataPropsHtml + " " + tarStyleNm + " " + tarClassNm + ">" + (on.valid.isEmpty(colInfo[j].zero) ? "0" : colInfo[j].zero) + "</td>";
                             }
                         } else if (colType == "hidden") {
                             targetHtml += "   <td style='display: none;' " + tarUniqId + " " + dataPropsHtml + " " + tarStyleNm + " " + tarClassNm + ">" + tarColValue + "</td>";
                         } else if (colType == "button") {
-                            let tarBtnText = stringFns.nvl(resourceRow[colInfo[j].btnText], "")
+                            let tarBtnText = on.str.nvl(resourceRow[colInfo[j].btnText], "")
                             targetHtml += "  <td style='text-align:center;'>";
                             targetHtml += "  	<button type='button' " + tarUniqId + " style='" + colStyle + "' " + tarStyleNm + " " + tarClassNm + " " + dataPropsHtml + ">" + tarBtnText + "</button>";
                             targetHtml += "  </td>";
                         } else if (colType == "checkbox") {
-                            let chkValue = validateFns.isEmpty(colInfo[j].classNm) ? "" : " value='" + colInfo[j].classNm + "'";
+                            let chkValue = on.valid.isEmpty(colInfo[j].classNm) ? "" : " value='" + colInfo[j].classNm + "'";
                             var strChecked = tarColValue == "Y" ? "checked" : "";
                             targetHtml += "<td style='text-align:center;'>";
                             targetHtml += "   <input type='checkbox' " + tarUniqId + " " + chkValue + " " + tarStyleNm + " " + tarClassNm + " " + dataPropsHtml + " " + strChecked + "/>";
@@ -127,7 +127,7 @@
                             targetHtml += "</td>";
                         } else if (colType == "fileIcon") {
                             // file_${ext}.svg 형태로 이미지를 가져옴.
-                            let ext = stringFns.nvl(resourceRow[colInfo[j].id], "");
+                            let ext = on.str.nvl(resourceRow[colInfo[j].id], "");
 
                             const imgExts = new Set(["jpg", "jpeg", "png", "gif", "bmp", "tif", "tiff", "svg"]);
                             const excelExts = new Set(["xlsx", "xls"]);
@@ -225,18 +225,18 @@
                 }
 
                 // Paging Area Renderer
-                if (!validateFns.isEmpty(tarDispObj.paginginfo)) {
+                if (!on.valid.isEmpty(tarDispObj.paginginfo)) {
 
-                    if (!validateFns.isEmpty(tarDispObj.paginginfo.totRowsCntId)) {
+                    if (!on.valid.isEmpty(tarDispObj.paginginfo.totRowsCntId)) {
                         $(tarDispObj.paginginfo.totRowsCntId).text(totRowCnt);
                     }
 
 
-                    var isDel = stringFns.nvl(tarDispObj.paginginfo.clear, false);
-                    if (stringFns.nvl(tarDispObj.paginginfo.clear, false)) {
+                    var isDel = on.str.nvl(tarDispObj.paginginfo.clear, false);
+                    if (on.str.nvl(tarDispObj.paginginfo.clear, false)) {
                         $(tarDispObj.paginginfo.targetId).html("");
                     } else {
-                        htmlFns.PageNationDisp({
+                        on.html.PageNationDisp({
                             pagingAreaId: tarDispObj.paginginfo.targetId
                             , pageNo: tarDispObj.resource[0].pageNo
                             , pageSize: tarDispObj.resource[0].pageSize
@@ -250,7 +250,7 @@
 
         // DatePicker적용
         $.each($(tarDispObj.dispTarget).find("[data-cellTp='datePicker']"), function (indx, ele) {
-            htmlFns.setDatePicker("#" + $(ele).attr("id"));
+            on.html.setDatePicker("#" + $(ele).attr("id"));
         });
     } ,
     cardDisplay : function(tarDispObj) {
@@ -296,13 +296,13 @@
         var targetHtml = "";
         var colInfoLength = colInfo.length;
 
-        if (!validateFns.isEmpty(colInfo)) {
+        if (!on.valid.isEmpty(colInfo)) {
             var resourceRowsLenght = tarDispObj.resource.length;
             if (resourceRowsLenght == 0) {
                 $(tarDispObj.dispTarget).html("<li class='no_data'><p>데이터가 없습니다.</p></li>");
-                if (!validateFns.isEmpty(tarDispObj.paginginfo)) {
+                if (!on.valid.isEmpty(tarDispObj.paginginfo)) {
                     $(tarDispObj.paginginfo.targetId).html("");
-                    if (!validateFns.isEmpty(tarDispObj.paginginfo.totRowsCntId)) {
+                    if (!on.valid.isEmpty(tarDispObj.paginginfo.totRowsCntId)) {
                         $(tarDispObj.paginginfo.totRowsCntId).text("0");
                     }
                 }
@@ -313,18 +313,18 @@
                     for (var j = 0; j < colInfoLength; j++) {
                         let resourceRow = tarDispObj.resource[i];
                         let colId = colInfo[j].id;
-                        let colType = stringFns.nvl(colInfo[j].colType, "string");
-                        let colAlign = stringFns.nvl(colInfo[j].align, "center");
-                        let colStyle = stringFns.nvl(colInfo[j].style, "");
-                        //var colClassNm  = stringFns.nvl(colInfo[j].classNm  , "");
-                        let uniqId = colInfo[j].id + "_" + stringFns.nvl(resourceRow.rownum_, i);
+                        let colType = on.str.nvl(colInfo[j].colType, "string");
+                        let colAlign = on.str.nvl(colInfo[j].align, "center");
+                        let colStyle = on.str.nvl(colInfo[j].style, "");
+                        //var colClassNm  = on.str.nvl(colInfo[j].classNm  , "");
+                        let uniqId = colInfo[j].id + "_" + on.str.nvl(resourceRow.rownum_, i);
                         let tarUniqId = " id='" + uniqId + "' ";
                         let tarUniqNm = " name='" + uniqId + "' ";
                         let tarUniqFor = " for='" + uniqId + "' ";
-                        let tarClassNm = stringFns.nvl(colInfo[j].classNm) ? "" : " class='" + colInfo[j].classNm + "'";
-                        let tarStyleNm = stringFns.nvl(colInfo[j].styleNm) ? "" : " style='" + colInfo[j].styleNm + "'";
-                        let tarColValue = stringFns.nvl(resourceRow[colInfo[j].id], "");
-                        //var nullDisp    = stringFns.nvl(colInfo[j].nullDisp , "Y");
+                        let tarClassNm = on.str.nvl(colInfo[j].classNm) ? "" : " class='" + colInfo[j].classNm + "'";
+                        let tarStyleNm = on.str.nvl(colInfo[j].styleNm) ? "" : " style='" + colInfo[j].styleNm + "'";
+                        let tarColValue = on.str.nvl(resourceRow[colInfo[j].id], "");
+                        //var nullDisp    = on.str.nvl(colInfo[j].nullDisp , "Y");
 
                         var dataPropsHtml = "";
                         if (i == 0 && j == 0) {
@@ -332,10 +332,10 @@
                         }
 
                         for (var k = 1; k <= 10; k++) {
-                            var dataProp = stringFns.nvl(colInfo[j]["data_id" + k], "anonymous");
+                            var dataProp = on.str.nvl(colInfo[j]["data_id" + k], "anonymous");
                             if ("anonymous" != dataProp) {
                                 tarDispObj.resource[i][dataProp]
-                                var dataPropVal = stringFns.nvl(tarDispObj.resource[i][dataProp], "");
+                                var dataPropVal = on.str.nvl(tarDispObj.resource[i][dataProp], "");
                                 dataPropsHtml += " data-" + dataProp + "='" + dataPropVal + "' ";
                             }
                         }
@@ -359,18 +359,18 @@
                 }
 
                 // Paging Area Renderer
-                if (!validateFns.isEmpty(tarDispObj.paginginfo)) {
+                if (!on.valid.isEmpty(tarDispObj.paginginfo)) {
 
-                    if (!validateFns.isEmpty(tarDispObj.paginginfo.totRowsCntId)) {
+                    if (!on.valid.isEmpty(tarDispObj.paginginfo.totRowsCntId)) {
                         $(tarDispObj.paginginfo.totRowsCntId).text(totRowCnt);
                     }
 
 
-                    var isDel = stringFns.nvl(tarDispObj.paginginfo.clear, false);
-                    if (stringFns.nvl(tarDispObj.paginginfo.clear, false)) {
+                    var isDel =  on.str.nvl(tarDispObj.paginginfo.clear, false);
+                    if (on.str.nvl(tarDispObj.paginginfo.clear, false)) {
                         $(tarDispObj.paginginfo.targetId).html("");
-                    } else {
-                        htmlFns.PageNationDisp({
+                    } else { 
+                        on.html.PageNationDisp({
                             pagingAreaId: tarDispObj.paginginfo.targetId
                             , pageNo: tarDispObj.resource[0].pageNo
                             , pageSize: tarDispObj.resource[0].pageSize
@@ -384,7 +384,7 @@
 
         // DatePicker적용
         $.each($(tarDispObj.dispTarget).find("[data-cellTp='datePicker']"), function (indx, ele) {
-            htmlFns.setDatePicker("#" + $(ele).attr("id"));
+            on.html.setDatePicker("#" + $(ele).attr("id"));
         });
     }
 
@@ -483,35 +483,35 @@
         $("#FormExcel").submit();
         $("#FormExcel").remove();*/
 
-        if (validateFns.isEmpty(formInfo.formDefine.fid)) return false;
+        if (on.valid.isEmpty(formInfo.formDefine.fid)) return false;
 
         var formId = formInfo.formDefine.fid;
-        var formName = validateFns.isEmpty(formInfo.formDefine.fname) ? formId : formInfo.formDefine.fname;
-        var formAction = validateFns.isEmpty(formInfo.formDefine.action) ? "" : " action='" + formInfo.formDefine.action + "'";
-        var formEncType = validateFns.isEmpty(formInfo.formDefine.enctype) ? "application/json" : formInfo.formDefine.enctype;
-        var formTarget = validateFns.isEmpty(formInfo.formDefine.fTarget) ? "" : " target='" + formInfo.formDefine.fTarget + "'";
-        var paramMethod = validateFns.isEmpty(formInfo.formDefine.method) ? "post" : formInfo.formDefine.method;
+        var formName = on.valid.isEmpty(formInfo.formDefine.fname) ? formId : formInfo.formDefine.fname;
+        var formAction = on.valid.isEmpty(formInfo.formDefine.action) ? "" : " action='" + formInfo.formDefine.action + "'";
+        var formEncType = on.valid.isEmpty(formInfo.formDefine.enctype) ? "application/json" : formInfo.formDefine.enctype;
+        var formTarget = on.valid.isEmpty(formInfo.formDefine.fTarget) ? "" : " target='" + formInfo.formDefine.fTarget + "'";
+        var paramMethod = on.valid.isEmpty(formInfo.formDefine.method) ? "post" : formInfo.formDefine.method;
         if (paramMethod.toUpperCase() != "GET" && paramMethod.toUpperCase() != "POST") paramMethod = "post";
         let formMethod = " method='" + paramMethod + "'";
-        var formClass = validateFns.isEmpty(formInfo.formDefine.classNm) ? "" : " class='" + formInfo.formDefine.classNm + "'";
-        var formStyle = validateFns.isEmpty(formInfo.formDefine.style) ? "" : " style='" + formInfo.formDefine.style + "'";
-        var insertTrget = validateFns.isEmpty(formInfo.formDefine.insTarget) ? "body" : formInfo.formDefine.insTarget;
+        var formClass = on.valid.isEmpty(formInfo.formDefine.classNm) ? "" : " class='" + formInfo.formDefine.classNm + "'";
+        var formStyle = on.valid.isEmpty(formInfo.formDefine.style) ? "" : " style='" + formInfo.formDefine.style + "'";
+        var insertTrget = on.valid.isEmpty(formInfo.formDefine.insTarget) ? "body" : formInfo.formDefine.insTarget;
 
 
         var inputAttrsHtml = "";
-        if (!validateFns.isEmpty(formInfo.formAttrs)) {
+        if (!on.valid.isEmpty(formInfo.formAttrs)) {
             var formAttrsKeys = Object.keys(formInfo.formAttrs);
             let fileNmIndx = 0;
             for (var i = 0; i < formAttrsKeys.length; i++) {
                 var inputEleObj = eval("formInfo.formAttrs." + formAttrsKeys[i]);
-                var eleName = validateFns.isEmpty(inputEleObj.name) ? formAttrsKeys[i] : inputEleObj.name;
-                var eleType = validateFns.isEmpty(inputEleObj.type) ? "hidden" : inputEleObj.type;
-                var eleVal = validateFns.isEmpty(inputEleObj.val) ? "''" : inputEleObj.val;
+                var eleName = on.valid.isEmpty(inputEleObj.name) ? formAttrsKeys[i] : inputEleObj.name;
+                var eleType = on.valid.isEmpty(inputEleObj.type) ? "hidden" : inputEleObj.type;
+                var eleVal = on.valid.isEmpty(inputEleObj.val) ? "''" : inputEleObj.val;
 
                 if (eleType == "file") {
                     inputAttrsHtml += "<input type='" + eleType + "' id='" + formAttrsKeys[i] + "' name='" + eleName + "'                    style='display:none;' >";
                 } else if (eleType == "files") {
-                    if (!validateFnsisEmpty(eleVal)) {
+                    if (!on.valid.isEmpty(eleVal)) {
                         let fileIdx = 0;
                         for (inpFile of eleVal.toArray()) {
                             inputAttrsHtml += "<input type='file' name='" + eleName + "_" + fileIdx + "'   style='display:none;'>";
@@ -532,13 +532,13 @@
         $(insertTrget).find("#" + formId).remove();
         $(insertTrget).append(formHtml);
 
-        if (!validateFns.isEmpty(formInfo.formAttrs)) {
+        if (!on.valid.isEmpty(formInfo.formAttrs)) {
             var formAttrsKeys = Object.keys(formInfo.formAttrs);
             for (var i = 0; i < formAttrsKeys.length; i++) {
                 var inputEleObj = eval("formInfo.formAttrs." + formAttrsKeys[i]);
-                var eleName = validateFns.isEmpty(inputEleObj.name) ? formAttrsKeys[i] : inputEleObj.name;
-                var eleType = validateFns.isEmpty(inputEleObj.type) ? "hidden" : inputEleObj.type;
-                var eleVal = validateFns.isEmpty(inputEleObj.val) ? "''" : inputEleObj.val;
+                var eleName = on.valid.isEmpty(inputEleObj.name) ? formAttrsKeys[i] : inputEleObj.name;
+                var eleType = on.valid.isEmpty(inputEleObj.type) ? "hidden" : inputEleObj.type;
+                var eleVal = on.valid.isEmpty(inputEleObj.val) ? "''" : inputEleObj.val;
 
                 if (eleType == "file") {
                     var colneFile = $(eleVal).clone(true);
@@ -555,16 +555,16 @@
                                 var fileInput = $("#" + formId + " [name='" + eleName + "_" + eleNmFileIndex + "']")[0]; // 대상 input 요소
 
                                 var dataTransfer = new DataTransfer();
-                                dataTransfer.items.add(originalFiles["0"]); // 첫 번째 파일만 추가
-                                console.log("===============================================");
-                                console.log("eleName : " + eleName);
-                                console.log("fileName : " + originalFiles["0"].name);
+                                dataTransfer.items.add(originalFiles["0"]); // 첫 번째 파일만 추가 
+                                on.msg.consoleLog("===============================================");
+                                on.msg.consoleLog("eleName : " + eleName);
+                                on.msg.consoleLog("fileName : " + originalFiles["0"].name);
 
 
-                                console.log("fileInput : " + fileInput);
-                                console.log("dFileIndx : " + fFileIndx);
-                                console.log("dataTransfer.files : " + dataTransfer.files);
-                                console.log("#" + formId + " [name='" + eleName + "_" + eleNmFileIndex + "']");
+                                on.msg.consoleLog("fileInput : " + fileInput);
+                                on.msg.consoleLog("dFileIndx : " + fFileIndx);
+                                on.msg.consoleLog("dataTransfer.files : " + dataTransfer.files);
+                                on.msg.consoleLog("#" + formId + " [name='" + eleName + "_" + eleNmFileIndex + "']");
 
                                 fileInput.files = dataTransfer.files; // 새 파일 리스트 적용
                                 eleNmFileIndex++;
@@ -579,7 +579,7 @@
         if (formInfo.formDefine.isSubmit === true) {
             if (formEncType == "multipart/form-data") {
 
-                formInfo.formDefine.action = validateFns.isEmpty(formInfo.formDefine.action) ? "/com/files/opntUpload.ajx" : formInfo.formDefine.action;
+                formInfo.formDefine.action = on.valid.isEmpty(formInfo.formDefine.action) ? "/com/files/opntUpload.ajx" : formInfo.formDefine.action;
                 $("#" + formId).ajaxForm({
                     url: formInfo.formDefine.action
                     , encType: formEncType
@@ -620,7 +620,7 @@
       }
     , dynaGenCheckboxes(optionsInfoObj) {
         /* Developer: sh.jang */
-        if (validateFns.isEmpty(optionsInfoObj.checkInfo.targetId)) return false;
+        if (on.valid.isEmpty(optionsInfoObj.checkInfo.targetId)) return false;
 
 
         // targetId에서 모든 특수문자 및 공백을 제거하는 코드
@@ -628,14 +628,14 @@
         const tempNm = optionsInfoObj.checkInfo.targetId.replace(regex, '');
 
         const checkProp = optionsInfoObj.checkProp;
-        const checkNm = validateFns.isEmpty(checkProp.checkNm) ? tempNm : checkProp.checkNm;
-        const checkId = validateFns.isEmpty(checkProp.checkId) ? tempNm : checkProp.checkId;
-        const prefix = validateFns.isEmpty(checkProp.prefix) ? "" : checkProp.prefix;
-        const suffix = validateFns.isEmpty(checkProp.suffix) ? "" : checkProp.suffix;
+        const checkNm = on.valid.isEmpty(checkProp.checkNm) ? tempNm : checkProp.checkNm;
+        const checkId = on.valid.isEmpty(checkProp.checkId) ? tempNm : checkProp.checkId;
+        const prefix = on.valid.isEmpty(checkProp.prefix) ? "" : checkProp.prefix;
+        const suffix = on.valid.isEmpty(checkProp.suffix) ? "" : checkProp.suffix;
 
         let inputHtml = "";
         let inputCnt = 0;
-        if (!validateFns.isEmpty(optionsInfoObj.checkDataInfo)) {
+        if (!on.valid.isEmpty(optionsInfoObj.checkDataInfo)) {
             for (let data of optionsInfoObj.checkDataInfo) {
                 let optionVal = data[optionsInfoObj.optionValInfo.optCode]
                 let optionText = data[optionsInfoObj.optionValInfo.optTxt]
@@ -653,13 +653,13 @@
     // select Box Option 갱신
     dynaGenSelectOptions : function(optionsInfoObj) {
 
-        if (validateFns.isEmpty(optionsInfoObj.comboInfo.targetId)) return false;  // options을 어디에 INPUT할지 지정안하면 return
+        if (on.valid.isEmpty(optionsInfoObj.comboInfo.targetId)) return false;  // options을 어디에 INPUT할지 지정안하면 return
 
         var optPosition = "", optTxt = "", optVal = "";
-        if (!validateFns.isEmpty(optionsInfoObj.addOption)) {
-            optPosition = stringFns.nvl(optionsInfoObj.addOption.position, "TOP");
-            optTxt = stringFns.nvl(optionsInfoObj.addOption.txt, "선택");
-            optVal = stringFns.nvl(optionsInfoObj.addOption.val, " ");
+        if (!on.valid.isEmpty(optionsInfoObj.addOption)) {
+            optPosition = on.str.nvl(optionsInfoObj.addOption.position, "TOP");
+            optTxt = on.str.nvl(optionsInfoObj.addOption.txt, "선택");
+            optVal = on.str.nvl(optionsInfoObj.addOption.val, " ");
         }
 
         var inputOptionHtml = "";
@@ -668,7 +668,7 @@
         }
 
         var optionCnt = 0;
-        if (!validateFns.isEmpty(optionsInfoObj.comboDataInfo)) {
+        if (!on.valid.isEmpty(optionsInfoObj.comboDataInfo)) {
             for (let data of optionsInfoObj.comboDataInfo) {
                 var optionVal = data[optionsInfoObj.optionValInfo.optId]
                 var optionText = data[optionsInfoObj.optionValInfo.optTxt]
@@ -683,44 +683,44 @@
 
         // 페이지가 열릴때 기본옵션 선택 (기준 : 값)
         $(optionsInfoObj.comboInfo.targetId).empty().html(inputOptionHtml);
-        if (!validateFns.isEmpty(optionsInfoObj.optionValInfo.defaultVal)) {
+        if (!on.valid.isEmpty(optionsInfoObj.optionValInfo.defaultVal)) {
             if ($(optionsInfoObj.comboInfo.targetId).length > 0) {
                 $(optionsInfoObj.comboInfo.targetId).val(optionsInfoObj.optionValInfo.defaultVal)
             }
         }
 
         // 페이지가 열릴때 기본옵션 선택 (기준 : index)
-        if (!validateFns.isEmpty(optionsInfoObj.optionValInfo.defaultIndex)) {
+        if (!on.valid.isEmpty(optionsInfoObj.optionValInfo.defaultIndex)) {
             if ($(optionsInfoObj.comboInfo.targetId).length > 0) {
                 $(optionsInfoObj.comboInfo.targetId + " option:eq(" + optionsInfoObj.optionValInfo.defaultIndex + ")").prop("selected", true);
             }
         }
 
         // CallBack Function
-        if(!validateFns.isEmpty( optionsInfoObj.callBackFn) && typeof optionsInfoObj.callBackFn === 'function'){
+        if(!on.valid.isEmpty( optionsInfoObj.callBackFn) && typeof optionsInfoObj.callBackFn === 'function'){
             optionsInfoObj.callBackFn.call(this, optionsInfoObj );
         }
     },
 
     DynaGenRadio(radioOptionObj) {
 
-        if (validateFns.isEmpty(radioOptionObj.radioInfo.targetId)) return false;
-        if (!validateFns.isEmpty(radioOptionObj.radioInfo.classNm)) {
+        if (on.valid.isEmpty(radioOptionObj.radioInfo.targetId)) return false;
+        if (!on.valid.isEmpty(radioOptionObj.radioInfo.classNm)) {
             $(radioOptionObj.radioInfo.targetId).addClass(radioOptionObj.radioInfo.classNm);
         }
 
-        var radioId = validateFns.isEmpty(radioOptionObj.radioProp.radioId) ? "tmpRadioId" : radioOptionObj.radioProp.radioId;
-        var radioNm = validateFns.isEmpty(radioOptionObj.radioProp.radioNm) ? "tmpRadioNm" : radioOptionObj.radioProp.radioNm;
-        var radioClassNm = validateFns.isEmpty(radioOptionObj.radioProp.classNm) ? " " : radioOptionObj.radioProp.classNm;
-        var radioStyle = validateFns.isEmpty(radioOptionObj.radioProp.style) ? " " : radioOptionObj.radioProp.style;
-        var radioPrefix = validateFns.isEmpty(radioOptionObj.radioProp.prefix) ? "" : radioOptionObj.radioProp.prefix;
-        var radioSuffix = validateFns.isEmpty(radioOptionObj.radioProp.suffix) ? "" : radioOptionObj.radioProp.suffix;
+        var radioId = on.valid.isEmpty(radioOptionObj.radioProp.radioId) ? "tmpRadioId" : radioOptionObj.radioProp.radioId;
+        var radioNm = on.valid.isEmpty(radioOptionObj.radioProp.radioNm) ? "tmpRadioNm" : radioOptionObj.radioProp.radioNm;
+        var radioClassNm = on.valid.isEmpty(radioOptionObj.radioProp.classNm) ? " " : radioOptionObj.radioProp.classNm;
+        var radioStyle = on.valid.isEmpty(radioOptionObj.radioProp.style) ? " " : radioOptionObj.radioProp.style;
+        var radioPrefix = on.valid.isEmpty(radioOptionObj.radioProp.prefix) ? "" : radioOptionObj.radioProp.prefix;
+        var radioSuffix = on.valid.isEmpty(radioOptionObj.radioProp.suffix) ? "" : radioOptionObj.radioProp.suffix;
 
         var radioHtml = "";
-        if (!validateFns.isEmpty(radioOptionObj.radioDataInfo)) {
-            var optCode = validateFns.isEmpty(radioOptionObj.optionValInfo.optCode) ? "code" : radioOptionObj.optionValInfo.optCode;
-            var optNm = validateFns.isEmpty(radioOptionObj.optionValInfo.optTxt) ? "text" : radioOptionObj.optionValInfo.optTxt;
-            var optDefault = validateFns.isEmpty(radioOptionObj.optionValInfo.defaultVal) ? "" : radioOptionObj.optionValInfo.defaultVal;
+        if (!on.valid.isEmpty(radioOptionObj.radioDataInfo)) {
+            var optCode = on.valid.isEmpty(radioOptionObj.optionValInfo.optCode) ? "code" : radioOptionObj.optionValInfo.optCode;
+            var optNm = on.valid.isEmpty(radioOptionObj.optionValInfo.optTxt) ? "text" : radioOptionObj.optionValInfo.optTxt;
+            var optDefault = on.valid.isEmpty(radioOptionObj.optionValInfo.defaultVal) ? "" : radioOptionObj.optionValInfo.defaultVal;
 
             $.each(radioOptionObj.radioDataInfo, function (indx, arrVal) {
 
@@ -754,8 +754,8 @@
     getMonthComboOptions : function() {
         var monthOptionHtml = '';
         for (var i = 1; i <= 12; i++) {
-            if (i == 1) monthOptionHtml += '<option value="' + stringFns.lPad(i, 2, "0") + '" selected="selected">' + i + '월</option>';
-            else monthOptionHtml += '<option value="' + stringFns.lPad(i, 2, "0") + '">' + i + '월</option>';
+            if (i == 1) monthOptionHtml += '<option value="' + on.str.lPad(i, 2, "0") + '" selected="selected">' + i + '월</option>';
+            else monthOptionHtml += '<option value="' + on.str.lPad(i, 2, "0") + '">' + i + '월</option>';
         }
         return monthOptionHtml;
     },
@@ -764,8 +764,8 @@
     getHourComboOptions : function () {
         let hourOptionHtml = '';
         for (let i = 0; i <= 23; i++) {
-            if (i == 0) hourOptionHtml += '<option value="' + stringFns.lPad(i, 2, "0") + '" selected="selected">' + stringFns.lPad(i, 2, "0") + '시</option>';
-            else hourOptionHtml += '<option value="' + stringFns.lPad(i, 2, "0") + '">' + stringFns.lPad(i, 2, "0") + '시</option>';
+            if (i == 0) hourOptionHtml += '<option value="' + on.str.lPad(i, 2, "0") + '" selected="selected">' + on.str.lPad(i, 2, "0") + '시</option>';
+            else hourOptionHtml += '<option value="' + on.str.lPad(i, 2, "0") + '">' + on.str.lPad(i, 2, "0") + '시</option>';
         }
         return hourOptionHtml;
     },
@@ -773,8 +773,8 @@
     get10minuteComboOptions() {
         let minuteOptionHtml = '';
         for (let i = 0; i <= 50;) {
-            if (i == 0) minuteOptionHtml += '<option value="' + stringFns.lPad(i, 2, "0") + '" selected="selected">' + stringFns.lPad(i, 2, "0") + '분</option>';
-            else minuteOptionHtml += '<option value="' + stringFns.lPad(i, 2, "0") + '">' + stringFns.lPad(i, 2, "0") + '분</option>';
+            if (i == 0) minuteOptionHtml += '<option value="' + on.str.lPad(i, 2, "0") + '" selected="selected">' + on.str.lPad(i, 2, "0") + '분</option>';
+            else minuteOptionHtml += '<option value="' + on.str.lPad(i, 2, "0") + '">' + on.str.lPad(i, 2, "0") + '분</option>';
             i = i + 10;
         }
         return minuteOptionHtml;
@@ -782,9 +782,9 @@
 
     /*  년도 옵션 생성 */
     GetYearComboOptions(yearOptObj) {
-        if (validateFns.isEmpty(comboInfoObj.targetId)) return false;
-        let beginYear = Number(validateFns.isEmpty(comboInfoObj.years.beginYear) ?  dateFns.getYear() : comboInfoObj.years.beginYear);
-        let finishYear = Number(validateFns.isEmpty(comboInfoObj.years.finishYear) ? dateFns.getYear() : comboInfoObj.years.finishYear);
+        if (on.valid.isEmpty(comboInfoObj.targetId)) return false;
+        let beginYear = Number(on.valid.isEmpty(comboInfoObj.years.beginYear) ?  dateFns.getYear() : comboInfoObj.years.beginYear);
+        let finishYear = Number(on.valid.isEmpty(comboInfoObj.years.finishYear) ? dateFns.getYear() : comboInfoObj.years.finishYear);
 
 
         var termYears = finishYear - beginYear;  // targetYear을 지정하지 않으면 기본조회기간은 현재년도 - 5년이다.
@@ -794,10 +794,10 @@
         var addOpVal = "";
         var addDefaultVal = "";
 
-        if (!validateFns.isEmpty(comboInfoObj.addOption)) {
-            addOpPosition = stringFns.nvl(comboInfoObj.addOption.position, "");
-            addOpTxt = stringFns.nvl(comboInfoObj.addOption.opTxt, "선택");
-            addOpVal = stringFns.nvl(comboInfoObj.addOption.opVal, " ");
+        if (!on.valid.isEmpty(comboInfoObj.addOption)) {
+            addOpPosition = on.str.nvl(comboInfoObj.addOption.position, "");
+            addOpTxt = on.str.nvl(comboInfoObj.addOption.opTxt, "선택");
+            addOpVal = on.str.nvl(comboInfoObj.addOption.opVal, " ");
             addDefaultVal = comboInfoObj.addOption.defaultSelVal;
         }
 
@@ -814,14 +814,14 @@
 
 
         $(comboInfoObj.targetId).html(yearOptionHtml);
-        if (!validateFns.isEmpty(addDefaultVal)) $(comboInfoObj.targetId).val(addDefaultVal);
+        if (!on.valid.isEmpty(addDefaultVal)) $(comboInfoObj.targetId).val(addDefaultVal);
     },
 
     /*****  Document의 값 수집 ****/
     getEleVal : function(ele) {
 
         var eleVal;
-        var eleDiv = opnt.html.getEleType($(ele));
+        var eleDiv = on.html.getEleType($(ele));
         if (eleDiv == "text" || eleDiv == "number") {
             eleVal = $(ele).val();
         } else if (eleDiv == "hidden") {
@@ -837,19 +837,19 @@
         } else if (eleDiv == "textarea") {
             eleVal = $(ele).val();
         } else if (eleDiv == "password") {
-            eleVal = opnt.enc.encrypt({ encVal : $(ele).val() });
+            eleVal = on.enc.encrypt({ encVal : $(ele).val() });
         }
         return eleVal;
     },
     setEleVal : function(setObj) {
 
-        if(validateFns.isEmpty(setObj.ele) ){
+        if(on.valid.isEmpty(setObj.ele) ){
             console.log("Set element Id를 지정하세요.");
             return false;
         }
 
         var eleVal = setObj.val;
-        var eleDiv = htmlFns.getEleType($(setObj.ele));
+        var eleDiv = on.html.getEleType($(setObj.ele));
         if (eleDiv == "text" || eleDiv == "number") {
             $(setObj.ele).val(eleVal);
         } else if (eleDiv == "hidden") {
@@ -900,7 +900,7 @@
                                      , dateFormat : "yy.mm.dd"  // Option (default : "yy.mm.dd" )
            });
         */
-        if (validateFns.isEmpty(dataPickersObj.targets)) {
+        if (on.valid.isEmpty(dataPickersObj.targets)) {
             console.log("개발자요류 dataPickersObj.targets 없음 ");
             return false;
         }
@@ -946,7 +946,7 @@
 
         var ableImgMimeTypeArr = ["gif", "jpg", "jpeg", "tiff", "png"];
         if ($(preViewObj.fileEle).length == 0 || $(preViewObj.preViewEle).length == 0) return false;
-        if ( htmlFns.getEleType($(preViewObj.fileEle)) != "file") return false;
+        if ( on.html.getEleType($(preViewObj.fileEle)) != "file") return false;
 
         var isRegisterAble = fileFns.fileExecAllowed(preViewObj.fileEle, "image");
         if (!isRegisterAble) {
@@ -963,7 +963,7 @@
         }
         reader.readAsDataURL(fileObj);
 
-        if (!validateFns.isEmpty(preViewObj.filePathEle)) {
+        if (!on.valid.isEmpty(preViewObj.filePathEle)) {
             $(preViewObj.filePathEle).val(fileObj.name);
         }
         return true;
@@ -1007,9 +1007,9 @@
     }
     , serializeDataArray(dataInfo){
         /* 특정 Element 하위의 입력속성 객체를 serializeArray 하여 반환한다. */
-         if( opnt.valid.isEmpty(dataInfo.target) ) return false;
+         if( on.valid.isEmpty(dataInfo.target) ) return false;
 
-         let targetEleType = opnt.html.getEleType(dataInfo.target);
+         let targetEleType = on.html.getEleType(dataInfo.target);
          let serializeArrData;
          if(targetEleType === "form"){
              serializeArrData = $(dataInfo.target).serializeArray();
@@ -1020,7 +1020,7 @@
                  let findObject = $.grep(serializeArrData, function(obj) {
                      return obj.name === inputPassword.name;
                  });
-                 findObject[0].value = opnt.enc.encrypt({ennVal : findObject[0].value });
+                 findObject[0].value = on.enc.encrypt({ennVal : findObject[0].value });
              }
 
              // 입력 Type TextArea (CkEditor , NaverEditor 등등...)
@@ -1037,7 +1037,7 @@
                  let findObject = $.grep(serializeArrData, function(obj) {
                      return obj.name === inputPassword.name;
                  });
-                 findObject[0].value = opnt.enc.encrypt({encVal : findObject[0].value });
+                 findObject[0].value = on.enc.encrypt({encVal : findObject[0].value });
              }
 
              // 입력 Type TextArea (CkEditor , NaverEditor 등등...)

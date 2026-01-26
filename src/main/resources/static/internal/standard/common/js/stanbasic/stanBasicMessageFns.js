@@ -1,6 +1,9 @@
 const messageFns = {
-    // 공통 Alert 메세지 (시스템 메세지 팝업으로 일괄변경 대비)
+    // 공통 Alert 메세지 (alert 메세지 일괄성)
     alertMsg (msgObj) {
+        alert(msgObj.message);
+    }
+    , showMsg (msgObj) { // 공통 팝업 메세지 (시스템 메세지 팝업으로 일괄변경 가능)
         alert(msgObj.message);
     }
     // 공통 Confirm 메세지 (시스템 메세지 팝업으로 일괄변경 대비)
@@ -9,7 +12,7 @@ const messageFns = {
     }
     // Progress Bar 띄우기
     ,showProgressBar() {
-        opnt.msg.consoleLog('opntShowProgressBar');
+        on.msg.consoleLog('opntShowProgressBar');
         /*
         var progresHtml = `<div class="loading_wrap entire">
                                     <div class="loading_box">
@@ -26,18 +29,18 @@ const messageFns = {
     }
     // Progress Bar 닫기
     , hideProgressBar() {
-        opnt.msg.consoleLog('opntHideProgress');
+        on.msg.consoleLog('opntHideProgress');
         //if (typeof $.unblockUI != "undefined") {
         //    $.unblockUI();
         //}
     }
     // Progress Circle 띄우기
     , showProgressCircle() {
-        opnt.msg.consoleLog('showProgressCircle');
+        on.msg.consoleLog('showProgressCircle');
     }
     // Progress Circle 닫기
     , hideProgressCircle() {
-        opnt.msg.consoleLog('hideProgressCircle');
+        on.msg.consoleLog('hideProgressCircle');
     }
     // 웹브라우저 console.log (기록남기기)
     , consoleLog (message){

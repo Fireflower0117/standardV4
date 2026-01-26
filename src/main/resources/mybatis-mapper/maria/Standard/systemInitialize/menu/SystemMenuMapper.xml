@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="on.standard.systeminit.menu">
+
+    <select id="selectMenuByUrl"  parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.systeminit.menu.selectMenuByUrl */
+        SELECT SMMH.DIV_CD
+             , SMMH.MENU_SERNO
+             , SMMH.MENU_CD
+             , SMMH.UPR_MENU_CD
+             , SMMH.KOR_NM
+             , SMMH.MENU_PARAM
+             , SMMH.LAY_OUT
+             , SMMH.URL_ADDR
+             , SMMH.SORT_NO
+             , SMMH.USE_YN
+             , SMMH.LEVEL
+             , SMMH.SORT_PATH
+             , SMMH.MENU_PATH
+             , SMMH.MENU_CD_PATH
+        FROM SVI_MENU_MNG_HIERARCHY SMMH
+        WHERE SMMH.URL_ADDR = #{pageUrl}
+    </select>
+
+</mapper>
