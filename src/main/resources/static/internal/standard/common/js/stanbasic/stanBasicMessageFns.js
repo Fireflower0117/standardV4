@@ -1,3 +1,5 @@
+(function(window) {
+
 const messageFns = {
     // 공통 Alert 메세지 (alert 메세지 일괄성)
     alertMsg (msgObj) {
@@ -49,5 +51,6 @@ const messageFns = {
 
 
 }
+    window.messageFns = messageFns;
 
-export default messageFns;
+})(window);

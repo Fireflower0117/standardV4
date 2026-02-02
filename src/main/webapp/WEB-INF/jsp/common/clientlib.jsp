@@ -3,33 +3,45 @@
 
 <link rel="icon" href="<c:out value='${pageContext.request.contextPath}'/>/internal/project/images/common/favicon.png" type="image/x-icon">
 
-<!-- 외부에가 가져온 라이브러리 --> 
-<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.js"></script>
+<!-- 외부에가 가져온 라이브러리 -->
+<%--<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.js"></script>
 <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/ckeditor/ckeditor.js?ver=1"></script>
 <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/html2canvas/html2canvas.js"></script>
 <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/clipboard/clipboard.min.js"></script>
 <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/sha/sha512.js"></script>
-<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/simplebar/simplebar.min.js"></script>   
-<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/swiper/swiper-bundle.min.js"></script> 
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/simplebar/simplebar.min.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/swiper/swiper-bundle.min.js"></script>
 <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/aos/aos.js"></script>
 <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.css">
 <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/aos/aos.css">
 <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/swiper/swiper-bundle.min.css">
-<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/simplebar/simplebar.min.css"> 
+<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/simplebar/simplebar.min.css">--%>
 
 
 <!-- 오픈노트 표준 라이브러리 -->
-<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/css/basic.css">
+<%--<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/css/basic.css">
 <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/css/board.css">
 <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/css/common.css">
-<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/css/member.css">  
-<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/js/cm.validate.js"></script> 
+<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/css/member.css">
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/js/cm.validate.js"></script>
 <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/js/basic.js"></script>
 <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/js/board.js"></script>
-<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/js/atchFile.js"></script>  
-<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/js/common.js"></script> 
-<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/js/clientbase.js"></script> 
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/js/atchFile.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/js/common.js"></script>--%>
+
+
+<!-- Client Base -->
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/stanbasic/stanBasicXhrFns.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/stanbasic/stanBasicStringFns.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/stanbasic/stanBasicValidFns.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/stanbasic/stanBasicMessageFns.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/stanbasic/stanBasicHostFns.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/stanbasic/stanBasicHtmlFns.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/stanbasic/stanBasicDateFns.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/stanbasic/stanBasicFileFns.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/stanbasic/stanBasicEncryptionFns.js"></script>
+<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/clientbase.js"></script>
 
 <!-- 프로젝트에서 생성한 라이브러리 -->
 <!--script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/project/........"></script -->

@@ -1,3 +1,4 @@
+(function(window) {
 
 const xhrFns = {
 
@@ -50,13 +51,15 @@ const xhrFns = {
              *  ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
              */
 
-            var isReturn = true;
 
-            var ajaxPostOptions = {data: {}};
+
+            let isReturn = true;
+            let ajaxPostOptions = {data: {}};
             /* Custom Success Function Init */
 
             if (!on.valid.isEmpty(callAjaxObj.successFn) && typeof callAjaxObj.successFn === 'function') {
                 ajaxPostOptions.success = function (rs) {
+
                     if (typeof callAjaxObj.sid == "string") {
                         isReturn = false;
                         callAjaxObj.successFn(callAjaxObj.sid, rs);
@@ -70,10 +73,41 @@ const xhrFns = {
             /* Custom Fail Function Init */
             if (!on.valid.isEmpty(callAjaxObj.failFn) && typeof callAjaxObj.failFn === 'function') {
                 ajaxPostOptions.error = function (errObj, errMsg, errCause) {
+
                     isReturn = false;
                     callAjaxObj.failFn(errObj, errMsg, errCause);
                 }
             }
+
+
+
+            // form 데이터 유효성 검증
+            if(!on.valid.isEmpty(callAjaxObj.validation)){
+
+                if(on.valid.isEmpty(callAjaxObj.validation.formId)){
+                    on.msg.consoleLog( "유효성 검증은 formId입력이 필수입니다.")
+                    return false;
+                }
+
+                if(on.valid.isEmpty(callAjaxObj.validation.validationList)){
+                    on.msg.consoleLog( "유효성 검증은 검증대상 입력이 필수입니다.")
+                    return false;
+                }
+
+                const isValid = on.valid.formValidationCheck({ formId: callAjaxObj.validation.formId
+                    , validateList : callAjaxObj.validation.validationList
+                    ,  callbackFn : ajaxPostOptions.success });
+                if (!isValid) {
+                    return false;
+                }
+
+            }
+
+
+
+
+
+
 
             /* callAjaxObj.url */
             if(!on.valid.isEmpty(callAjaxObj.url)){
@@ -91,85 +125,122 @@ const xhrFns = {
                 ajaxPostOptions.contentType = on.str.nvl( callAjaxObj.contentType  , "application/x-www-form-urlencoded;charset=UTF-8");
             }
             else {
+
+
                 /* Ajax 호출 기본값 SelectList */
-                var sqlCmd = on.str.nvl(callAjaxObj.cmd, "selectList");
-                if (sqlCmd == "selectPage") {
+                let sqlCmd = on.str.nvl(callAjaxObj.cmd, "selectList");
+                if (sqlCmd === "selectPage") {
 
                     // sql Attribute 없으면 return
                     if (on.valid.isEmpty(callAjaxObj.sql)) return {};
 
                     //ajaxPostOptions.url = getContextPath() +'/query/json?qid='+ callAjaxObj.sql+'_page';
                     ajaxPostOptions.url = '/com/query/selectList.ajx?qid=' + callAjaxObj.sql;
-                    var pageNo = Number(on.str.nvl(callAjaxObj.pageNo, 1));
-                    var pageSize = Number(on.str.nvl(callAjaxObj.pageSize, 10));
+                    let pageNo = Number(on.str.nvl(callAjaxObj.pageNo, 1));
+                    let pageSize = Number(on.str.nvl(callAjaxObj.pageSize, 10));
                     ajaxPostOptions.data.rn_bottom = (pageNo * pageSize) - pageSize;
                     ajaxPostOptions.data.rn_top = (pageNo * pageSize);
                     ajaxPostOptions.data.rn_deorder = ajaxPostOptions.data.rn_bottom + ajaxPostOptions.data.rn_top;
 
                     for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key != "successFn" && key != "failFn") {
+                        if (key !== "successFn" && key !== "failFn") {
                             ajaxPostOptions.data[key] = value;
                         }
                     }
-                } else if (sqlCmd == "selectList") {
+                } else if (sqlCmd === "selectList") {
                     // sql Attribute 없으면 return
                     if (on.valid.isEmpty(callAjaxObj.sql)) return {};
 
                     ajaxPostOptions.url = '/com/query/selectList.ajx?qid=' + callAjaxObj.sql;
                     for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key != "successFn" && key != "failFn") {
+                        if (key !== "successFn" && key !== "failFn" && key !== "sql" && key !== "cmd"  && key !== "validation") {
                             ajaxPostOptions.data[key] = value;
                         }
                     }
-                } else if (sqlCmd == "selectOne") {
+                } else if (sqlCmd === "selectOne") {
 
                     // sql Attribute 없으면 return
                     if (on.valid.isEmpty(callAjaxObj.sql)) return {};
 
                     ajaxPostOptions.url = '/com/query/selectOne.ajx?qid=' + callAjaxObj.sql;
                     for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key != "successFn" && key != "failFn") {
+                        if (key !== "successFn" && key !== "failFn" && key !== "sql" && key !== "cmd"  && key !== "validation") {
                             ajaxPostOptions.data[key] = value;
                         }
                     }
-                } else if (sqlCmd == "multiSelect") {
+                } else if (sqlCmd === "multiSelect") {
                     ajaxPostOptions.url = '/com/query/multiSelect.ajx';
                     for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key != "successFn" && key != "failFn") {
+                        if (key !== "successFn" && key !== "failFn" && key !== "sql" && key !== "cmd"  && key !== "validation") {
                             ajaxPostOptions.data[key] = value;  // selectTargets Only
                         }
                     }
-                } else if (sqlCmd == "insert") {
+                } else if (sqlCmd === "insert") {
 
                     // sql Attribute 없으면 return
-                    if (on.valid.isEmpty(callAjaxObj.sql)) return {};
+                    if (on.valid.isEmpty(callAjaxObj.sql)){
+                        on.msg.consoleLog("cmd(insert)를 입력하면 sql은 필수입력입니다.", )
+                        return {};
+                    }
+
+                    if(!on.valid.isEmpty(callAjaxObj.data)){
+                        if( Array.isArray(callAjaxObj.data) === true ){
+                            for(let dataObj of callAjaxObj.data){
+                                ajaxPostOptions.data[dataObj.name] = dataObj.value;
+                            }
+                        }
+                    }
 
                     ajaxPostOptions.url = '/com/query/insert.ajx?qid=' + callAjaxObj.sql;
                     for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key != "successFn" && key != "failFn") {
+                        if (key !== "successFn" && key !== "failFn" && key !== "data" && key !== "sql" && key !== "cmd"  && key !== "validation" ) {
                             ajaxPostOptions.data[key] = value;
                         }
                     }
-                } else if (sqlCmd == "update") {
+                } else if (sqlCmd === "update") {
 
                     // sql Attribute 없으면 return
-                    if (on.valid.isEmpty(callAjaxObj.sql)) return {};
+                    if (on.valid.isEmpty(callAjaxObj.sql)){
+                        on.msg.consoleLog("cmd(update)를 입력하면 sql은 필수입력입니다.", )
+                        return {};
+                    }
+
+                    if(!on.valid.isEmpty(callAjaxObj.data)){
+                        if( Array.isArray(callAjaxObj.data) === true ){
+                            for(let dataObj of callAjaxObj.data){
+                                ajaxPostOptions.data[dataObj.name] = dataObj.value;
+                            }
+                        }
+                    }
 
                     ajaxPostOptions.url = '/com/query/update.ajx?qid=' + callAjaxObj.sql;
                     for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key != "successFn" && key != "failFn") {
+                        if (key !== "successFn" && key !== "failFn" && key !== "data" && key !== "sql" && key !== "cmd"  && key !== "validation" ) {
                             ajaxPostOptions.data[key] = value;
                         }
                     }
+
+
                 }
-                else if (sqlCmd == "delete") {
+                else if (sqlCmd === "delete") {
 
                     // sql Attribute 없으면 return
-                    if (on.valid.isEmpty(callAjaxObj.sql)) return {};
+                    if (on.valid.isEmpty(callAjaxObj.sql)){
+                        on.msg.consoleLog("cmd(delete)를 입력하면 sql은 필수입력입니다.", )
+                        return {};
+                    }
+
+                    if(!on.valid.isEmpty(callAjaxObj.data)){
+                        if( Array.isArray(callAjaxObj.data) === true ){
+                            for(let dataObj of callAjaxObj.data){
+                                ajaxPostOptions.data[dataObj.name] = dataObj.value;
+                            }
+                        }
+                    }
 
                     ajaxPostOptions.url = '/com/query/delete.ajx?qid=' + callAjaxObj.sql;
                     for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key != "successFn" && key != "failFn") {
+                        if (key !== "successFn" && key !== "failFn" && key !== "data" && key !== "sql" && key !== "cmd"  && key !== "validation" ) {
                             ajaxPostOptions.data[key] = value;
                         }
                     }
@@ -193,8 +264,8 @@ const xhrFns = {
 
 
 
-            var resultData = {};
-            var baseAjaxObj = {
+            let resultData = {};
+            let baseAjaxObj = {
                  type: "post"
                 , async: false
                 , dataType: "json"
@@ -214,7 +285,7 @@ const xhrFns = {
                 }
             }
 
-            var targetObj = $.extend(true, baseAjaxObj, ajaxPostOptions);
+            let targetObj = $.extend(true, baseAjaxObj, ajaxPostOptions);
             $.ajax(targetObj);
             if (isReturn) return resultData;
         }
@@ -225,7 +296,7 @@ const xhrFns = {
                 let eleType = htmlFns.getEleType("#" + key);
                 let eleVal = searchCondiObj[key];
 
-                if (!validateFns.isEmpty(eleType)) {
+                if (!on.valid.isEmpty(eleType)) {
                     if (eleType == "radio") {
                         //$("#"+name+"[value='"+eleVal+"']").prop("checked", true).attr("checked", true);
                         $("#" + key + "[value='" + eleVal + "']").prop("checked", true).attr("checked", true);
@@ -240,7 +311,50 @@ const xhrFns = {
                     }
                 }
             });
-        }
-}
+      }
 
-export default xhrFns;
+      ,  ajaxComCdList (conditions){
+
+
+               // 필수입력값 검증
+               if( on.valid.isEmpty(conditions?.condiList) ) return null;
+
+               // 유효성 검증
+               let isValidation = true;
+               for(let condiObj of conditions.condiList){
+                   if( on.valid.isEmpty(condiObj.rsId)  ){
+                       on.msg.consoleLog("rsId, sqlCondi는 필수입력값입니다.");
+                       isValidation = false;
+                       break;
+                   }
+                   // SQL기본 공통코드 조회
+                   condiObj.sql = on.valid.isEmpty(condiObj.sql) ? "on.standard.system.comcode.selectComCode" : condiObj.sql;
+
+                   // sid 설정안하면 rslt가 sid가됨
+                   condiObj.sid = on.valid.isEmpty(condiObj.sid) ? condiObj.rsId : condiObj.sid;
+
+                   // cmd 입력안하면 기본적으로 selectList
+                   condiObj.cmd = on.valid.isEmpty(condiObj.cmd) ? "selectList" : condiObj.cmd;
+
+                   // sqlCondi 입력안하면 기본적으로 Object
+                   condiObj.sqlCondi = on.valid.isEmpty(condiObj.sqlCondi) ? {} : condiObj.sqlCondi;
+
+
+               }
+               if(isValidation === false) return null;
+
+               // 공통코드 Data호출
+               let rsltObj = new Object();
+               on.xhr.ajax({sid : "comCdList" , async : false ,  cmd : "multiSelect", selectTargets : conditions.condiList
+                   , successFn : function(sid , rs){
+                       for(let sqlRslt of rs) {
+                           rsltObj[sqlRslt.rsId] = sqlRslt[sqlRslt.rsId];
+                       }
+                   }
+               });
+               return rsltObj
+      }
+}
+    window.xhrFns = xhrFns;
+
+})(window);

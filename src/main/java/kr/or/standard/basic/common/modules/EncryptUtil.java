@@ -1,4 +1,4 @@
-package kr.or.standard.basic.module;
+package kr.or.standard.basic.common.modules;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

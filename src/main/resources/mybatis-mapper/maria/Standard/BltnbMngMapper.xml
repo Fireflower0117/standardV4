@@ -41,7 +41,7 @@
 	</sql>
 	
 	<!-- 게시글 건수 조회 -->
-	<select id="selectContentCount" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectContentCount" parameterType="bltnbVO" resultType="bltnbVO">
 		/* basic.BltnbMngMapper.selectContentCount */
 		SELECT COUNT(1) rowCnt
 		  FROM T_BLTNB_MNG A
@@ -56,10 +56,10 @@
 		   AND A.BLTNB_CL = #{bltnbCl}
 		   AND A.USE_YN = 'Y'
 		</where>
-	</select>
+	</select -->
 	
 	<!-- 게시글 목록 조회 -->
-	<select id="selectContentList" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectContentList" parameterType="bltnbVO" resultType="bltnbVO">
 		/* basic.BltnbMngMapper.selectContentList */
 		SELECT 
 			   A.BLTNB_SERNO									bltnbSerno
@@ -116,10 +116,10 @@
 	  	 </if>
 	  		   A.BLTNB_SERNO DESC
 		 LIMIT #{firstRecordIndex} , #{recordCountPerPage}
-	</select>
+	</select -->
 	
 	<!-- 게시글 Excel 목록 조회 -->
-	<select id="selectExcelList" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectExcelList" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbMngMapper.selectExcelList */
 		SELECT 
 			   IFNULL(FNC_USER_NM(A.REGR_SERNO),'-')						regrSerno
@@ -161,10 +161,10 @@
 	  		   ntiCheck DESC ,
 	  	 </if>
 	  		   A.BLTNB_SERNO DESC
-	</select>
+	</select -->
 	
 	<!-- 게시글 상세조회 -->
-	<select id="selectContents" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectContents" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbMngMapper.selectContents */
 		SELECT 
 		       A.BLTNB_SERNO							bltnbSerno
@@ -199,10 +199,10 @@
 		   AND A.BLTNB_CL = #{bltnbCl}
 		   AND A.USE_YN = 'Y'
 		</where>
-	</select>
+	</select -->
 	
 	<!-- 게시글 비밀번호 조회 -->
-	<select id="getBltnbPswd" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="getBltnbPswd" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbMngMapper.getBltnbPwsd */
 		SELECT 
 			   BLTNB_PSWD bltnbPswd
@@ -211,10 +211,10 @@
 		       BLTNB_SERNO = #{bltnbSerno}
 		   AND USE_YN = 'Y'
 		 </where>
-	</select>
+	</select -->
 	
 	<!-- 게시글 등록자 체크 -->
-	<select id="regrCheck" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="regrCheck" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbMngMapper.regrCheck */
 		SELECT 
 		 <if test="path1 != null and path1 !=''"> 
@@ -234,10 +234,10 @@
 		       BLTNB_SERNO = #{bltnbSerno}
 		   AND USE_YN = 'Y'
 		 </where>
-	</select>
+	</select -->
 	
 	<!-- 댓글 등록자 체크 -->
-	<select id="regrReplCheck" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="regrReplCheck" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbMngMapper.regrReplCheck */
 		SELECT 
 		       CASE WHEN REGR_SERNO = #{ftLoginSerno} THEN 1
@@ -248,12 +248,12 @@
 		       REPL_SERNO = #{replSerno}
 		   AND USE_YN = 'Y'
 		 </where>
-	</select>
+	</select -->
 	
 	
 	
 	<!-- 게시글 이전글 다음글 -->
-	<select id="selectPrevNextContents" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectPrevNextContents" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbMngMapper.selectPrevNextContents */
         ( SELECT 
                  A.BLTNB_SERNO 		serno
@@ -279,10 +279,10 @@
              </where>
 	    ORDER BY B.BLTNB_SERNO ASC 
 	       LIMIT 1 )
-	</select>
+	</select -->
 	
 	<!-- 게시글 등록 -->
-	<insert id="insertContents" parameterType="bltnbVO">
+	<!-- insert id="insertContents" parameterType="bltnbVO">
 		/* BltnbMngMapper.insertContents */
 		INSERT INTO T_BLTNB_MNG(
 				MENU_CD
@@ -341,10 +341,10 @@
 			</if> 
 		</if>
 		) 
-	</insert>
+	</insert -->
 	
 	<!-- 게시글 수정 -->
-	<update id="updateContents" parameterType="bltnbVO">
+	<!-- update id="updateContents" parameterType="bltnbVO">
 		/* BltnbMngMapper.updateContents */
 		UPDATE T_BLTNB_MNG
 		   SET BLTNB_TITL 		= #{bltnbTitl}	
@@ -383,10 +383,10 @@
 		   AND BLTNB_CL = #{bltnbCl}
 		   AND USE_YN   = 'Y'
 	    </where>
-	</update>
+	</update -->
 	
 	<!-- 게시글 삭제 -->
-	<update id="deleteContents" parameterType="bltnbVO">
+	<!-- update id="deleteContents" parameterType="bltnbVO">
 		/* BltnbMngMapper.deleteContents */
 		UPDATE T_BLTNB_MNG
 		   SET USE_YN 	= 'N'
@@ -395,11 +395,11 @@
 		   AND MENU_CD	= #{menuCd}
 		   AND BLTNB_CL = #{bltnbCl}
 	  </where>
-	</update>
+	</update -->
 	
 	
 	<!-- 추천 생성 -->
-	<insert id="insertLikeContents" parameterType="bltnbVO" useGeneratedKeys="true" keyProperty="rcmdSerno">
+	<!-- insert id="insertLikeContents" parameterType="bltnbVO" useGeneratedKeys="true" keyProperty="rcmdSerno">
 		/* BltnbMngMapper.insertLikeContents */
 		<selectKey keyProperty="rcmdSerno" order="AFTER" resultType="java.lang.String">
             SELECT IFNULL(MAX(RCMD_SERNO),1) FROM T_BLTNB_RCMD_MNG
@@ -417,10 +417,10 @@
 				  , #{ftLoginSerno}
 				  , NOW()
 				  )
-	</insert>
+	</insert -->
 	
 	<!-- 추천 수정 -->
-	<update id="updateLikeContents" parameterType="bltnbVO">
+	<!-- update id="updateLikeContents" parameterType="bltnbVO">
 		/* BltnbMngMapper.updateLikeContents */
 		UPDATE T_BLTNB_RCMD_MNG
 		   SET
@@ -433,10 +433,10 @@
 		   AND REGR_SERNO 	= #{ftLoginSerno}
 		   AND USE_YN 		= 'Y'
 	  </where>	
-	</update>
+	</update -->
 	
 	<!-- 추천 삭제 -->
-	<update id="deleteLikeContents" parameterType="bltnbVO">
+	<!-- update id="deleteLikeContents" parameterType="bltnbVO">
 		/* BltnbMngMapper.deleteLikeContents */
 		UPDATE T_BLTNB_RCMD_MNG
 		   SET
@@ -448,10 +448,10 @@
 		   AND BLTNB_SERNO  = #{bltnbSerno}
 		   AND REGR_SERNO 	= #{ftLoginSerno}
 	  </where>	
-	</update>
+	</update -->
 	
 	<!-- 추천 조회 -->
-	<select id="selectLikeContents" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectLikeContents" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbMngMapper.selectLikeContents */
 		SELECT 
 			   RCMD_SERNO  	rcmdSerno
@@ -463,10 +463,10 @@
 		   AND REGR_SERNO 	= #{ftLoginSerno}
 		   AND USE_YN 	    = 'Y'
 	  </where>
-	</select>
+	</select -->
 	
 	<!-- 추천 카운터 -->
-	<select id="selectLikeCounts" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectLikeCounts" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbMngMapper.selectLikeCounts */
 		SELECT 
 			   IFNULL(SUM(IF(A.RCMD_YN = 'Y',1, 0)),0)  rcmdYCnt
@@ -484,10 +484,10 @@
 		   AND A.BLTNB_SERNO = #{bltnbSerno}
 		   AND A.USE_YN 	 = 'Y'
 	  </where>
-	</select>
+	</select -->
 	
 	<!-- 댓글 건수 조회 -->
-	<select id="selectReplCount" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectReplCount" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbReplMngMapper.selectReplCount */
 	 	SELECT 
 			   COUNT(1) rowCnt
@@ -497,10 +497,10 @@
 		   AND UPR_REPL_SERNO IS NULL 
 		   AND USE_YN = 'Y'
 		  </where>
-	</select>
+	</select -->
 	
 	<!-- 댓글 상세 조회 -->
-	<select id="selectReplContents" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectReplContents" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbReplMngMapper.selectReplContents */
 		SELECT 
 			   REPL_SERNO								replSerno		
@@ -513,10 +513,10 @@
 		       BLTNB_SERNO = #{bltnbSerno}  
 		   AND USE_YN = 'Y'
 		  </where>
-	</select>
+	</select -->
 	
 	<!-- 댓글 목록 조회 -->
-	<select id="selectReplList" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectReplList" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbReplMngMapper.selectReplList */
 		SELECT 
 			   A.REPL_SERNO									replSerno		
@@ -535,10 +535,10 @@
 		   AND A.USE_YN = 'Y'
 		  </where>
 	  ORDER BY A.REPL_SERNO DESC
-	</select>
+	</select -->
 	
 	<!-- 대댓글 목록 조회 -->
-	<select id="selectReplOfReplList" parameterType="bltnbVO" resultType="bltnbVO">
+	<!-- select id="selectReplOfReplList" parameterType="bltnbVO" resultType="bltnbVO">
 		/* BltnbReplMngMapper.selectReplOfReplList */
 		SELECT 
 			   A.REPL_SERNO									replSerno		
@@ -555,10 +555,10 @@
 		   AND A.USE_YN = 'Y'
 		  </where>
 	  ORDER BY A.REPL_SERNO DESC
-	</select>
+	</select -->
 	
 	<!-- 댓글 등록 -->
-	<insert id="insertReplContents" parameterType="bltnbVO">
+	<!-- insert id="insertReplContents" parameterType="bltnbVO">
 		/* BltnbReplMngMapper.insertReplContents */
 		INSERT INTO T_BLTNB_REPL_MNG (
 			        BLTNB_SERNO
@@ -587,10 +587,10 @@
 			</if>
 	    	  	  , NOW()
 		          ) 
-	</insert>
+	</insert -->
 	
 	<!-- 댓글 수정 -->
-	<update id="updateReplContents" parameterType="bltnbVO">
+	<!-- update id="updateReplContents" parameterType="bltnbVO">
 		/* BltnbReplMngMapper.updateReplContents */
 		UPDATE T_BLTNB_REPL_MNG
 		   SET REPL_CTT 		= #{replCtt}	
@@ -606,16 +606,16 @@
 		<where>
 			   REPL_SERNO = #{replSerno}
 		</where>
-	</update>
+	</update -->
 	
 	
 	<!-- 댓글 삭제 -->
-	<update id="deleteReplContents" parameterType="bltnbVO">
+	<!-- update id="deleteReplContents" parameterType="bltnbVO">
 		/* BltnbReplMngMapper.deleteReplContents */
 		UPDATE T_BLTNB_REPL_MNG
 		   SET USE_YN 	= 'N'
 		 <where> 
 		 	   REPL_SERNO = #{replSerno}
 		 </where>
-	</update>
+	</update -->
 </mapper>

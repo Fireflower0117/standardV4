@@ -1,4 +1,4 @@
-
+(function(window) {
 const fileFns = {
     fileExecAllowed : function(fileEle, fileDiv) {
         var isFileAble = true;
@@ -68,4 +68,6 @@ const fileFns = {
     }
 }
 
-export default fileFns;
+    window.fileFns = fileFns;
+
+})(window);

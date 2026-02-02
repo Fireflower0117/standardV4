@@ -3,13 +3,10 @@ package kr.or.standard.basic.common.internalviewresolver.service;
 import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
 import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CommonMap;
-import kr.or.standard.basic.module.EncryptUtil;
 import kr.or.standard.basic.system.menu.servie.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +38,8 @@ public class OnNameViewService {
 
         // return Page를 찾는다.
         String layout  = ""+menuInfoMap.get("LAY_OUT");
-        String urlAddr = ""+menuInfoMap.get("URL_ADDR");
-        log.info("forward Page :: {}", layout+urlAddr);
-        return layout+urlAddr;
+        String rtnUrl = ""+menuInfoMap.get("RTN_URL");
+        log.info("forward Page :: {}", layout+rtnUrl);
+        return layout+rtnUrl;
     }
 }

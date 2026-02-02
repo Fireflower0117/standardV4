@@ -42,13 +42,13 @@ public class MaLoginController {
 	private final LoginService loginService;
 	private final String FOLDER_PATH = "/ma/login/";
 	
-	@GetMapping("/") 
+	@RequestMapping("/")
 	public String maLoginPage() {
 		return "redirect:/ma/login.do";  // 운영환경에서는  ft/main으로 수정
 	}
 	
 	// 로그인 화면
-	@GetMapping("/ma/login.do") 
+	@RequestMapping("/ma/login.do")
 	public String maGetLoginPage() {
 		log.info("getMapping /ma/login.do ==>> {}login", FOLDER_PATH );
 		return FOLDER_PATH + "login";

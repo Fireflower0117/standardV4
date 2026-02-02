@@ -12,15 +12,14 @@ import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
 import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CmmnDefaultVO;
 import kr.or.standard.basic.common.domain.CommonMap;
-import kr.or.standard.basic.login.vo.LoginVO;
-import kr.or.standard.basic.module.JacksonParsing;
+import kr.or.standard.basic.common.modules.JacksonParsing;
+import kr.or.standard.basic.usersupport.user.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -79,25 +78,26 @@ public class BasicCrudService {
         List<HashMap> selectTargetList = (List<HashMap>)paramMap.get("selectTargets"); 
         for(HashMap actionInfoMap : selectTargetList){
             String sid = ""+actionInfoMap.get("sid");
+            String rsId = ""+actionInfoMap.get("rsId");
             String cmd = ""+actionInfoMap.get("cmd");
             String qid = ""+actionInfoMap.get("sql");  
             
-            HashMap hCondiMap = (LinkedHashMap)actionInfoMap.get("condition");
+            HashMap hCondiMap = (LinkedHashMap)actionInfoMap.get("sqlCondi");
             CommonMap condiMap = new CommonMap(hCondiMap); 
-            log.info("multiSelect action sid : {} , cmd : {} , qid : {} , condiMap : {}", sid , cmd ,qid , condiMap);
+            log.info("multiSelect action sid : {} , rsId : {} , cmd : {} , qid : {} , condiMap : {}", sid , rsId,  cmd ,qid , condiMap);
             
             CommonMap rsCMap = new CommonMap(actionInfoMap); 
             if("selectOne".equals(cmd)){
                 CommonMap rsMap = basicCrudDao.selectOne(qid, condiMap);
-                rsCMap.put(sid+"Rs" , rsMap);
+                rsCMap.put(rsId , rsMap);
             }
             else if("selectList".equals(cmd)){
                 List<CommonMap> rsList = basicCrudDao.selectList(qid, condiMap);
-                rsCMap.put(sid+"Rs" , rsList);
+                rsCMap.put(rsId , rsList);
             }
             else if("selectPage".equals(cmd)){
                 List<CommonMap> rsList = basicCrudDao.selectList(qid, condiMap);
-                actionInfoMap.put(sid+"Rs" , rsList);
+                rsCMap.put(rsId , rsList);
             }   
             rtnList.add(rsCMap); 
             log.info("============================================================" );
@@ -244,11 +244,12 @@ public class BasicCrudService {
     private void setSessionUserInfo(List<CommonMap> sqlCondiMapList){
         ServletRequestAttributes servletReqAttr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = servletReqAttr.getRequest().getSession(false);
-        if(session != null){ 
-            LoginVO loginVO = (LoginVO)session.getAttribute("login_user_info");
-            if(loginVO != null){
-                for(int i = 0; i < sqlCondiMapList.size(); i++) {
-                    setSessionUserInfo(sqlCondiMapList.get(i) );
+        if(session != null){
+            UserVO userVO = (UserVO)session.getAttribute("userDetails");
+            if(userVO != null){
+                for(CommonMap sqlCondiMap : sqlCondiMapList) {
+                    sqlCondiMap.put("userId", userVO.getUserId());
+                    sqlCondiMap.put("authId", userVO.getAuthId());
                 }
             }
         }
@@ -259,11 +260,10 @@ public class BasicCrudService {
         ServletRequestAttributes servletReqAttr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = servletReqAttr.getRequest().getSession(false);
         if(session != null){
-            LoginVO loginVO = (LoginVO)session.getAttribute("login_user_info");
-            if(loginVO != null){
-                 sqlCondiMap.put("userSerno", loginVO.getUserSerno()); 
-                 sqlCondiMap.put("userId", loginVO.getUserId());
-                 sqlCondiMap.put("grpAuthId", loginVO.getGrpAuthId()); 
+            UserVO userVO = (UserVO)session.getAttribute("userDetails");
+            if(userVO != null){
+                 sqlCondiMap.put("userId", userVO.getUserId());
+                 sqlCondiMap.put("authId", userVO.getAuthId());
             }
         }
     }  

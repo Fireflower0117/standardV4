@@ -1,20 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="opnt.standard.systeminit.systempolicy">
-    <select id="inqSystemPolicy" parameterType="CommonMap" resultType="systemPolicyVO">
+<mapper namespace="on.standard.system.systempolicy">
+    <select id="inqSystemPolicy" parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.system.systempolicy.inqSystemPolicy  */
         SELECT PWD_ENC_ALGORITHM    pwdEncAlgorithm
              , PWD_CHG_CYCL_USE_YN  pwdChgCycleUseYn
              , PWD_CHG_CYCL_DD      pwdChgCyclDd
              , LGIN_LMT_USE_YN      lginLmtUseYn
-             , LGIN_FAIL_LMT_CNT    LginFailLmtCnt
+             , LGIN_FAIL_LMT_CNT    lginFailLmtCnt
              , ITSM_USE_YN          itsmUseYn
              , BASE_AUTH_ID         baseAuthId
              , PSSN_PRD_CD          pwssPrdCd
-             , ATCH_FILE_SAVE_DIV   AtchFileSaveDiv
-             , ATCH_FILE_PATH       AtchFilePath
+             , ATCH_FILE_SAVE_DIV   atchFileSaveDiv
+             , ATCH_FILE_PATH       atchFilePath
              , MA_DIRECT_PAGE       maDirectPage
              , FT_DIRECT_PAGE       ftDirectPage
           FROM STB_B_SYSTEM_POLICY_MNG
     </select>
+
+
+    <update id="updSystemPolicy" parameterType="CommonMap" >
+        /* on.standard.system.systempolicy.updSystemPolicy  */
+         UPDATE STB_B_SYSTEM_POLICY_MNG
+            SET UPD_DATE = NOW()
+            <if test="pwdEncAlgorithm != null and pwdEncAlgorithm != ''">
+               , PWD_ENC_ALGORITHM = #{pwdEncAlgorithm}
+            </if>
+            <if test="pwdChgCycleUseYn != null and pwdChgCycleUseYn != ''">
+                , PWD_CHG_CYCL_USE_YN = #{pwdChgCycleUseYn}
+            </if>
+            <if test="pwdChgCyclDd != null and pwdChgCyclDd != ''">
+                , PWD_CHG_CYCL_DD = #{pwdChgCyclDd}
+            </if>
+            <if test="lginLmtUseYn != null and lginLmtUseYn != ''">
+                , LGIN_LMT_USE_YN = #{lginLmtUseYn}
+            </if>
+            <if test="LginFailLmtCnt != null and LginFailLmtCnt != ''">
+                , LGIN_FAIL_LMT_CNT = #{LginFailLmtCnt}
+            </if>
+            <if test="itsmUseYn != null and itsmUseYn != ''">
+                , ITSM_USE_YN = #{itsmUseYn}
+            </if>
+            <if test="baseAuthId != null and baseAuthId != ''">
+                , BASE_AUTH_ID = #{baseAuthId}
+            </if>
+            <if test="pwssPrdCd != null and pwssPrdCd != ''">
+                , PSSN_PRD_CD = #{pwssPrdCd}
+            </if>
+            <if test="atchFileSaveDiv != null and atchFileSaveDiv != ''">
+                , ATCH_FILE_SAVE_DIV = #{atchFileSaveDiv}
+            </if>
+            <if test="atchFilePath != null and atchFilePath != ''">
+                , ATCH_FILE_PATH = #{atchFilePath}
+            </if>
+            <if test="maDirectPage != null and maDirectPage != ''">
+                , MA_DIRECT_PAGE = #{maDirectPage}
+            </if>
+            <if test="ftDirectPage != null and ftDirectPage != ''">
+                , FT_DIRECT_PAGE = #{ftDirectPage}
+            </if>
+    </update>
+
 
 </mapper>

@@ -1,3 +1,5 @@
+(function(window) {
+
  const htmlFns = {
 
     tableDisplay : function(tarDispObj) {
@@ -87,7 +89,7 @@
                                 dataPropsHtml += " data-" + dataProp + "='" + dataPropVal + "' ";
                             }
                         }
-                        if (colType == "string") {
+                        if (colType == "normalTd") {
                             targetHtml += "<td " + tarUniqId + " " + tarStyleNm + " " + tarClassNm + " " + dataPropsHtml + ">" + tarColValue + "</td>";
                         } else if (colType == "double") {
                             var colDblPattrn = on.str.nvl(colInfo[j].pattern, ".##");
@@ -98,7 +100,7 @@
 
                             targetHtml += "   <td " + tarUniqId + " " + tarUniqNm + " " + dataPropsHtml + ">" + colDblVal.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + "</td>";
 
-                        } else if (colType == "number") {
+                        } else if (colType == "rowNumber") {
                             if ($.isNumeric(tarColValue)) {
                                 targetHtml += "   <td " + tarUniqId + " " + dataPropsHtml + " " + tarStyleNm + " " + tarClassNm + ">" + ("" + Math.round(tarColValue, 1)).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + "</td>";
                             } else {
@@ -159,22 +161,8 @@
                             }
                             targetHtml += "</td>";
                         }
-                        else if (colType == "tdClass") {
+                        else if (colType == "normalTd") {
                             targetHtml += "<td " + dataPropsHtml + " " + tarClassNm + ">" + tarColValue + "</td>";
-                        }
-                        else if (colType == "kpsTitle") {
-                            targetHtml += "<td class='ellipsis'><a " + dataPropsHtml + " class='ellipsis td_view'>" + tarColValue + "</a></td>";
-                        }
-                        else if (colType == "kpsLTitle") {
-                            targetHtml += "<td class='l ellipsis'><a " + dataPropsHtml + "   class='ellipsis td_view'>" + tarColValue + "</a></td>";
-                        }
-                        else if (colType == "kpsLTitleNew") {
-                            let addNew = ""
-                            if(resourceRow.isNew) {
-                                addNew = "<span class='new'>NEW</span>";
-                            }
-                            targetHtml += "<td class='l ellipsis'><a " + dataPropsHtml + "   class='ellipsis td_view'>" + tarColValue + "</a>"+addNew+"</td>";
-
                         }
                         else if(colType == "hasFile"){
                             if(tarColValue == "HAS"){
@@ -184,38 +172,6 @@
                                 targetHtml += "<td></td>";
                             }
                         }
-                        else if(colType == "recruitDDay") {
-                            if(tarColValue < 0){
-                                targetHtml += "<td><span class='badge gray'>공고마감</span></td>";
-                            }
-                            else {
-                                targetHtml += "<td><span class='badge blue'>D-"+tarColValue+"</span></td>";
-                            }
-                        }
-                        else if(colType == "bltnbConfm") {
-                            if(tarColValue == "Y"){
-                                targetHtml += "<td><img src='/ma/images/icon/check_ok.svg' alt='확인'></td>";
-                            }
-                            else {
-                                targetHtml += "<td><img src='/ma/images/icon/check_no.svg' alt='미확인'></td>";
-                            }
-                        }
-                        else if(colType == "kpSrOnly") {
-                            if(resourceRow.ntiYn == 'Y'){
-                                targetHtml += "<td class='number'><span class='notice'><span class='sr_only'>공지</span></span></td>";
-                            }
-                            else {
-                                targetHtml += "<td class='number'>" + tarColValue + "</td>";
-                            }
-                        }
-                        else if(colType == "kpSmsSendChkBx"){
-                            targetHtml += "<td>";
-                            targetHtml += "   <span class='chk'>";
-                            targetHtml += "      <span class='cbx'><input type='checkbox' id='smsSendCbx_"+resourceRow.userSerno+"' "+dataPropsHtml+" ><label for='smsSendCbx_"+resourceRow.userSerno+"'><span class='sr_only'>선택</span></label></span>";
-                            targetHtml += "   </span>";
-                            targetHtml += "</td>";
-                        }
-
 
                     }
                     targetHtml += "</tr>";
@@ -653,19 +609,30 @@
     // select Box Option 갱신
     dynaGenSelectOptions : function(optionsInfoObj) {
 
+        /* optionsInfoObj = { comboInfo     : { targetId : "#searchKeyCd" }  // SelectBox Selector
+                            , addOption     : [{ position : "top" , txt : "전체" , val : "" }] // SelectBox Option (Array)
+                            , optionValInfo : { optId : "code" , optTxt : "text" }   // SelectBox Option Id , text Column Mappgind
+                            , comboDataInfo : [ { code : "authId"   , text:"그룹권한ID" }
+                                              , { code : "authNm"   , text:"그룹권한명" }
+                                              , { code : "authDesc" , text:"그룹권한설명" }
+                                              ]
+                             // comboDataInfo은 SQL조회 Data 또는 수기 입력 Data
+        }*/
+
         if (on.valid.isEmpty(optionsInfoObj.comboInfo.targetId)) return false;  // options을 어디에 INPUT할지 지정안하면 return
 
-        var optPosition = "", optTxt = "", optVal = "";
-        if (!on.valid.isEmpty(optionsInfoObj.addOption)) {
-            optPosition = on.str.nvl(optionsInfoObj.addOption.position, "TOP");
-            optTxt = on.str.nvl(optionsInfoObj.addOption.txt, "선택");
-            optVal = on.str.nvl(optionsInfoObj.addOption.val, " ");
+        var inputOptionHtml = "";
+        if(!on.valid.isEmpty(optionsInfoObj.addOption) && Array.isArray(optionsInfoObj.addOption) === true){
+            for(let selOption of optionsInfoObj.addOption){
+                let optionPosition = on.str.nvl(selOption.position,"").toUpperCase();
+                let optionText = selOption.txt;
+                let optionValue = selOption.val;
+                if(optionPosition === "TOP" && !on.valid.isEmpty(optionText)){
+                    inputOptionHtml += "<option value='" + optionValue + "' >" + optionText + "</option>";
+                }
+            }
         }
 
-        var inputOptionHtml = "";
-        if (optPosition.toUpperCase() == "TOP") {
-            inputOptionHtml += "<option value='" + optVal + "' >" + optTxt + "</option>";
-        }
 
         var optionCnt = 0;
         if (!on.valid.isEmpty(optionsInfoObj.comboDataInfo)) {
@@ -677,12 +644,21 @@
             }
         }
 
-        if (optPosition.toUpperCase() == "BOTTOM") {
-            inputOptionHtml += "<option value='" + optVal + "' >" + optTxt + "</option>";
+        if(!on.valid.isEmpty(optionsInfoObj.addOption) && Array.isArray(optionsInfoObj.addOption) === true){
+            for(let selOption of optionsInfoObj.addOption){
+                let optionPosition = on.str.nvl(selOption.position,"").toUpperCase();
+                let optionText = selOption.txt;
+                let optionValue = selOption.val;
+                if(optionPosition === "BOTTOM" && !on.valid.isEmpty(optionText)){
+                    inputOptionHtml += "<option value='" + optionValue + "' >" + optionText + "</option>";
+                }
+            }
         }
 
-        // 페이지가 열릴때 기본옵션 선택 (기준 : 값)
+        // SelectBox Options적용
         $(optionsInfoObj.comboInfo.targetId).empty().html(inputOptionHtml);
+
+        // 페이지가 열릴때 기본옵션 선택 (기준 : 값)
         if (!on.valid.isEmpty(optionsInfoObj.optionValInfo.defaultVal)) {
             if ($(optionsInfoObj.comboInfo.targetId).length > 0) {
                 $(optionsInfoObj.comboInfo.targetId).val(optionsInfoObj.optionValInfo.defaultVal)
@@ -696,7 +672,7 @@
             }
         }
 
-        // CallBack Function
+        // CallBack Function (적용결과 CallBack이 있다면...  계층형 SelectBox에 유용.. 현재적용값에따라 하위SelectBox 조회 CallBack지옥 조심..)
         if(!on.valid.isEmpty( optionsInfoObj.callBackFn) && typeof optionsInfoObj.callBackFn === 'function'){
             optionsInfoObj.callBackFn.call(this, optionsInfoObj );
         }
@@ -1049,4 +1025,6 @@
     }
 }
 
-export default htmlFns;
+    window.htmlFns = htmlFns;
+
+})(window);

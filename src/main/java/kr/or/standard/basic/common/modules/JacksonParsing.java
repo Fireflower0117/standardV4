@@ -1,6 +1,4 @@
-package kr.or.standard.basic.module;
-
-
+package kr.or.standard.basic.common.modules;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

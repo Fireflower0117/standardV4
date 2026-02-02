@@ -44,6 +44,8 @@
 .leftfix .gnb > li.visible.off .subwrap {display: none !important;}
 .leftfix .gnb > li.visible.off > a {background: inherit;}
 .leftfix .gnb > li .subwrap.on {display: block !important;z-index: 9999;}
+.leftfix .gnb > li .subwrap { display: none; }
+.leftfix .gnb > li:hover .subwrap { display: block; }
 .leftfix .gnb .deps2, .leftfix .gnb .deps2 ul, .leftfix .gnb .deps2 li, .leftfix .gnb .deps2 a {display: block;position: relative;line-height: 1;}
 .leftfix .gnb .deps2 li.active > .deps3 {display: block;}
 /* no sub */

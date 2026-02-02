@@ -367,7 +367,7 @@
 	</select>
 	
 	<!-- 메뉴 게시판 유형 조회 -->
-	<select id="selectBltnbCl" parameterType="CommonMap" resultType="bltnbVo">
+	<!-- select id="selectBltnbCl" parameterType="CommonMap" resultType="bltnbVo">
 		/* com.standard.mapper.basic.menuMngMapper.selectBltnbCl */
 		SELECT  BLTNB_CL bltnbCl
 		  FROM T_MENU_MNG
@@ -375,7 +375,7 @@
 		       MENU_CD = #{menuCd}
 		   AND USE_YN = 'Y' 
 		 </where>  
-	</select>
+	</select -->
 	
 	<!-- 메뉴 명 조회 -->
 	<select id="selectMenuNm" parameterType="menuVO" resultType="menuVO">

@@ -6,28 +6,20 @@ import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.login.vo.LoginVO;
 import kr.or.standard.basic.login.vo.SystemPolicyVO;
-import kr.or.standard.basic.module.EncryptUtil;
-import kr.or.standard.basic.system.auth.vo.AuthVO;
-import kr.or.standard.basic.system.log.acs.vo.AcsVO;
-import kr.or.standard.basic.system.menu.vo.MenuVO;
-import kr.or.standard.basic.usersupport.user.vo.UserIpVO;
+import kr.or.standard.basic.common.modules.EncryptUtil;
 import kr.or.standard.basic.usersupport.user.vo.UserVO;
-import kr.or.standard.basic.usersupport.user.vo.UserVO_old;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.context.MessageSource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -41,12 +33,12 @@ public class LoginService extends EgovAbstractServiceImpl  {
 	private final EncryptUtil encryptUtil;
 	
 	// private final String userMngSqlNs = "com.standard.mapper.basic.UserMngMapper.";
-	private final String userMngSqlNs = "opnt.standard.systeminit.usermanage.";
+	private final String userMngSqlNs = "on.standard.system.usermanage.";
 
 
 	/** 시스템 정책 정보 조회  **/
-	private SystemPolicyVO getSystemConfig(){
-		return (SystemPolicyVO)defaultDao.selectOne("opnt.standard.systeminit.systempolicy.inqSystemPolicy");
+	private CommonMap getSystemConfig(){
+		return crudDao.selectOne("on.standard.system.systempolicy.inqSystemPolicy");
 	}
 
 
@@ -54,11 +46,9 @@ public class LoginService extends EgovAbstractServiceImpl  {
 	/** 관리자 Login Process  **/
 	public CommonMap maLoginProcess(LoginVO loginVO, HttpServletRequest request){
 
-
 		CommonMap rtnMap = new CommonMap();
 		HttpSession session = request.getSession();
 		String remoteAddr = request.getRemoteAddr();
-
 
 		log.info("==============   LoginService MA LoginProcess   ===================");
 		log.info("userId : {}" , loginVO.getUserId());
@@ -67,8 +57,10 @@ public class LoginService extends EgovAbstractServiceImpl  {
 		log.info("====================================================================");
 
 		// 시스템 정책 확인 (Login 실패정책, 접근IP통제, 중복로그인차단(1계정 1Session정책) ...
-		SystemPolicyVO systemPolicyVo = getSystemConfig();
-		log.info("systemPolicyVo : {}" , systemPolicyVo);
+		CommonMap systemConfigMap = getSystemConfig();
+		log.info("systemConfigMap : {}" , systemConfigMap);
+		request.setAttribute("systemPolicyVo", systemConfigMap);
+
 
         // DB 사용자 정보 확인  (ID기준)
 		UserVO userInfoVo = (UserVO)defaultDao.selectOne(userMngSqlNs+"inqUserInfo", loginVO );
@@ -91,14 +83,14 @@ public class LoginService extends EgovAbstractServiceImpl  {
 			if(!userInfoVo.getUserPswd().equals(loginVO.getUserPswd()) ){ // 비밀번호가 같지 않다면.
 
 				/**  시스템 정책 확인  **/
-				if("Y".equals(systemPolicyVo.getLginLmtUseYn())){
+				if("Y".equals(systemConfigMap.get("lginLmtUseYn"))){
 					/** 사용자 비밀번호 실패건수 증가(update) **/
 					int effCnt = defaultDao.update(userMngSqlNs+"updateUserPswdFailCount", userInfoVo);
 					log.info("updateUserPswdFailCount effCnt : {}" , effCnt);
 
 					/*  사용자 비밀번호 실패건수가 MaxCount일 경우 사용자 계정 잠김 */
 					int pwdFailCount = Integer.parseInt(userInfoVo.getPswdFailCnt()) + 1; // 기존 실패건수 + 1 = (현재실패건수)
-					if(pwdFailCount >= Integer.parseInt(systemPolicyVo.getLginFailLmtCnt())){
+					if(pwdFailCount >= Integer.parseInt(""+ systemConfigMap.get("lginFailLmtCnt"))){
 						defaultDao.update(userMngSqlNs+"updUserPswdFailStatus", userInfoVo);
 					}
 
@@ -136,10 +128,11 @@ public class LoginService extends EgovAbstractServiceImpl  {
 				/* IP차단 여부 */
 
 				/* 세션저장 ma_user_info */
-				session.setAttribute("LoginUserDetails", userInfoVo);
+				userInfoVo.setUserPswd("");
+				session.setAttribute("userDetails", userInfoVo);
 
 				/*  시스템 정책의 첫 Page로 이동 */
-				rtnMap.put("returnUrl", systemPolicyVo.getMaDirectPage());
+				rtnMap.put("returnUrl", ""+systemConfigMap.get("maDirectPage"));
 				rtnMap.put("result", true);
 			}
 		}

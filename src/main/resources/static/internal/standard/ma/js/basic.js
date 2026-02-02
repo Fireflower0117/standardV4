@@ -138,6 +138,7 @@ $(function () {
 });
 
 // popup - main
+/*
 $(document).ready(function () {
     $(".main_pop").draggable();
     $(".main_pop .close").click(function () {
@@ -145,6 +146,7 @@ $(document).ready(function () {
         return false;
     });
 });
+*/
 /** // popup **/
 
 

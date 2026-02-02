@@ -4,8 +4,10 @@
 
 	<!-- 관리자 레이아웃 -->               
     <definition name="manage" template="/WEB-INF/jsp/common/layout/ma/layout.jsp">
-        <put-attribute name="header" value="/WEB-INF/jsp/common/layout/ma/header.jsp"/>  
-    </definition>  
+        <put-attribute name="header" value="/WEB-INF/jsp/common/layout/ma/header.jsp"/>
+		<put-attribute name="leftmenu" value="/WEB-INF/jsp/common/layout/ma/leftmenu.jsp"/>
+		<put-attribute name="gnbtitle" value="/WEB-INF/jsp/common/layout/ma/gnbtitle.jsp"/>
+	</definition>
 	<definition name=".mLayout:/*" extends="manage">
 		<put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
 	</definition>

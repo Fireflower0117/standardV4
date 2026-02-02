@@ -7,7 +7,7 @@ import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.common.file.service.FileService;
 import kr.or.standard.basic.common.file.vo.FileVO;
 import kr.or.standard.basic.common.view.excel.ExcelView;
-import kr.or.standard.basic.module.ExcelUtil;
+import kr.or.standard.basic.common.modules.ExcelUtil;
 import kr.or.standard.basic.usersupport.dictionary.term.vo.CmTermVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

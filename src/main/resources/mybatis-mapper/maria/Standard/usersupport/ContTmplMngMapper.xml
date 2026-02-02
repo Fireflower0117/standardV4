@@ -34,7 +34,7 @@
 	</sql>
 	
 	<!-- 컨텐츠 건수 조회-->
-	<select id="selectCount" parameterType="bltnbVO" resultType="contTmplVO">
+	<!-- select id="selectCount" parameterType="bltnbVO" resultType="contTmplVO">
 		/* com.standard.mapper.usersupport.contTmplMngMapper.selectCount */
 		SELECT COUNT(1) contTmplCount
 		  FROM T_CONT_TMPL_MNG
@@ -42,7 +42,7 @@
 		 <include refid="Where"/>
 		   AND USE_YN = 'Y'
 	   </where>
-	</select>
+	</select -->
 	
 	<!-- 컨텐츠 목록 조회-->
 	<select id="selectList" parameterType="contTmplVO" resultType="contTmplVO">

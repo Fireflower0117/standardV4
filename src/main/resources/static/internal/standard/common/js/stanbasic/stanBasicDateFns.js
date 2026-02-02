@@ -1,3 +1,5 @@
+(function(window) {
+
 const dateFns = {
     getDate : function(){
         var dateFormat = stringFns.nvl(dateInfoObj.dateFormat, "YYYY-MM-DD");
@@ -111,4 +113,6 @@ const dateFns = {
     }
 }
 
-export default dateFns;
+    window.dateFns = dateFns;
+
+})(window);

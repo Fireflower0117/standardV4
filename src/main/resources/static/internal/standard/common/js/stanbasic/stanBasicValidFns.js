@@ -1,4 +1,14 @@
-const validateFns = {
+(function(window) {
+  $.validator.addMethod("numberOnly", function (value, element) {
+        return this.optional(element) || /^[0-9]+$/.test(value);
+  }, "숫자만 입력 가능합니다.");
+
+    $.validator.addMethod("floatOnly", function(value, element) {
+        return this.optional(element) || /^-?\d+(\.\d+)?$/.test(value);
+    }, "숫자((정수/소수)만 입력 가능합니다.");
+
+
+ const validateFns = {
     isEmpty : function(chkObj){
         // null 또는 undefined
         if (chkObj === null || chkObj === undefined) return true;
@@ -23,67 +33,67 @@ const validateFns = {
         }
         return true;
     }
-  // 지정항목 유효성 체크  
-  , cmValidationCheck : function(validateObj){
+     // 지정항목 유효성 체크
+    , formValidationCheck : function(validateObj){
 
         if( on.valid.isEmpty(validateObj?.validateList)  ){
-            on.messageFns.consoleLog('유효성 검증할 목록이 없습니다.');
+            on.msg.consoleLog('유효성 검증할 목록이 없습니다.');
             return false;
         }
 
-        let validateWrapNm = validateObj?.formWrapperEle;
-        if( on.valid.isEmpty(validateWrapNm) ){
-            console.log('cmValidationCheck를 하려면 formWrapperEle 속성은 필수값입니다. (form Element or Wrapper Element)\n' 
-                       +'자세한 내용은 개발가이드 Validation을 참고하세요 ');
+         if( on.valid.isEmpty(validateObj?.callbackFn) || typeof validateObj.callbackFn !== 'function' ){
+             on.msg.consoleLog('callBack Function을 입력하세요.');
+             return false;
+         }
+
+        let eleForm = validateObj?.formId;
+        if( on.valid.isEmpty(eleForm) ){
+            on.msg.consoleLog('formValidationCheck 하려면 formId 속성은 필수값입니다.');
             return false;
         }
 
-        // messageOption : "feedbackType"
+            let validateOptions = {
+                  rules : {}
+                , messages : {}
+                , submitHandler : validateObj.callbackFn
+            };
 
-        let findEleType = on.html.getEleType(validateWrapNm);  // Wrapper 대상 Element Type조회
-        let $formEle = null; // Wrapper 대상 Element
-        let isFnGenForm;  // form 동적 생성여부
-        if(findEleType === "form") {
-            $formEle = $(validateWrapNm) ;
-            isFnGenForm = false;
-        }
-        else {
-            $(validateWrapNm).wrap("<form id='validateForm' name='validateForm'></form>"); // 선택한 Element Form으로 덮어 씌운다.
-            $formEle = $("#validateForm");
-            isFnGenForm = true;
-        }
+            // 필요에따라 formValidationCheck 호출시 validateOption속성을 추가 해서 messageOption을 변경할수있다.
+            let selMessageOption = validateObj?.messageOption;
 
-        // default Validate Message Option
-            let validateOptions;
-
-            // 필요에따라 cmValidationCheck함수 호출시 validateOption속성을 추가 해서 messageOption을 변경할수있다.
-            let selMessageOption = on.valid.isEmpty(validateObj?.messageOption) ? 'feedbackType' : validateObj.messageOption;
-            if(selMessageOption === 'feedbackType'){
-                validateOptions = {
-                    errorElement: "em"
-                    , errorPlacement: function ( error, element ) {
-                        // Add the `help-block` class to the error element
-                        error.addClass( "invalid-feedback" );
-
-                        if ( element.prop( "type" ) === "checkbox" ) {
-                            error.insertAfter( element.parent( "label" ) );
-                        } else {
-                            error.insertAfter( element );
-                        }
+            if(selMessageOption === 'normal'){
+                let addValidateOptions = {
+                     errorPlacement: function ( error, element ) {
+                        error.addClass( "ui red pointing label transition" );
+                        error.insertAfter( element.parent() );
                     }
                     , highlight: function ( element, errorClass, validClass ) {
-                        $( element ).parents( ".col-sm-5" ).addClass( "has-error" ).removeClass( "has-success" );
+                        $( element ).parents( ".row" ).addClass( errorClass );
                     }
                     , unhighlight: function (element, errorClass, validClass) {
-                        $( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-error" );
+                        $( element ).parents( ".row" ).removeClass( errorClass );
                     }
                 };
+                validateOptions = $.extend(true, validateOptions, addValidateOptions);
             }
-            //  else if 로 selMessageOption 추가 가능....
+            else if(selMessageOption === 'div'){
+              let  addValidateOptions = {
+                    errorElement: "div", // label 대신 div 사용 (줄바꿈 제어 용이)
+                    errorPlacement: function ( error, element ) {
+                        error.addClass( "ui red pointing label transition" );
+                        // element.parent() 대신 element 자체의 뒤에 삽입 (td 내부 유지)
+                        error.insertAfter( element );
+                    },
+                    highlight: function ( element, errorClass, validClass ) {
+                        $( element ).closest( ".row" ).addClass( "error" ); // Semantic UI 스타일
+                    },
+                    unhighlight: function (element, errorClass, validClass) {
+                        $( element ).closest( ".row" ).removeClass( "error" );
+                    }
+                };
+                validateOptions = $.extend(true, validateOptions, addValidateOptions);
+            }
 
-
-           validateOptions.rules = {};
-           validateOptions.messages = {};
 
         let validateStatus = 'success';
         for(let validAttr of validateObj.validateList ){
@@ -107,6 +117,8 @@ const validateFns = {
                       if(ruleKey === "minlength")  validateOptions.messages[attrName][ruleKey] = attrLabel +"은(는) 최소 "+keyVal+" 자리 입니다.";
                       if(ruleKey === "equalTo")  validateOptions.messages[attrName][ruleKey] = attrLabel +"은(는)  "+keyVal+"와 같아야 합니다.";
                       if(ruleKey === "email")  validateOptions.messages[attrName][ruleKey] = attrLabel +"은(는) 이메일 형식이어야 합니다.";
+                      if(ruleKey === "numberOnly") validateOptions.messages[attrName][ruleKey] = attrLabel +"은(는) 숫자만 입력 가능합니다.";
+                      if(ruleKey === "floatOnly") validateOptions.messages[attrName][ruleKey] = attrLabel +"은(는) 숫자 또는 소수점만 입력 가능합니다.";
                   }
             }
             else {
@@ -115,18 +127,13 @@ const validateFns = {
             }
         }
 
-        if(validateStatus === 'fail'){
-            return false;
-        }
+        if(validateStatus === 'fail'){ return false; }
 
-        $formEle.validate(validateOptions); // 유효성검증 실행
-
-        let validateRslt = $formEle.valid(); // 유효성 검증 결과 조회
-        if(isFnGenForm){ $formEle.unwrap(); } // 동적생성For 이면 기존상태대로 복구
-        return validateRslt;  // 유효성 검증결과 반환(return)
-
-   }
-
+        $(eleForm).validate(validateOptions);
+         return $(eleForm).valid();
+     }
 }
 
-export default validateFns;
+window.validateFns = validateFns;
+
+})(window);

@@ -54,6 +54,7 @@ $(document).ready(function(){
 	});
 
 });
+
 /* 목록 호출 */
 function fncAddList(pageIdx) {
 	fncPageBoard('addList','addList.do',pageIdx);

@@ -1,4 +1,6 @@
-const stringFns = {
+(function(window) {
+
+ const stringFns = {
     nvl  : function (chkObj, repStr) {
         repStr = on.valid.isEmpty(repStr) ? "" : repStr;
         if (on.valid.isEmpty(chkObj)) return repStr;
@@ -38,4 +40,6 @@ const stringFns = {
     }
 }
 
-export default stringFns;
+    window.stringFns = stringFns;
+
+})(window);

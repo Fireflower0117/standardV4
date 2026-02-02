@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="opnt.standard.systeminit.basic">
-    <select id="menuInfo" parameterType="CommonMap" resultType="systemPolicyVO">
+<mapper namespace="on.standard.system.basic">
+    <select id="systemPolicyInfo" parameterType="CommonMap" resultType="systemPolicyVO">
         SELECT PWD_ENC_ALGORITHM    pwdEncAlgorithm
              , PWD_CHG_CYCL_USE_YN  pwdChgCycleUseYn
              , PWD_CHG_CYCL_DD      pwdChgCyclDd
@@ -16,5 +16,46 @@
              , FT_DIRECT_PAGE       ftDirectPage
         FROM STB_B_SYSTEM_POLICY_MNG
     </select>
+
+    <update id="updateSystemPolicyInfo" parameterType="systemPolicyVO">
+        UPDATE STB_B_SYSTEM_POLICY_MNG
+           SET UPD_DATE = NOW()
+          <if test="pwdEncAlgorithm != null and pwdEncAlgorithm != ''">
+           AND PWD_ENC_ALGORITHM = #{pwdEncAlgorithm}
+          </if>
+          <if test="pwdChgCycleUseYn != null and pwdChgCycleUseYn != ''">
+            AND PWD_CHG_CYCL_USE_YN = #{pwdChgCycleUseYn}
+          </if>
+          <if test="pwdChgCyclDd != null and pwdChgCyclDd != ''">
+            AND PWD_CHG_CYCL_DD = #{pwdChgCyclDd}
+          </if>
+          <if test="lginLmtUseYn != null and lginLmtUseYn != ''">
+            AND LGIN_LMT_USE_YN = #{lginLmtUseYn}
+          </if>
+          <if test="LginFailLmtCnt != null and LginFailLmtCnt != ''">
+            AND LGIN_FAIL_LMT_CNT = #{LginFailLmtCnt}
+          </if>
+          <if test="itsmUseYn != null and itsmUseYn != ''">
+            AND ITSM_USE_YN = #{itsmUseYn}
+          </if>
+          <if test="baseAuthId != null and baseAuthId != ''">
+            AND BASE_AUTH_ID = #{baseAuthId}
+          </if>
+          <if test="pwssPrdCd != null and pwssPrdCd != ''">
+            AND PSSN_PRD_CD = #{pwssPrdCd}
+          </if>
+          <if test="AtchFileSaveDiv != null and AtchFileSaveDiv != ''">
+            AND ATCH_FILE_SAVE_DIV = #{AtchFileSaveDiv}
+          </if>
+          <if test="AtchFilePath != null and AtchFilePath != ''">
+            AND ATCH_FILE_PATH = #{AtchFilePath}
+          </if>
+          <if test="maDirectPage != null and maDirectPage != ''">
+            AND MA_DIRECT_PAGE = #{maDirectPage}
+          </if>
+          <if test="ftDirectPage != null and ftDirectPage != ''">
+            AND FT_DIRECT_PAGE = #{ftDirectPage}
+          </if>
+    </update>
 
 </mapper>

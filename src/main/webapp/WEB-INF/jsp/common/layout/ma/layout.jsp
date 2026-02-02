@@ -31,33 +31,47 @@
     <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/css/board.css">
     <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/css/common.css">
     <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/simplebar/simplebar.min.css">
-    
+
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/js/common.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/js/cm.validate.js" charset="utf-8"></script>
-    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/js/basic.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/board.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/atchFile.js"></script>
+
+    <!-- jquery-validate -->
+    <!-- link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/semantic-ui/2.1.4/semantic.min.css" -->
+    <!-- script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-validate/1_19_5/dist/jquery.validate.js" -->
+    <!-- script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-validate/1_19_5/lib/jquery-1.11.1.js" -->
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
+
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-filedown/fileDownload.js"></script>
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/simplebar/simplebar.min.js"></script>
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/ckeditor/ckeditor.js?ver=2"></script>
 	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/html2canvas/html2canvas.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/clipboard/clipboard.min.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/clientbase.js"></script>
+
+
+	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/js/common.js"></script>
+	<!-- script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/js/cm.validate.js" charset="utf-8"></script -->
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/js/basic.js"></script>
+	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/board.js"></script>
+	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/atchFile.js"></script>
+
+
+
+	<jsp:include  page="/WEB-INF/jsp/common/clientlib.jsp" />
+
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 		<%-- 단위테스트용 함수 호출 --%>
-		$(function(){
+		/*$(function(){
 			$(document).on("click",".page_title",function(){
 				fncSetTestInput();
 			});
-		});
+		});*/
 
-		var depth1 = "${sessionScope.menuCdMap.depth1}";
+		/*var depth1 = "${sessionScope.menuCdMap.depth1}";
 		var depth2 = "${sessionScope.menuCdMap.depth2}";
 		var depth3 = "${sessionScope.menuCdMap.depth3}";
-		var depth4 = "${sessionScope.menuCdMap.depth4}";
+		var depth4 = "${sessionScope.menuCdMap.depth4}";*/
 	</script>
 </head>
 <body>
@@ -73,7 +87,10 @@
     <!-- wrapper -->
 	<div id="wrapper">
 		<tiles:insertAttribute name="header"/>
+		<tiles:insertAttribute name="leftmenu"/>
+		<div id="container">
 			<section id="content">
+				<tiles:insertAttribute name="gnbtitle"/>
 				<tiles:insertAttribute name="body"/>
 			</section>
 		</div>

@@ -6,7 +6,7 @@ import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
 import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CommonMap;
 import kr.or.standard.basic.common.view.excel.ExcelView;
-import kr.or.standard.basic.module.EncryptUtil;
+import kr.or.standard.basic.common.modules.EncryptUtil;
 import kr.or.standard.basic.statistics.acsstat.vo.AcsStatVO;
 import kr.or.standard.basic.system.auth.service.AuthService;
 import kr.or.standard.basic.usersupport.lginPlcy.service.LginPlcyService;

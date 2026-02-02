@@ -79,40 +79,48 @@
 				}
 			});
 
-
 			/* Login Process 수행 */
 			const fncLogin = function () {
 
 				// Validation List (유효성 검증 대상 )
-		        let  loginValidateList =  [ {name : "userId"   , label : "아이디"   ,  rule: {"required":true} }
-									      , {name : "userPswd" , label : "비밀번호" ,  rule: {"required":true, minlength : 5 } }
-									      ];
+		        let loginValidateObj = { formWrapperEle : ".input_box"
+								       , validateList  : [ {name : "userId"   , label : "아이디"   ,  rule: {"required":true} }
+										     		     , {name : "userPswd" , label : "비밀번호" ,  rule: {"required":true, minlength : 5 } }
+												         ]
+				} ;
+
+				// Form Validation Check 수행
+				let isValidationSuccess = on.valid.cmValidationCheck(loginValidateObj);
+				if(isValidationSuccess === false){ return false; }
+
 
 				// 입력Data수기 생성
 				let sendData = [{name:"userId", val: on.html.getEleVal("#userId") }
 							   ,{name:"userPswd", val: on.html.getEleVal("#userPswd") }
-							   ];
+					]
 
-				// 입력데이터 자동 생성
+                // 입력데이터 자동 생성
 				// let targetDataArray = on.html.serializeDataArray({target : ".input_box"})
 
 				// Login수행
 				on.xhr.ajax({ sid  : "loginProc"
-							, url : "/ma/loginProcess.do"
-							, data : sendData
-							, validation : { formId : "#loginForm" , validationList : loginValidateList  }  // 유효성검증 관련
-							, successFn : function (sid, rs){
+							  , url : "/ma/loginProcess.do"
+							  , data : sendData
+							  , successFn : function (sid, rs){
 										if (rs?.returnUrl) {
-											on.html.dynaGenHiddenForm({ formDefine : { fid:"mainForm" , action:rs.returnUrl , method : "post" , isSubmit : true  } }); // HiddenForm 생성및 전송
+                                            on.html.dynaGenHiddenForm({ formDefine : { fid:"mainForm" , action:rs.returnUrl , method : "post" , isSubmit : true  } }); // HiddenForm 생성및 전송
 										} else {
 											on.msg.alertMsg(rs.message);
 										}
 								}
 							  , failFn    : function (err){
-									on.msg.alertMsg(rs.message);
+								    on.msg.alertMsg(rs.message);
 								}
 				});
 			};
+
+
+
 
 			<%-- 아이디찾기, 비밀번호찾기 클릭시 --%>
 			$('.btn_find').on('click', function(){
@@ -139,7 +147,6 @@
 					</c:otherwise>
 				</c:choose>
 			</h1>
-			<form id="loginForm" name="loginForm">
 				<div class="input_box">
 					 <ul>
 						<li>
@@ -152,10 +159,9 @@
 						</li>
 					</ul>
 				</div>
-			</form>
-			<div class="btn_area">
-				<button type="button" id="btn_login" class="btn blue btn_login">로그인</button>
-			</div>
+				<div class="btn_area">
+					<button type="button" id="btn_login" class="btn blue btn_login">로그인</button>
+				</div>
 		</div>
 	</div>
 </body>

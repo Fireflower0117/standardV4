@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="on.standard.system.auth">
+
+    <sql id="pageHeader">
+		  <![CDATA[
+        SELECT (${rn_top} / (${rn_top} - ${rn_bottom})) AS pageNo
+             , (${rn_top} - ${rn_bottom})               AS pageSize
+             , ROW_.*
+        FROM (
+        ]]>
+	</sql>
+
+    <sql id="pageFooter">
+		  <![CDATA[
+        ) AS ROW_
+			    ORDER BY ROW_.rowindx  DESC
+			   LIMIT ${rn_limit} OFFSET ${rn_bottom}
+        ]]>
+	</sql>
+
+    <select id="inqAuthList" parameterType="CommonMap" resultType="CommonMap">
+        <choose>
+            <when test="cmd == 'selectPage'">
+                /* on.standard.system.auth.inqAuthList selectPage */
+                <include refid="pageHeader"/>
+                <include refid="systemAuthListSql"/>
+                <include refid="pageFooter"/>
+            </when>
+            <otherwise>
+                /* on.standard.system.auth.inqAuthList  selectList */
+                <include refid="systemAuthListSql"/>
+            </otherwise>
+        </choose>
+    </select>
+
+    <sql id="systemAuthListSql">
+        SELECT a.rownum_       rowindx
+             , b.TOTAL_COUNT     totalCount
+             , a.AUTH_ID        authId
+             , a.AUTH_KOR_NAME  authKorName
+             , a.AUTH_ENG_NAME  authEngName
+             , a.AUTH_COMMENT   authComment
+             , a.USE_YN         useYn
+             , a.REG_YMD        regYmd
+        FROM (
+                 SELECT (@rownum := @rownum + 1) AS rownum_
+                      , AUTH_ID
+                      , AUTH_KOR_NAME
+                      , AUTH_ENG_NAME
+                      , AUTH_COMMENT
+                      , USE_YN
+                      , DATE_FORMAT(REG_DATE, '%Y.%m.%d') AS REG_YMD
+                 FROM STB_B_AUTH_MNG JOIN (SELECT @rownum := 0) r
+                 WHERE 1 = 1
+                <if test="searchKeyword != null and searchKeyword != ''">
+                   <choose>
+                      <when test="searchKeyCd == 'authId'">
+                          AND AUTH_ID LIKE CONCAT('%',#{searchKeyword},'%')
+                      </when>
+                      <when test="searchKeyCd == 'authNm'">
+                          AND (   AUTH_KOR_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+                              OR  AUTH_ENG_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+                          )
+                      </when>
+                       <when test="searchKeyCd == 'authDesc'">
+                           AND AUTH_COMMENT LIKE CONCAT('%',#{searchKeyword},'%')
+                       </when>
+                       <otherwise>
+                          AND (    AUTH_ID LIKE CONCAT('%',#{searchKeyword},'%')
+                               OR (     AUTH_KOR_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+                                    OR  AUTH_ENG_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+                               )
+                               OR AUTH_COMMENT LIKE CONCAT('%',#{searchKeyword},'%')
+                           )
+                       </otherwise>
+                   </choose>
+                 </if>
+                 ORDER BY REG_DATE ASC
+             ) a
+             JOIN (
+                SELECT COUNT(*) AS TOTAL_COUNT
+                FROM STB_B_AUTH_MNG
+                WHERE 1 = 1
+                <if test="searchKeyword != null and searchKeyword != ''">
+                    <choose>
+                        <when test="searchKeyCd == 'authId'">
+                            AND AUTH_ID LIKE CONCAT('%',#{searchKeyword},'%')
+                        </when>
+                        <when test="searchKeyCd == 'authNm'">
+                            AND (   AUTH_KOR_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+                                OR  AUTH_ENG_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
+                        </when>
+                        <when test="searchKeyCd == 'authDesc'">
+                            AND AUTH_COMMENT LIKE CONCAT('%',#{searchKeyword},'%')
+                        </when>
+                        <otherwise>
+                            AND (    AUTH_ID LIKE CONCAT('%',#{searchKeyword},'%')
+                                 OR (   AUTH_KOR_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+                                     OR AUTH_ENG_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+                                 )
+                                OR AUTH_COMMENT LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
+                        </otherwise>
+                    </choose>
+                </if>
+              ) b
+              ON 1 = 1
+    </sql>
+
+</mapper>

@@ -1,6 +1,6 @@
 package kr.or.standard.basic.system.menu.servie;
 
-import kr.or.standard.basic.bltnb.vo.BltnbVO;
+// import kr.or.standard.basic.bltnb.vo.BltnbVO;
 import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
 import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CommonMap;
@@ -42,7 +42,7 @@ public class MenuService extends EgovAbstractServiceImpl {
 	private final AuthService authService;
 	
 	// private final String sqlNs = "com.standard.mapper.basic.menuMngMapper.";
-	private final String sqlNs = "on.standard.systeminit.menu.";
+	private final String sqlNs = "on.standard.system.menu.";
 
 	
 	// 메뉴관리 메뉴목록 조회
@@ -75,11 +75,11 @@ public class MenuService extends EgovAbstractServiceImpl {
 	};
 	
 	// 메뉴 게시판 유형 조회
-	public String selectBltnbCl(CommonMap condiMap){
+	/*public String selectBltnbCl(CommonMap condiMap){
 		BltnbVO bltnbVo = (BltnbVO)defaultDao.selectOne(sqlNs+"selectBltnbCl", condiMap);
 		if(bltnbVo == null){ return null; }
 		else return bltnbVo.getBltnbCl();
-	}
+	}*/
 	
 	
 	// 메뉴명 조회 

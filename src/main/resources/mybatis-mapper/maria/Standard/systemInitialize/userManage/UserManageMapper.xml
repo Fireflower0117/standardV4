@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="opnt.standard.systeminit.usermanage">
+<mapper namespace="on.standard.system.usermanage">
     <select id="inqUserInfo" parameterType="CommonMap" resultType="userVO">
-        /*  opnt.standard.systeminit.usermanage.inqUserInfo */
+        /*  on.standard.system.usermanage.inqUserInfo */
         SELECT USER_ID             userId
              , USER_PSWD           userPswd
              , USER_KOR_NM         userKorNm
@@ -34,14 +34,14 @@
     </select>
 
      <select id="selectUserRoleList" parameterType="CommonMap" resultType="userVO">
-          /*  opnt.standard.systeminit.usermanage.selectUserRoleList */
+          /*  on.standard.system.usermanage.selectUserRoleList */
           SELECT AUTH_ID authId
             FROM STB_M_AUTH_USER_MNG
            WHERE USER_ID = #{userId}
      </select>
 
      <update id="updateUserPswdFailCount" parameterType="CommonMap">
-          /*  opnt.standard.systeminit.usermanage.updateUserPswdFailCount */
+          /*  on.standard.system.usermanage.updateUserPswdFailCount */
           UPDATE STB_B_USER_MNG
              SET PSWD_FAIL_CNT = PSWD_FAIL_CNT + 1
                , BRK_YN = CASE WHEN (SELECT LGIN_FAIL_LMT_CNT from STB_B_SYSTEM_POLICY_MNG) = PSWD_FAIL_CNT + 1 THEN 'Y'
@@ -55,7 +55,7 @@
 
 
      <update id="updUserFinalLogin" parameterType="CommonMap">
-          /*  opnt.standard.systeminit.usermanage.updUserFinalLogin */
+          /*  on.standard.system.usermanage.updUserFinalLogin */
           UPDATE STB_B_USER_MNG
              SET LST_LOGIN_DT = CURTIME()
                , PSWD_FAIL_CNT = 0
@@ -63,7 +63,7 @@
      </update>
 
      <insert id="insUserLoginHist" parameterType="CommonMap" >
-          /*  opnt.standard.systeminit.usermanage.insUserLoginHist */
+          /*  on.standard.system.usermanage.insUserLoginHist */
           INSERT INTO STB_H_USER_LOGIN_LOG
                       (USER_ID  , AUTH_AREA_CD , USER_AUTH_CD ,REMOTE_ADDR , LOGIN_DIV_CD , LOGIN_COMMENT   )
                VALUES (#{userId}, #{authAreaCd}, #{authIdList},#{remoteAddr}, #{loginDivCd}, #{loginCommnet} )

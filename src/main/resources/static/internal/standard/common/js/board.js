@@ -51,6 +51,7 @@ $(document).ready(function(){
 			fncPageBoard('search', 'list.do', 1);
 		}
 	});
+
 	// 검색초기화
 	$("#btn_reset").click(function(){
 		for(var i = 0 ; i < document.defaultFrm.elements.length ; i++){
@@ -77,8 +78,8 @@ $(document).ready(function(){
 		// 페이지별 출력 건수 초기화
 		$('#recordCountPerPage_board_right').val('10');
 	});
-	
 });
+
 
 var process = "N";
 /* 구분,url,(currentPageNo && 일련번호),일련번호명 */

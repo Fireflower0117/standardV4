@@ -3,8 +3,7 @@ package kr.or.standard.basic.system.basic.service;
 import kr.or.standard.basic.common.ajax.dao.BasicCrudDao;
 import kr.or.standard.basic.common.ajax.dao.CmmnDefaultDao;
 import kr.or.standard.basic.common.domain.CommonMap;
-import kr.or.standard.basic.module.EncryptUtil;
-import kr.or.standard.basic.system.auth.service.AuthService;
+import kr.or.standard.basic.common.modules.EncryptUtil;
 import kr.or.standard.basic.system.menu.servie.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,16 +26,13 @@ public class BasicService extends EgovAbstractServiceImpl {
     private final EncryptUtil encryptUtil;
     private final MenuService menuService;
 
-    private final String userMngSqlNs = "opnt.standard.systeminit.basic.";
+    private final String basicSqlNs = "on.standard.system.basic.";
 
 
     public String form(HttpServletRequest request ){
 
-
         CommonMap rtnMap = menuService.selectMenuByUrl(request.getRequestURI());
 
-        // 메뉴 테이블 수정 필요(정리)
-        defaultDao.selectOne(userMngSqlNs);
         return "";
     }
 }

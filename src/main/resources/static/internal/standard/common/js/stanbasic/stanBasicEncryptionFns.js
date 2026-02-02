@@ -1,3 +1,4 @@
+(function(window) {
 const encryptionFns = {
 
     encrypt (encInfo){
@@ -22,4 +23,6 @@ const encryptionFns = {
 }
 
 
-export default encryptionFns;
+    window.encryptionFns = encryptionFns;
+
+})(window);

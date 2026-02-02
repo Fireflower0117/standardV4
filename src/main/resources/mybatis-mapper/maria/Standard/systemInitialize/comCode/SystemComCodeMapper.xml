@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="on.standard.system.comcode">
+
+    <select id="selectComCode" parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.system.comcode.selectComCode */
+        SELECT COM_CD , UPP_COM_CD, CD_NM, SORT_NO, CD_COMMENT, USE_YN
+             , FILTER_1, FILTER_2, FILTER_3, FILTER_4, FILTER_5
+             , FILTER_6, FILTER_7, FILTER_8, FILTER_9, FILTER_10
+             , CONCAT(COM_CD, ' (',CD_NM,')') as CD_DESC
+          FROM STB_B_CD_MNG
+         WHERE UPP_COM_CD = #{uppComCd}
+           <choose>
+                <when test="useYn != null and useYn != ''">
+                    AND USE_YN = #{useYn}
+                </when>
+                <otherwise>
+                    AND USE_YN = 'Y'
+                </otherwise>
+           </choose>
+           <if test="filter1 != null and filter1 != ''"> AND FILTER_1 = #{filter1} </if>
+           <if test="filter1_ne != null and filter1_ne != ''"> AND FILTER_1 != #{filter1_ne} </if>
+           <if test="filter1_like != null and filter1_like != ''"> AND FILTER_1 LIKE CONCAT('%',#{filter1_like},'%')</if>
+           <if test="filter1_lt != null and filter1_lt != ''"> <![CDATA[ AND FILTER_1 < #{filter1_lt} ]]> </if>
+           <if test="filter1_gt != null and filter1_gt != ''"> <![CDATA[ AND FILTER_1 > #{filter1_gt} ]]> </if>
+
+           <if test="filter2 != null and filter2 != ''"> AND FILTER_2 = #{filter2} </if>
+           <if test="filter2_ne != null and filter2_ne != ''"> AND FILTER_2 != #{filter2_ne} </if>
+           <if test="filter2_like != null and filter2_like != ''"> AND FILTER_2 LIKE CONCAT('%',#{filter2_like},'%')</if>
+           <if test="filter2_lt != null and filter2_lt != ''"> <![CDATA[ AND FILTER_2 < #{filter2_lt} ]]> </if>
+           <if test="filter2_gt != null and filter2_gt != ''"> <![CDATA[ AND FILTER_2 > #{filter2_gt} ]]> </if>
+
+           <if test="filter3 != null and filter3 != ''"> AND FILTER_3 = #{filter3} </if>
+           <if test="filter3_ne != null and filter3_ne != ''"> AND FILTER_3 != #{filter3_ne} </if>
+           <if test="filter3_like != null and filter3_like != ''"> AND FILTER_3 LIKE CONCAT('%',#{filter3_like},'%')</if>
+           <if test="filter3_lt != null and filter3_lt != ''"> <![CDATA[ AND FILTER_3 < #{filter3_lt} ]]> </if>
+           <if test="filter3_gt != null and filter3_gt != ''"> <![CDATA[ AND FILTER_3 > #{filter3_gt} ]]> </if>
+
+           <if test="filter4 != null and filter4 != ''"> AND FILTER_4 = #{filter4} </if>
+           <if test="filter4_ne != null and filter4_ne != ''"> AND FILTER_4 != #{filter4_ne} </if>
+           <if test="filter4_like != null and filter4_like != ''"> AND FILTER_4 LIKE CONCAT('%',#{filter4_like},'%')</if>
+           <if test="filter4_lt != null and filter4_lt != ''"> <![CDATA[ AND FILTER_4 < #{filter4_lt} ]]> </if>
+           <if test="filter4_gt != null and filter4_gt != ''"> <![CDATA[ AND FILTER_4 > #{filter4_gt} ]]> </if>
+
+           <if test="filter5 != null and filter5 != ''"> AND FILTER_5 = #{filter5} </if>
+           <if test="filter5_ne != null and filter5_ne != ''"> AND FILTER_5 != #{filter5_ne} </if>
+           <if test="filter5_like != null and filter5_like != ''"> AND FILTER_5 LIKE CONCAT('%',#{filter5_like},'%')</if>
+           <if test="filter5_lt != null and filter5_lt != ''"> <![CDATA[ AND FILTER_5 < #{filter5_lt} ]]> </if>
+           <if test="filter5_gt != null and filter5_gt != ''"> <![CDATA[ AND FILTER_5 > #{filter5_gt} ]]> </if>
+
+           <if test="filter6 != null and filter6 != ''"> AND FILTER_6 = #{filter6} </if>
+           <if test="filter6_ne != null and filter6_ne != ''"> AND FILTER_6 != #{filter6_ne} </if>
+           <if test="filter6_like != null and filter6_like != ''"> AND FILTER_6 LIKE CONCAT('%',#{filter6_like},'%')</if>
+           <if test="filter6_lt != null and filter6_lt != ''"> <![CDATA[ AND FILTER_6 < #{filter6_lt} ]]> </if>
+           <if test="filter6_gt != null and filter6_gt != ''"> <![CDATA[ AND FILTER_6 > #{filter6_gt} ]]> </if>
+
+           <if test="filter7 != null and filter7 != ''">AND FILTER_7 = #{filter7} </if>
+           <if test="filter7_ne != null and filter7_ne != ''"> AND FILTER_7 != #{filter7_ne} </if>
+           <if test="filter7_like != null and filter7_like != ''"> AND FILTER_7 LIKE CONCAT('%',#{filter7_like},'%')</if>
+           <if test="filter7_lt != null and filter7_lt != ''"> <![CDATA[ AND FILTER_7 < #{filter7_lt} ]]> </if>
+           <if test="filter7_gt != null and filter7_gt != ''"> <![CDATA[ AND FILTER_7 > #{filter7_gt} ]]> </if>
+
+           <if test="filter8 != null and filter8 != ''">AND FILTER_8 = #{filter8} </if>
+           <if test="filter8_ne != null and filter8_ne != ''"> AND FILTER_8 != #{filter8_ne} </if>
+           <if test="filter8_like != null and filter8_like != ''"> AND FILTER_8 LIKE CONCAT('%',#{filter8_like},'%')</if>
+           <if test="filter8_lt != null and filter8_lt != ''"> <![CDATA[ AND FILTER_8 < #{filter8_lt} ]]> </if>
+           <if test="filter8_gt != null and filter8_gt != ''"> <![CDATA[ AND FILTER_8 > #{filter8_gt} ]]> </if>
+
+           <if test="filter9 != null and filter9 != ''">AND FILTER_9 = #{filter9} </if>
+           <if test="filter9_ne != null and filter9_ne != ''"> AND FILTER_9 != #{filter9_ne} </if>
+           <if test="filter9_like != null and filter9_like != ''"> AND FILTER_9 LIKE CONCAT('%',#{filter9_like},'%')</if>
+           <if test="filter9_lt != null and filter9_lt != ''"> <![CDATA[ AND FILTER_9 < #{filter9_lt} ]]> </if>
+           <if test="filter9_gt != null and filter9_gt != ''"> <![CDATA[ AND FILTER_9 > #{filter9_gt} ]]> </if>
+
+           <if test="filter10 != null and filter10 != ''">AND FILTER_10 = #{filter10} </if>
+           <if test="filter10_ne != null and filter10_ne != ''"> AND FILTER_10 != #{filter10_ne} </if>
+           <if test="filter10_like != null and filter10_like != ''"> AND FILTER_10 LIKE CONCAT('%',#{filter10_like},'%')</if>
+           <if test="filter10_lt != null and filter10_lt != ''"> <![CDATA[ AND FILTER_10 < #{filter10_lt} ]]> </if>
+           <if test="filter10_gt != null and filter10_gt != ''"> <![CDATA[ AND FILTER_10 > #{filter10_gt} ]]> </if>
+        ORDER BY SORT_NO
+    </select>
+
+</mapper>
