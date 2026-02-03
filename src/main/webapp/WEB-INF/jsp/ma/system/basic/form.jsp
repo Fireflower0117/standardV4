@@ -80,10 +80,6 @@
         /***************************************************************************/
 
 
-
-
-
-
         /***************************************************************************/
         /*********************        저장/수정/삭제 수행          ********************/
         /***************************************************************************/
@@ -91,46 +87,9 @@
 			<%-- 등록,수정 처리 --%>
             <c:if test="${USER_AUTH.UPDATE_YN== 'Y'}">
 
-			//	let validateSuccessFn = function( form ){
-			//		alert("validateSuccessFn");
-            //              debugger;
-			//	}
-
                $('#btn_submit').on('click', (evt) => {
 
-				   /* let systemConfigValidateObj = { formEle : "#systemConfigfrm" , callbackFn : validateSuccessFn , messageOption : "div"
-								              , validateList  : [ {name : "selEncAlgorith"     , label : "암호화알고리즘"           ,  rule: {"required":true} }
-										     		            , {name : "selPwdChgCyclUseYn" , label : "비밀번호변경주기"          ,  rule: {"required":true} }
-										     		            , {name : "txtPwdChgCyclDd"    , label : "비밀번호변경주기일자"       ,  rule: {"required":true,numberOnly:true} }
-                                                                , {name : "selPwdlockUseYn"    , label : "비밀번호실패시 계정잠금여부" ,  rule: {"required":true} }
-                                                                , {name : "txtPwdfailCount"    , label : "비밀번호잠금기준횟수"       ,  rule: {"required":true,numberOnly:true} }
-                                                                , {name : "selItmsUseYn"       , label : "ITMS 사용여부"            ,  rule: {"required":true} }
-                                                                , {name : "selPssnPrdCd"       , label : "탈퇴계정 보유기간 코드"     ,  rule: {"required":true} }
-                                                                , {name : "selFileSaveDivCd"   , label : "파일저장 방식 구분"        ,  rule: {"required":true} }
-                                                                , {name : "txtFileSavePath"    , label : "파일저장경로"             ,  rule: {"required":true} }
-                                                                , {name : "txtMaDirectPage"    , label : "MA Login후 기본이동경로"   ,  rule: {"required":true} }
-                                                                , {name : "txtFtDirectPage"    , label : "FT Login후 기본이동경로"   ,  rule: {"required":true} }
-                                                                , {name : "txtFileSavePath"    , label : "FT Login후 기본이동경로"   ,  rule: {"required":true} }
-												                ]
-				    };
-				    on.valid.cmValidationCheck(systemConfigValidateObj);*/
-
-
-				    //  1. form으로 전송하는경우의 Validation
-                    /*on.html.dynaGenHiddenForm({ formDefine : { fid:"leftMenuForm", fTarget:menuTraget , action: menuHref , method : "post" , isSubmit : true   }
-                                              , formValication : {  validationList :    , messageOption : "div" }
-                                              , formAttrs  : { equip_no    : {name : "" , val:"" }
-                                                             , date_upload : {name : "" , val:"" }
-                                                             }
-                                             });*/
-
-                    //  2. jquery.ajax 로 전송하는경우의 Validation (sql의 경우)
-
-
-                    // 3. jquery.ajax 로 전송하는경우의 Validation (url의 경우)
-
-
-
+				   // 유효성 검증 대상 속성
 					let systemConfigValidateList  = [ {name : "pwdEncAlgorithm"     , label : "암호화알고리즘"           ,  rule: {"required":true} }
 													, {name : "pwdChgCycleUseYn" , label : "비밀번호변경주기"          ,  rule: {"required":true} }
 													, {name : "pwdChgCyclDd"     , label : "비밀번호변경주기일자"       ,  rule: {"required":true,numberOnly:true} }
@@ -147,22 +106,15 @@
 
                     on.xhr.ajax({ sid : "systemConfigForm" // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
 							    , cmd : "update" , sql : "on.standard.system.systempolicy.updSystemPolicy"
-							    , validation : { formId : "#systemConfigfrm" , validationList : systemConfigValidateList , messageOption : "div"  }  // 유효성검증 관련
+							    , validation : { formId : "#systemConfigfrm" , validationList : systemConfigValidateList  }  // 유효성검증 기능 포함
 							    , data       : $("#systemConfigfrm").serializeArray()  // Data입력관련 (validation과 별개의 Data작업진행
 							    , successFn  : function (sid, data){
 										 on.html.dynaGenHiddenForm({ formDefine : { fid:"systemConfigForm" , action:"/ma/system/basic/form.do" , method : "post" , isSubmit : true  } }); // HiddenForm 생성및 전송
 					             }
-							    , failFn     : function (rsltCd, errMsg){
-
-				                 }
 					});
-
-
 			   });
 
            </c:if>
-
-
 
     });
 </script>

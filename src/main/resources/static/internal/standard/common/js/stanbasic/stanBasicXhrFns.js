@@ -79,8 +79,6 @@ const xhrFns = {
                 }
             }
 
-
-
             // form 데이터 유효성 검증
             if(!on.valid.isEmpty(callAjaxObj.validation)){
 
@@ -102,12 +100,6 @@ const xhrFns = {
                 }
 
             }
-
-
-
-
-
-
 
             /* callAjaxObj.url */
             if(!on.valid.isEmpty(callAjaxObj.url)){

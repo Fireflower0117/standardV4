@@ -46,7 +46,7 @@
          INNER JOIN STB_M_MENU_AUTH_MNG MAM on MM.MENU_CD = MAM.MENU_CD
          INNER JOIN STB_M_AUTH_USER_MNG AUM on MAM.AUTH_ID = AUM.AUTH_ID
          WHERE MM.URL_ADDR = #{urlAddr}
-           AND AUM.USER_ID = #{userId}
+           AND AUM.USER_ID = #{loginUserId}
         GROUP BY MM.MENU_DIV_CD, MM.MENU_CD, MM.URL_ADDR, MM.MENU_PARAM, MM.KOR_NM, AUM.USER_ID, MM.MENU_PATH, MM.MENU_CD_PATH
     </select>
 
@@ -78,13 +78,39 @@
          WHERE MMAM.AUTH_ID  IN (
                SELECT AUTH_ID
                  FROM STB_M_AUTH_USER_MNG SMAUM
-                WHERE USER_ID = #{userId}
+                WHERE USER_ID = #{loginUserId}
                   AND USE_YN = 'Y'
           )
           AND SMMH.USE_YN = 'Y'
           AND SMMH.MENU_DIV_CD = 'MA'
           AND SMMH.PAGE_CL IN ('MAIN')
         ORDER BY SMMH.LEVEL, SMMH.SORT_PATH
+    </select>
+
+    <select id="selectMenuList" parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.system.menu.selectMenuList */
+        SELECT MENU_DIV_CD  menuDivCd
+             , MENU_SERNO   menuSerno
+             , MENU_CD      menuCd
+             , UPR_MENU_CD  uprMenuCd
+             , KOR_NM       korNm
+             , PAGE_CL      pageCl
+             , MENU_PARAM   menuParam
+             , MENU_CSS     menuCss
+             , LAY_OUT      layOut
+             , RTN_URL      rtnUrl
+             , MENU_TARGET  menuTarget
+             , URL_ADDR     urlAddr
+             , SORT_NO      sortNo
+             , USE_YN       useYn
+             , LEVEL        level
+             , SORT_PATH    sortPath
+             , MENU_PATH    menuPath
+             , MENU_CD_PATH menuCdPath
+             , IS_LEAF      isLeaf
+          FROM SVI_MENU_MNG_HIERARCHY
+         WHERE MENU_DIV_CD = #{menuDivCd}
+         ORDER BY SORT_PATH
     </select>
 
 </mapper>

@@ -11,9 +11,9 @@ $(document).ready(function(){
      on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#searchKeyCd" }
                                   , addOption     : [{ position : "top" , txt : "전체" , val : "" }]
                                   , optionValInfo : { optId : "code" , optTxt : "text" }
-                                  , comboDataInfo : [ { code : "authId"   , text:"그룹권한ID" }
-                                                    , { code : "authNm"   , text:"그룹권한명" }
-                                                    , { code : "authDesc" , text:"그룹권한설명" }
+                                  , comboDataInfo : [ { code : "userId"   , text:"사용자ID" }
+                                                    , { code : "userNm"   , text:"사용자명" }
+                                                    , { code : "mobileNo" , text:"휴대폰번호" }
                                                     ]
                                  });
      // Paging Per Row
@@ -32,8 +32,8 @@ $(document).ready(function(){
       // 검색조건 설정
       let searchConditionObj = {
               cmd             : "selectPage"
-            , sql             : "on.standard.system.auth.inqAuthList"
-            , searchKeycd     : $("#searchKeycd :selected").val()
+            , sql             : "on.standard.system.usermanage.selUserList"
+            , searchKeyCd     : $("#searchKeyCd :selected").val()
             , searchKeyWord   : $("#searchKeyWord").val()
       };
 
@@ -80,12 +80,13 @@ $(document).ready(function(){
               , paginginfo    : {targetId : "#pagenation" , btnFnName : fnPageBtnClick } // 페이징처리될영역과 , 페이징버튼 Event (자동처리)
               , displayColInfos : {
                     normal_tab_columns : [
-                            {id: "rowindx"     , colType: "rowNumber" , data_id1:"authId", classNm: "number"}
-                          , {id: "authId"      , colType: "normalTd"  , data_id1:"authId"}
-                          , {id: "authKorName" , colType: "normalTd"  , data_id1:"authId"}
-                          , {id: "authComment" , colType: "normalTd"  , data_id1:"authId"}
-                          , {id: "useYn"       , colType: "normalTd"  , data_id1:"authId"}
-                          , {id: "regYmd"      , colType: "normalTd"  , data_id1:"authId", classNm: "date"}
+                            {id: "rowindx"     , colType: "rowNumber" , data_id1:"userId", classNm: "number"}
+                          , {id: "userId"      , colType: "normalTd"  , data_id1:"userId"}
+                          , {id: "userKorNm"   , colType: "normalTd"  , data_id1:"userId"}
+                          , {id: "userEngNm"   , colType: "normalTd"  , data_id1:"userId"}
+                          , {id: "mobileNo"    , colType: "normalTd"  , data_id1:"userId"}
+                          , {id: "emailAddr"   , colType: "normalTd"  , data_id1:"userId"}
+                          , {id: "lstLoginDt"  , colType: "normalTd"  , data_id1:"userId", classNm: "date"}
                     ]
               }
             }
@@ -130,8 +131,8 @@ $(document).ready(function(){
            // 검색 클릭
           $("#btnSearch").on("click", (evt) => {
                 searchConditionObj.pageNo        = 1;
-                searchConditionObj.searchKeycd   = on.html.getEleVal("#searchKeyCd");
-                searchConditionObj.searchKeyword = on.html.getEleVal("#searchKeyWord");
+                searchConditionObj.searchKeyCd   = on.html.getEleVal("#searchKeyCd");
+                searchConditionObj.searchKeyWord = on.html.getEleVal("#searchKeyWord");
                 searchData(); // Search Data
           });
 
@@ -141,7 +142,7 @@ $(document).ready(function(){
 
             let selAuthId = target.find("td[data-authid]").data("authid");
             if(!on.valid.isEmpty(selAuthId)){
-                  on.html.dynaGenHiddenForm({ formDefine : { fid       : "authViewForm", action: "/ma/system/auth/view.do", method: "post", isSubmit : true }
+                  on.html.dynaGenHiddenForm({ formDefine : { fid       : "authViewForm", action: "/ma/system/user/view.do", method: "post", isSubmit : true }
                                                            , formAttrs : [ { name : "searchCondition" , value : JSON.stringify(searchConditionObj) }
                                                                          , { name : "authId"          , value : selAuthId }
                                                                          ]
@@ -152,7 +153,7 @@ $(document).ready(function(){
            <c:if test="${USER_AUTH.WRITEYN== 'Y'}">
                  // 로그인 사용자가 현재 페이지의 작성권한이 있다면...
                  $("#btnWrite").on("click", (evt) => {
-                     on.html.dynaGenHiddenForm({ formDefine : { fid : "authWriteForm", action: "/ma/system/authWrite.do", method: "post", isSubmit : true } });
+                     on.html.dynaGenHiddenForm({ formDefine : { fid : "authWriteForm", action: "/ma/system/user/write.do", method: "post", isSubmit : true } });
                  });
 		   </c:if>
 
@@ -196,18 +197,20 @@ $(document).ready(function(){
             <col class="w5p"/>
             <col class="w10p"/>
             <col class="w15p"/>
+            <col class="w15p"/>
             <col/>
-            <col class="w5p"/>
+            <col class="w15p"/>
             <col class="w10p"/>
         </colgroup>
         <thead>
             <tr>
                 <th scope="col">번호</th>
-                <th scope="col">그룹권한ID</th>
-                <th scope="col">그룹권한명</th>
-                <th scope="col">그룹권한설명</th>
-                <th scope="col">사용구분</th>
-                <th scope="col">등록일</th>
+                <th scope="col">사용자아이디</th>
+                <th scope="col">사용자이름(한글)</th>
+                <th scope="col">사용자이름(영문)</th>
+                <th scope="col">전화번호</th>
+                <th scope="col">이메일</th>
+                <th scope="col">최종로그인일시</th>
             </tr>
         </thead>
         <tbody></tbody>

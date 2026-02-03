@@ -31,9 +31,7 @@ public class OnNameViewService {
         CommonMap paramMap = new CommonMap(request);
         for(Iterator keyIter = paramMap.getKeys().iterator(); keyIter.hasNext();) {
             String key = (String) keyIter.next();
-            if(key.indexOf("searchCondition") > -1 ){
-                model.addAttribute(key, paramMap.get(key));
-            }
+            model.addAttribute(key, paramMap.get(key));
         }
 
         // return Page를 찾는다.

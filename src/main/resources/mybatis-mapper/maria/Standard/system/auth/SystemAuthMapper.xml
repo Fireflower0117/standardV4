@@ -6,6 +6,7 @@
 		  <![CDATA[
         SELECT (${rn_top} / (${rn_top} - ${rn_bottom})) AS pageNo
              , (${rn_top} - ${rn_bottom})               AS pageSize
+             , totalCount - (rowindx - 1)               AS rrowindx
              , ROW_.*
         FROM (
         ]]>
@@ -36,7 +37,7 @@
 
     <sql id="systemAuthListSql">
         SELECT a.rownum_       rowindx
-             , b.TOTAL_COUNT     totalCount
+             , b.TOTAL_COUNT    totalCount
              , a.AUTH_ID        authId
              , a.AUTH_KOR_NAME  authKorName
              , a.AUTH_ENG_NAME  authEngName
@@ -76,7 +77,7 @@
                        </otherwise>
                    </choose>
                  </if>
-                 ORDER BY REG_DATE ASC
+                 ORDER BY AUTH_ID ASC
              ) a
              JOIN (
                 SELECT COUNT(*) AS TOTAL_COUNT
@@ -108,5 +109,71 @@
               ) b
               ON 1 = 1
     </sql>
+
+
+    <select id="selAuthView" parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.system.auth.selAuthView */
+        SELECT AUTH_ID         authId
+             , AUTH_KOR_NAME   authKorName
+             , AUTH_ENG_NAME   authEngName
+             , AUTH_COMMENT    authComment
+             , USE_YN          useYn
+             , IS_DEL_ABLE     isDelAble
+             , FN_S_USER_INFO(REG_USER,'USER_KOR_NM') regUserNm
+             , DATE_FORMAT(REG_DATE, '%Y.%m.%d') regYmd
+             , TEMPCOL_1 tempCol1, TEMPCOL_2 tempCol2, TEMPCOL_3 tempCol3, TEMPCOL_4 tempCol4, TEMPCOL_5 tempCol5
+             , TEMPCOL_6 tempCol6, TEMPCOL_7 tempCol7, TEMPCOL_8 tempCol8, TEMPCOL_9 tempCol9, TEMPCOL_10 tempCol10
+          FROM STB_B_AUTH_MNG
+         WHERE AUTH_ID = #{authId}
+    </select>
+
+    <update id="updAuthInfo" parameterType="CommonMap">
+         UPDATE STB_B_AUTH_MNG
+            SET AUTH_ID = #{authId}
+            <if test="authKorName != null and authKorName != ''">
+              , AUTH_KOR_NAME  = #{authKorName}
+            </if>
+            <if test="authEngName != null and authEngName != ''">
+                , AUTH_ENG_NAME  = #{authEngName}
+            </if>
+            <if test="authComment != null and authComment != ''">
+                , AUTH_COMMENT  = #{authComment}
+            </if>
+            <if test="useYn != null and useYn != ''">
+                , USE_YN  = #{useYn}
+            </if>
+            <if test="tempCol1 != null and tempCol1 != ''">
+                , TEMPCOL_1  = #{tempCol1}
+            </if>
+            <if test="tempCol2 != null and tempCol2 != ''">
+                , TEMPCOL_2  = #{tempCol2}
+            </if>
+            <if test="tempCol3 != null and tempCol3 != ''">
+                , TEMPCOL_3  = #{tempCol3}
+            </if>
+            <if test="tempCol4 != null and tempCol4 != ''">
+                , TEMPCOL_4  = #{tempCol4}
+            </if>
+            <if test="tempCol5 != null and tempCol5 != ''">
+                , TEMPCOL_5  = #{tempCol5}
+            </if>
+            <if test="tempCol6 != null and tempCol6 != ''">
+                , TEMPCOL_6  = #{tempCol6}
+            </if>
+            <if test="tempCol7 != null and tempCol7 != ''">
+                , TEMPCOL_7  = #{tempCol7}
+            </if>
+            <if test="tempCol8 != null and tempCol8 != ''">
+                , TEMPCOL_8  = #{tempCol8}
+            </if>
+            <if test="tempCol9 != null and tempCol9 != ''">
+                , TEMPCOL_9  = #{tempCol9}
+            </if>
+            <if test="tempCol10 != null and tempCol10 != ''">
+                , TEMPCOL_10  = #{tempCol10}
+            </if>
+           WHERE AUTH_ID = #{authId}
+    </update>
+
 
 </mapper>

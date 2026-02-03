@@ -247,9 +247,17 @@ public class BasicCrudService {
         if(session != null){
             UserVO userVO = (UserVO)session.getAttribute("userDetails");
             if(userVO != null){
+                String loginUserId = userVO.getUserId();
+                String loginAuthId = userVO.getAuthId();
                 for(CommonMap sqlCondiMap : sqlCondiMapList) {
-                    sqlCondiMap.put("userId", userVO.getUserId());
-                    sqlCondiMap.put("authId", userVO.getAuthId());
+                    sqlCondiMap.put("loginUserId", loginUserId);
+                    sqlCondiMap.put("loginAuthId", loginAuthId);
+                }
+            }
+            else {
+                for(CommonMap sqlCondiMap : sqlCondiMapList) {
+                    sqlCondiMap.put("loginUserId", "AnonymousUser");
+                    sqlCondiMap.put("loginAuthId", "AnonymousAuth");
                 }
             }
         }
@@ -262,8 +270,12 @@ public class BasicCrudService {
         if(session != null){
             UserVO userVO = (UserVO)session.getAttribute("userDetails");
             if(userVO != null){
-                 sqlCondiMap.put("userId", userVO.getUserId());
-                 sqlCondiMap.put("authId", userVO.getAuthId());
+                 sqlCondiMap.put("loginUserId", userVO.getUserId());
+                 sqlCondiMap.put("loginAuthId", userVO.getAuthId());
+            }
+            else {
+                sqlCondiMap.put("loginUserId", "AnonymousUser");
+                sqlCondiMap.put("loginAuthId", "AnonymousAuth");
             }
         }
     }  

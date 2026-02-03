@@ -428,16 +428,12 @@
     }
     , dynaGenHiddenForm : function(formInfo) {
         /* var formInfo = { formDefine : { fid:"" , fname:"" , target:"" , action:"" , method : "" , classNm : "" , style:"" }
-                          , formAttrs  : { equip_no    : {name : "" , val:"" }
-                                         , date_upload : {name : "" , val:"" }
-                                         }
+                          , formAttrs  : [ {name : "" , value:"" }
+                                         , {name : "" , value:"" }
+                                         ]
                           }
         */
 
-        /*$("body").append("<form id='FormExcel' name='FormExcel' method='post'></form>");
-        $("#FormExcel").attr("action",excelDownUrl);
-        $("#FormExcel").submit();
-        $("#FormExcel").remove();*/
 
         if (on.valid.isEmpty(formInfo.formDefine.fid)) return false;
 
@@ -456,19 +452,24 @@
 
         var inputAttrsHtml = "";
         if (!on.valid.isEmpty(formInfo.formAttrs)) {
-            var formAttrsKeys = Object.keys(formInfo.formAttrs);
-            let fileNmIndx = 0;
-            for (var i = 0; i < formAttrsKeys.length; i++) {
-                var inputEleObj = eval("formInfo.formAttrs." + formAttrsKeys[i]);
-                var eleName = on.valid.isEmpty(inputEleObj.name) ? formAttrsKeys[i] : inputEleObj.name;
-                var eleType = on.valid.isEmpty(inputEleObj.type) ? "hidden" : inputEleObj.type;
-                var eleVal = on.valid.isEmpty(inputEleObj.val) ? "''" : inputEleObj.val;
+              for(let attrIndx in  formInfo.formAttrs){
+                let eleName = null;
+                  if(!on.valid.isEmpty(formInfo.formAttrs[attrIndx].name) ){
+                      eleName = formInfo.formAttrs[attrIndx].name;
+                  }else {
+                      on.msg.consoleLog("formAttrs [{name:''}] 은 필수입력 항목입니다." );
+                      return false;
+                      break;
+                  }
+
+                 let eleType = on.valid.isEmpty(formInfo.formAttrs[attrIndx].type) ? "hidden" : formInfo.formAttrs[attrIndx].type;
+                 let eleVal = on.valid.isEmpty(formInfo.formAttrs[attrIndx].value) ? "''" : formInfo.formAttrs[attrIndx].value;
 
                 if (eleType == "file") {
-                    inputAttrsHtml += "<input type='" + eleType + "' id='" + formAttrsKeys[i] + "' name='" + eleName + "'                    style='display:none;' >";
+                    inputAttrsHtml += "<input type='file' id='" + eleName + "' name='" + eleName + "'  style='display:none;' >";
                 } else if (eleType == "files") {
                     if (!on.valid.isEmpty(eleVal)) {
-                        let fileIdx = 0;
+                        let fileIdx = 0;1278
                         for (inpFile of eleVal.toArray()) {
                             inputAttrsHtml += "<input type='file' name='" + eleName + "_" + fileIdx + "'   style='display:none;'>";
                             fileIdx++;
@@ -476,7 +477,7 @@
                         fileNmIndx++;
                     }
                 } else {
-                    inputAttrsHtml += "<input type='" + eleType + "' id='" + formAttrsKeys[i] + "' name='" + eleName + "' value='" + eleVal + "' style='display:none;' >";
+                    inputAttrsHtml += "<input type='" + eleType + "' id='" + eleName + "' name='" + eleName + "' value='" + eleVal + "' style='display:none;' >";
                 }
             }
         }
@@ -489,12 +490,19 @@
         $(insertTrget).append(formHtml);
 
         if (!on.valid.isEmpty(formInfo.formAttrs)) {
-            var formAttrsKeys = Object.keys(formInfo.formAttrs);
-            for (var i = 0; i < formAttrsKeys.length; i++) {
-                var inputEleObj = eval("formInfo.formAttrs." + formAttrsKeys[i]);
-                var eleName = on.valid.isEmpty(inputEleObj.name) ? formAttrsKeys[i] : inputEleObj.name;
-                var eleType = on.valid.isEmpty(inputEleObj.type) ? "hidden" : inputEleObj.type;
-                var eleVal = on.valid.isEmpty(inputEleObj.val) ? "''" : inputEleObj.val;
+            for(let attrIndx in  formInfo.formAttrs){
+
+                let eleName = null;
+                if(!on.valid.isEmpty(formInfo.formAttrs[attrIndx].name) ){
+                    eleName = formInfo.formAttrs[attrIndx].name;
+                }else {
+                    on.msg.consoleLog("formAttrs [{name:''}] 은 필수입력 항목입니다." );
+                    return false;
+                    break;
+                }
+
+                let eleType = on.valid.isEmpty(formInfo.formAttrs[attrIndx].type) ? "hidden" : formInfo.formAttrs[attrIndx].type;
+                let eleVal = on.valid.isEmpty(formInfo.formAttrs[attrIndx].value) ? "''" : formInfo.formAttrs[attrIndx].value;
 
                 if (eleType == "file") {
                     var colneFile = $(eleVal).clone(true);
@@ -816,8 +824,8 @@
             eleVal = on.enc.encrypt({ encVal : $(ele).val() });
         }
         return eleVal;
-    },
-    setEleVal : function(setObj) {
+    }
+    , setEleVal : function(setObj) {
 
         if(on.valid.isEmpty(setObj.ele) ){
             console.log("Set element Id를 지정하세요.");
@@ -845,9 +853,9 @@
         } else {
             $(setObj.ele).text(eleVal);
         }
-    },
+    }
     /*****  Element Type 조회 ****/
-    getEleType : function(ele) {
+     ,  getEleType : function (ele) {
         var $el = $(ele);
         var eleType;
         if($el.is("form")){
@@ -1023,6 +1031,13 @@
          }
          return serializeArrData;
     }
+
+    , docSetElementById( eleValues ){
+        if(on.valid.isEmpty(eleValues)) return false;
+        for(let eleKey of Object.keys(eleValues)){
+              on.html.setEleVal({ele : "#"+eleKey , val : eleValues[eleKey] });
+        }
+     }
 }
 
     window.htmlFns = htmlFns;

@@ -38,7 +38,6 @@ public class BasicCrudDao {
            int rnBottom =  Integer.parseInt(""+hashMap.get("rn_bottom")); 
            hashMap.put("rn_limit", rnTop - rnBottom); 
         }
-        setUserInfo(hashMap);
         log.info("[DAO-SELECT] qid : {} , data : {}", qid, hashMap);
         return sqlsession.selectList(qid, hashMap);
     }
@@ -58,7 +57,6 @@ public class BasicCrudDao {
     }
 
     public CommonMap selectOne(String qid, CommonMap hashMap) {
-        setUserInfo(hashMap);
         log.info("[DAO-SELECT-ONE]   qid : {} , data : {} ", qid, hashMap);
         return sqlsession.selectOne(qid, hashMap);
     } 
@@ -84,7 +82,6 @@ public class BasicCrudDao {
     }
 
     public int insert(String qid, CommonMap hashMap) {
-        setUserInfo(hashMap);
         log.info("[DAO-INSERT] " + qid + ", " + hashMap);
         int effCnt = sqlsession.insert(qid, hashMap);
         hashMap.put("effCnt", effCnt);
@@ -106,7 +103,6 @@ public class BasicCrudDao {
     }
 
     public int update(String qid, CommonMap hashMap) {
-        setUserInfo(hashMap);
         log.info("[DAO-UPDATE] qid : {} , data : {}", qid, hashMap);
         int effCnt = sqlsession.update(qid, hashMap);
         hashMap.put("effCnt", effCnt);
@@ -127,31 +123,13 @@ public class BasicCrudDao {
     }
 
     public int delete(String qid, CommonMap hashMap) {
-        setUserInfo(hashMap);
         log.info("[DAO-DELETE] qid : {} , data : {}", qid, hashMap);
         int effCnt = sqlsession.delete(qid, hashMap);
         hashMap.put("effCnt", effCnt);
         return effCnt;
     }
   
-    
-    /***************************************************************************************************************/
-    /*******************************            set User Info       ********************************/
-    /***************************************************************************************************************/
-    private void setUserInfo(CommonMap condiMap){
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        HttpSession session = request.getSession(); 
-        LoginVO loginVO = (LoginVO)session.getAttribute("login_user_info");
-        if(loginVO != null ){ 
-               condiMap.put("loginUserId", loginVO.getUserId());
-               condiMap.put("loginUserSerno", loginVO.getUserSerno()); 
-        } 
-        else { 
-               condiMap.put("loginUserId"   , "Anonymous");
-               condiMap.put("loginUserSerno", "999999"); 
-        }  
-    } 
-    
+
     
 
 }
