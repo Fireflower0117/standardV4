@@ -834,47 +834,55 @@
 
         var eleVal = setObj.val;
         var eleDiv = on.html.getEleType($(setObj.ele));
-        if (eleDiv == "text" || eleDiv == "number") {
-            $(setObj.ele).val(eleVal);
-        } else if (eleDiv == "hidden") {
-            $(setObj.ele).val(eleVal);
-        } else if (eleDiv == "radio") {
-            let eleNm = setObj.ele;
-            if(setObj.ele.startsWith("#") || setObj.ele.startsWith(".")){
-                eleNm = "input[name='"+$(setObj.ele).attr("name")+"']";
+        if (!on.valid.isEmpty( eleDiv ) ){
+            if (eleDiv == "text" || eleDiv == "number") {
+                $(setObj.ele).val(eleVal);
+            } else if (eleDiv == "hidden") {
+                $(setObj.ele).val(eleVal);
+            } else if (eleDiv == "radio") {
+                let eleNm = setObj.ele;
+                if(setObj.ele.startsWith("#") || setObj.ele.startsWith(".")){
+                    eleNm = "input[name='"+$(setObj.ele).attr("name")+"']";
+                }
+                $( eleNm + "[value='" + eleVal + "']").prop("checked", true);
+            } else if (eleDiv == "select") {
+                $(setObj.ele).val(eleVal).prop("selected", true);
+            } else if (eleDiv == "checkbox") {
+                $(setObj.ele).prop("checked", (eleVal == "Y" ? true : false));
+            } else if (eleDiv == "textarea") {
+                $(setObj.ele).val(eleVal);
+            } else {
+                $(setObj.ele).text(eleVal);
             }
-            $( eleNm + "[value='" + eleVal + "']").prop("checked", true);
-        } else if (eleDiv == "select") {
-            $(setObj.ele).val(eleVal).prop("selected", true);
-        } else if (eleDiv == "checkbox") {
-            $(setObj.ele).prop("checked", (eleVal == "Y" ? true : false));
-        } else if (eleDiv == "textarea") {
-            $(setObj.ele).val(eleVal);
-        } else {
-            $(setObj.ele).text(eleVal);
+        }
+        else {
+            on.msg.consoleLog(setObj.ele+"는 Document에 없습니다. (대소문자 구분함) ");
         }
     }
     /*****  Element Type 조회 ****/
      ,  getEleType : function (ele) {
         var $el = $(ele);
         var eleType;
-        if($el.is("form")){
-            eleType = "form";
-        }
-        else if ($el.is("input")) {
-            eleType = $(ele).attr("type");
-        }
-        else if ($el.is("select")) {
-            eleType = "select";
-        }
-        else if ($el.is("checkbox")) {
-            eleType = "checkbox";
-        }
-        else if ($el.is("textarea")) {
-            eleType = "textarea";
-        }
-        else {
-            eleType = $el.prop("tagName").toLowerCase();
+
+        if( $el.length > 0 ){
+            if($el.is("form")){
+                eleType = "form";
+            }
+            else if ($el.is("input")) {
+                eleType = $(ele).attr("type");
+            }
+            else if ($el.is("select")) {
+                eleType = "select";
+            }
+            else if ($el.is("checkbox")) {
+                eleType = "checkbox";
+            }
+            else if ($el.is("textarea")) {
+                eleType = "textarea";
+            }
+            else {
+                eleType = $el.prop("tagName").toLowerCase();
+            }
         }
         return eleType;
     },

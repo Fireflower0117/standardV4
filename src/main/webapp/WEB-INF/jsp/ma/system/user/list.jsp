@@ -32,7 +32,7 @@ $(document).ready(function(){
       // 검색조건 설정
       let searchConditionObj = {
               cmd             : "selectPage"
-            , sql             : "on.standard.system.usermanage.selUserList"
+            , sql             : "on.standard.system.user.selUserList"
             , searchKeyCd     : $("#searchKeyCd :selected").val()
             , searchKeyWord   : $("#searchKeyWord").val()
       };
@@ -140,20 +140,20 @@ $(document).ready(function(){
           $(".board_list > tbody").on("click" , (evt) => {
             let target = $(evt.target).closest("tr"); // 각 레코드의 부모인 tr로 가서 board_seq 찾기
 
-            let selAuthId = target.find("td[data-authid]").data("authid");
-            if(!on.valid.isEmpty(selAuthId)){
+            let selUserId = target.find("td[data-userid]").data("userid");
+            if(!on.valid.isEmpty(selUserId)){
                   on.html.dynaGenHiddenForm({ formDefine : { fid       : "authViewForm", action: "/ma/system/user/view.do", method: "post", isSubmit : true }
                                                            , formAttrs : [ { name : "searchCondition" , value : JSON.stringify(searchConditionObj) }
-                                                                         , { name : "authId"          , value : selAuthId }
+                                                                         , { name : "userId"          , value : selUserId }
                                                                          ]
                   });
             }
           });
 
-           <c:if test="${USER_AUTH.WRITEYN== 'Y'}">
+           <c:if test="${USER_AUTH.WRITE_YN== 'Y'}">
                  // 로그인 사용자가 현재 페이지의 작성권한이 있다면...
                  $("#btnWrite").on("click", (evt) => {
-                     on.html.dynaGenHiddenForm({ formDefine : { fid : "authWriteForm", action: "/ma/system/user/write.do", method: "post", isSubmit : true } });
+                     on.html.dynaGenHiddenForm({ formDefine : { fid : "authWriteForm", action: "/ma/system/user/regist.do", method: "post", isSubmit : true } });
                  });
 		   </c:if>
 
@@ -192,7 +192,6 @@ $(document).ready(function(){
         </div>
     </div>
     <table class="board_list">
-        <caption>목록(번호, 그룹권한ID, 그룹권한명, 그룹권한설명, 사용구분, 등록일으로 구성)</caption>
         <colgroup>
             <col class="w5p"/>
             <col class="w10p"/>
@@ -217,7 +216,7 @@ $(document).ready(function(){
     </table>
     <div class="paging_wrap">
         <ul class="paging" id="pagenation"></ul>
-        <c:if test="${USER_AUTH.WRITEYN== 'Y'}">
+        <c:if test="${USER_AUTH.WRITE_YN== 'Y'}">
 			<div class="btn_right">
                 <button id="btnWrite" class="btn blue">등록</button>
             </div>

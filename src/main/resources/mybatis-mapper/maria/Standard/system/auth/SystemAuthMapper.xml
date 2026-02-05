@@ -175,5 +175,14 @@
            WHERE AUTH_ID = #{authId}
     </update>
 
+    <select id="selectAuthList" parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.system.auth.selectAuthList */
+        SELECT AUTH_ID        authId
+             , AUTH_KOR_NAME  authKorName
+          FROM STB_B_AUTH_MNG
+         WHERE USE_YN = 'Y'
+         ORDER BY AUTH_ID
+    </select>
+
 
 </mapper>

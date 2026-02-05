@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="on.standard.system.authmenu">
+
+    <sql id="pageHeader">
+		  <![CDATA[
+        SELECT (${rn_top} / (${rn_top} - ${rn_bottom})) AS pageNo
+             , (${rn_top} - ${rn_bottom})               AS pageSize
+             , totalCount - (rowindx - 1)               AS rrowindx
+             , ROW_.*
+        FROM (
+        ]]>
+	</sql>
+
+    <sql id="pageFooter">
+		  <![CDATA[
+        ) AS ROW_
+			    ORDER BY ROW_.rowindx  DESC
+			   LIMIT ${rn_limit} OFFSET ${rn_bottom}
+        ]]>
+	</sql>
+
+
+
+    <select id="selectLevelByMenuList" parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.system.authmenu.selectLevelByMenuList */
+        SELECT MMA.AUTH_ID           AS authId
+             , SMMH.MENU_DIV_CD      AS menuDivCd
+             , SMMH.MENU_CD          AS menuCd
+             , SMMH.KOR_NM           AS korNm
+             , SMMH.PAGE_CL          AS pageCl
+             , SMMH.LEVEL            AS level
+             , LPAD(SMMH.KOR_NM, CHAR_LENGTH(SMMH.KOR_NM) + (SMMH.LEVEL-1) * 8, ' ') AS  levKorNm
+             , SMMH.PAGE_CL          AS pageCl
+             , SMMH.MENU_PATH        AS menuPath
+             , MMA.READ_YN           AS readYn
+             , MMA.WRITE_YN          AS writeYn
+             , MMA.UPDATE_YN         AS updateYn
+             , MMA.DELETE_YN         AS deletYn
+             , MMA.POPUP_OPEN_YN     AS popupOpenYn
+             , MMA.POPUP_READ_YN     AS popupReadYn
+             , MMA.POPUP_WRITE_YN    AS popupWiteYn
+             , MMA.POPUP_UPDATE_YN   AS popupUpdateYn
+             , MMA.POPUP_DELETE_YN   AS popupDeleteYn
+        FROM SVI_MENU_MNG_HIERARCHY SMMH
+                 LEFT JOIN STB_M_MENU_AUTH_MNG MMA ON SMMH.MENU_CD = MMA.MENU_CD
+        WHERE SMMH.PAGE_CL != 'ROOT'
+           AND SMMH.MENU_DIV_CD = #{menuDivCd}
+          AND MMA.AUTH_ID      = #{authId}
+        ORDER BY SMMH.SORT_PATH
+    </select>
+
+
+
+
+    <insert id="mergeMenuAuthMng" parameterType="CommonMap" >
+        /* on.standard.system.authmenu.mergeMenuAuthMng */
+        INSERT INTO STB_M_MENU_AUTH_MNG (
+          AUTH_ID
+        , MENU_CD
+        , READ_YN
+        , WRITE_YN
+        , UPDATE_YN
+        , DELETE_YN
+        , POPUP_OPEN_YN
+        , POPUP_READ_YN
+        , POPUP_WRITE_YN
+        , POPUP_UPDATE_YN
+        , POPUP_DELETE_YN
+        )
+        VALUES
+        <foreach collection="authMenuData" item="item" separator=",">
+            (
+              #{item.authId}
+            , #{item.menuCd}
+            , #{item.readYn}
+            , #{item.writeYn}
+            , #{item.updateYn}
+            , #{item.deletYn}
+            , #{item.popupOpenYn}
+            , #{item.popupReadYn}
+            , #{item.popupWiteYn}
+            , #{item.popupUpdateYn}
+            , #{item.popupDeleteYn}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+           READ_YN         = VALUES(READ_YN)
+        , WRITE_YN         = VALUES(WRITE_YN)
+        , UPDATE_YN        = VALUES(UPDATE_YN)
+        , DELETE_YN        = VALUES(DELETE_YN)
+        , POPUP_OPEN_YN    = VALUES(POPUP_OPEN_YN)
+        , POPUP_READ_YN    = VALUES(POPUP_READ_YN)
+        , POPUP_WRITE_YN   = VALUES(POPUP_WRITE_YN)
+        , POPUP_UPDATE_YN  = VALUES(POPUP_UPDATE_YN)
+        , POPUP_DELETE_YN  = VALUES(POPUP_DELETE_YN);
+    </insert>
+
+</mapper>

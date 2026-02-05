@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="on.standard.system.usermanage">
+<mapper namespace="on.standard.system.user">
 
     <sql id="pageHeader">
 		  <![CDATA[
@@ -20,8 +20,17 @@
         ]]>
 	</sql>
 
-    <select id="inqUserInfo" parameterType="CommonMap" resultType="userVO">
-        /*  on.standard.system.usermanage.inqUserInfo */
+    <select id="inqUserInfo" parameterType="CommonMap" resultType="CommonMap">
+        /*  on.standard.system.user.inqUserInfo */
+        <include refid="sqlUserInfo"/>
+    </select>
+
+    <select id="inqUserInfoVO" parameterType="CommonMap" resultType="userVO">
+        /*  on.standard.system.user.inqUserInfoVO */
+        <include refid="sqlUserInfo"/>
+    </select>
+
+    <sql id="sqlUserInfo">
         SELECT USER_ID             userId
              , USER_PSWD           userPswd
              , USER_KOR_NM         userKorNm
@@ -48,19 +57,21 @@
              , IS_DEL_ABLE         isDelAble
              , BRK_YN              brkYn
              , BRK_COMMENT         brkComment
-          FROM STB_B_USER_MNG
-         WHERE USER_ID =  #{userId}
-    </select>
+        FROM STB_B_USER_MNG
+        WHERE USER_ID =  #{userId}
+    </sql>
 
-     <select id="selectUserRoleList" parameterType="CommonMap" resultType="userVO">
-          /*  on.standard.system.usermanage.selectUserRoleList */
+
+
+     <select id="selectUserRoleList" parameterType="userVO" resultType="userVO">
+          /*  on.standard.system.user.selectUserRoleList */
           SELECT AUTH_ID authId
             FROM STB_M_AUTH_USER_MNG
            WHERE USER_ID = #{userId}
      </select>
 
      <update id="updateUserPswdFailCount" parameterType="CommonMap">
-          /*  on.standard.system.usermanage.updateUserPswdFailCount */
+          /*  on.standard.system.user.updateUserPswdFailCount */
           UPDATE STB_B_USER_MNG
              SET PSWD_FAIL_CNT = PSWD_FAIL_CNT + 1
                , BRK_YN = CASE WHEN (SELECT LGIN_FAIL_LMT_CNT from STB_B_SYSTEM_POLICY_MNG) = PSWD_FAIL_CNT + 1 THEN 'Y'
@@ -74,7 +85,7 @@
 
 
      <update id="updUserFinalLogin" parameterType="CommonMap">
-          /*  on.standard.system.usermanage.updUserFinalLogin */
+          /*  on.standard.system.user.updUserFinalLogin */
           UPDATE STB_B_USER_MNG
              SET LST_LOGIN_DT = CURTIME()
                , PSWD_FAIL_CNT = 0
@@ -82,7 +93,7 @@
      </update>
 
      <insert id="insUserLoginHist" parameterType="CommonMap" >
-          /*  on.standard.system.usermanage.insUserLoginHist */
+          /*  on.standard.system.user.insUserLoginHist */
           INSERT INTO STB_H_USER_LOGIN_LOG
                       (USER_ID  , AUTH_AREA_CD , USER_AUTH_CD ,REMOTE_ADDR , LOGIN_DIV_CD , LOGIN_COMMENT   )
                VALUES (#{userId}, #{authAreaCd}, #{authIdList},#{remoteAddr}, #{loginDivCd}, #{loginCommnet} )
@@ -95,13 +106,13 @@
     <select id="selUserList" parameterType="CommonMap" resultType="CommonMap">
         <choose>
             <when test="cmd == 'selectPage'">
-                /*  on.standard.system.usermanage.selUserList selectPage */
+                /*  on.standard.system.user.selUserList selectPage */
                 <include refid="pageHeader"/>
                 <include refid="userListSql"/>
                 <include refid="pageFooter"/>
             </when>
             <otherwise>
-                /*  on.standard.system.usermanage.selUserList  selectList */
+                /*  on.standard.system.user.selUserList  selectList */
                 <include refid="userListSql"/>
             </otherwise>
         </choose>

@@ -33,7 +33,7 @@ public class LoginService extends EgovAbstractServiceImpl  {
 	private final EncryptUtil encryptUtil;
 	
 	// private final String userMngSqlNs = "com.standard.mapper.basic.UserMngMapper.";
-	private final String userMngSqlNs = "on.standard.system.usermanage.";
+	private final String userMngSqlNs = "on.standard.system.user.";
 
 
 	/** 시스템 정책 정보 조회  **/
@@ -63,7 +63,7 @@ public class LoginService extends EgovAbstractServiceImpl  {
 
 
         // DB 사용자 정보 확인  (ID기준)
-		UserVO userInfoVo = (UserVO)defaultDao.selectOne(userMngSqlNs+"inqUserInfo", loginVO );
+		UserVO userInfoVo = (UserVO)defaultDao.selectOne(userMngSqlNs+"inqUserInfoVO", loginVO );
 
 		if (userInfoVo == null) {  // 사용자 존재 여부 판단
 			rtnMap.put("message", messageSource.getMessage("login.loginFail.message", null, null));

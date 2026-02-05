@@ -33,8 +33,8 @@ $(document).ready(function(){
       let searchConditionObj = {
               cmd             : "selectPage"
             , sql             : "on.standard.system.auth.inqAuthList"
-            , searchKeycd     : $("#searchKeycd :selected").val()
-            , searchKeyWord   : $("#searchKeyWord").val()
+            , searchKeycd     : on.html.getEleVal("#searchKeyCd")
+            , searchKeyWord   : on.html.getEleVal("#searchKeyWord")
       };
 
       // 검색 조건이 있는 경우 검색창에 반영
