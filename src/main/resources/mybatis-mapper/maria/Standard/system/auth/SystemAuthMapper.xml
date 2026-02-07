@@ -184,5 +184,45 @@
          ORDER BY AUTH_ID
     </select>
 
+    <select id="selectAuthIdDuplChk" parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.system.auth.selectAuthIdDuplChk */
+        SELECT CASE WHEN COUNT(*)  = 0 THEN 'ABLE' ELSE 'NOT_ABLE' END isAble
+           FROM STB_B_AUTH_MNG
+        WHERE AUTH_ID = #{authId}
+    </select>
+
+    <insert id="insertAuthInfo"  parameterType="CommonMap">
+        /*  on.standard.system.auth.insertAuthInfo
+            on.xhr.ajax로 입력하는경우 ({cmd: "insert" : sql:"on.standard.system.auth.insertAuthInfo"})
+         */
+        <include refid="insertAuthInfoSql"/>
+    </insert>
+
+    <insert id="insertAuthInfoVo"  parameterType="authVo">
+        /*  on.standard.system.auth.insertAuthInfoVo
+            별도의 Servlet(RequestMapping)를 통해 입력하는 경우 ({url:"/ma/~~~~"})
+         */
+        <include refid="insertAuthInfoSql"/>
+    </insert>
+
+    <sql id="insertAuthInfoSql">
+        INSERT INTO STB_B_AUTH_MNG
+                ( AUTH_ID, AUTH_KOR_NAME, AUTH_ENG_NAME, AUTH_COMMENT, USE_YN , IS_DEL_ABLE
+                , TEMPCOL_1, TEMPCOL_2, TEMPCOL_3, TEMPCOL_4, TEMPCOL_5, TEMPCOL_6, TEMPCOL_7, TEMPCOL_8, TEMPCOL_9, TEMPCOL_10
+                , REG_USER ,  REG_DATE
+                )
+        VALUES ( #{authId}, #{authKorName}, #{authEngName}, #{authComment}, #{useYn}, #{isDelAble}
+               , #{tempCol1}, #{tempCol2}, #{tempCol3}, #{tempCol4}, #{tempCol5}, #{tempCol6}, #{tempCol7}, #{tempCol8}, #{tempCol9}, #{tempCol10}
+               , #{loginUserId}, NOW()
+               )
+    </sql>
+
+    <delete id="delAuthInfo"  parameterType="CommonMap">
+           /* on.standard.system.auth.delAuthInfo */
+           DELETE FROM STB_B_AUTH_MNG
+           WHERE AUTH_ID = #{authId}
+
+    </delete>
+
 
 </mapper>

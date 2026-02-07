@@ -8,126 +8,125 @@ $(document).ready(function(){
      ***********************        페이지 세팅            ***********************
      ***************************************************************************/
 
-     	let inqCdRsltList =  on.xhr.ajaxComCdList({ condiList : [ {rsId : "menuDivCdList"   , sqlCondi : { uppComCd : "AUTH_DIV"    } }
-				                                                , {rsId : "authIdList"      , sql : "on.standard.system.auth.selectAuthList"  }
-		                                                       ]
+     let inqCdRsltList =  on.xhr.ajaxComCdList({ condiList : [ {rsId : "menuDivCdList"   , sqlCondi : { uppComCd : "AUTH_DIV"    } }
+				                                             , {rsId : "authIdList"      , sql : "on.standard.system.auth.selectAuthList"  }
+		                                                     ]
 		                     });
 
-        // 메뉴 구분 리스트
-		on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#menuDivCd" }
-                                       , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" }
-                                       , comboDataInfo :  inqCdRsltList.menuDivCdList
-                                       });
+     // 메뉴 구분 리스트
+	 on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#menuDivCd" }
+                                  , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" }
+                                  , comboDataInfo :  inqCdRsltList.menuDivCdList
+                                  });
 
-         // 권한 리스트
-		on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#authId" }
-                                       , optionValInfo : { optId : "authId" , optTxt : "authKorName" }
-                                       , comboDataInfo :  inqCdRsltList.authIdList
-                                       });
+     // 권한 리스트
+	 on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#authId" }
+                                   , optionValInfo : { optId : "authId" , optTxt : "authKorName" }
+                                   , comboDataInfo :  inqCdRsltList.authIdList
+                                   });
 
-         /**************************************************************************
-      ***********************       목록조회 관련 이벤트     ***********************
-      ***************************************************************************/
-      // 검색조건 설정
-      let searchConditionObj = {
+     /**************************************************************************
+     ***********************       목록조회 관련 이벤트     ***********************
+     ***************************************************************************/
+     // 검색조건 설정
+     let searchConditionObj = {
               cmd             : "selectList" //  default : selectList지만 명시적 선언..
             , sql             : "on.standard.system.authmenu.selectLevelByMenuList"
-            , menuDivCd       : on.html.getEleVal("#menuDivCd")
-            , authId          : on.html.getEleVal("#authId")
-      };
+            , menuDivCd       : on.html.getEleVal({ele : "#menuDivCd"})
+            , authId          : on.html.getEleVal({ele : "#authId" })
+     };
 
 
        // 화면 Load시 목록 조회
-          searchData();
+     searchData();
 
-          // 검색 Function
-          function searchData() {
+      // 검색 Function
+     function searchData() {
 
-            if( on.valid.isEmpty(searchConditionObj.pageNo)){
-              searchConditionObj.pageNo = 1;
-            }
+        if( on.valid.isEmpty(searchConditionObj.pageNo)){
+          searchConditionObj.pageNo = 1;
+        }
 
-            var sqlDispDiv          = "normal_tab_columns";
-            var dataDispTarget      = ".board_list > tbody";
+        var sqlDispDiv          = "normal_tab_columns";
+        var dataDispTarget      = ".board_list > tbody";
 
-            const resource          = on.xhr.ajax(searchConditionObj);
+        const resource          = on.xhr.ajax(searchConditionObj);
 
 
-            /* Table List(목록) 표시 자료 */
-            var displayInfoObj = {
-                dispTarget    : dataDispTarget // 필요에 따라 분기처리하여 사용가능
-              , dispDiv       : sqlDispDiv     // displayColInfos[sqlDispDiv] ==>> 기준으로 Table Tbody를 구성함 ( 하나의 Page에 여려개 탭이 있을경우 분기처리하여 사용)
-              , resource      : resource
-              , displayColInfos : {
-                    normal_tab_columns : [
-                            {id: "authId"         , colType: "normalTd" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "menuDivCd"      , colType: "normalTd" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "menuCd"         , colType: "normalTd" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "levKorNm"       , colType: "normalTd" , data_id1:"authId", data_id2:"menuCd", style:"text-align: left;"}
-                          , {id: "pageCl"         , colType: "normalTd" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "readYn"         , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "writeYn"        , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "updateYn"       , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "deletYn"        , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "popupOpenYn"    , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "popupReadYn"    , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "popupWiteYn"    , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "popupUpdateYn"  , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
-                          , {id: "popupDeleteYn"  , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
-                    ]
-              }
-            }
-
-            // Table Display
-            on.html.tableDisplay(displayInfoObj);
+        /* Table List(목록) 표시 자료 */
+        var displayInfoObj = {
+            dispTarget    : dataDispTarget // 필요에 따라 분기처리하여 사용가능
+          , dispDiv       : sqlDispDiv     // displayColInfos[sqlDispDiv] ==>> 기준으로 Table Tbody를 구성함 ( 하나의 Page에 여려개 탭이 있을경우 분기처리하여 사용)
+          , resource      : resource
+          , displayColInfos : {
+                normal_tab_columns : [
+                        {id: "authId"         , colType: "normalTd" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "menuDivCd"      , colType: "normalTd" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "menuCd"         , colType: "normalTd" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "levKorNm"       , colType: "normalTd" , data_id1:"authId", data_id2:"menuCd", style:"text-align: left;"}
+                      , {id: "pageCl"         , colType: "normalTd" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "readYn"         , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "writeYn"        , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "updateYn"       , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "deletYn"        , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "popupOpenYn"    , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "popupReadYn"    , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "popupWiteYn"    , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "popupUpdateYn"  , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
+                      , {id: "popupDeleteYn"  , colType: "checkbox" , data_id1:"authId", data_id2:"menuCd"}
+                ]
           }
+        }
 
-          /**************************************************************************
-          ***********************       버튼 관련 이벤트         ***********************
-          ***************************************************************************/
+        // Table Display
+        on.html.tableDisplay(displayInfoObj);
+     }
 
-            // 검색 클릭
-          $("#btnSearch").on("click", (evt) => {
-                searchConditionObj.menuDivCd  = on.html.getEleVal("#menuDivCd");
-                searchConditionObj.authId     = on.html.getEleVal("#authId");
-                searchData(); // Search Data
-          });
+      /**************************************************************************
+      ***********************       버튼 관련 이벤트         ***********************
+      ***************************************************************************/
 
-
-          <c:if test="${USER_AUTH.WRITE_YN== 'Y'}">
-              $("#btnSave").on("click", (evt) => {
-
-                   // 권한정보 수집
-                  let updateTargetList = [];
-                  $(".board_list > tbody > tr").each(function(indx , trObj){
-                        let authMenuData = {
-                                authId        : $(trObj).find("[id^='menuCd']").data("authid")
-                              , menuCd        : $(trObj).find("[id^='menuCd']").data("menucd")
-                              , readYn        : on.html.getEleVal($(trObj).find("[id^='readYn']"))
-                              , writeYn       : on.html.getEleVal($(trObj).find("[id^='writeYn']"))
-                              , updateYn      : on.html.getEleVal($(trObj).find("[id^='updateYn']"))
-                              , deletYn       : on.html.getEleVal($(trObj).find("[id^='deletYn']"))
-                              , popupOpenYn   : on.html.getEleVal($(trObj).find("[id^='popupOpenYn']"))
-                              , popupReadYn   : on.html.getEleVal($(trObj).find("[id^='popupReadYn']"))
-                              , popupWiteYn   : on.html.getEleVal($(trObj).find("[id^='popupWiteYn']"))
-                              , popupUpdateYn : on.html.getEleVal($(trObj).find("[id^='popupUpdateYn']"))
-                              , popupDeleteYn : on.html.getEleVal($(trObj).find("[id^='popupDeleteYn']"))
-                             };
-                        updateTargetList.push(authMenuData);
-                  });
+        // 검색 클릭
+     $("#btnSearch").on("click", (evt) => {
+            searchConditionObj.menuDivCd  = on.html.getEleVal({ele : "#menuDivCd" });
+            searchConditionObj.authId     = on.html.getEleVal({ele : "#authId" } );
+            searchData(); // Search Data
+     });
 
 
-                  // DB저장 (on.standard.system.authmenu.mergeMenuAuthMng)
-                  on.xhr.ajax({ sid : "authMenuMerge"  // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
-                              , cmd : "insert" , sql : "on.standard.system.authmenu.mergeMenuAuthMng"  // on.standard.system.auth.updAuthInfo SQL을 수행, update 문을 수행한다.
-                              , authMenuData  : updateTargetList// ajax data속성 + data 추가  ==>> (successFn, failFn, sql , cmd , validation 외 속성키는 전부 data로 추가입력 )
-                              , successFn  : function (sid, data){
-                                        on.msg.showMsg({message : "저장되었습니다."});
-                                        $("#btnSearch").click();
-                               }
-                  });
+     <c:if test="${USER_AUTH.WRITE_YN== 'Y'}">
+          // 저장권한 있는 사용자만 저장가능
+          $("#btnSave").on("click", (evt) => {                // 권한정보 수집
+              let updateTargetList = [];
+              $(".board_list > tbody > tr").each(function(indx , trObj){
+                    let authMenuData = {
+                            authId        : $(trObj).find("[id^='menuCd']").data("authid")
+                          , menuCd        : $(trObj).find("[id^='menuCd']").data("menucd")
+                          , readYn        : on.html.getEleVal({ele : $(trObj).find("[id^='readYn']")        })
+                          , writeYn       : on.html.getEleVal({ele : $(trObj).find("[id^='writeYn']")       })
+                          , updateYn      : on.html.getEleVal({ele : $(trObj).find("[id^='updateYn']")      })
+                          , deletYn       : on.html.getEleVal({ele : $(trObj).find("[id^='deletYn']")       })
+                          , popupOpenYn   : on.html.getEleVal({ele : $(trObj).find("[id^='popupOpenYn']")   })
+                          , popupReadYn   : on.html.getEleVal({ele : $(trObj).find("[id^='popupReadYn']")   })
+                          , popupWiteYn   : on.html.getEleVal({ele : $(trObj).find("[id^='popupWiteYn']")   })
+                          , popupUpdateYn : on.html.getEleVal({ele : $(trObj).find("[id^='popupUpdateYn']") })
+                          , popupDeleteYn : on.html.getEleVal({ele : $(trObj).find("[id^='popupDeleteYn']") })
+                         };
+                    updateTargetList.push(authMenuData);
               });
-          </c:if>
+
+
+              // DB저장 (on.standard.system.authmenu.mergeMenuAuthMng)
+              on.xhr.ajax({ sid : "authMenuMerge"  // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
+                          , cmd : "insert" , sql : "on.standard.system.authmenu.mergeMenuAuthMng"  // on.standard.system.auth.updAuthInfo SQL을 수행, update 문을 수행한다.
+                          , authMenuData  : updateTargetList// ajax data속성 + data 추가  ==>> (successFn, failFn, sql , cmd , validation 외 속성키는 전부 data로 추가입력 )
+                          , successFn  : function (sid, data){
+                                    on.msg.showMsg({message : "저장되었습니다."});
+                                    $("#btnSearch").click();
+                           }
+              });
+          });
+     </c:if>
 
 });
 </script>

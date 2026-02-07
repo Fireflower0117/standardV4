@@ -33,8 +33,8 @@ $(document).ready(function(){
       let searchConditionObj = {
               cmd             : "selectPage"
             , sql             : "on.standard.system.auth.inqAuthList"
-            , searchKeycd     : on.html.getEleVal("#searchKeyCd")
-            , searchKeyWord   : on.html.getEleVal("#searchKeyWord")
+            , searchKeycd     : on.html.getEleVal({ele : "#searchKeyCd"} )
+            , searchKeyWord   : on.html.getEleVal({ele : "#searchKeyWord"} )
       };
 
       // 검색 조건이 있는 경우 검색창에 반영
@@ -43,12 +43,12 @@ $(document).ready(function(){
           on.html.setEleVal({ele : "#searchKeyCd"  , val : search.searchKeyCd });
           on.html.setEleVal({ele : "#searchKeyWord", val : search.searchKeyWord });
 
-          searchConditionObj.searchKeyCd   = on.html.getEleVal("#searchKeyCd");
-          searchConditionObj.searchKeyWord = on.html.getEleVal("#searchKeyWord");
+          searchConditionObj.searchKeyCd   = on.html.getEleVal({ele : "#searchKeyCd"});
+          searchConditionObj.searchKeyWord = on.html.getEleVal({ele : "#searchKeyWord"});
           searchConditionObj.pageNo        = search.pageNo;
           if(!on.valid.isEmpty(search.pageSize)) {
               on.html.setEleVal({ele : "#recordCountPerPage"  , val : search.pageSize });
-              searchConditionObj.pageSize = on.html.getEleVal("#recordCountPerPage");
+              searchConditionObj.pageSize = on.html.getEleVal({ele : "#recordCountPerPage"});
           }
       </c:if>
 
@@ -102,8 +102,8 @@ $(document).ready(function(){
            on.html.setEleVal({ele : "#searchKeyCd"  , val : "" });
            on.html.setEleVal({ele : "#searchKeyWord", val : "" });
 
-           searchConditionObj.searchKeyCd   = on.html.getEleVal("#searchKeyCd");
-           searchConditionObj.searchKeyWord = on.html.getEleVal("#searchKeyWord");
+           searchConditionObj.searchKeyCd   = on.html.getEleVal({ele : "#searchKeyCd"} );
+           searchConditionObj.searchKeyWord = on.html.getEleVal({ele : "#searchKeyWord" });
            searchConditionObj.pageNo = 1;
          });
 
@@ -130,8 +130,8 @@ $(document).ready(function(){
            // 검색 클릭
           $("#btnSearch").on("click", (evt) => {
                 searchConditionObj.pageNo        = 1;
-                searchConditionObj.searchKeycd   = on.html.getEleVal("#searchKeyCd");
-                searchConditionObj.searchKeyword = on.html.getEleVal("#searchKeyWord");
+                searchConditionObj.searchKeycd   = on.html.getEleVal({ele : "#searchKeyCd" });
+                searchConditionObj.searchKeyword = on.html.getEleVal({ele : "#searchKeyWord" });
                 searchData(); // Search Data
           });
 
@@ -149,10 +149,10 @@ $(document).ready(function(){
             }
           });
 
-           <c:if test="${USER_AUTH.WRITEYN== 'Y'}">
-                 // 로그인 사용자가 현재 페이지의 작성권한이 있다면...
+           <c:if test="${USER_AUTH.WRITE_YN== 'Y'}">
+                 // 작성권한이 있는 사용자만 권한 등록가능
                  $("#btnWrite").on("click", (evt) => {
-                     on.html.dynaGenHiddenForm({ formDefine : { fid : "authWriteForm", action: "/ma/system/authWrite.do", method: "post", isSubmit : true } });
+                     on.html.dynaGenHiddenForm({ formDefine : { fid : "authWriteForm", action: "/ma/system/auth/regist.do", method: "post", isSubmit : true } });
                  });
 		   </c:if>
 
@@ -214,7 +214,7 @@ $(document).ready(function(){
     </table>
     <div class="paging_wrap">
         <ul class="paging" id="pagenation"></ul>
-        <c:if test="${USER_AUTH.WRITEYN== 'Y'}">
+        <c:if test="${USER_AUTH.WRITE_YN== 'Y'}">
 			<div class="btn_right">
                 <button id="btnWrite" class="btn blue">등록</button>
             </div>

@@ -8,10 +8,11 @@
         *****************************************************************************************************/
         // 공통코드 / 조회대상객체 조회 (한페이지 내무 첫번째 Transaction = 서버 1번호출)
         let inqCdRsltList =  on.xhr.ajaxComCdList({ condiList : [ {rsId : "userAuthList", sql : "on.standard.system.auth.selectAuthList" }  // 사용여부(공통) cmd : selectList(defualt) , sql :  on.standard.system.comcode.selectComCode (default)
-                                                                , {rsId : "joinDivList" , sqlCondi : { uppComCd : "JOIN_DIV"    } }
                                                                 ]
 		                     });
 
+        // 사용자 정보 조회 (한페이지내부 두번째 Transaction = 서버 2번호출)
+		let authInfoObj  = on.xhr.ajax({sid:"userView", sql : "on.standard.system.user.inqUserInfo" , cmd : "selectOne", userId : "${param.userId}" });
 
       /******************************************************************************************************
         ***********************************              페이지 세팅                  *************************
@@ -23,40 +24,13 @@
                                      , comboDataInfo :  inqCdRsltList.userAuthList
                                      });
 
+        // Page의 속성중 Element Id를 기준으로 자동 매핑
+        on.html.docSetElementById( authInfoObj ); // 객체의 속성Key명이 element의 Id와 일치하면 값을 자동으로 세팅한다.
+
 
        /******************************************************************************************************
         ********************************              콤퍼넌트  이벤트                 *************************
         *****************************************************************************************************/
-       let isUserIdDupleCkeck = false;
-
-       // 사용자 ID중복 체크
-        $("#btnUserIdDupl").on("click", (evt) => {
-
-           // 권한ID 유효성 검증 대상
-                let systemUserIdDuplValidateList  = [ {name : "userId"     , label : "사용자ID"           ,  rule: {required:true, minlength : 5, engNumOnly : true} }
-                                              ];
-
-                on.xhr.ajax({ sid : "userIdDupleChk" // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
-                            , cmd : "selectOne" , sql : "on.standard.system.user.selectUserIdDuplChk"
-                            , validation : { formId : "#systemUserfrm" , validationList : systemUserIdDuplValidateList  }  // 유효성검증 기능 포함
-                            , userId     : on.html.getEleVal({ele : "#userId" })
-                            , successFn  : function (sid, data){
-                                     if( data.isAble === "ABLE"){
-                                          if(on.msg.confirm({message : "등록가능한 사용자ID입니다. 사용하시겠습니까?"}) ){
-                                              isUserIdDupleCkeck = true;
-                                          }
-                                     }
-                                     else {
-                                        on.msg.showMsg({message : "이미 등록된 사용자ID 입니다.\n다른 ID를 선택하세요"});
-                                     }
-                            }
-                });
-        });
-
-         // UserId변경시 기존 유휴성검증 무효화
-        $("#userId").on("keydown", (evt) => {
-          isUserIdDupleCkeck = false;
-        });
 
 
 
@@ -66,8 +40,7 @@
         <c:if test="${USER_AUTH.WRITE_YN== 'Y'}">
               $("#btnSubmit").on("click", (evt) => {
                   // 유효성 검증 대상
-                  let systemAuthValidateList  = [ {name : "userId"      , label : "사용자ID"         ,  rule: {"required":true, minlength : 5, engNumOnly : true} }
-                                                , {name : "userAuth"    , label : "사용자권한"        ,  rule: {"required":true} }
+                  let systemAuthValidateList  = [ {name : "userAuth"    , label : "사용자권한"        ,  rule: {"required":true} }
                                                 , {name : "userKorNm"   , label : "사용자이름(한글명)" ,  rule: {"required":true} }
                                                 , {name : "mobileNo"    , label : "모바일번호"        ,  rule: {"required":true, korMobile:true } }
                                                 , {name : "emailAddr"   , label : "E-Mail"          ,  rule: {"required":true, email:true} }
@@ -78,7 +51,6 @@
                               , cmd : "multiAction" , sql : "on.standard.system.user.insertUserInfo"
                               , validation : { formId : "#systemUserfrm" , validationList : systemAuthValidateList  }  // 유효성검증기능 추가 관련
                               , data       : $("#systemUserfrm").serializeArray()   // Form Data
-                              , userPswd   : on.enc.encrypt({encVal : on.html.getEleVal({ ele : "#userId"})  }) // 전송Data 추가
                               , regDivCd   : "AdminRegist" // 전송Data 추가
                               , multiAction : [ {cmd : "insert" , sql : "on.standard.system.user.insertUserInfo"    }
                                               , {cmd : "insert" , sql : "on.standard.system.user.insertAuthUserMng" }
@@ -127,10 +99,7 @@
     <tbody>
     <tr>
       <th scope="col" class="c"><strong>사용자ID</strong></th>
-      <td class="c">
-          <input type="text" id="userId" name="userId" class="w30p" title="사용자ID" maxlength="20"/>
-          <input type="button" id="btnUserIdDupl" value="중복검사" ></input>
-      </td>
+      <td class="c" id="userId"></td>
       <th scope="col" class="c"><strong>사용자 권한</strong></th>
       <td class="c">
           <select id="userAuth" name="userAuth" class="w30p" title="사용자권한" maxlength="10"/>
@@ -190,7 +159,7 @@
   </table>
 </form>
 <div class="btn_area">
-  <c:if test="${USER_AUTH.WRITE_YN== 'Y'}">
-    <button type="button" id="btnSubmit" class="btn blue">등록</button>
+  <c:if test="${USER_AUTH.UPDATE_YN== 'Y'}">
+    <button type="button" id="btnSubmit" class="btn blue">수정</button>
   </c:if>
 </div>

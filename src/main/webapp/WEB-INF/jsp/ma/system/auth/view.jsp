@@ -35,10 +35,38 @@
         *****************************************************************************************************/
 
 
-        /***************************************************************************/
-        /*********************        저장/수정/삭제 수행          ********************/
-        /***************************************************************************/
+        /*****************************************************************************************************
+        ********************************            저장/수정/삭제 수행           *******************************
+        *****************************************************************************************************/
+        <c:if test="${USER_AUTH.DELETE_YN== 'Y'}">
+            // 삭제권한이있으면 Event 수행
+            $("#btnDelete").on("click", (evt) => {
+                if( inqCdRsltList.authInfoMap.isDelAble === 'N'){
+                  on.msg.showMsg({message: "삭제불가한 권한입니다."});
+                  return ;
+                }
+
+                if( on.msg.confirm({message : "정말 삭제하시겠습니까?"}) === true ){
+                    on.xhr.ajax({ sid : "authDeleteTran"  // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
+                                , cmd : "delete" , sql : "on.standard.system.auth.delAuthInfo"  // on.standard.system.auth.updAuthInfo SQL을 수행, update 문을 수행한다.
+                                , authId     : "${param.authId}" // ajax data속성 + data 추가  ==>> (successFn, failFn, sql , cmd , validation 외 속성키는 전부 data로 추가입력 )
+                                , successFn  : function (sid, data){
+                                       on.msg.showMsg({message : "삭제했습니다."});
+
+                                       // 권한 목록 페이지 이동 (검색조건 포함 )
+                                       on.html.dynaGenHiddenForm({ formDefine : { fid:"authListForm" , action:"/ma/system/auth/list.do" , method : "post" , isSubmit : true  }
+                                                                 , formAttrs  : [ { name : "searchCondition" , value : JSON.stringify(${param.searchCondition}) }
+                                                                                ]
+                                       }); // HiddenForm 생성및 전송
+                                }
+                    });
+                }
+            });
+        </c:if>
+
+
         <c:if test="${USER_AUTH.UPDATE_YN== 'Y'}">
+              // 수정권한이있으면 Event 수행
               $("#btnSubmit").on("click", (evt) => {
                   // 유효성 검증 대상
                   let systemAuthValidateList  = [ {name : "useYn"       , label : "권한 사용여부" ,  rule: {"required":true} }
@@ -168,6 +196,9 @@
   </table>
 </form>
 <div class="btn_area">
+  <c:if test="${USER_AUTH.DELETE_YN== 'Y'}">
+    <button type="button" id="btnDelete" class="btn blue">삭제</button>
+  </c:if>
   <c:if test="${USER_AUTH.UPDATE_YN== 'Y'}">
     <button type="button" id="btnSubmit" class="btn blue">수정</button>
   </c:if>

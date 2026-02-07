@@ -1,12 +1,17 @@
 (function(window) {
 
 const messageFns = {
-    // 공통 Alert 메세지 (alert 메세지 일괄성)
-    alertMsg (msgObj) {
-        alert(msgObj.message);
-    }
-    , showMsg (msgObj) { // 공통 팝업 메세지 (시스템 메세지 팝업으로 일괄변경 가능)
-        alert(msgObj.message);
+    showMsg (msgObj) { // 공통 팝업 메세지 (시스템 메세지 팝업으로 일괄변경 가능)
+
+        let showType = on.str.nvl(msgObj.showType, "alert");  // 메세지 표출형태 (default : alert )
+        if(showType  === "alert"){
+            alert(msgObj.message);
+        }
+        /*  메세지 표출형태 다양화...
+        else if(showType === ""){
+
+        } */
+
     }
     // 공통 Confirm 메세지 (시스템 메세지 팝업으로 일괄변경 대비)
     , confirm (msgObj) {

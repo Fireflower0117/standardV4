@@ -802,26 +802,31 @@
     },
 
     /*****  Document의 값 수집 ****/
-    getEleVal : function(ele) {
+    getEleVal : function(eleObj) {
 
         var eleVal;
-        var eleDiv = on.html.getEleType($(ele));
+        var eleDiv = on.html.getEleType($(eleObj.ele));
         if (eleDiv == "text" || eleDiv == "number") {
-            eleVal = $(ele).val();
+            eleVal = $(eleObj.ele).val();
         } else if (eleDiv == "hidden") {
-            eleVal = $(ele).val();
+            eleVal = $(eleObj.ele).val();
         } else if (eleDiv == "radio") {
-            eleVal = $(ele + ":checked").val();
+            eleVal = $(eleObj.ele + ":checked").val();
         } else if (eleDiv == "select") {
-            eleVal = $(ele).val();
+            eleVal = $(eleObj.ele).val();
         } else if (eleDiv == "file") {
-            eleVal = $(ele).clone();
+            eleVal = $(eleObj.ele).clone();
         } else if (eleDiv == "checkbox") {
-            eleVal = $(ele).is(":checked") ? "Y" : "N";
+            eleVal = $(eleObj.ele).is(":checked") ? "Y" : "N";
         } else if (eleDiv == "textarea") {
-            eleVal = $(ele).val();
+            eleVal = $(eleObj.ele).val();
         } else if (eleDiv == "password") {
-            eleVal = on.enc.encrypt({ encVal : $(ele).val() });
+            eleVal = on.enc.encrypt({ encVal : $(eleObj.ele).val() });
+        }
+
+        // eleVal이 값이없고,  defaultVal값이 선언되어 있다면...
+        if(on.valid.isEmpty(eleVal) && !on.valid.isEmpty(eleObj.defaultVal)){
+            eleVal = ele.defaultVal;
         }
         return eleVal;
     }

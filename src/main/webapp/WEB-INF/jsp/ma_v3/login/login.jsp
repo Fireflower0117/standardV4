@@ -95,8 +95,8 @@
 
 
 				// 입력Data수기 생성
-				let sendData = [{name:"userId", val: on.html.getEleVal("#userId") }
-							   ,{name:"userPswd", val: on.html.getEleVal("#userPswd") }
+				let sendData = [{name:"userId"  , val: on.html.getEleVal({ele : "#userId"}) }
+							   ,{name:"userPswd", val: on.html.getEleVal({ele : "#userPswd"}) }
 					]
 
                 // 입력데이터 자동 생성
@@ -110,11 +110,11 @@
 										if (rs?.returnUrl) {
                                             on.html.dynaGenHiddenForm({ formDefine : { fid:"mainForm" , action:rs.returnUrl , method : "post" , isSubmit : true  } }); // HiddenForm 생성및 전송
 										} else {
-											on.msg.alertMsg(rs.message);
+											on.msg.showMsg({message : rs.message});
 										}
 								}
 							  , failFn    : function (err){
-								    on.msg.alertMsg(rs.message);
+					                on.msg.showMsg({message : err.message});
 								}
 				});
 			};

@@ -83,11 +83,11 @@ public class AjaxController {
         return executeQuery(request, response, "insert");
     }
 
-    @PostMapping(value="/com/query/insertlist.ajx", produces = "text/html; charset=utf-8")
+    /*@PostMapping(value="/com/query/insertlist.ajx", produces = "text/html; charset=utf-8")
     public @ResponseBody String
     executeInsertList(HttpServletRequest request, HttpServletResponse response) throws IOException, UnsupportedEncodingException {
         return executeQuery(request, response, "insertlist");
-    }
+    }*/
 
 
     @PostMapping(value="/com/query/update.ajx", produces = "text/html; charset=utf-8")
@@ -96,13 +96,11 @@ public class AjaxController {
         return executeQuery(request, response, "update");
     }
 
-    @PostMapping(value="/com/query/updatelist.ajx", produces = "text/html; charset=utf-8")
+    /*@PostMapping(value="/com/query/updatelist.ajx", produces = "text/html; charset=utf-8")
     public @ResponseBody String
     executeUpdateList(HttpServletRequest request, HttpServletResponse response) throws IOException, UnsupportedEncodingException {
         return executeQuery(request, response, "updatelist");
-    }
-
-
+    }*/
 
 
     @PostMapping(value="/com/query/delete.ajx", produces = "text/html; charset=utf-8")
@@ -111,11 +109,21 @@ public class AjaxController {
         return executeQuery(request, response,"delete");
     }
 
-    @PostMapping(value="/com/query/deletelist.ajx", produces = "text/html; charset=utf-8")
+    /*@PostMapping(value="/com/query/deletelist.ajx", produces = "text/html; charset=utf-8")
     public @ResponseBody String
     executeDeleteList(HttpServletRequest request, HttpServletResponse response) throws IOException, UnsupportedEncodingException {
         return executeQuery(request, response,"deletelist");
+    }*/
+
+    @PostMapping(value="/com/query/multiAction.ajx", produces = "text/html; charset=utf-8")
+    public @ResponseBody String
+    executeMultiAction(HttpServletRequest request, HttpServletResponse response) throws IOException, UnsupportedEncodingException {
+        return executeQuery(request, response,"multiAction");
     }
+
+
+
+
 
     private String executeQuery(HttpServletRequest request,HttpServletResponse response, String method) throws IOException {
         return  baiscCrudService.doMultiActionExecute(request, response, method );

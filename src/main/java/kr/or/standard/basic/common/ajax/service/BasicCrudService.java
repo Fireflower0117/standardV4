@@ -180,6 +180,37 @@ public class BasicCrudService {
     public boolean batchDelete(String qid, List<? extends CmmnDefaultVO> listMap) {
         return defaultDao.batchDelete(qid, listMap);
     }
+
+    /***************************************************************************************************************/
+    /**********************            MULTI_ACTION     MULTI_ACTION      MULTI_ACTION       ***********************/
+    /***************************************************************************************************************/
+    public int multiAction( List<CommonMap> listMap) {
+
+        int effRowCnt = 0;
+        // MultiAction
+        CommonMap mainCmdMap = listMap.get(0);
+
+        CommonMap sqlConfiMap = new CommonMap(mainCmdMap);
+        sqlConfiMap.remove("multiAction");
+
+        if( mainCmdMap.containsKey("multiAction") ){
+            List<LinkedHashMap> actionList = (List<LinkedHashMap>)mainCmdMap.get("multiAction");
+            for(LinkedHashMap actionMap : actionList){
+                String actionCmd = ""+actionMap.get("cmd");
+                String actionSql = ""+actionMap.get("sql");
+
+                if("insert".equals(actionCmd)){
+                    effRowCnt += insert(actionSql, sqlConfiMap);
+                }else if("update".equals(actionCmd)){
+                    effRowCnt += update(actionSql, sqlConfiMap);
+                }else if("delete".equals(actionCmd)){
+                    effRowCnt += delete(actionSql, sqlConfiMap);
+                }
+            }
+        }
+        return effRowCnt;
+    }
+
  
     /***************************************************************************************************************/
     /*******************************                   MultiActionCmd               ********************************/
@@ -198,45 +229,29 @@ public class BasicCrudService {
             case "insert":
                 insert(qid, listMap);
                 break; 
-            case "insertlist":
+           /* case "insertlist":
                 insertlist(qid, listMap);
-                break;  
+                break;  */
             case "update":
                 update(qid, listMap);
                 break;
-              case "updatelist": 
+            /*case "updatelist":
                 updateList(qid, listMap);
-                break;    
+                break;*/
             case "delete":
                 delete(qid, listMap);
                 break;
-            case "deletelist":
+            /*case "deletelist":
                 deleteList(qid, listMap);
-                break;    
+                break;*/
+            case "multiAction":
+                multiAction(listMap);
+
         }
-        
-        // MultiAction
-        CommonMap mainCmdMap = listMap.get(0);
-        if( mainCmdMap.containsKey("multiActionCmd") ){
-            String multiActionStr = ""+mainCmdMap.get("multiActionCmd");
-            List<CommonMap> actionList = JacksonParsing.toList(multiActionStr);
-            for(CommonMap actionMap : actionList){
-                String actionCmd = ""+actionMap.get("cmd");
-                String actionSql = ""+actionMap.get("sql");
-                List<CommonMap> actiondataList = JacksonParsing.toList(""+actionMap.get("data"));
-                setSessionUserInfo(actiondataList);  
-                if("insert".equals(actionCmd)){
-                    insert(actionSql, actiondataList);
-                }else if("update".equals(actionCmd)){
-                    update(actionSql, actiondataList);
-                }else if("delete".equals(actionCmd)){
-                    delete(actionSql, actiondataList);
-                } 
-            }  
-        } 
+
         return JacksonParsing.toString(listMap);
-         
-    } 
+
+    }
     
     /***************************************************************************************************************/
     /*******************************          CommonMap into LoginUserInfo          ********************************/

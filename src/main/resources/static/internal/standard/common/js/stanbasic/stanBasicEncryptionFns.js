@@ -13,7 +13,7 @@ const encryptionFns = {
         // Html Head에 Sha512.js가 없으면 동적 생성
         if ($('script[src="/external/sha/sha512.js"]').length == 0) {
             $('<script>').attr('type', 'text/javascript').attr('src', '/external/sha/sha512.js').appendTo('head');
-            setTimeout(function () {}, 500); // 가져오는 속도 감안 0.5초 대기(혹시나....)
+            // setTimeout(function () {}, 500); // 가져오는 속도 감안 0.5초 대기(혹시나....)
         }
 
         var shaObj = new jsSHA("SHA-512", "TEXT"); // v3라면 옵션 추가 가능: , { encoding: "UTF8" }

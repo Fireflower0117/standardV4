@@ -43,12 +43,12 @@ $(document).ready(function(){
           on.html.setEleVal({ele : "#searchKeyCd"  , val : search.searchKeyCd });
           on.html.setEleVal({ele : "#searchKeyWord", val : search.searchKeyWord });
 
-          searchConditionObj.searchKeyCd   = on.html.getEleVal("#searchKeyCd");
-          searchConditionObj.searchKeyWord = on.html.getEleVal("#searchKeyWord");
+          searchConditionObj.searchKeyCd   = on.html.getEleVal({ele : "#searchKeyCd"});
+          searchConditionObj.searchKeyWord = on.html.getEleVal({ele : "#searchKeyWord"});
           searchConditionObj.pageNo        = search.pageNo;
           if(!on.valid.isEmpty(search.pageSize)) {
               on.html.setEleVal({ele : "#recordCountPerPage"  , val : search.pageSize });
-              searchConditionObj.pageSize = on.html.getEleVal("#recordCountPerPage");
+              searchConditionObj.pageSize = on.html.getEleVal({ele : "#recordCountPerPage"});
           }
       </c:if>
 
@@ -84,9 +84,10 @@ $(document).ready(function(){
                           , {id: "userId"      , colType: "normalTd"  , data_id1:"userId"}
                           , {id: "userKorNm"   , colType: "normalTd"  , data_id1:"userId"}
                           , {id: "userEngNm"   , colType: "normalTd"  , data_id1:"userId"}
-                          , {id: "mobileNo"    , colType: "normalTd"  , data_id1:"userId"}
-                          , {id: "emailAddr"   , colType: "normalTd"  , data_id1:"userId"}
+                          , {id: "blonNm"      , colType: "normalTd"  , data_id1:"userId"}
+                          , {id: "authNm"      , colType: "normalTd"  , data_id1:"userId"}
                           , {id: "lstLoginDt"  , colType: "normalTd"  , data_id1:"userId", classNm: "date"}
+                          , {id: "regDate"     , colType: "normalTd"  , data_id1:"userId", classNm: "date"}
                     ]
               }
             }
@@ -103,8 +104,8 @@ $(document).ready(function(){
            on.html.setEleVal({ele : "#searchKeyCd"  , val : "" });
            on.html.setEleVal({ele : "#searchKeyWord", val : "" });
 
-           searchConditionObj.searchKeyCd   = on.html.getEleVal("#searchKeyCd");
-           searchConditionObj.searchKeyWord = on.html.getEleVal("#searchKeyWord");
+           searchConditionObj.searchKeyCd   = on.html.getEleVal({ele : "#searchKeyCd" });
+           searchConditionObj.searchKeyWord = on.html.getEleVal({ele : "#searchKeyWord"});
            searchConditionObj.pageNo = 1;
          });
 
@@ -131,8 +132,8 @@ $(document).ready(function(){
            // 검색 클릭
           $("#btnSearch").on("click", (evt) => {
                 searchConditionObj.pageNo        = 1;
-                searchConditionObj.searchKeyCd   = on.html.getEleVal("#searchKeyCd");
-                searchConditionObj.searchKeyWord = on.html.getEleVal("#searchKeyWord");
+                searchConditionObj.searchKeyCd   = on.html.getEleVal({ele : "#searchKeyCd"});
+                searchConditionObj.searchKeyWord = on.html.getEleVal({ele : "#searchKeyWord"});
                 searchData(); // Search Data
           });
 
@@ -195,10 +196,11 @@ $(document).ready(function(){
         <colgroup>
             <col class="w5p"/>
             <col class="w10p"/>
-            <col class="w15p"/>
-            <col class="w15p"/>
             <col/>
-            <col class="w15p"/>
+            <col/>
+            <col class="w10p"/>
+            <col class="w10p"/>
+            <col class="w10p"/>
             <col class="w10p"/>
         </colgroup>
         <thead>
@@ -207,9 +209,10 @@ $(document).ready(function(){
                 <th scope="col">사용자아이디</th>
                 <th scope="col">사용자이름(한글)</th>
                 <th scope="col">사용자이름(영문)</th>
-                <th scope="col">전화번호</th>
-                <th scope="col">이메일</th>
+                <th scope="col">소속</th>
+                <th scope="col">권한</th>
                 <th scope="col">최종로그인일시</th>
+                <th scope="col">등록일시</th>
             </tr>
         </thead>
         <tbody></tbody>

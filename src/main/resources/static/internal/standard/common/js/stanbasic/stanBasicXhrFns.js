@@ -237,6 +237,23 @@ const xhrFns = {
                         }
                     }
                 }
+                else if(sqlCmd === "multiAction"){
+
+                    if(!on.valid.isEmpty(callAjaxObj.data)){
+                        if( Array.isArray(callAjaxObj.data) === true ){
+                            for(let dataObj of callAjaxObj.data){
+                                ajaxPostOptions.data[dataObj.name] = dataObj.value;
+                            }
+                        }
+                    }
+
+                    ajaxPostOptions.url = '/com/query/multiAction.ajx';
+                    for (const [key, value] of Object.entries(callAjaxObj)) {
+                        if (key !== "successFn" && key !== "failFn" && key !== "data" && key !== "sql" && key !== "cmd"  && key !== "validation" ) {
+                            ajaxPostOptions.data[key] = value;
+                        }
+                    }
+                }
 
                 // 비동기 CRUD는 무조건 JSON으로 넘긴다.
                 if (ajaxPostOptions.data && !(ajaxPostOptions.data instanceof Array)){
@@ -273,7 +290,7 @@ const xhrFns = {
                     resultData = rs;
                 }
                 , error: function (err) {
-                    on.msg.alertMsg("처리중 에러발생.");
+                    on.msg.showMsg("처리중 에러발생.");
                 }
             }
 
