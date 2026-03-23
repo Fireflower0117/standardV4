@@ -1,102 +1,127 @@
 (function(window) {
 
 const dateFns = {
-    getDate : function(){
-        var dateFormat = stringFns.nvl(dateInfoObj.dateFormat, "YYYY-MM-DD");
+    getDate : function({ dateObj, dateFormat = "YYYY.MM.DD" } = {}){
+        // 기준 날짜 설정 (값이 없으면 현재 시간)
+        const basicDate = dateObj || new Date();
 
-        var basicDate = dateInfoObj.dateObj;
-        if (validateFns.isEmpty(basicDate)) basicDate = new Date();
+        // 날짜 및 시간 요소 추출 (문자열 변환 및 두 자리 수 패딩)
+        const year  = String(basicDate.getFullYear());
+        const month = String(basicDate.getMonth() + 1).padStart(2, "0");
+        const date  = String(basicDate.getDate()).padStart(2, "0");
 
-        var baseYear = basicDate.getFullYear();
-        var baseMonth = stringFns.lPad(basicDate.getMonth() + 1, 2, "0");
-        var baseDate = stringFns.lPad(basicDate.getDate(), 2, "0");
+        // 시간, 분, 초도 두 자리로 깔끔하게 맞춤
+        const hours = String(basicDate.getHours()).padStart(2, "0");
+        const mins  = String(basicDate.getMinutes()).padStart(2, "0");
+        const secs  = String(basicDate.getSeconds()).padStart(2, "0");
 
-        if(dateFormat == "YYYY-MM-DD HH:mm:ss"){
-            return baseYear + "-" + baseMonth + "-" + baseDate + " " + basicDate.getHours() + ":" + basicDate.getMinutes() + ":" + basicDate.getSeconds()
-        }else if(dateFormat == "YYYY-MM-DD HH:mm"){
-            return baseYear + "-" + baseMonth + "-" + baseDate + " " + basicDate.getHours() + ":" + basicDate.getMinutes()
-        }else if(dateFormat == "YYYY-MM-DD HH"){
-            return baseYear + "-" + baseMonth + "-" + baseDate + " " + basicDate.getHours()
-        }else if(dateFormat == "YYYY-MM-DD"){
-            return baseYear + "-" + baseMonth + "-" + baseDate
-        }else if(dateFormat == "YYYY-MM"){
-            return baseYear + "-" + baseMonth
-        }else if(dateFormat == "YYYY"){
-            return baseYear
-        }
+        // 지정된 포맷으로 동적 치환하여 반환
+        return dateFormat
+            .replace(/YYYY/g, year)
+            .replace(/MM/g, month)
+            .replace(/DD/g, date)
+            .replace(/HH/g, hours)
+            .replace(/mm/g, mins)
+            .replace(/ss/g, secs);
     },
     /* 올해 년도 조회 */
     getYear : function() {
-        return dateFns.getDate({dateFormat : "YYYY"})
-    },
+        return on.date.getDate({dateFormat : "YYYY"})
+    }
+    /* 이번달 조회 */
+    , getMonth : function(){
+         return  on.date.getDate({dateFormat : "MM"})
+    }
+
     /* 현재시점 날짜 nanoTimes조회 */
-    getNanoTimes : function() {
+    , getNanoTimes : function() {
         return new Date().getTime();
     },
 
+
     /* 날짜 차이 계산기 */
-    dateCalc : function(strBaseDate, diffDiv, DiffVal, dateFormat) {
-        if (validateFns.isEmpty(strBaseDate)) return false;
-        strBaseDate = stringFns.replaceAll(stringFns.replaceAll(strBaseDate, "-"), "/");
-        if (strBaseDate.length != 8) return false;
+    dateCalc : function(dateObj) {
+        // 객체가 없거나 필수값인 strBaseDate가 없으면 false 반환
+        if (!dateObj || !dateObj.strBaseDate) return false;
 
-        var baseYear = stringFns.subString(strBaseDate, 0, 4)
-            , baseMonth = stringFns.subString(strBaseDate, 4, 6)
-            , baseday = stringFns.subString(strBaseDate, 6, 8);
+        // Body 영역에서 안전하게 기본값 할당 (ES5 방식)
+        var strBaseDate = dateObj.strBaseDate;
+        var diffDiv     = on.str.nvl(dateObj.diffDiv , "D" );
+        // DiffVal은 0이 들어올 수 있으므로 undefined 체크 필수
+        var DiffVal     = dateObj.DiffVal !== undefined ? dateObj.DiffVal : 0;
+        var dateFormat  = dateObj.dateFormat ? dateObj.dateFormat : "YYYY.MM.DD";
 
-        var baseDateObj = new Date(baseMonth + "/" + baseday + "/" + baseYear);
-        if (diffDiv.toUpperCase() == "D") { // 일자 차이
+        // 숫자만 추출
+        var parsedDate = String(strBaseDate).replace(/[^0-9]/g, "");
+
+        // 자릿수에 맞춰 월/일 자동 보정
+        if (parsedDate.length === 4) {
+            parsedDate += "0101";
+        } else if (parsedDate.length === 6) {
+            parsedDate += "01";
+        } else if (parsedDate.length !== 8) {
+            return false;
+        }
+
+        //  년/월/일 분리
+        var baseYear  = on.str.subString(parsedDate, 0, 4); // 년
+        var baseMonth = on.str.subString(parsedDate, 4, 6); // 월
+        var baseday   = on.str.subString(parsedDate, 6, 8); // 일
+
+        // Date 객체 생성 (안전한 생성 방식 적용: Month는 0부터 시작하므로 -1)
+        var baseDateObj = new Date(Number(baseYear), Number(baseMonth) - 1, Number(baseday));
+
+        // 날짜 계산
+        var upperDiffDiv = String(diffDiv).toUpperCase();
+        if (upperDiffDiv === "D") {        // 일자 차이
             baseDateObj.setDate(baseDateObj.getDate() + DiffVal);
-        } else if (diffDiv.toUpperCase() == "W") { // 주간 차이
+        } else if (upperDiffDiv === "W") { // 주간 차이
             baseDateObj.setDate(baseDateObj.getDate() + (DiffVal * 7));
-        } else if (diffDiv.toUpperCase() == "M") { // 월 차이
+        } else if (upperDiffDiv === "M") { // 월 차이
             baseDateObj.setMonth(baseDateObj.getMonth() + DiffVal);
-        } else if (diffDiv.toUpperCase() == "Y") { // 년도 차이
+        } else if (upperDiffDiv === "Y") { // 년도 차이
             baseDateObj.setFullYear(baseDateObj.getFullYear() + DiffVal);
         }
 
-        var resultYear  = baseDateObj.getFullYear();
-        var resultMonth = stringFns.lPad(baseDateObj.getMonth() + 1, 2, "0");
-        var resultDate  = stringFns.lPad(baseDateObj.getDate()     , 2, "0");
+        // 결과 포맷팅 (구형 브라우저 호환을 위해 on.str.lPad 사용)
+        var resultYear  = String(baseDateObj.getFullYear());
+        var resultMonth = on.str.lPad(baseDateObj.getMonth() + 1, 2, "0");
+        var resultDate  = on.str.lPad(baseDateObj.getDate(), 2, "0");
 
-        if ("YYYY" == dateFormat) {
-            return resultYear;
-        } else if ("YYYY-MM" == dateFormat) {
-            return resultYear + "-" + resultMonth;
-        } else if ("YYYY-MM-DD" == dateFormat) {
-            return resultYear + "-" + resultMonth + "-" + resultDate;
-        } else {
-            return resultYear + "-" + resultMonth + "-" + resultDate;
-        }
-    },
+        // 지정된 포맷으로 동적 치환하여 반환
+        return String(dateFormat)
+            .replace(/YYYY/g, resultYear)
+            .replace(/MM/g, resultMonth)
+            .replace(/DD/g, resultDate);
+    }
 
     /* 조회월의 마지막날 찾기 */
-    getMonthLastDay : function(strYearMon) {
-        if (validateFns.isEmpty(strYearMon)) strYearMon = stringFns.subString(stringFns.replaceAll( dateFns.getDate(),"-") , 0, 6);
-        var tarYearMon =  stringFns.replaceAll(stringFns.replaceAll(strYearMon, "-"), "/");
-        var nextMonFirstDay = dateFns.dateCalc(tarYearMon + "01", "M", 1, "YYYY-MM-DD");
-        var thisMonLastDay = dateFns.dateCalc(nextMonFirstDay, "D", -1, "YYYY-MM-DD");
+    , getMonthLastDay : function(strYearMon) {
+        if (on.valid.isEmpty(strYearMon)) strYearMon = on.str.subString(on.str.replaceAll( dateFns.getDate(),"-") , 0, 6);
+        var tarYearMon =  on.str.replaceAll(on.str.replaceAll(strYearMon, "-"), "/");
+        var nextMonFirstDay = on.date.dateCalc(tarYearMon + "01", "M", 1, "YYYY-MM-DD");
+        var thisMonLastDay = on.date.dateCalc(nextMonFirstDay, "D", -1, "YYYY-MM-DD");
         return thisMonLastDay;
     },
 
     /* 날짜 차이비교 계산기 */
     dateDiff : function(strStartDay, strEndDay, diffDiv) {
 
-        strStartDay = stringFns.replaceAll(stringFns.replaceAll(strStartDay, "-"), "/");
-        strEndDay = stringFns.replaceAll(stringFns.replaceAll(strEndDay, "-"), "/");
+        strStartDay = on.str.replaceAll(on.str.replaceAll(strStartDay, "-"), "/");
+        strEndDay = on.str.replaceAll(on.str.replaceAll(strEndDay, "-"), "/");
 
-        let baseStartYear = stringFns.subString(strStartDay, 0, 4)
-            , baseStartMonth = stringFns.subString(strStartDay, 4, 6)
-            , baseStartday = stringFns.subString(strStartDay, 6, 8);
+        let baseStartYear = on.str.subString(strStartDay, 0, 4)
+            , baseStartMonth = on.str.subString(strStartDay, 4, 6)
+            , baseStartday = on.str.subString(strStartDay, 6, 8);
 
-        let baseEndYear = stringFns.subString(strEndDay, 0, 4)
-            , baseEndMonth = stringFns.subString(strEndDay, 4, 6)
-            , baseEndday = stringFns.subString(strEndDay, 6, 8);
+        let baseEndYear = on.str.subString(strEndDay, 0, 4)
+            , baseEndMonth = on.str.subString(strEndDay, 4, 6)
+            , baseEndday = on.str.subString(strEndDay, 6, 8);
 
         let strarDateObj = new Date(Number(baseStartYear), Number(baseStartMonth) - 1, Number(baseStartday));
         let endDateObj = new Date(Number(baseEndYear), Number(baseEndMonth) - 1, Number(baseEndday));
 
-        diffDiv =  stringFns.nvl(diffDiv, "D");
+        diffDiv =  on.str.nvl(diffDiv, "D");
         let diffs;
         if (diffDiv == "D") {
             diffs = Math.round((endDateObj - strarDateObj) / (1000 * 60 * 60 * 24));

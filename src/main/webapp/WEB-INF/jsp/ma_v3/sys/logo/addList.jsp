@@ -72,7 +72,7 @@ $(document).ready(function(){
 					<td><c:out value="${paginationInfo.totalRecordCount + 1 -((searchVO.currentPageNo - 1) * searchVO.recordCountPerPage + status.count)}"/></td>
 					<td class="ellipsis c"><c:out value="${result.itmNm }"/></td>
 					<td class="ellipsis l">
-						<img src="/file/getByteImage.do?atchFileId=<c:out value='${result.atchFileId}'/>&fileSeqo=<c:out value='${result.fileSeqo}'/>&fileNmPhclFileNm=<c:out value='${result.fileNmPhclFileNm}'/>" alt="로고" width="100%" height="100%">
+						<img src="/file/getByteImage.do?atchFileId=<c:out value='${result.atchFileId}'/>&fileSn=<c:out value='${result.fileSn}'/>&fileNmPhclFileNm=<c:out value='${result.fileNmPhclFileNm}'/>" alt="로고" width="100%" height="100%">
 					</td>
 					<td><c:out value="${result.lnkYn eq 'Y'? '유' : '무'}"/></td>
 					<td class="ellipsis l"><a href="#" class="ellipsis td_view"><c:out value="${empty result.url ? '-' : result.url}"/></a></td>

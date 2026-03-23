@@ -50,6 +50,7 @@ public class PopupVO  extends CmmnDefaultVO {
 	private String popupTgtNm;	// 팝업대상명
 	
 	private String fileSeqo;		// 파일순서
+	private String fileSn;		// 파일순서
 	private String phclFileNm;	// 물리파일명
 	
 }

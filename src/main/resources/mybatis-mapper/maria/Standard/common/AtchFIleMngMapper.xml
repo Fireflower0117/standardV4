@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="on.standard.common.file">
+    <sql id="pageHeader">
+         <![CDATA[
+        SELECT (${rn_top} / (${rn_top} - ${rn_bottom})) AS pageNo
+             , (${rn_top} - ${rn_bottom})               AS pageSize
+             , totalCount - (rowindx - 1)               AS rrowindx
+             , ROW_.*
+        FROM (
+        ]]>
+    </sql>
+
+    <sql id="pageFooter">
+         <![CDATA[
+        ) AS ROW_
+              ORDER BY ROW_.rowindx  DESC
+             LIMIT ${rn_limit} OFFSET ${rn_bottom}
+        ]]>
+    </sql>
+
+    <insert id="putAtchFile" parameterType="fileVO">
+        /* on.standard.common.file.putAtchFile */
+        <selectKey keyProperty="fileSn" order="BEFORE" resultType="java.lang.String">
+            SELECT IFNULL(CAST(MAX(D.FILE_SN) AS UNSIGNED) + 1, 0) FROM STB_F_ATCH_FILE_DETAIL D WHERE D.ATCH_FILE_ID = #{atchFileId}
+        </selectKey>
+
+        INSERT INTO STB_F_ATCH_FILE_DETAIL (
+        ATCH_FILE_ID
+        , FILE_SN
+        , FILE_STRE_COURS
+        , PHYCL_FILE_NM
+        , ORIGN_FILE_NM
+        , FILE_EXTSN
+        , FILE_SIZE
+        , FILE_TYPE
+        , IMAGE_WIDTH
+        , IMAGE_HEIGHT
+        , ATCH_FILE
+        , TEMPCOL_1
+        , TEMPCOL_2
+        , TEMPCOL_3
+        , TEMPCOL_4
+        , TEMPCOL_5
+        , REG_USER
+        , REG_DATE
+        , DEL_YN
+        ) VALUES (
+        #{atchFileId}
+        , #{fileSn}
+        , #{phclFilePthNm}
+        , #{fileNmPhclFileNm}
+        , #{fileRlNm}
+        , #{fileFextNm}
+        , #{fileSizeVal}
+        , #{fileTpNm}
+        , #{imgSqrVal}
+        , #{imgHghtVal}
+        , #{fileByte}
+        , #{tempcol1}
+        , #{tempcol2}
+        , #{tempcol3}
+        , #{tempcol4}
+        , #{tempcol5}
+        , #{loginUserId}
+        , NOW()
+        , 'N'
+        )
+    </insert>
+
+    <insert id="putAtchFile_old" parameterType="fileVO">
+        /* on.standard.common.file.putAtchFile_old */
+        <selectKey keyProperty="fileSn" order="BEFORE" resultType="java.lang.String">
+            SELECT IFNULL(CAST(MAX(D.FILE_SN) AS UNSIGNED) + 1, 0) FROM STB_F_ATCH_FILE_DETAIL D WHERE D.ATCH_FILE_ID = #{atchFileId}
+        </selectKey>
+
+        INSERT INTO STB_F_ATCH_FILE_DETAIL (
+        ATCH_FILE_ID
+        , FILE_SN
+        , FILE_STRE_COURS
+        , PHYCL_FILE_NM
+        , ORIGN_FILE_NM
+        , FILE_EXTSN
+        , FILE_SIZE
+        , FILE_TYPE
+        , IMAGE_WIDTH
+        , IMAGE_HEIGHT
+        , ATCH_FILE
+        , TEMPCOL_1
+        , TEMPCOL_2
+        , TEMPCOL_3
+        , TEMPCOL_4
+        , TEMPCOL_5
+        <if test="loginUserId != null and loginUserId != ''">
+            , REG_USER
+        </if>
+        <if test="loginUserId == null or loginUserId == ''">
+            , REG_USER
+        </if>
+        , REG_DATE
+        , DEL_YN
+        ) VALUES (
+        #{atchFileId}
+        , #{fileSn}
+        , #{phclFilePthNm}
+        , #{fileNmPhclFileNm}
+        , #{fileRlNm}
+        , #{fileFextNm}
+        , #{fileSizeVal}
+        , #{fileTpNm}
+        , #{imgSqrVal}
+        , #{imgHghtVal}
+        , #{fileByte}
+        , #{tempcol1}
+        , #{tempcol2}
+        , #{tempcol3}
+        , #{tempcol4}
+        , #{tempcol5}
+        <if test="loginUserId != null and loginUserId != ''">
+            , #{loginUserId}
+        </if>
+        <if test="loginUserId == null or loginUserId == ''">
+            , #{loginUserId}
+        </if>
+        , NOW()
+        , 'N'
+        )
+    </insert>
+
+    <update id="delAtchFile" parameterType="fileVO">
+        /* on.standard.common.file.delAtchFile */
+        UPDATE STB_F_ATCH_FILE_DETAIL
+        SET DEL_YN = 'Y'
+        WHERE ATCH_FILE_ID = #{atchFileId}
+        <if test="fileSn != null and fileSn != ''">
+            AND FILE_SN = #{fileSn}
+        </if>
+        AND DEL_YN = 'N'
+    </update>
+
+    <select id="getAtchFileList" parameterType="fileVO" resultType="fileVO">
+        /* on.standard.common.file.getAtchFileList */
+        SELECT ATCH_FILE_ID       atchFileId
+             , FILE_SN            fileSn
+             , FILE_STRE_COURS    phclFilePthNm
+             , PHYCL_FILE_NM      fileNmPhclFileNm
+             , ORIGN_FILE_NM      fileRlNm
+             , FILE_EXTSN         fileFextNm
+             , FILE_CN            fileCtt
+             , FILE_SIZE          fileSizeVal
+             , FILE_TYPE          fileTpNm
+             , IMAGE_WIDTH        imgSqrVal
+             , IMAGE_HEIGHT       imgHghtVal
+             , ATCH_FILE          fileByte
+             , TEMPCOL_1          tempcol1
+             , TEMPCOL_2          tempcol2
+             , TEMPCOL_3          tempcol3
+             , TEMPCOL_4          tempcol4
+             , TEMPCOL_5          tempcol5
+             , REG_USER           regId
+             , REG_DATE           regDt
+             , DEL_YN            delYn
+        FROM STB_F_ATCH_FILE_DETAIL
+        WHERE ATCH_FILE_ID = #{atchFileId}
+          AND DEL_YN = 'N'
+        ORDER BY FILE_SN
+    </select>
+
+    <select id="getAtchFile" parameterType="fileVO" resultType="fileVO">
+        /* on.standard.common.file.getAtchFile  */
+        SELECT ATCH_FILE_ID        atchFileId
+             , FILE_SN            fileSn
+             , FILE_STRE_COURS      phclFilePthNm
+             , PHYCL_FILE_NM        fileNmPhclFileNm
+             , ORIGN_FILE_NM        fileRlNm
+             , FILE_EXTSN          fileFextNm
+             , FILE_CN            fileCtt
+             , FILE_SIZE           fileSizeVal
+             , FILE_TYPE           fileTpNm
+             , IMAGE_WIDTH         imgSqrVal
+             , IMAGE_HEIGHT     imgHghtVal
+             , ATCH_FILE       fileByte
+             , TEMPCOL_1       tempcol1
+             , TEMPCOL_2       tempcol2
+             , TEMPCOL_3       tempcol3
+             , TEMPCOL_4       tempcol4
+             , TEMPCOL_5       tempcol5
+             , REG_USER        regId
+             , REG_DATE        regDt
+             , DEL_YN          delYn
+          FROM STB_F_ATCH_FILE_DETAIL
+         WHERE ATCH_FILE_ID = #{atchFileId}
+           AND DEL_YN = 'N'
+           AND FILE_SN = #{fileSn}
+        <if test='fileNmPhclFileNm != null and fileNmPhclFileNm != ""'>
+            AND PHYCL_FILE_NM = #{fileNmPhclFileNm}
+        </if>
+    </select>
+
+    <select id="getAtchFileId" resultType="java.lang.String">
+        /* on.standard.common.file.getAtchFileId  */
+        SELECT IFNULL(MAX(CAST(ATCH_FILE_ID AS UNSIGNED)),0)+1
+        FROM STB_F_ATCH_FILE_DETAIL
+    </select>
+
+</mapper>

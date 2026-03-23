@@ -23,8 +23,20 @@ public class OnNameViewService {
 
     public String viewResolver(HttpServletRequest request, ModelMap model) throws Exception {
 
+        CommonMap condiMap = new CommonMap();
         // URL을 기준으로 메뉴정보를 가져온다.
-        CommonMap menuInfoMap = menuService.selectMenuByUrl(request.getRequestURI());
+        String reqUrI = request.getRequestURI();
+        condiMap.put("pageUrl", reqUrI);
+
+        String menuFUncDivCd = request.getParameter("menuFuncDivCd");
+        if("template".equals(menuFUncDivCd) || "board".equals(menuFUncDivCd)){
+            String menuFuncCd = request.getParameter("menuFuncCd");
+            if(menuFuncCd != null && menuFuncCd.trim().length() > 0){
+                condiMap.put("menuFuncCd", menuFuncCd);
+                condiMap.put("menuFUncDivCd", menuFUncDivCd);
+            }
+        }
+        CommonMap menuInfoMap = menuService.selectMenuByUrl(condiMap);
         model.addAttribute("menuInfoMap", menuInfoMap);
 
         // 전달된 ParameterKey가  searchCondition이라는 이름이 포함되면 이동하는 Page에 전달한다.

@@ -15,8 +15,10 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,21 +40,18 @@ public class LoginService extends EgovAbstractServiceImpl  {
 
 	/** 시스템 정책 정보 조회  **/
 	private CommonMap getSystemConfig(){
-		return crudDao.selectOne("on.standard.system.systempolicy.inqSystemPolicy");
+		return crudDao.selectOne("on.standard.system.systempolicy.admin_inqSystemPolicy");
 	}
 
-
-
-	/** 관리자 Login Process  **/
-	public CommonMap maLoginProcess(LoginVO loginVO, HttpServletRequest request){
-
-		CommonMap rtnMap = new CommonMap();
-		HttpSession session = request.getSession();
+    @Transactional
+	public CommonMap loginProcess(HttpServletRequest request, HttpServletResponse response, Model model) {
+		CommonMap reqMap = new CommonMap(request);
+		HttpSession session = request.getSession(true);
 		String remoteAddr = request.getRemoteAddr();
 
-		log.info("==============   LoginService MA LoginProcess   ===================");
-		log.info("userId : {}" , loginVO.getUserId());
-		log.info("userPwdVal : {}" , loginVO.getUserPswd());
+		log.info("==============   LoginService LoginProcess   ===================");
+		log.info("userId     : {}" , reqMap.getString("userId"));
+		log.info("userPwdVal : {}" , reqMap.getString("userPswd"));
 		log.info("remoteAddr : {}" , remoteAddr);
 		log.info("====================================================================");
 
@@ -63,26 +62,26 @@ public class LoginService extends EgovAbstractServiceImpl  {
 
 
         // DB 사용자 정보 확인  (ID기준)
-		UserVO userInfoVo = (UserVO)defaultDao.selectOne(userMngSqlNs+"inqUserInfoVO", loginVO );
+		UserVO userInfoVo = (UserVO)defaultDao.selectOne(userMngSqlNs+"inqUserInfoVO", reqMap );
 
 		if (userInfoVo == null) {  // 사용자 존재 여부 판단
-			rtnMap.put("message", messageSource.getMessage("login.loginFail.message", null, null));
-			rtnMap.put("result", false);
-			return rtnMap;
+			reqMap.put("message", messageSource.getMessage("login.loginFail.message", null, null));
+			reqMap.put("result", false);
+			return reqMap;
 		}
 		else {
 
 			// 접근 차단 계정 여부 판단
 			if("Y".equals(userInfoVo.getBrkYn())){
-				rtnMap.put("message", StringUtils.defaultIfBlank(userInfoVo.getBrkComment(), "접근 차단된 계정입니다.") );
-				rtnMap.put("result", false);
-				return rtnMap;
+				reqMap.put("message", StringUtils.defaultIfBlank(userInfoVo.getBrkComment(), "접근 차단된 계정입니다.") );
+				reqMap.put("result", false);
+				return reqMap;
 			}
 
 			// 비밀번호 동일여부  판단
-			if(!userInfoVo.getUserPswd().equals(loginVO.getUserPswd()) ){ // 비밀번호가 같지 않다면.
+			if(!userInfoVo.getUserPswd().equals(reqMap.getString("userPswd"))){ // 비밀번호가 같지 않다면.
 
-				/**  시스템 정책 확인  **/
+				/**  시스템 정책 확인 (로그인 실패시 사용자 접근 제어 제약) **/
 				if("Y".equals(systemConfigMap.get("lginLmtUseYn"))){
 					/** 사용자 비밀번호 실패건수 증가(update) **/
 					int effCnt = defaultDao.update(userMngSqlNs+"updateUserPswdFailCount", userInfoVo);
@@ -96,9 +95,9 @@ public class LoginService extends EgovAbstractServiceImpl  {
 
 				}
 
-				rtnMap.put("message", messageSource.getMessage("login.loginFail.message", null, null));
-				rtnMap.put("result", false);
-				return rtnMap;
+				reqMap.put("message", messageSource.getMessage("login.loginFail.message", null, null));
+				reqMap.put("result", false);
+				return reqMap;
 			}
 			else { // 비밀번호가 같다면..
 
@@ -107,14 +106,15 @@ public class LoginService extends EgovAbstractServiceImpl  {
 
 				List<String> authCdList = new ArrayList<String>();
 				for(UserVO userAUthVo : userAUthList){
-					authCdList.add(userAUthVo.getAuthId());
+					authCdList.add(userAUthVo.getUserAuth());
 				}
-				userInfoVo.setAuthIdList(authCdList.toString());
+				userInfoVo.setUserAuthIdList(authCdList);
 
 				/* 로그인 기록 남기기  */
 				userInfoVo.setAuthAreaCd("MA");
 				userInfoVo.setLoginDivCd("System");
 				userInfoVo.setRemoteAddr(remoteAddr);
+				userInfoVo.setUserAuthIdListStr(userInfoVo.getUserAuthIdList().toString());
 
 				defaultDao.insert(userMngSqlNs+"insUserLoginHist", userInfoVo);
 
@@ -128,24 +128,21 @@ public class LoginService extends EgovAbstractServiceImpl  {
 				/* IP차단 여부 */
 
 				/* 세션저장 ma_user_info */
-				userInfoVo.setUserPswd("");
+				userInfoVo.setUserPswd(""); // 세션에 비밀번호저장은 제외
 				session.setAttribute("userDetails", userInfoVo);
 
 				/*  시스템 정책의 첫 Page로 이동 */
-				rtnMap.put("returnUrl", ""+systemConfigMap.get("maDirectPage"));
-				rtnMap.put("result", true);
+				reqMap.put("returnUrl", ""+systemConfigMap.get("maDirectPage"));
+				reqMap.put("result", true);
 			}
 		}
-		return rtnMap;
+		return reqMap;
 	}
 
 
-	public void maLogout(HttpServletRequest request){
+	public void userLogout(HttpServletRequest request){
 		request.getSession().invalidate();
 	}
-
-
-
 
 
 /*	// 로그인

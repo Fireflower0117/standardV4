@@ -54,7 +54,7 @@ public class FileService extends EgovAbstractServiceImpl {
 		log.info("====================");
 		log.info("file down log");
 		log.info("atchFileId : " + vo.getAtchFileId());
-		log.info("fileSeqo : " + vo.getFileSeqo());
+		log.info("fileSn : " + vo.getFileSn());
 		log.info("fileRlNm : " + vo.getFileRlNm());
 		log.info("====================");
 
@@ -138,14 +138,15 @@ public class FileService extends EgovAbstractServiceImpl {
 	
 	}
 	
-	public ResponseEntity getImage(String atchFileId, String fileSeqo, String fileNmPhclFileNm)throws Exception{
+	public ResponseEntity getImage(String atchFileId, String fileSn, String fileNmPhclFileNm)throws Exception{
 			 
 		FileVO searchVO = new FileVO();
 		searchVO.setAtchFileId(atchFileId);
-		searchVO.setFileSeqo(fileSeqo);
+		searchVO.setFileSn(fileSn);
 		searchVO.setFileNmPhclFileNm(fileNmPhclFileNm);
 
-		FileVO fileVO = fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile", searchVO);
+		//FileVO fileVO = fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile", searchVO);
+		FileVO fileVO = fileDao.selectFileOne("on.standard.common.file.getAtchFile", searchVO);
 
 		Path path = Paths.get(fileVO.getPhclFilePthNm(), fileVO.getFileNmPhclFileNm());
 		Resource resource = new InputStreamResource(Files.newInputStream(path));
@@ -161,18 +162,19 @@ public class FileService extends EgovAbstractServiceImpl {
 		
 	}
 	
-	public void getByteImage(String atchFileId, String fileSeqo, String fileNmPhclFileNm, HttpServletResponse response) throws Exception{
+	public void getByteImage(String atchFileId, String fileSn, String fileNmPhclFileNm, HttpServletResponse response) throws Exception{
 		
 		InputStream is = null; 
 		try{ 
 			FileVO searchVO = new FileVO();
 	
 			searchVO.setAtchFileId(atchFileId);
-			searchVO.setFileSeqo(fileSeqo);
+			searchVO.setFileSn(fileSn);
 			searchVO.setFileNmPhclFileNm(fileNmPhclFileNm);
 	
-			FileVO fileVO =  fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile", searchVO); 
-			if (fileVO != null) { 
+			//FileVO fileVO =  fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile", searchVO);
+			FileVO fileVO =  fileDao.selectFileOne("on.standard.common.file.getAtchFile", searchVO);
+			if (fileVO != null) {
 				is = new ByteArrayInputStream(fileVO.getFileByte()); 
 				ServletOutputStream os = response.getOutputStream();
 				
@@ -188,7 +190,7 @@ public class FileService extends EgovAbstractServiceImpl {
 		} 
 	}
 	
-	public void downloadByte(String atchFileId, String fileSeqo, String fileNmPhclFileNm, HttpServletRequest request, HttpServletResponse response) throws Exception{
+	public void downloadByte(String atchFileId, String fileSn, String fileNmPhclFileNm, HttpServletRequest request, HttpServletResponse response) throws Exception{
 	
 		ByteArrayInputStream in = null;
 		ServletOutputStream out = null;
@@ -196,11 +198,12 @@ public class FileService extends EgovAbstractServiceImpl {
 		FileVO searchVO = new FileVO();
 		
 		searchVO.setAtchFileId(atchFileId);
-		searchVO.setFileSeqo(fileSeqo);
+		searchVO.setFileSn(fileSn);
 		searchVO.setFileNmPhclFileNm(fileNmPhclFileNm);
 
-		FileVO fileVO =  fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile", searchVO);
-		
+		//FileVO fileVO =  fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile", searchVO);
+		FileVO fileVO =  fileDao.selectFileOne("on.standard.common.file.getAtchFile", searchVO);
+
 		in = new ByteArrayInputStream(fileVO.getFileByte());
 		
 		try {
@@ -265,7 +268,7 @@ public class FileService extends EgovAbstractServiceImpl {
 					if (!file.isEmpty()) {
 						if (idx == 0 && (atchFileId == null || "".equals(atchFileId))) {
 							// atchFileId 구함 (최초 등록 시)
-							atchFileId = fileDao.selectFileString("com.opennote.standard.mapper.basic.atchFileMng.getAtchFileId"); 
+							atchFileId = fileDao.selectFileString("on.standard.common.file.getAtchFileId");
 						}
 
 						String originalFileName = file.getOriginalFilename();
@@ -282,7 +285,11 @@ public class FileService extends EgovAbstractServiceImpl {
 						fileVO.setFileNmPhclFileNm(atchFileId + "_" + idx + "_" + format.format(date));
 						fileVO.setFileFextNm(Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".") + 1));
 						fileVO.setFileByte(file.getBytes());
-						
+						fileVO.setTempcol1(vo.getTempcol1());
+						fileVO.setTempcol2(vo.getTempcol2());
+						fileVO.setTempcol3(vo.getTempcol3());
+						fileVO.setTempcol4(vo.getTempcol4());
+						fileVO.setTempcol5(vo.getTempcol5());
 						// 폴더 생성.
 						one = new File(fileVO.getPhclFilePthNm());
 
@@ -304,7 +311,7 @@ public class FileService extends EgovAbstractServiceImpl {
 							fileVO.setImgSqrVal(null);
 							fileVO.setImgHghtVal(null);
 						}
-						fileDao.insertFile("com.opennote.standard.mapper.basic.atchFileMng.putAtchFile",fileVO); 
+						fileDao.insertFile("on.standard.common.file.putAtchFile",fileVO);
 						idx++;
 					}
 				}
@@ -354,7 +361,8 @@ public class FileService extends EgovAbstractServiceImpl {
 	public void deleteFile(final FileVO fileVO) {
 		// 첨부파일 정보 조회.
 		// FileVO one = fileMapper.getAtchFile(fileVO);
-		FileVO one = fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile",fileVO); 
+		//FileVO one = fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile",fileVO);
+		FileVO one = fileDao.selectFileOne("on.standard.common.file.getAtchFile",fileVO);
 
 		File deleteFile = new File(one.getPhclFilePthNm() + one.getFileNmPhclFileNm());
 		if (deleteFile.exists() && deleteFile.isFile()) {
@@ -362,7 +370,7 @@ public class FileService extends EgovAbstractServiceImpl {
 			deleteFile.delete();
 		}
 		
-		fileDao.deleteFile("opnt.atchFileMng.delAtchFile", fileVO );
+		fileDao.deleteFile("on.standard.common.file.delAtchFile", fileVO );
 		//fileMapper.delAtchFile(fileVO);
 	}
 	
@@ -391,7 +399,8 @@ public class FileService extends EgovAbstractServiceImpl {
 				if (!file.isEmpty()) {
 					if (idx == 0 && (atchFileId == null || "".equals(atchFileId))) {
 						// atchFileId 구함 (최초 등록 시)
-						atchFileId = fileDao.selectFileString("com.opennote.standard.mapper.basic.atchFileMng.getAtchFileId"); 
+						// atchFileId = fileDao.selectFileString("com.opennote.standard.mapper.basic.atchFileMng.getAtchFileId");
+						atchFileId = fileDao.selectFileString("on.standard.common.file.getAtchFileId");
 					}
 
 					String originalFileName = file.getOriginalFilename();
@@ -431,7 +440,8 @@ public class FileService extends EgovAbstractServiceImpl {
 						fileVO.setImgHghtVal(null);
 					}
 					 
-					int effCnt = fileDao.insertFile("com.opennote.standard.mapper.basic.atchFileMng.putAtchFile", fileVO);
+					//int effCnt = fileDao.insertFile("com.opennote.standard.mapper.basic.atchFileMng.putAtchFile", fileVO);
+					int effCnt = fileDao.insertFile("on.standard.common.file.putAtchFile", fileVO);
 					fileVO.setEffCnt(effCnt);
 					fileList.add(fileVO);
 					idx++;
@@ -448,8 +458,9 @@ public class FileService extends EgovAbstractServiceImpl {
 		fileVO.setAtchFileId(atchFileId);
 		// 첨부파일 정보 조회.
 		// List<FileVO> getAtchFileList = fileMapper.getAtchFileList(fileVO);
-		List<FileVO>  atchFileList = fileDao.selectFileList("com.opennote.standard.mapper.basic.atchFileMng.putAtchFile", fileVO);
-		
+		//List<FileVO>  atchFileList = fileDao.selectFileList("com.opennote.standard.mapper.basic.atchFileMng.putAtchFile", fileVO);
+		List<FileVO>  atchFileList = fileDao.selectFileList("on.standard.common.file.putAtchFile", fileVO);
+
 		File deleteFile;
 		for (FileVO one : atchFileList) {
 			deleteFile = new File(one.getPhclFilePthNm() + one.getFileNmPhclFileNm());
@@ -458,21 +469,22 @@ public class FileService extends EgovAbstractServiceImpl {
 				deleteFile.delete();
 			}
 		}
-		fileDao.deleteFile("com.opennote.standard.mapper.basic.atchFileMng.delAtchFile", fileVO ); 
+		//fileDao.deleteFile("com.opennote.standard.mapper.basic.atchFileMng.delAtchFile", fileVO );
+		fileDao.deleteFile("on.standard.common.file.delAtchFile", fileVO );
 
 		return atchFileId;
 	}
 
 	public List<FileVO> getAtchFileList(FileVO vo) { 
-		return fileDao.selectFileList("com.opennote.standard.mapper.basic.atchFileMng.getAtchFileList", vo); 
+		//return fileDao.selectFileList("com.opennote.standard.mapper.basic.atchFileMng.getAtchFileList", vo);
+		return fileDao.selectFileList("on.standard.common.file.getAtchFileList", vo);
 	}
 
 	public FileVO getAtchFile(FileVO vo) { 
-		return fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile", vo); 
+		//return fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile", vo);
+		return fileDao.selectFileOne("on.standard.common.file.getAtchFile", vo);
 	}
-	public FileVO getAtchKcaFile(FileVO vo) {
-		return fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchKcaFile", vo); 
-	}
+
 	// DEXT5UPLOAD. 서버에 업로드 된 파일의 정보를 DB에 등록
 	public String uploadFileInfo(final List<FileVO> fileInfoList) throws Exception {
 		String atchFileId = fileInfoList.get(0).getAtchFileId();
@@ -481,11 +493,13 @@ public class FileService extends EgovAbstractServiceImpl {
 		for (FileVO fileInfo : fileInfoList) {
 			if (idx == 0 && (atchFileId == null || "".equals(atchFileId))) {
 				// atchFileId 구함 (최초 등록 시) 
-				atchFileId = fileDao.selectFileString("com.opennote.standard.mapper.basic.atchFileMng.getAtchFileId");
+				//atchFileId = fileDao.selectFileString("com.opennote.standard.mapper.basic.atchFileMng.getAtchFileId");
+				atchFileId = fileDao.selectFileString(" on.standard.common.file.getAtchFileId");
 			}
 
 			fileInfo.setAtchFileId(atchFileId);
-			fileDao.insertFile("com.opennote.standard.mapper.basic.atchFileMng.putAtchFile", fileInfo);  
+			//fileDao.insertFile("com.opennote.standard.mapper.basic.atchFileMng.putAtchFile", fileInfo);
+			fileDao.insertFile("on.standard.common.file.putAtchFile.putAtchFile", fileInfo);
 			idx++;
 		}
 
@@ -496,14 +510,16 @@ public class FileService extends EgovAbstractServiceImpl {
 	public void deleteFileInfo(final List<FileVO> delFileList) {
 		for (FileVO fileVO : delFileList) {
 			// 첨부파일 정보 조회.
-			FileVO one = fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile", fileVO); 
+			//FileVO one = fileDao.selectFileOne("com.opennote.standard.mapper.basic.atchFileMng.getAtchFile", fileVO);
+			FileVO one = fileDao.selectFileOne(" on.standard.common.file.getAtchFile.getAtchFile", fileVO);
 
 			File deleteFile = new File(one.getPhclFilePthNm() + one.getFileNmPhclFileNm());
 			if (deleteFile.exists() && deleteFile.isFile()) {
 				//noinspection ResultOfMethodCallIgnored
 				deleteFile.delete();
 			}
-			fileDao.deleteFile("com.opennote.standard.mapper.basic.atchFileMng.delAtchFile", fileVO ); 
+			//fileDao.deleteFile("com.opennote.standard.mapper.basic.atchFileMng.delAtchFile", fileVO );
+			fileDao.deleteFile("on.standard.common.file.delAtchFile", fileVO );
 		}
 	}
 }

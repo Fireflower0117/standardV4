@@ -63,8 +63,8 @@ public class FileController {
 	// atchFileId로 첨부파일 목록 조회
 	@ResponseBody
 	@PostMapping("/file/getList.do")
-	public List<FileVO> getFileList(FileVO vo) { 
-	    return fileService.getFileList(vo); 
+	public List<FileVO> getFileList(FileVO vo) {
+		return fileService.getFileList(vo);
 	}
 
 	@ResponseBody
@@ -80,18 +80,18 @@ public class FileController {
 	}
 
 	@GetMapping("/file/getImage.do")
-	public ResponseEntity<Resource> getImage(@RequestParam(name = "atchFileId") String atchFileId, @RequestParam(name = "fileSeqo") String fileSeqo,@RequestParam(name = "fileNmPhclFileNm") String fileNmPhclFileNm) throws Exception { 
-		return fileService.getImage(atchFileId , fileSeqo , fileNmPhclFileNm);  
+	public ResponseEntity<Resource> getImage(@RequestParam(name = "atchFileId") String atchFileId, @RequestParam(name = "fileSn") String fileSn,@RequestParam(name = "fileNmPhclFileNm") String fileNmPhclFileNm) throws Exception {
+		return fileService.getImage(atchFileId , fileSn , fileNmPhclFileNm);
 	}
 	
 	@GetMapping("/file/getByteImage.do")
-	public void getByteImage(@RequestParam(name = "atchFileId") String atchFileId, @RequestParam(name = "fileSeqo") String fileSeqo,@RequestParam(name = "fileNmPhclFileNm") String fileNmPhclFileNm, HttpServletResponse response) throws Exception { 
-		fileService.getByteImage(atchFileId, fileSeqo, fileNmPhclFileNm , response ); 
+	public void getByteImage(@RequestParam(name = "atchFileId") String atchFileId, @RequestParam(name = "fileSn") String fileSn,@RequestParam(name = "fileNmPhclFileNm") String fileNmPhclFileNm, HttpServletResponse response) throws Exception {
+		fileService.getByteImage(atchFileId, fileSn, fileNmPhclFileNm , response );
 	}
 	
 	@RequestMapping("/file/downloadByte.do")
-	public void downloadByte(@RequestParam(name = "atchFileId") String atchFileId, @RequestParam(name = "fileSeqo") String fileSeqo,@RequestParam(name = "fileNmPhclFileNm") String fileNmPhclFileNm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		fileService.downloadByte(atchFileId, fileSeqo, fileNmPhclFileNm , request , response );
+	public void downloadByte(@RequestParam(name = "atchFileId") String atchFileId, @RequestParam(name = "fileSn") String fileSn,@RequestParam(name = "fileNmPhclFileNm") String fileNmPhclFileNm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		fileService.downloadByte(atchFileId, fileSn, fileNmPhclFileNm , request , response );
 	}
 
 }

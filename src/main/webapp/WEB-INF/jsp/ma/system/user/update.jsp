@@ -19,9 +19,9 @@
         *****************************************************************************************************/
 
       	// 가입경로
-		on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#userAuth" }
+		on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#userAuth" }
                                      , optionValInfo : { optId : "authId" , optTxt : "authKorName"  }
-                                     , comboDataInfo :  inqCdRsltList.userAuthList
+                                     , dataInfo      :  inqCdRsltList.userAuthList
                                      });
 
         // Page의 속성중 Element Id를 기준으로 자동 매핑
@@ -48,12 +48,14 @@
 
                   // 권한 수정 (ajax형태 )
                   on.xhr.ajax({ sid : "userRegistTran"  // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
-                              , cmd : "multiAction" , sql : "on.standard.system.user.insertUserInfo"
-                              , validation : { formId : "#systemUserfrm" , validationList : systemAuthValidateList  }  // 유효성검증기능 추가 관련
-                              , data       : $("#systemUserfrm").serializeArray()   // Form Data
-                              , regDivCd   : "AdminRegist" // 전송Data 추가
-                              , multiAction : [ {cmd : "insert" , sql : "on.standard.system.user.insertUserInfo"    }
-                                              , {cmd : "insert" , sql : "on.standard.system.user.insertAuthUserMng" }
+                              , cmd : "multiAction"
+                              , validation  : { formId : "#systemUserfrm" , validationList : systemAuthValidateList  }  // 유효성검증기능 추가 관련
+                              , data        : $("#systemUserfrm").serializeArray()   // Form Data
+                              , regDivCd    : "AdminRegist" // 전송Data 추가
+                              , userId      : authInfoObj.userId
+                              , preUserAuth : authInfoObj.userAuth
+                              , multiAction : [ {cmd : "update" , sql : "on.standard.system.user.updateUserMng"    }
+                                              , {cmd : "update" , sql : "on.standard.system.user.updateAuthUserMng" }
                                               ]
                               , successFn  : function (sid, data){
                                        on.msg.showMsg({message : "사용자정보를 저장했습니다."})

@@ -54,7 +54,7 @@ $(document).ready(function(){
 			                			<img src="/ma/images/common/no_img.png" alt="image" class="noimage">
 			                		</c:when>
 			                		<c:otherwise>
-			                			<img src="/tmplFile/getFileDown.do?tmplFileSerno=<c:out value='${result.prvwFileSerno}'/>&fileSeqo=0" alt="image" onerror="this.src='/ma/images/common/no_img.png';this.className='noimage';">
+			                			<img src="/tmplFile/getFileDown.do?tmplFileSerno=<c:out value='${result.prvwFileSerno}'/>&fileSn=0" alt="image" onerror="this.src='/ma/images/common/no_img.png';this.className='noimage';">
 			                		</c:otherwise> 
 			                	</c:choose>
 							</figure>

@@ -25,8 +25,8 @@ $(document).ready(function(){
 					 	<a href="javascript:void(0)" data-serno="<c:out value='${result.bltnbSerno}'/>">
 							<figure class="thum_img">
 								<c:choose>
-									<c:when test="${not empty result.atchFileId and not empty result.fileSeqo}">
-										<img src="${pageContext.request.contextPath}/file/getImage.do?atchFileId=<c:out value='${result.atchFileId}'/>&fileSeqo=<c:out value='${result.fileSeqo}'/>&fileNmPhclFileNm=<c:out value='${result.fileNmPhclFileNm}'/>" onerror="this.src='${pageContext.request.contextPath}/ma/images/common/no_img.png" alt="image"/>
+									<c:when test="${not empty result.atchFileId and not empty result.fileSn}">
+										<img src="${pageContext.request.contextPath}/file/getImage.do?atchFileId=<c:out value='${result.atchFileId}'/>&fileSn=<c:out value='${result.fileSn}'/>&fileNmPhclFileNm=<c:out value='${result.fileNmPhclFileNm}'/>" onerror="this.src='${pageContext.request.contextPath}/ma/images/common/no_img.png" alt="image"/>
 									</c:when>
 									<c:otherwise>
 										<img src="${pageContext.request.contextPath}/ma/images/common/no_img.png" alt="image"/>

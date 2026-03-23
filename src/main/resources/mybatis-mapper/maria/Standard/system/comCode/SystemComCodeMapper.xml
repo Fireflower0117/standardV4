@@ -4,10 +4,15 @@
 
     <select id="selectComCode" parameterType="CommonMap" resultType="CommonMap">
         /* on.standard.system.comcode.selectComCode */
-        SELECT COM_CD , UPP_COM_CD, CD_NM, SORT_NO, CD_COMMENT, USE_YN
-             , FILTER_1, FILTER_2, FILTER_3, FILTER_4, FILTER_5
-             , FILTER_6, FILTER_7, FILTER_8, FILTER_9, FILTER_10
-             , CONCAT(COM_CD, ' (',CD_NM,')') as CD_DESC
+        SELECT COM_CD      AS comCd
+             , UPP_COM_CD  AS uppComCd
+             , CD_NM       AS cdNm
+             , SORT_NO     AS sortNo
+             , CD_COMMENT  AS cdComment
+             , USE_YN      AS UseYb
+             , FILTER_1 AS filter1, FILTER_2 AS filter2, FILTER_3 AS filter3, FILTER_4 AS filter4, FILTER_5 AS filter5
+             , FILTER_6 AS filter6, FILTER_7 AS filter7, FILTER_8 AS filter8, FILTER_9 AS filter9, FILTER_10 AS filter10
+             , CONCAT(COM_CD, ' (',CD_NM,')') as cdDesc
           FROM STB_B_CD_MNG
          WHERE UPP_COM_CD = #{uppComCd}
            <choose>
@@ -80,4 +85,122 @@
         ORDER BY SORT_NO
     </select>
 
+    <select id="selectComCdList" parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.system.comcode.selectComCdList */
+        SELECT UPP_COM_CD  uppComCd
+             , COM_CD      comCd
+             , CD_NM       cdNm
+             , SORT_NO     sortNo
+             , CD_COMMENT  cdComment
+             , USE_YN      useYn
+             , FILTER_1 filter1, FILTER_2 filter2, FILTER_3 filter3, FILTER_4 filter4, FILTER_5 filter5
+             , FILTER_6 filter6, FILTER_7 filter7, FILTER_8 filter8, FILTER_9 filter9, FILTER_10 filter10
+             , FILTER_COMMENT filterComment
+        FROM STB_B_CD_MNG
+        WHERE UPP_COM_CD = #{uppComCd}
+        ORDER BY SORT_NO 
+    </select>
+    
+    <select id="selectHierarchyComCdList" parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.system.comcode.selectHierarchyComCdList */
+        <if test="searchKeyWord != null and searchKeyWord != ''">
+        WITH RECURSIVE
+            MATCHED_ROOTS AS (
+                SELECT COM_CD
+                  FROM SVI_COM_CODE_MNG_HIERARCHY
+                 WHERE UPP_COM_CD = 'ROOT'
+                   AND (   COM_CD LIKE CONCAT('%', #{searchKeyWord}, '%')
+                        OR CD_NM  LIKE CONCAT('%', #{searchKeyWord}, '%') )
+                   )
+          , HIERARCHY_TARGETS AS (
+                SELECT COM_CD
+                  FROM MATCHED_ROOTS
+                 UNION ALL
+                SELECT child.COM_CD
+                  FROM SVI_COM_CODE_MNG_HIERARCHY child
+                 INNER JOIN HIERARCHY_TARGETS parent
+                    ON child.UPP_COM_CD = parent.COM_CD
+            )
+        </if>
+        SELECT CASE WHEN CCMH.UPP_COM_CD = 'ROOT' THEN NULL
+                    ELSE CCMH.UPP_COM_CD
+                END                                                         AS uppComCd
+          , CCMH.COM_CD                                                     AS comCd
+          , CCMH.CD_NM                                                      AS cdNm
+          , CONCAT(CCMH.CD_NM, '  (',CCMH.COM_CD,')')                       AS cdDesc
+<![CDATA[ , CONCAT( REPEAT('&AMP;NBSP;&AMP;NBSP;&AMP;NBSP;&AMP;NBSP;&AMP;NBSP;&AMP;NBSP;', CCMH.LEVEL - 1),
+                   IF(CCMH.LEVEL > 1, '└ ', ''),
+                   CCMH.COM_CD
+           )                                                               AS levComCd
+          , CONCAT( REPEAT('&AMP;NBSP;&AMP;NBSP;&AMP;NBSP;&AMP;NBSP;&AMP;NBSP;&AMP;NBSP;', CCMH.LEVEL - 1),
+                   IF(CCMH.LEVEL > 1, '└ ', ''),
+                   CCMH.CD_NM
+            )                                                               AS levCdNm
+]]>       , CCMH.SORT_NO                                                    AS sortNo
+          , CCMH.CD_COMMENT                                                 AS cdComment
+          , CCMH.USE_YN                                                     AS useYn
+          , CCMH.LEVEL                                                      AS level
+          , CCMH.CD_PATH                                                    AS cdPath
+          , CCMH.FILTER_1                                                   AS filter1
+          , CCMH.FILTER_2                                                   AS filter2
+          , CCMH.FILTER_3                                                   AS filter3
+          , CCMH.FILTER_4                                                   AS filter4
+          , CCMH.FILTER_5                                                   AS filter5
+          , CCMH.FILTER_6                                                   AS filter6
+          , CCMH.FILTER_7                                                   AS filter7
+          , CCMH.FILTER_8                                                   AS filter8
+          , CCMH.FILTER_9                                                   AS filter9
+          , CCMH.FILTER_10                                                  AS filter10
+          , CCMH.FILTER_COMMENT                                             AS filterComment
+        FROM SVI_COM_CODE_MNG_HIERARCHY CCMH
+        <if test="searchKeyWord != null and searchKeyWord != ''">
+            INNER JOIN HIERARCHY_TARGETS HT
+            ON CCMH.COM_CD = HT.COM_CD
+        </if>
+        ORDER BY CCMH.SORT_PATH
+    </select>
+
+
+    <insert id="mergeInsComCdInfo"  parameterType="CommonMap">
+        /* on.standard.system.comcode.mergeInsComCdInfo  */
+        INSERT INTO STB_B_CD_MNG (
+                           UPP_COM_CD
+                         , COM_CD
+                         , CD_NM
+                         , SORT_NO
+                         , CD_COMMENT
+                         , USE_YN
+                         , FILTER_1, FILTER_2, FILTER_3, FILTER_4, FILTER_5
+                         , FILTER_6, FILTER_7, FILTER_8, FILTER_9, FILTER_10
+                         , FILTER_COMMENT
+        ) VALUES (
+                   CASE WHEN #{uppComCd} IS NULL OR #{uppComCd} = '' THEN 'ROOT' ELSE #{uppComCd} END
+                 , #{comCd}
+                 , #{cdNm}
+                 , CAST(IFNULL(NULLIF(#{sortNo}, ''), '1') AS UNSIGNED)
+                 , #{cdComment}
+                 , IFNULL(NULLIF(#{useYn}, ''), 'Y')
+                 , #{filter1}, #{filter2}, #{filter3}, #{filter4}, #{filter5}
+                 , #{filter6}, #{filter7}, #{filter8}, #{filter9}, #{filter10}
+                 , #{filterComment}
+                 )
+            ON DUPLICATE KEY UPDATE
+                   CD_NM          = #{cdNm}
+                 , SORT_NO     = CAST(IFNULL(NULLIF(#{sortNo}, ''), '1') AS UNSIGNED)
+                 , CD_COMMENT     = #{cdComment}
+                 , USE_YN         = IFNULL(NULLIF(#{useYn}, ''), 'Y')
+                 , FILTER_1       = #{filter1}
+                 , FILTER_2       = #{filter2}
+                 , FILTER_3       = #{filter3}
+                 , FILTER_4       = #{filter4}
+                 , FILTER_5       = #{filter5}
+                 , FILTER_6       = #{filter6}
+                 , FILTER_7       = #{filter7}
+                 , FILTER_8       = #{filter8}
+                 , FILTER_9       = #{filter9}
+                 , FILTER_10      = #{filter10}
+                 , FILTER_COMMENT = #{filterComment}
+    </insert>
+    
+    
 </mapper>

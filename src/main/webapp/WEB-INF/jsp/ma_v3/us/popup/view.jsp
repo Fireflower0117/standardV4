@@ -140,9 +140,9 @@ $(document).ready(function(){
 				<th scope="row">대표이미지</th>
 				<td>
 					<c:choose>
-						<c:when test="${not empty popupVO.repImgId and popupVO.fileSeqo > -1}">
+						<c:when test="${not empty popupVO.repImgId and popupVO.fileSn > -1}">
 							<span class="popup_sample_img">
-								<img src="/file/getImage.do?atchFileId=<c:out value="${popupVO.repImgId}"/>&fileSeqo=<c:out value="${popupVO.fileSeqo}"/>&fileNmPhclFileNm=<c:out value="${popupVO.phclFileNm}"/>" alt="대표이미지"/>
+								<img src="/file/getImage.do?atchFileId=<c:out value="${popupVO.repImgId}"/>&fileSn=<c:out value="${popupVO.fileSn}"/>&fileNmPhclFileNm=<c:out value="${popupVO.phclFileNm}"/>" alt="대표이미지"/>
 							</span>
 						</c:when>
 						<c:otherwise>

@@ -8,18 +8,18 @@ $(document).ready(function(){
      ***************************************************************************/
 
     // 검색조건 구분
-     on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#searchKeyCd" }
+     on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#searchKeyCd" }
                                   , addOption     : [{ position : "top" , txt : "전체" , val : "" }]
                                   , optionValInfo : { optId : "code" , optTxt : "text" }
-                                  , comboDataInfo : [ { code : "authId"   , text:"그룹권한ID" }
+                                  , dataInfo      : [ { code : "authId"   , text:"그룹권한ID" }
                                                     , { code : "authNm"   , text:"그룹권한명" }
                                                     , { code : "authDesc" , text:"그룹권한설명" }
                                                     ]
                                  });
      // Paging Per Row
-     on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#recordCountPerPage" }
+     on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#recordCountPerPage" }
                                   , optionValInfo : { optId : "code" , optTxt : "text", defaultVal : "10" }
-                                  , comboDataInfo : [ { code : "10" , text:"10건" }
+                                  , dataInfo      : [ { code : "10" , text:"10건" }
                                                     , { code : "20" , text:"20건" }
                                                     , { code : "30" , text:"30건" }
                                                     , { code : "50" , text:"50건" }
@@ -32,7 +32,7 @@ $(document).ready(function(){
       // 검색조건 설정
       let searchConditionObj = {
               cmd             : "selectPage"
-            , sql             : "on.standard.system.auth.inqAuthList"
+            , sql             : "on.standard.system.auth.admin_inqAuthList"
             , searchKeycd     : on.html.getEleVal({ele : "#searchKeyCd"} )
             , searchKeyWord   : on.html.getEleVal({ele : "#searchKeyWord"} )
       };
@@ -80,12 +80,12 @@ $(document).ready(function(){
               , paginginfo    : {targetId : "#pagenation" , btnFnName : fnPageBtnClick } // 페이징처리될영역과 , 페이징버튼 Event (자동처리)
               , displayColInfos : {
                     normal_tab_columns : [
-                            {id: "rowindx"     , colType: "rowNumber" , data_id1:"authId", classNm: "number"}
-                          , {id: "authId"      , colType: "normalTd"  , data_id1:"authId"}
-                          , {id: "authKorName" , colType: "normalTd"  , data_id1:"authId"}
-                          , {id: "authComment" , colType: "normalTd"  , data_id1:"authId"}
-                          , {id: "useYn"       , colType: "normalTd"  , data_id1:"authId"}
-                          , {id: "regYmd"      , colType: "normalTd"  , data_id1:"authId", classNm: "date"}
+                            {id: "rowindx"     , colType: "number" , data_id1:"authId", classNm: "number"}
+                          , {id: "authId"      , colType: "td"  , data_id1:"authId"}
+                          , {id: "authKorName" , colType: "td"  , data_id1:"authId"}
+                          , {id: "authComment" , colType: "td"  , data_id1:"authId"}
+                          , {id: "useYn"       , colType: "td"  , data_id1:"authId"}
+                          , {id: "regYmd"      , colType: "td"  , data_id1:"authId", classNm: "date"}
                     ]
               }
             }

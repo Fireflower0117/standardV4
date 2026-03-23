@@ -58,7 +58,7 @@ public class AjaxController {
         List<CommonMap> listMap = null;
         String data = getBody(request);
         if(data != null && !data.isEmpty()) {
-            listMap = JacksonParsing.toList(data);
+            listMap = JacksonParsing.json2List(data);
         }
         CommonMap parmMap = listMap.get(0);
 

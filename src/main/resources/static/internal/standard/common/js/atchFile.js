@@ -5,6 +5,7 @@ let maxFileSize = 10;		// 첨부파일별 최대 용량(10MB로 임의 설정)
 // atchFileId : 조회할 첨부파일의 ID
 // atchFileIdNm : 첨부파일ID를 세팅할 input id
 // uploadType : file(일반 업로드. 생략 가능), image(이미지 업로드)
+// deprecated (2026.03.02 KJN) TO-BE : on.file.setFileList로 대체
 const setFileList = function () {
 	
 	const getArgs = arguments;
@@ -130,11 +131,11 @@ const setFileList = function () {
 								fileHTML += "</li>";
 							}
 							fileHTML += "<li>";
-							fileHTML += "	<div class='file_img'><img src='/file/getImage.do?atchFileId=" + atchFileList[i].atchFileId + "&fileSeqo=" + atchFileList[i].fileSeqo + "&fileNmPhclFileNm=" + atchFileList[i].fileNmPhclFileNm + "' width='100%' onerror='/internal/standard/common/images/no_img.png' alt='이미지'></div>";
+							fileHTML += "	<div class='file_img'><img src='/file/getImage.do?atchFileId=" + atchFileList[i].atchFileId + "&fileSn=" + atchFileList[i].fileSn + "&fileNmPhclFileNm=" + atchFileList[i].fileNmPhclFileNm + "' width='100%' onerror='/internal/standard/common/images/no_img.png' alt='이미지'></div>";
 							fileHTML += "	<div class='file_btns_box r'>";
 							fileHTML += "		<label style='display:none'>";
 							fileHTML += "			<input type='checkbox' class='check_fileDel' >";
-							fileHTML += "			<input type='hidden' name='fileSeqo' value='" + atchFileList[i].fileSeqo + "'>";
+							fileHTML += "			<input type='hidden' name='fileSn' value='" + atchFileList[i].fileSn + "'>";
 							fileHTML += "		</label>";
 							fileHTML += "		<span class='file_name'>"+atchFileList[i].fileRlNm+"</span>";
 							fileHTML += "		<span class='fake_file'>";
@@ -145,8 +146,8 @@ const setFileList = function () {
 							fileHTML += "</li>";
 						} else if(uploadType === "imageView") {
                             fileHTML += "<li>";
-                            fileHTML += "    <div class='file_img'><img src='/file/getImage.do?atchFileId="+ atchFileList[i].atchFileId +"&fileSeqo="+ atchFileList[i].fileSeqo + "&fileNmPhclFileNm=" + atchFileList[i].fileNmPhclFileNm + "' class='image' width='100%' /></div>";
-                            fileHTML += "    <div class='file_btns_box r cursor viewPop' data-seq='"+atchFileList[i].fileSeqo+"' onclick='atchFileImageView(this)' data-imageNm='"+atchFileList[i].fileRlNm+"'>이미지 크게 보기</div>";
+                            fileHTML += "    <div class='file_img'><img src='/file/getImage.do?atchFileId="+ atchFileList[i].atchFileId +"&fileSn="+ atchFileList[i].fileSn + "&fileNmPhclFileNm=" + atchFileList[i].fileNmPhclFileNm + "' class='image' width='100%' /></div>";
+                            fileHTML += "    <div class='file_btns_box r cursor viewPop' data-seq='"+atchFileList[i].fileSn+"' onclick='atchFileImageView(this)' data-imageNm='"+atchFileList[i].fileRlNm+"'>이미지 크게 보기</div>";
                             fileHTML += "</li>";	
 						} else if(uploadType === "byteImage") {
 							if(i == 0){
@@ -166,11 +167,11 @@ const setFileList = function () {
 								fileHTML += "</li>";
 							}
 							fileHTML += "<li>";
-							fileHTML += "	<div class='file_img'><img src='/file/getByteImage.do?atchFileId=" + atchFileList[i].atchFileId + "&fileSeqo=" + atchFileList[i].fileSeqo + "&fileNmPhclFileNm=" + atchFileList[i].fileNmPhclFileNm + "' width='100%' onerror='/internal/standard/common/images/no_img.png' alt='이미지'></div>";
+							fileHTML += "	<div class='file_img'><img src='/file/getByteImage.do?atchFileId=" + atchFileList[i].atchFileId + "&fileSn=" + atchFileList[i].fileSn + "&fileNmPhclFileNm=" + atchFileList[i].fileNmPhclFileNm + "' width='100%' onerror='/internal/standard/common/images/no_img.png' alt='이미지'></div>";
 							fileHTML += "	<div class='file_btns_box r'>";
 							fileHTML += "		<label style='display:none'>";
 							fileHTML += "			<input type='checkbox' class='check_fileDel' >";
-							fileHTML += "			<input type='hidden' name='fileSeqo' value='" + atchFileList[i].fileSeqo + "'>";
+							fileHTML += "			<input type='hidden' name='fileSn' value='" + atchFileList[i].fileSn + "'>";
 							fileHTML += "		</label>";
 							fileHTML += "		<span class='file_name'>"+atchFileList[i].fileRlNm+"</span>";
 							fileHTML += "		<span class='fake_file'>";
@@ -181,18 +182,18 @@ const setFileList = function () {
 							fileHTML += "</li>";
 						} else if (uploadType === "byteImageView") {
 							fileHTML += "<li>";
-                            fileHTML += "    <div class='file_img'><img src='/file/getByteImage.do?atchFileId="+ atchFileList[i].atchFileId +"&fileSeqo="+ atchFileList[i].fileSeqo + "&fileNmPhclFileNm=" + atchFileList[i].fileNmPhclFileNm + "' class='image' width='100%' /></div>";
-                            fileHTML += "    <div class='file_btns_box r cursor viewPop' data-seq='"+atchFileList[i].fileSeqo+"' onclick='atchFileImageView(this)' data-imageNm='"+atchFileList[i].fileRlNm+"'>이미지 크게 보기</div>";
+                            fileHTML += "    <div class='file_img'><img src='/file/getByteImage.do?atchFileId="+ atchFileList[i].atchFileId +"&fileSn="+ atchFileList[i].fileSn + "&fileNmPhclFileNm=" + atchFileList[i].fileNmPhclFileNm + "' class='image' width='100%' /></div>";
+                            fileHTML += "    <div class='file_btns_box r cursor viewPop' data-seq='"+atchFileList[i].fileSn+"' onclick='atchFileImageView(this)' data-imageNm='"+atchFileList[i].fileRlNm+"'>이미지 크게 보기</div>";
                             fileHTML += "</li>";	
 						} else if(uploadType === "view") {
 							let fileFextNm = atchFileList[i].fileFextNm.toLowerCase();
 							let fileNm = atchFileList[i].fileRlNm
-							fileHTML += '<li><a href="javascript:void(0);" onclick="fileDown(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSeqo + '\',\'' + fileNm + '\',\''+atchFileList[i].fileNmPhclFileNm+'\')">' + fileImg(fileFextNm, fileNm) + '</a></li>';
+							fileHTML += '<li><a href="javascript:void(0);" onclick="fileDown(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSn + '\',\'' + fileNm + '\',\''+atchFileList[i].fileNmPhclFileNm+'\')">' + fileImg(fileFextNm, fileNm) + '</a></li>';
 						} else if (uploadType === "byteView") {
 							let fileFextNm = atchFileList[i].fileFextNm.toLowerCase();
 							let fileNm = atchFileList[i].fileRlNm
 							fileHTML += "<tr>";
-							fileHTML += '	<td class="pad_l10 no_bdl"><span style="cursor: pointer;" onclick="fileByteDown(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSeqo + '\',\'' + fileNm + '\',\''+atchFileList[i].fileNmPhclFileNm+'\')">' + fileImg(fileFextNm, fileNm) + '</span></td>';
+							fileHTML += '	<td class="pad_l10 no_bdl"><span style="cursor: pointer;" onclick="fileByteDown(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSn + '\',\'' + fileNm + '\',\''+atchFileList[i].fileNmPhclFileNm+'\')">' + fileImg(fileFextNm, fileNm) + '</span></td>';
 							fileHTML += "	<td class='pad_l10'>" + convertFileSize(atchFileList[i].fileSizeVal) + "</td>";
 							fileHTML += "</tr>";
 						} else {
@@ -200,7 +201,7 @@ const setFileList = function () {
 							fileHTML += "	<td class='c no_bdl'>";
 							fileHTML += "		<label>";
 							fileHTML += "			<input type='checkbox' class='check_fileDel'>";
-							fileHTML += "			<input type='hidden' name='fileSeqo' value='" + atchFileList[i].fileSeqo + "'>";
+							fileHTML += "			<input type='hidden' name='fileSn' value='" + atchFileList[i].fileSn + "'>";
 							fileHTML += "		</label>";
 							fileHTML += "	</td>";
 							fileHTML += "	<td class='pad_l10'>" + atchFileList[i].fileRlNm + "</td>";
@@ -358,124 +359,122 @@ const btnAddFile = function (obj) {
 const addFiles = function (obj) {
 	const atchFileTemp = $(obj);
 	const files = atchFileTemp[0].files;
-	
+
 	const div = $(obj).parent("div");
-	const atchFileIdTemp = div.find(".atchFileIdTemp").val();
 	const atchFileIdNm = div.find(".atchFileIdNm").val();
 	const uploadType = div.find(".uploadType").val();
 	const atchFileNotExist = div.find(".no_data");
 	const atchFileTbody = div.find(".atchFileTbody");
-	let maxFileTempCnt = Number(div.children(".maxFileCnt").val());
+
+	// 파일 용량 제한 값 (없으면 기본값 세팅 방어)
+	let maxFileSizeStr = div.children(".maxFileSize").val();
+	let maxFileSize = maxFileSizeStr ? Number(maxFileSizeStr) : 50;
+	let maxFileCnt = Number(div.children(".maxFileCnt").val());
 	let totalFileCnt = Number(div.children(".totalFileCnt").val());
-	
+
+	// 화면 렌더링 시 숨겨둔 허용 확장자 목록 꺼내기
+	const allowedExtStr = div.find(".allowedExt").val();
+	let allowedExtArr = [];
+	if (allowedExtStr) {
+		allowedExtArr = allowedExtStr.split(",");
+	}
+	/* else {
+		allowedExtArr = ["jpg", "jpeg", "png", "gif", "bmp", "tif", "tiff", "pdf", "word", "hwp", "doc", "docx", "ppt", "pptx", "xlsx", "xls", "txt", "zip", "7zip", "egg"];
+	} */
+
 	// 파일 배열 담기
-	const atchFileArr = window["atchFileArr_" + atchFileIdNm];
+	const atchFileArr = window["atchFileArr_" + atchFileIdNm] || [];
+	window["atchFileArr_" + atchFileIdNm] = atchFileArr;
+
 	const fileArr = Array.prototype.slice.call(files);
-	
+
 	// 첨부파일 수 제한 확인
 	const currentFileCnt = totalFileCnt + fileArr.length;
 	if (currentFileCnt > maxFileCnt) {
-		alert("파일은 최대 " + maxFileCnt +"개까지 첨부가능합니다.");
+		on.msg.showMsg({message : "파일은 최대 " + maxFileCnt +"개까지 첨부 가능합니다."});
 		// 초기화
 		atchFileTemp.val("");
 		return false;
 	}
-	
-	// 각각의 파일 배열에 담기 및 기타
+
+	// 각각의 파일 배열에 담기 전, 확장자/용량 1차 검증 (forEach 전에 에러 잡기)
+	let hasError = false;
+	for (let i = 0; i < fileArr.length; i++) {
+		let f = fileArr[i];
+
+		// 용량 검증
+		const maxFileSizeMb = maxFileSize * 1024 * 1024;
+		if (f.size > maxFileSizeMb) {
+			on.msg.showMsg({message : "최대 첨부파일 용량은 " + maxFileSize + "MB 입니다."});
+			hasError = true;
+			break;
+		}
+
+		// 확장자 검증 (탐색기 뚫고 들어온 파일 완벽 차단)
+		const delimiter = f.name.lastIndexOf(".");
+		const ext = f.name.substring(delimiter + 1).toLowerCase();
+
+		// 엑셀 전용 폼이 아닌 경우, allowedExtArr 배열로 검증
+		if (uploadType !== "excel") {
+			if ($.inArray(ext, allowedExtArr) === -1) {
+				on.msg.showMsg({message : "허용되지 않는 파일 확장자입니다.\n(업로드 가능: " + allowedExtArr.join(", ") + ")"});
+				hasError = true;
+				break;
+			}
+		} else {
+			// 엑셀 전용일 때 로직 유지
+			let excelExt = ["xlsx", "xls"];
+			if ($.inArray(ext, excelExt) === -1) {
+				on.msg.showMsg({message : "엑셀 파일만 업로드 가능합니다."});
+				hasError = true;
+				break;
+			}
+		}
+	}
+
+	// 에러가 하나라도 있으면 전체 업로드 중단 및 초기화
+	if (hasError) {
+		atchFileTemp.val("");
+		return false;
+	}
+
+	// 검증을 무사히 통과한 파일들만 실제 화면 처리
 	fileArr.forEach(function (f) {
 		const reader = new FileReader();
 
 		reader.onload = function () {
-			const maxFileSizeMb = maxFileSize * 1024 * 1024;
-			// 첨부파일 용량 제한 확인(개별)
-			if (f.size > maxFileSizeMb) {
-				// 첨부파일 용량 제한 확인(개별)
-				if (f.size > maxFileSizeMb) {
-					alert("최대 첨부파일 용량은 " + maxFileSize + "MB 입니다.");
-					return false;
-				}
-			}
-			
-			// 확장자 확인
-			const delimiter = f.name.lastIndexOf(".");
-			const ext = f.name.substring(delimiter + 1).toLowerCase();
-			const allowExt = ["jpg", "jpeg", "png", "gif", "bmp", "tif", "tiff"];
-			const bltnbClVal = $("#bltnbClVal");
-			let imgOnlyYn = "N";
-			if (bltnbClVal != null && typeof(bltnbClVal) !== "undefined") {
-				if (bltnbClVal.val() === "gr" || bltnbClVal.val() === "gb") {
-					imgOnlyYn = "Y";
-				}
-			}
-			if (imgOnlyYn === "N" && uploadType !== "image") {
-				allowExt.push("pdf", "word", "hwp", "doc", "docx", "ppt", "pptx", "xlsx", "xls", "txt", "zip", "7zip", "egg");
-			}
-
-			if(uploadType === "excel"){
-				let excelExt = ["xlsx", "xls"];
-				if($.inArray(ext, excelExt) === -1){
-					alert("엑셀파일만 업로드 가능합니다.");
-					atchFileTemp.val("");
-					return false;
-				}
-			}else{
-				if($.inArray(ext, allowExt) === -1) {
-					alert("지원하지 않는 파일 확장자입니다.");
-					// 초기화
-					atchFileTemp.val("");
-					return false;
-				}
-			}
-
-
 			atchFileArr.push(f);
-			
+
 			if (totalFileCnt === 0) {
 				atchFileNotExist.parent().remove();
 			}
-			
+
 			let html = "";
-			if (uploadType === "image") {
+			if (uploadType === "image" || uploadType === "byteImage") {
 				html += "<li>";
-				html += "	<div class='file_img'><img src='" + reader.result + "' width='100%' onerror='/internal/standard/common/images/no_img.png' alt='이미지'></div>";
-				html += "	<div class='file_btns_box r'>";
-				html += "		<label style='display:none'>";
-				html += "			<input type='checkbox' class='check_fileDel'>";
-				html += "		</label>";
-				html += "		<span class='file_name'>"+f.name+"</span>";
-				html += "		<span class='fake_file'>";
-				html += "			<span class='btn fake_btn btn_file' style='display:none' onclick='btnAddFile(this)'></span>";
-				html += "			<span class='btn btn_file_del' onclick='delImageFile(this)'></span>";
-				html += "		</span>";
-				html += "	</div>";
-				html += "</li>";
-			} else if (uploadType === "byteImage") {
-				html += "<li>";
-				html += "	<div class='file_img'><img src='" + reader.result + "' width='100%' onerror='/internal/standard/common/images/no_img.png' alt='이미지'></div>";
-				html += "	<div class='file_btns_box r'>";
-				html += "		<label style='display:none'>";
-				html += "			<input type='checkbox' class='check_fileDel'>";
-				html += "		</label>";
-				html += "		<span class='file_name'>"+f.name+"</span>";
-				html += "		<span class='fake_file'>";
-				html += "			<span class='btn fake_btn btn_file' style='display:none' onclick='btnAddFile(this)'></span>";
-				html += "			<span class='btn btn_file_del' onclick='delImageFile(this)'></span>";
-				html += "		</span>";
-				html += "	</div>";
+				html += "  <div class='file_img'><img src='" + reader.result + "' width='100%' onerror='/internal/standard/common/images/no_img.png' alt='이미지'></div>";
+				html += "  <div class='file_btns_box r'>";
+				html += "     <label style='display:none'>";
+				html += "        <input type='checkbox' class='check_fileDel'>";
+				html += "     </label>";
+				html += "     <span class='file_name'>"+f.name+"</span>";
+				html += "     <span class='fake_file'>";
+				html += "        <span class='btn fake_btn btn_file' style='display:none' onclick='btnAddFile(this)'></span>";
+				html += "        <span class='btn btn_file_del' onclick='delImageFile(this)'></span>";
+				html += "     </span>";
+				html += "  </div>";
 				html += "</li>";
 			} else {
 				html += "<tr>";
 				html += "   <td><input type='checkbox' class='check_fileDel' id='file"+totalFileCnt+"'></td>";
 				html += "   <td><div class='file_tit'>";
-				html += "   	<label for='file"+totalFileCnt+"'>" + f.name + "</label>";
+				html += "      <label for='file"+totalFileCnt+"'>" + f.name + "</label>";
 				html += "   </div></td>";
 				html += "   <td>" + convertFileSize(f.size) + "</td>";
 				html += "</tr>";
 			}
-			
-			if (uploadType === "image") {
-				atchFileTbody.append(html);
-			} else if (uploadType === "byteImage") {
+
+			if (uploadType === "image" || uploadType === "byteImage") {
 				atchFileTbody.append(html);
 			} else if (uploadType === "excel"){
 				if($("#excelFileInfo").length > 0) {
@@ -486,24 +485,17 @@ const addFiles = function (obj) {
 			} else {
 				atchFileTbody.append(html);
 			}
-			
+
 			totalFileCnt++;
 			div.children(".totalFileCnt").val(totalFileCnt);
 			div.find(".fileChgYn").val("Y");
-			
+
 			$("#"+atchFileIdNm).attr("data-totalCnt",totalFileCnt);
-			
-			// 이미지 최대 파일수에 도달할경우 추가버튼 제거
-			/*if (uploadType === "image") {
-				if(totalFileCnt >= maxFileTempCnt) {
-					$('#'+atchFileIdNm +'_ImgInsert').hide();
-				}
-			}*/
 		}
-		
+
 		reader.readAsDataURL(f);
 	});
-	
+
 	// 초기화
 	if (uploadType !== "excel"){
 		atchFileTemp.val("");
@@ -529,15 +521,15 @@ const delFile = function (obj) {
 		console.log($(this));
 		let delRow = $(this).parents("tr");
 		let delRowIdx = atchFileTbody.find(delRow).index();
-		const fileSeqo = $(this).siblings("[name='fileSeqo']").val();
-		if (typeof(fileSeqo) === "undefined" || fileSeqo == null || fileSeqo === "") {
+		const fileSn = $(this).siblings("[name='fileSn']").val();
+		if (typeof(fileSn) === "undefined" || fileSn == null || fileSn === "") {
 			// 새로 추가한 파일이면 atchFileArr에서 제거
 			atchFileArr.splice(delRowIdx - atchedFileCnt, 1);
 		} else {
 			// 기존 첨부파일이면 deleteFileArr에 담기
 			const param = {
 				"atchFileId" : atchFileIdTemp
-				, "fileSeqo" : fileSeqo
+				, "fileSn" : fileSn
 			};
 			deleteFileArr.push(param);
 			div.children(".atchedFileCnt").val(atchedFileCnt - 1); // 기존에 첨부된 파일 삭제시 첨부된 파일건수 - 1 처리 해줘야함
@@ -609,15 +601,15 @@ const delImageFile = function (obj) {
 	atchFileTbody.find(".check_fileDel:checked").each(function () {
 		let delRow = $(this).parents("li");
 		let delRowIdx = atchFileTbody.find(delRow).index();
-		const fileSeqo = $(this).siblings("[name='fileSeqo']").val();
-		if (typeof(fileSeqo) === "undefined" || fileSeqo == null || fileSeqo === "") {
+		const fileSn = $(this).siblings("[name='fileSn']").val();
+		if (typeof(fileSn) === "undefined" || fileSn == null || fileSn === "") {
 			// 새로 추가한 파일이면 atchFileArr에서 제거
 			atchFileArr.splice(delRowIdx-atchedFileCnt-1, 1);
 		} else {
 			// 기존 첨부파일이면 deleteFileArr에 담기
 			const param = {
 				"atchFileId" : atchFileIdTemp
-				, "fileSeqo" : fileSeqo
+				, "fileSn" : fileSn
 			};
 			deleteFileArr.push(param);
 		}
@@ -776,9 +768,9 @@ const convertFileSize = function (bytes) {
 	return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + "" + sizes[i];
 }
 
-function fileDown(fileId, fileSeqo, fileRlnm,filePhclNm){
+function fileDown(fileId, fileSn, fileRlnm,filePhclNm){
 	$("#downAtchFileId").val(fileId);
-	$("#downAtchSeqo").val(fileSeqo);
+	$("#downAtchSn").val(fileSn);
 	$("#downAtchRlNm").val(fileRlnm);
 	$("#downAtchPhclNm").val(filePhclNm);
 	$("#fileDownFrm").attr({
@@ -789,9 +781,9 @@ function fileDown(fileId, fileSeqo, fileRlnm,filePhclNm){
 	}).submit();
 }
 
-function fileByteDown(fileId, fileSeqo, fileRlnm,filePhclNm){
+function fileByteDown(fileId, fileSn, fileRlnm,filePhclNm){
 	$("#downAtchFileId").val(fileId);
-	$("#downAtchSeqo").val(fileSeqo);
+	$("#downAtchSn").val(fileSn);
 	$("#downAtchRlNm").val(fileRlnm);
 	$("#downAtchPhclNm").val(filePhclNm);
 	$("#fileDownFrm").attr({

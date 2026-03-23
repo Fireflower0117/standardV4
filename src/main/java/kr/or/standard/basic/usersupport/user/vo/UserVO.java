@@ -34,6 +34,7 @@ public class UserVO extends CmmnDefaultVO {
 
     private String userKorNm;
     private String userEngNm;
+    private String userAuth;
     private String mobileNo;
     private String emailAddr;
     private String lstLoginDt;
@@ -57,10 +58,13 @@ public class UserVO extends CmmnDefaultVO {
     private String brkYn;
     private String brkComment;
 
-    private String authId;
-    private String authIdList;
+    private List<String> userAuthIdList;
+    private String userAuthIdListStr;
     private String remoteAddr;
     private String loginDivCd;
     private String loginCommnet;
+
+
+
 
 }

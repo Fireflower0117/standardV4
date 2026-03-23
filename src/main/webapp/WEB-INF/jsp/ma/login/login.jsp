@@ -12,15 +12,10 @@
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="_csrf" content="${_csrf}" />
+    <meta name="_csrf_header" content="X-CSRF-TOKEN" />
 	<title>오픈노트 - 표준안 Ver.4</title>
-	<c:choose>
-		<c:when test="${not empty logoInfo.LGFC.atchFileId}">
-			<link rel="icon" href="/file/getByteImage.do?atchFileId=<c:out value='${logoInfo.LGFC.atchFileId}'/>&fileSeqo=<c:out value='${logoInfo.LGFC.fileSeqo}'/>&fileNmPhclFileNm=<c:out value='${logoInfo.LGFC.fileNmPhclFileNm}'/>" type="image/x-icon">
-		</c:when>
-		<c:otherwise>
-			<link rel="icon" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/images/logo.png" type="image/x-icon">
-		</c:otherwise>
-	</c:choose>
+	<link rel="icon" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/images/logo.png" type="image/x-icon">
 
 	<!--  External Libs -->
 	<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.css">
@@ -45,7 +40,7 @@
 </head>
 <body>
 	<script type="text/javascript">
-
+         window.ctx = "${pageContext.request.contextPath}";
 
 		$(document).ready(function(){
 			$('.login_box .input_box input').focusout(function () {
@@ -89,23 +84,32 @@
 									      ];
 
 				// 입력Data수기 생성
-				let sendData = [{name:"userId"  , val: on.html.getEleVal({ele : "#userId"   }) }
-							   ,{name:"userPswd", val: on.html.getEleVal({ele : "#userPswd" }) }
+				let sendData = [{name:"userId"  , value: on.html.getEleVal({ele : "#userId"   }) }
+							   ,{name:"userPswd", value: on.html.getEleVal({ele : "#userPswd" }) }
 							   ];
 
-				// 입력데이터 자동 생성
-				// let targetDataArray = on.html.serializeDataArray({target : ".input_box"})
 
 				// Login수행
-				on.xhr.ajax({ sid  : "loginProc"
-							, url : "/ma/loginProcess.do"
+				on.xhr.ajax({ url : "/ma/loginProcess.do"
 							, data : sendData
 							, validation : { formId : "#loginForm" , validationList : loginValidateList  }  // 유효성검증 관련
-							, successFn : function (sid, rs){
-										if (rs?.returnUrl) {
-											on.html.dynaGenHiddenForm({ formDefine : { fid:"mainForm" , action:rs.returnUrl , method : "post" , isSubmit : true  } }); // HiddenForm 생성및 전송
-										} else {
-											on.msg.showMsg({message : rs.message });
+							, successFn : function ( rs ){
+										// 현재 주소창 URL에서 returnUrl 파라미터 추출 , 이동 URL결정
+										const urlParams = new URLSearchParams(window.location.search);
+										const returnUrl = urlParams.get('returnUrl');
+										const targetUrl = returnUrl ? returnUrl : rs?.returnUrl;
+
+										if (targetUrl) {
+
+											// meta 태그에 있는 CSRF 토큰을 가져옴
+                                            let csrfToken = $("meta[name='_csrf']").attr("content");
+
+											on.html.dynaGenHiddenForm({ formDefine : { fid:"redirectForm" , action:targetUrl , method : "post" , isSubmit : true  }
+											                          , formAttrs  : [ { name: "_csrf", value: csrfToken }  ]
+											});
+										}
+										else {
+           									on.msg.showMsg({message : rs.message || "로그인에 실패했습니다."});
 										}
 								}
 							  , failFn    : function (err){
@@ -128,16 +132,7 @@
 	<div class="login_wrap">
 		<div class="login_box">
 			<h1 class="logo">
-				<c:choose>
-					<c:when test="${empty logoInfo.LGLN.atchFileId}">
-						<img src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/images/common/logo.png" alt="로고">
-					</c:when>
-					<c:otherwise>
-						<a style="cursor: ${logoInfo.LGLN.lnkYn eq 'Y' ? 'pointer' : 'default'}" href="${logoInfo.LGLN.lnkYn eq 'Y' ? logoInfo.LGLN.url : 'javascript:void(0)'}" target="${logoInfo.LGLN.lnkTgtCd eq 'blank' ? '_blank' : '' }">
-							<img src="/file/getByteImage.do?atchFileId=<c:out value='${logoInfo.LGLN.atchFileId}'/>&fileSeqo=<c:out value='${logoInfo.LGLN.fileSeqo}'/>&fileNmPhclFileNm=<c:out value='${logoInfo.LGFC.fileNmPhclFileNm}'/>" alt="로고">
-						</a>
-					</c:otherwise>
-				</c:choose>
+				<img src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/images/common/logo.png" alt="로고">
 			</h1>
 			<form id="loginForm" name="loginForm">
 				<div class="input_box">

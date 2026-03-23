@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="on.standard.board.comboard">
+    <sql id="pageHeader">
+		  <![CDATA[
+        SELECT (${rn_top} / (${rn_top} - ${rn_bottom})) AS pageNo
+             , (${rn_top} - ${rn_bottom})               AS pageSize
+             , totalCount - (rowindx - 1)               AS rrowindx
+             , ROW_.*
+        FROM (
+        ]]>
+	</sql>
+
+    <sql id="pageFooter">
+		  <![CDATA[
+        ) AS ROW_
+			    ORDER BY ROW_.rowindx  DESC
+			   LIMIT ${rn_limit} OFFSET ${rn_bottom}
+        ]]>
+	</sql>
+    <select id="inqBoardList" parameterType="CommonMap" resultType="CommonMap">
+        <choose>
+            <when test="cmd == 'selectPage'">
+                /*  on.standard.board.comboard.inqBoardList selectPage */
+                <include refid="pageHeader"/>
+                <include refid="stanBoardListSql"/>
+                <include refid="pageFooter"/>
+            </when>
+            <otherwise>
+                /*  on.standard.board.comboard.inqBoardList  selectList */
+                <include refid="stanBoardListSql"/>
+            </otherwise>
+        </choose>
+    </select>
+
+    <sql id="stanBoardListSql">
+       SELECT A.rownum_              AS rowindx
+            , B.TOTAL_COUNT          AS totalCount
+            , A.BOARD_DIV_CD         AS boardDivCd
+            , A.BOARD_SERNO          AS boardSerno
+            , A.UPPER_BOARD_SERNO    AS upperBoardSerno
+            , A.TITL                 AS titl
+            , A.REG_USER             AS regUser
+            , A.REG_DATE             AS regDate
+            , A.UPD_USER             AS updUser
+            , A.UPD_DATE             AS updDate
+            , A.USE_YN               AS useYn
+            , A.NTI_YN               AS ntiYn
+            , A.RCMD_YN              AS rcmdYn
+            , A.RCMD_COUNT           AS rcmdCount
+            , A.NTI_STRT_DT          AS ntiStrtDt
+            , A.NTI_END_DT           AS ntiEndDt
+            , A.ATCH_FILE_ID         AS atchFileId
+            , A.HAS_FILE             AS hasFile
+            , A.OPEN_YN              AS openYn
+            , A.SCRET_YN             AS scretYn
+            , A.TEMPCOL_1            AS tempcol1
+            , A.TEMPCOL_2            AS tempcol2
+            , A.TEMPCOL_3            AS tempcol3
+            , A.TEMPCOL_4            AS tempcol4
+            , A.TEMPCOL_5            AS tempcol5
+            , A.TEMPCOL_6            AS tempcol6
+         FROM (
+               SELECT ROW_NUMBER() OVER (ORDER BY SBM.NTI_YN DESC, SBM.BOARD_SERNO DESC) AS rownum_
+                    , SBM.BOARD_DIV_CD
+                    , SBM.BOARD_SERNO
+                    , SBM.UPPER_BOARD_SERNO
+                    , SBM.TITL
+                    , SBM.REG_USER
+                    , DATE_FORMAT(SBM.REG_DATE, '%Y-%m-%d %H:%i') AS REG_DATE
+                    , SBM.UPD_USER
+                    , DATE_FORMAT(SBM.UPD_DATE, '%Y-%m-%d %H:%i') AS UPD_DATE
+                    , SBM.USE_YN
+                    , SBM.NTI_YN
+                    , SBM.RCMD_YN
+                    , SBM.RCMD_COUNT
+                    , DATE_FORMAT(SBM.NTI_STRT_DT, '%Y-%m-%d') AS NTI_STRT_DT
+                    , DATE_FORMAT(SBM.NTI_END_DT, '%Y-%m-%d') AS NTI_END_DT
+                    , SBM.ATCH_FILE_ID
+                    , (SELECT CASE WHEN COUNT(*) = 0 THEN 'N'
+                                   ELSE 'Y'
+                               END
+                         FROM STB_F_ATCH_FILE_DETAIL
+                        WHERE ATCH_FILE_ID = SBM.ATCH_FILE_ID
+                     ) AS HAS_FILE
+                    , SBM.OPEN_YN
+                    , SBM.SCRET_YN
+                    , SBM.TEMPCOL_1
+                    , SBM.TEMPCOL_2
+                    , SBM.TEMPCOL_3
+                    , SBM.TEMPCOL_4
+                    , SBM.TEMPCOL_5
+                    , SBM.TEMPCOL_6
+                 FROM STB_SM_BOARD_MNG SBM
+                WHERE SBM.BOARD_DIV_CD = #{menuFuncCd}
+                  AND SBM.USE_YN = 'Y'
+                  <if test="searchStDt != null and searchStDt != ''">
+                      <![CDATA[ AND SBM.REG_DATE >= CONCAT(#{searchStDt}, ' 00:00:00') ]]>
+                  </if>
+                  <if test="searchEdDt != null and searchEdDt != ''">
+                      <![CDATA[ AND SBM.REG_DATE <= CONCAT(#{searchEdDt}, ' 23:59:59')  ]]>
+                  </if>
+                  <if test="searchKeyWord != null and searchKeyWord != ''">
+                    <choose>
+                        <when test="searchKeyCd == 'regUser'">
+                            AND FN_S_USER_INFO(SBM.REG_USER,'USER_KOR_NM') LIKE CONCAT('%', #{searchKeyWord}, '%')
+                        </when>
+                        <when test="searchKeyCd == 'contTitle'">
+                            AND SBM.TITL LIKE CONCAT('%', #{searchKeyWord}, '%')
+                        </when>
+                        <otherwise>
+                            AND (   FN_S_USER_INFO(SBM.REG_USER,'USER_KOR_NM') LIKE CONCAT('%', #{searchKeyWord}, '%')
+                                 OR SBM.TITL     LIKE CONCAT('%', #{searchKeyWord}, '%')
+                            )
+                        </otherwise>
+                    </choose>
+                  </if>
+                ORDER BY SBM.NTI_YN DESC, SBM.BOARD_SERNO DESC
+            ) A
+            JOIN (
+                SELECT COUNT(*) AS TOTAL_COUNT
+                  FROM STB_SM_BOARD_MNG SBM
+                 WHERE SBM.BOARD_DIV_CD = #{menuFuncCd}
+                   AND SBM.USE_YN = 'Y'
+                 <if test="searchStDt != null and searchStDt != ''">
+                    <![CDATA[ AND SBM.REG_DATE >= CONCAT(#{searchStDt}, ' 00:00:00') ]]>
+                 </if>
+                 <if test="searchEdDt != null and searchEdDt != ''">
+                    <![CDATA[ AND SBM.REG_DATE <= CONCAT(#{searchEdDt}, ' 23:59:59') ]]>
+                 </if>
+                 <if test="searchKeyWord != null and searchKeyWord != ''">
+                    <choose>
+                        <when test="searchKeyCd == 'regUser'">
+                            AND FN_S_USER_INFO(SBM.REG_USER,'USER_KOR_NM') LIKE CONCAT('%', #{searchKeyWord}, '%')
+                        </when>
+                        <when test="searchKeyCd == 'contTitle'">
+                            AND SBM.TITL LIKE CONCAT('%', #{searchKeyWord}, '%')
+                        </when>
+                        <otherwise>
+                            AND (   FN_S_USER_INFO(SBM.REG_USER,'USER_KOR_NM') LIKE CONCAT('%', #{searchKeyWord}, '%')
+                            OR SBM.TITL     LIKE CONCAT('%', #{searchKeyWord}, '%')
+                            )
+                        </otherwise>
+                    </choose>
+                 </if>
+            ) B
+            ON 1 = 1
+    </sql>
+
+
+    <insert id="mergeBoardInfo" parameterType="CommonMap">
+        /* on.standard.board.comboard.mergeBoardInfo */
+
+        <selectKey keyProperty="boardSerno" resultType="int" order="BEFORE">
+            <if test="boardSerno == null or boardSerno == ''">
+                SELECT IFNULL(MAX(BOARD_SERNO), 0) + 1
+                FROM STB_SM_BOARD_MNG
+                WHERE BOARD_DIV_CD = #{menuFuncCd}
+            </if>
+            <if test="boardSerno != null and boardSerno != ''">
+                SELECT #{boardSerno}
+            </if>
+        </selectKey>
+
+        INSERT INTO STB_SM_BOARD_MNG (
+                                       BOARD_DIV_CD
+                                     , BOARD_SERNO , UPPER_BOARD_SERNO
+                                     , TITL
+                                     , CONTENT
+                                     , REG_USER
+                                     , REG_DATE
+                                     , USE_YN
+                                     , NTI_YN
+                                     , RCMD_YN
+                                     , RCMD_COUNT
+                                     , NTI_STRT_DT
+                                     , NTI_END_DT
+                                     , ATCH_FILE_ID
+                                     , OPEN_YN
+                                     , SCRET_YN
+                                     , BLTNB_PSWD
+                                     , TEMPCOL_1
+                                     , TEMPCOL_2
+                                     , TEMPCOL_3
+                                     , TEMPCOL_4
+                                     , TEMPCOL_5
+                                     , TEMPCOL_6
+                                     , TEMPCOL_7
+                                     , TEMPCOL_8
+                                     , TEMPCOL_9
+                                     , TEMPCOL_10
+        ) VALUES (
+                   #{menuFuncCd}
+                 , #{boardSerno}      , #{upperBoardSerno}
+                 , #{titl}
+                 , #{content}
+                 , #{loginUserId}     , NOW()
+                 , IFNULL(#{useYn}, 'Y')
+                 , IFNULL(#{ntiYn}, 'N')
+                 , IFNULL(#{rcmdYn}, 'N')
+                 , IFNULL(#{rcmdCount}, 0)
+                 , #{ntiStrtDt}
+                 , #{ntiEndDt}
+                 , #{atchFileId}
+                 , #{openYn}
+                 , IFNULL(#{scretYn}, 'N')
+                 , #{boardPswd}
+                 , #{tempcol1}
+                 , #{tempcol2}
+                 , #{tempcol3}
+                 , #{tempcol4}
+                 , #{tempcol5}
+                 , #{tempcol6}
+                 , #{tempcol7}
+                 , #{tempcol8}
+                 , #{tempcol9}
+                 , #{tempcol10}
+                 )
+            ON DUPLICATE KEY UPDATE
+             UPPER_BOARD_SERNO   = #{upperBoardSerno}
+             , TITL              = #{titl}
+             , CONTENT           = #{content}
+             , UPD_USER          = #{loginUserId}
+             , UPD_DATE          = NOW()
+             , USE_YN            = IFNULL(#{useYn}, USE_YN)
+             , NTI_YN            = IFNULL(#{ntiYn}, NTI_YN)
+             , RCMD_YN           = IFNULL(#{rcmdYn}, RCMD_YN)
+             , RCMD_COUNT        = IFNULL(#{rcmdCount}, RCMD_COUNT)
+             , NTI_STRT_DT       = #{ntiStrtDt}
+             , NTI_END_DT        = #{ntiEndDt}
+             , ATCH_FILE_ID      = #{atchFileId}
+             , OPEN_YN           = #{openYn}
+             , SCRET_YN          = IFNULL(#{scretYn}, SCRET_YN)
+             , BLTNB_PSWD        = #{boardPswd}
+             , TEMPCOL_1         = #{tempcol1}
+             , TEMPCOL_2         = #{tempcol2}
+             , TEMPCOL_3         = #{tempcol3}
+             , TEMPCOL_4         = #{tempcol4}
+             , TEMPCOL_5         = #{tempcol5}
+             , TEMPCOL_6         = #{tempcol6}
+             , TEMPCOL_7         = #{tempcol7}
+             , TEMPCOL_8         = #{tempcol8}
+             , TEMPCOL_9         = #{tempcol9}
+             , TEMPCOL_10        = #{tempcol10}
+    </insert>
+
+
+    <select id="inqBoardView" parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.board.comboard.inqBoardView */
+        SELECT BOARD_DIV_CD       AS boardDivCd
+             , BOARD_SERNO        AS boardSerno
+             , UPPER_BOARD_SERNO  AS upperBoardSerno
+             , TITL               AS titl
+             , CONTENT            AS content
+             , REG_USER           AS regUser
+             , FN_S_USER_INFO(REG_USER,'USER_KOR_NM')   AS regUserNm
+             , DATE_FORMAT(REG_DATE, '%Y-%m-%d %H:%i')  AS regDate
+             , USE_YN             AS useYn
+             , NTI_YN             AS ntiYn
+             , RCMD_YN            AS rcmdYn
+             , RCMD_COUNT         AS rcmdCount
+             , NTI_STRT_DT        AS ntiStrtDt
+             , NTI_END_DT         AS ntiEndDt
+             , ATCH_FILE_ID       AS atchFileId
+             , OPEN_YN            AS openYn
+             , SCRET_YN           AS scretYn
+             , BLTNB_PSWD         AS bltnbPswd
+             , TEMPCOL_1          AS tempcol1
+             , TEMPCOL_2          AS tempcol2
+             , TEMPCOL_3          AS tempcol3
+             , TEMPCOL_4          AS tempcol4
+             , TEMPCOL_5          AS tempcol5
+             , TEMPCOL_6          AS tempcol6
+             , TEMPCOL_7          AS tempcol7
+             , TEMPCOL_8          AS tempcol8
+             , TEMPCOL_9          AS tempcol9
+             , TEMPCOL_10         AS tempcol10
+          FROM STB_SM_BOARD_MNG
+         WHERE BOARD_DIV_CD = #{menuFuncCd}
+           AND BOARD_SERNO  = #{boardSerno}
+    </select>
+
+    <update id="deleteBoardInfo" parameterType="CommonMap">
+        /* on.standard.board.comboard.deleteBoardInfo */
+         UPDATE STB_SM_BOARD_MNG
+           SET USE_YN = 'N'
+             , UPD_DATE = NOW()
+             , UPD_USER = #{loginUserId}
+         WHERE BOARD_DIV_CD = #{menuFuncCd}
+           AND BOARD_SERNO  = #{boardSerno}
+    </update>
+
+
+
+</mapper>

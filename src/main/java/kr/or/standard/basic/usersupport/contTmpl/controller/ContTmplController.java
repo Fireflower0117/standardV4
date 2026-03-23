@@ -143,8 +143,8 @@ public class ContTmplController {
 	
 	@RequestMapping("/tmplFile/getFileDown.do")
 	/* /tmplFile/getFileDown.do */
-	public void getFileDown(@RequestParam String tmplFileSerno, @RequestParam String fileSeqo,HttpServletRequest request ,HttpServletResponse response) throws Exception { 
-		contTmplService.getFileDown(tmplFileSerno,fileSeqo,request,response);
+	public void getFileDown(@RequestParam String tmplFileSerno, @RequestParam String fileSn,HttpServletRequest request ,HttpServletResponse response) throws Exception {
+		contTmplService.getFileDown(tmplFileSerno,fileSn,request,response);
 	}
 	
 	

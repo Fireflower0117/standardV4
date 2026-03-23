@@ -31,41 +31,43 @@
     </select>
 
     <sql id="sqlUserInfo">
-        SELECT USER_ID             userId
-             , USER_PSWD           userPswd
-             , USER_KOR_NM         userKorNm
-             , USER_ENG_NM         userEngNm
-             , MOBILE_NO           mobileNo
-             , EMAIL_ADDR          emailAddr
-             , LST_LOGIN_DT        lstLoginDt
-             , LST_PSWD_CHG_DT     lstPswdChgDt
-             , AUTH_AREA_CD        authAreaCd
-             , SNS_SE_CD           snsSeCd
-             , SNS_ACCOUNT         snsAccount
-             , INTG_YN             intgYn
-             , ZIP_NO              zipNo
-             , HOME_ADDR           homeAddr
-             , HOME_ADDR_DTLS      homeAddrDtls
-             , BLON_NM             blonNm
-             , FAX_NO              faxNo
-             , INLN_NO             inlnNo
-             , JGRP_CD             jgrpCd
-             , JRNK_CD             jrnkCd
-             , REG_DIV_CD          regDivCd
-             , USE_YN              useYn
-             , PSWD_FAIL_CNT       pswdFailCnt
-             , IS_DEL_ABLE         isDelAble
-             , BRK_YN              brkYn
-             , BRK_COMMENT         brkComment
-        FROM STB_B_USER_MNG
-        WHERE USER_ID =  #{userId}
+        SELECT SBUM.USER_ID             userId
+             , SAUM.AUTH_ID             userAuth
+             , SBUM.USER_PSWD           userPswd
+             , SBUM.USER_KOR_NM         userKorNm
+             , SBUM.USER_ENG_NM         userEngNm
+             , SBUM.MOBILE_NO           mobileNo
+             , SBUM.EMAIL_ADDR          emailAddr
+             , SBUM.LST_LOGIN_DT        lstLoginDt
+             , SBUM.LST_PSWD_CHG_DT     lstPswdChgDt
+             , SBUM.AUTH_AREA_CD        authAreaCd
+             , SBUM.SNS_SE_CD           snsSeCd
+             , SBUM.SNS_ACCOUNT         snsAccount
+             , SBUM.INTG_YN             intgYn
+             , SBUM.ZIP_NO              zipNo
+             , SBUM.HOME_ADDR           homeAddr
+             , SBUM.HOME_ADDR_DTLS      homeAddrDtls
+             , SBUM.BLON_NM             blonNm
+             , SBUM.FAX_NO              faxNo
+             , SBUM.INLN_NO             inlnNo
+             , SBUM.JGRP_CD             jgrpCd
+             , SBUM.JRNK_CD             jrnkCd
+             , SBUM.REG_DIV_CD          regDivCd
+             , SBUM.USE_YN              useYn
+             , SBUM.PSWD_FAIL_CNT       pswdFailCnt
+             , SBUM.IS_DEL_ABLE         isDelAble
+             , SBUM.BRK_YN              brkYn
+             , SBUM.BRK_COMMENT         brkComment
+          FROM STB_B_USER_MNG SBUM
+          LEFT JOIN STB_M_AUTH_USER_MNG SAUM ON SBUM.USER_ID = SAUM.USER_ID
+         WHERE SBUM.USER_ID =  #{userId}
     </sql>
 
 
 
      <select id="selectUserRoleList" parameterType="userVO" resultType="userVO">
           /*  on.standard.system.user.selectUserRoleList */
-          SELECT AUTH_ID authId
+          SELECT AUTH_ID    userAuth
             FROM STB_M_AUTH_USER_MNG
            WHERE USER_ID = #{userId}
      </select>
@@ -96,7 +98,7 @@
           /*  on.standard.system.user.insUserLoginHist */
           INSERT INTO STB_H_USER_LOGIN_LOG
                       (USER_ID  , AUTH_AREA_CD , USER_AUTH_CD ,REMOTE_ADDR , LOGIN_DIV_CD , LOGIN_COMMENT   )
-               VALUES (#{userId}, #{authAreaCd}, #{authIdList},#{remoteAddr}, #{loginDivCd}, #{loginCommnet} )
+               VALUES (#{userId}, #{authAreaCd}, #{userAuthIdListStr},#{remoteAddr}, #{loginDivCd}, #{loginCommnet} )
     </insert>
 
 
@@ -132,6 +134,10 @@
              , A.AUTH_ID        authId
              , A.AUTH_NM        authNm
              , A.REG_DATE       regDate
+             , A.BRK_YN         brkYn
+             , A.BRK_YN_NM      brkYnNm
+             , A.USE_YN         useYn
+             , A.USE_YN_NM      useYnNm
           FROM (   SELECT ROW_NUMBER() OVER (ORDER BY SBUM.REG_DATE ASC) AS rownum_
                         , SBUM.USER_ID
                         , SBUM.USER_KOR_NM
@@ -143,6 +149,10 @@
                         , SAUM.AUTH_ID
                         , (SELECT AUTH_KOR_NAME FROM STB_B_AUTH_MNG WHERE AUTH_ID = SAUM.AUTH_ID) AUTH_NM
                         , DATE_FORMAT(SBUM.REG_DATE, '%Y.%m.%d %H:%i') REG_DATE
+                        , SBUM.BRK_YN
+                        , CASE WHEN SBUM.BRK_YN = 'Y' THEN '차단' ELSE '미차단' END AS BRK_YN_NM
+                        , SBUM.USE_YN
+                        , CASE WHEN SBUM.USE_YN = 'Y' THEN '사용' ELSE '미사용' END AS USE_YN_NM
                      FROM STB_B_USER_MNG SBUM
                      LEFT JOIN STB_M_AUTH_USER_MNG SAUM ON SBUM.USER_ID = SAUM.USER_ID
                     WHERE 1 = 1
@@ -209,8 +219,8 @@
         WHERE USER_ID = #{userId}
     </select>
 
-    <insert id="insertUserInfo" parameterType="CommonMap">
-        /*  on.standard.system.user.insertUserInfo */
+    <insert id="insertUserMng" parameterType="CommonMap">
+        /*  on.standard.system.user.insertUserMng */
          INSERT INTO STB_B_USER_MNG
                     ( USER_ID, USER_PSWD, USER_KOR_NM, USER_ENG_NM, MOBILE_NO, EMAIL_ADDR, LST_LOGIN_DT, LST_PSWD_CHG_DT
                     , ZIP_NO, HOME_ADDR, HOME_ADDR_DTLS, BLON_NM , FAX_NO , JGRP_CD, JRNK_CD, REG_DIV_CD
@@ -218,46 +228,47 @@
               VALUES(#{userId}, #{userPswd}, #{userKorNm}, #{userEngNm}, #{mobileNo}, #{emailAddr} , NOW() , NOW()
                     ,#{zipNo} ,   #{homeAddr}, #{homeAddrDtls} , #{blonNm}, #{faxNo} , #{jgrpCd}, #{jrnkCd} , #{regDivCd} )
     </insert>
-    <update id="updateUserInfo" parameterType="CommonMap">
+    <update id="updateUserMng" parameterType="CommonMap">
+        /*  on.standard.system.user.updateUserMng */
          UPDATE STB_B_USER_MNG
             SET USER_ID = #{userId}
-           <if test="userPswd != null and userPswd != ''">
+            <if test="userPswd != null and userPswd != ''">
              , USER_PSWD = #{userPswd}
-           </if>
-           <if test="userKorNm != null and userKorNm != ''">
+            </if>
+            <if test="userKorNm != null and userKorNm != ''">
             , USER_KOR_NM = #{userKorNm}
-           </if>
-           <if test="userEngNm != null and userEngNm != ''">
+            </if>
+            <if test="userEngNm != null and userEngNm != ''">
             , USER_ENG_NM = #{userEngNm}
-           </if>
-           <if test="mobileNo != null and mobileNo != ''">
+            </if>
+            <if test="mobileNo != null and mobileNo != ''">
             , MOBILE_NO = #{mobileNo}
-           </if>
-           <if test="emailAddr != null and emailAddr != ''">
+            </if>
+            <if test="emailAddr != null and emailAddr != ''">
             , EMAIL_ADDR = #{emailAddr}
-           </if>
-        <if test="zipNo != null and zipNo != ''">
-            , ZIP_NO = #{zipNo}
-        </if>
-        <if test="homeAddr != null and homeAddr != ''">
-            , HOME_ADDR = #{homeAddr}
-        </if>
-        <if test="homeAddrDtls != null and homeAddrDtls != ''">
-            , HOME_ADDR_DTLS = #{homeAddrDtls}
-        </if>
-        <if test="blonNm != null and blonNm != ''">
-            , BLON_NM = #{blonNm}
-        </if>
-        <if test="faxNo != null and faxNo != ''">
-            , FAX_NO = #{faxNo}
-        </if>
-        <if test="jgrpCd != null and jgrpCd != ''">
-            , JGRP_CD = #{jgrpCd}
-        </if>
-        <if test="jrnkCd != null and jrnkCd != ''">
-            , JRNK_CD = #{jrnkCd}
-        </if>
-       WHERE USER_ID = #{userId}
+            </if>
+            <if test="zipNo != null and zipNo != ''">
+                , ZIP_NO = #{zipNo}
+            </if>
+            <if test="homeAddr != null and homeAddr != ''">
+                , HOME_ADDR = #{homeAddr}
+            </if>
+            <if test="homeAddrDtls != null and homeAddrDtls != ''">
+                , HOME_ADDR_DTLS = #{homeAddrDtls}
+            </if>
+            <if test="blonNm != null and blonNm != ''">
+                , BLON_NM = #{blonNm}
+            </if>
+            <if test="faxNo != null and faxNo != ''">
+                , FAX_NO = #{faxNo}
+            </if>
+            <if test="jgrpCd != null and jgrpCd != ''">
+                , JGRP_CD = #{jgrpCd}
+            </if>
+            <if test="jrnkCd != null and jrnkCd != ''">
+                , JRNK_CD = #{jrnkCd}
+            </if>
+           WHERE USER_ID = #{userId}
     </update>
     <insert id="insertAuthUserMng" parameterType="CommonMap">
         /*  on.standard.system.user.insertAuthUserMng */
@@ -274,6 +285,18 @@
         WHERE AUTH_ID = #{preUserAuth}
           AND USER_ID = #{userId}
     </update>
+
+    <delete id="deleteUserMng" parameterType="CommonMap">
+        /*  on.standard.system.user.deleteUserMng */
+        DELETE FROM STB_B_USER_MNG
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <delete id="deleteAuthUserMng" parameterType="CommonMap">
+        /*  on.standard.system.user.deleteAuthUserMng */
+        DELETE FROM STB_M_AUTH_USER_MNG
+        WHERE USER_ID = #{userId}
+    </delete>
 
 
 </mapper>

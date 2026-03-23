@@ -24,14 +24,19 @@
 
     <select id="selectLevelByMenuList" parameterType="CommonMap" resultType="CommonMap">
         /* on.standard.system.authmenu.selectLevelByMenuList */
-        SELECT MMA.AUTH_ID           AS authId
+        SELECT CASE WHEN MMA.USE_YN IS NULL THEN 'N' ELSE MMA.USE_YN         END AS useYn
+             , CASE WHEN MMA.AUTH_ID IS NULL THEN #{authId} ELSE MMA.AUTH_ID END AS authId
              , SMMH.MENU_DIV_CD      AS menuDivCd
              , SMMH.MENU_CD          AS menuCd
              , SMMH.KOR_NM           AS korNm
-             , SMMH.PAGE_CL          AS pageCl
              , SMMH.LEVEL            AS level
-             , LPAD(SMMH.KOR_NM, CHAR_LENGTH(SMMH.KOR_NM) + (SMMH.LEVEL-1) * 8, ' ') AS  levKorNm
-             , SMMH.PAGE_CL          AS pageCl
+             , CONCAT(
+                 REPEAT('&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;', SMMH.LEVEL - 1),
+                 IF(SMMH.LEVEL > 1, '└ ', ''),
+                 SMMH.KOR_NM
+               ) AS levKorNm
+             , SMMH.URL_ADDR         AS urlAddr
+             , SMMH.MENU_CL          AS menuCl
              , SMMH.MENU_PATH        AS menuPath
              , MMA.READ_YN           AS readYn
              , MMA.WRITE_YN          AS writeYn
@@ -42,11 +47,29 @@
              , MMA.POPUP_WRITE_YN    AS popupWiteYn
              , MMA.POPUP_UPDATE_YN   AS popupUpdateYn
              , MMA.POPUP_DELETE_YN   AS popupDeleteYn
-        FROM SVI_MENU_MNG_HIERARCHY SMMH
-                 LEFT JOIN STB_M_MENU_AUTH_MNG MMA ON SMMH.MENU_CD = MMA.MENU_CD
-        WHERE SMMH.PAGE_CL != 'ROOT'
+          FROM SVI_MENU_MNG_HIERARCHY SMMH
+          LEFT JOIN STB_M_MENU_AUTH_MNG MMA ON SMMH.MENU_CD = MMA.MENU_CD AND MMA.AUTH_ID = #{authId}
+         WHERE SMMH.MENU_CL != 'ROOT'
            AND SMMH.MENU_DIV_CD = #{menuDivCd}
-          AND MMA.AUTH_ID      = #{authId}
+          <if test="searchKeyWord != null and searchKeyWord != ''">
+            <choose>
+                <when test="searchKeyCd == 'menuNm'">
+                    AND (  SMMH.KOR_NM LIKE CONCAT('%', #{searchKeyWord} ,'%')
+                        OR SMMH.ENG_NM LIKE CONCAT('%', #{searchKeyWord} ,'%')
+                        )
+                </when>
+                <when test="searchKeyCd == 'menuAddr'">
+                    AND SMMH.URL_ADDR LIKE  CONCAT('%', #{searchKeyWord} ,'%')
+                </when>
+                <otherwise>
+                    AND ( ( SMMH.KOR_NM LIKE CONCAT('%', #{searchKeyWord} ,'%')
+                           OR SMMH.ENG_NM LIKE CONCAT('%', #{searchKeyWord} ,'%')
+                          )
+                        OR SMMH.URL_ADDR LIKE  CONCAT('%', #{searchKeyWord} ,'%')
+                    )
+                </otherwise>
+            </choose>
+        </if>
         ORDER BY SMMH.SORT_PATH
     </select>
 
@@ -67,6 +90,7 @@
         , POPUP_WRITE_YN
         , POPUP_UPDATE_YN
         , POPUP_DELETE_YN
+        , USE_YN
         )
         VALUES
         <foreach collection="authMenuData" item="item" separator=",">
@@ -82,6 +106,7 @@
             , #{item.popupWiteYn}
             , #{item.popupUpdateYn}
             , #{item.popupDeleteYn}
+            , #{item.useYn}
             )
         </foreach>
         ON DUPLICATE KEY UPDATE
@@ -93,7 +118,39 @@
         , POPUP_READ_YN    = VALUES(POPUP_READ_YN)
         , POPUP_WRITE_YN   = VALUES(POPUP_WRITE_YN)
         , POPUP_UPDATE_YN  = VALUES(POPUP_UPDATE_YN)
-        , POPUP_DELETE_YN  = VALUES(POPUP_DELETE_YN);
+        , POPUP_DELETE_YN  = VALUES(POPUP_DELETE_YN)
+        , USE_YN           = VALUES(USE_YN);
     </insert>
+
+    <select id="selectAuthByMenuList"  parameterType="CommonMap" resultType="CommonMap">
+        /* on.standard.system.authmenu.selectAuthByMenuList */
+        SELECT CASE WHEN MMA.AUTH_ID IS NULL THEN #{authId} ELSE MMA.AUTH_ID END AS authId
+             , CASE WHEN MMA.AUTH_ID IS NULL THEN '0'        ELSE '1'        END AS isChecked
+             , SMMH.MENU_DIV_CD      AS menuDivCd
+             , SMMH.MENU_CD          AS menuCd
+             , SMMH.KOR_NM           AS korNm
+             , SMMH.LEVEL            AS level
+             , CONCAT(
+                REPEAT('&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;', SMMH.LEVEL - 1),
+                IF(SMMH.LEVEL > 1, '└ ', ''),
+                SMMH.KOR_NM
+               ) AS levKorNm
+             , SMMH.URL_ADDR         AS urlAddr
+             , SMMH.MENU_CL          AS menuCl
+             , SMMH.MENU_PATH        AS menuPath
+             , MMA.READ_YN           AS readYn
+             , MMA.WRITE_YN          AS writeYn
+             , MMA.UPDATE_YN         AS updateYn
+             , MMA.DELETE_YN         AS deletYn
+             , MMA.POPUP_OPEN_YN     AS popupOpenYn
+             , MMA.POPUP_READ_YN     AS popupReadYn
+             , MMA.POPUP_WRITE_YN    AS popupWiteYn
+             , MMA.POPUP_UPDATE_YN   AS popupUpdateYn
+             , MMA.POPUP_DELETE_YN   AS popupDeleteYn
+        FROM SVI_MENU_MNG_HIERARCHY SMMH
+        LEFT JOIN STB_M_MENU_AUTH_MNG MMA ON SMMH.MENU_CD = MMA.MENU_CD and MMA.AUTH_ID = #{authId}
+       WHERE SMMH.MENU_CL != 'ROOT'
+	     AND SMMH.MENU_DIV_CD = #{menuDivCd}
+    </select>
 
 </mapper>

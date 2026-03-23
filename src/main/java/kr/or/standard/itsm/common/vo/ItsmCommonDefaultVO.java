@@ -27,7 +27,7 @@ public class ItsmCommonDefaultVO {
 	private String searchCondition = "";
 
 	/** 검색키워드 . */
-	private String searchKeyword = "";
+	private String searchKeyWord = "";
 	
 	/** 검색시작일시 . */
 	private String searchStartDate = "";
@@ -129,7 +129,7 @@ public class ItsmCommonDefaultVO {
 	public void setSearchVO(final ItsmCommonDefaultVO vo) {
 		this.searchCondition = vo.getSearchCondition();
 		this.dateCondition = vo.getDateCondition();
-		this.searchKeyword = vo.getSearchKeyword();
+		this.searchKeyWord = vo.getSearchKeyWord();
 		this.searchStartDate = vo.getSearchStartDate();
 		this.searchEndDate = vo.getSearchEndDate();
 		this.schEtc01 = vo.getSchEtc01();
@@ -270,12 +270,12 @@ public class ItsmCommonDefaultVO {
 		this.searchCondition = searchCondition;
 	}
 
-	public String getSearchKeyword() {
-		return searchKeyword;
+	public String getSearchKeyWord() {
+		return searchKeyWord;
 	}
 
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
+	public void setSearchKeyWord(String searchKeyWord) {
+		this.searchKeyWord = searchKeyWord;
 	}
 
 	public String getSearchStartDate() {

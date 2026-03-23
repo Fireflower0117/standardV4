@@ -1,7 +1,6 @@
 package kr.or.standard.basic.common.internalviewresolver.controller;
 
 import kr.or.standard.basic.common.internalviewresolver.service.OnNameViewService;
-import kr.or.standard.basic.system.basic.service.BasicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

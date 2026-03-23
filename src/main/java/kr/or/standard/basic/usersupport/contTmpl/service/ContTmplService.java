@@ -224,7 +224,7 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 						}else{
 							fileVO.setTmplFileSerno(tmplFileSerno);
 							if(divn.equals("preview")){
-								fileVO.setFileSeqo("0");
+								fileVO.setFileSn("0");
 								defaultDao.update(sqlNs+"updateContTmplFile", fileVO);
 							}else{
 							    defaultDao.insert(sqlNs+"insertContTmplFileList", fileVO); 
@@ -358,7 +358,7 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 	}
 	
 	// 컨텐츠 파일 다운로드
-	public void getFileDown(String tmplFileSerno, String fileSeqo, HttpServletRequest request , HttpServletResponse response) throws Exception {
+	public void getFileDown(String tmplFileSerno, String fileSn, HttpServletRequest request , HttpServletResponse response) throws Exception {
 		ByteArrayInputStream is = null;
 		ServletOutputStream os = null;
 
@@ -366,7 +366,7 @@ public class ContTmplService extends EgovAbstractServiceImpl {
 		
 		    ContTmplVO contTmplVO = new ContTmplVO(); 
             contTmplVO.setTmplFileSerno(tmplFileSerno);
-            contTmplVO.setFileSeqo(fileSeqo); 
+            contTmplVO.setFileSn(fileSn);
             ContTmplVO fileVO = (ContTmplVO)defaultDao.selectOne(sqlNs+"selectContTmplFileContents", contTmplVO);
 		
 		

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="on.standard.system.boardtype">
+
+    <sql id="pageHeader">
+		  <![CDATA[
+        SELECT (${rn_top} / (${rn_top} - ${rn_bottom})) AS pageNo
+             , (${rn_top} - ${rn_bottom})               AS pageSize
+             , totalCount - (rowindx - 1)               AS rrowindx
+             , ROW_.*
+        FROM (
+        ]]>
+	</sql>
+
+    <sql id="pageFooter">
+		  <![CDATA[
+        ) AS ROW_
+			    ORDER BY ROW_.rowindx  DESC
+			   LIMIT ${rn_limit} OFFSET ${rn_bottom}
+        ]]>
+	</sql>
+
+    <select id="inqBoardTypeList" parameterType="CommonMap" resultType="CommonMap">
+        <choose>
+            <when test="cmd == 'selectPage'">
+                /*  on.standard.system.boardtype.inqBoardTypeList selectPage */
+                <include refid="pageHeader"/>
+                <include refid="sqlBoardTypeListSql"/>
+                <include refid="pageFooter"/>
+            </when>
+            <otherwise>
+                /*  on.standard.system.boardtype.selBoardTypeList  selectList */
+                <include refid="sqlBoardTypeListSql"/>
+            </otherwise>
+        </choose>
+    </select>
+
+    <sql id="sqlBoardTypeListSql">
+       SELECT a.rownum_           AS rowindx
+            , b.TOTAL_COUNT       AS totalCount
+            , a.BOARD_CD          AS boardCd
+            , a.BOARD_KOR_NM      AS boardKorNm
+            , a.NTI_YN            AS ntiYn
+            , a.RCMD_YN           AS rcmdYn
+            , a.CONTENT_EDITOR_YN AS contentEditorYn
+            , a.ATTCH_FILE_YN     AS attchFileYn
+            , a.FILE_LIMIT_CNT    AS fileLimitCnt
+            , a.FILE_LIMIT_MB     AS fileLimitMb
+            , a.SECRET_YN         AS secretYn
+            , a.REPLY_YN          AS replyYn
+            , a.USE_YN            AS useYn
+            , a.REG_DATE          AS regDate
+         FROM ( SELECT (@rownum := @rownum + 1) AS rownum_
+                     , BOARD_CD
+                     , BOARD_KOR_NM
+                     , NTI_YN
+                     , RCMD_YN
+                     , CONTENT_EDITOR_YN
+                     , ATTCH_FILE_YN
+                     , FILE_LIMIT_CNT
+                     , FILE_LIMIT_MB
+                     , SECRET_YN
+                     , REPLY_YN
+                     , USE_YN
+                     , DATE_FORMAT(REG_DATE, '%Y.%m.%d') as REG_DATE
+                  FROM STB_SM_BOARDTYPE_MNG JOIN (SELECT @rownum := 0) r
+                 WHERE 1 = 1
+                 <if test="searchKeyWord != null and searchKeyWord != ''">
+                    <choose>
+                        <when test="searchKeyCd == 'boardCd'">
+                            AND BOARD_CD LIKE CONCAT('%',#{searchKeyWord},'%')
+                        </when>
+                        <when test="searchKeyCd == 'boardNm'">
+                            AND BOARD_KOR_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                        </when>
+                        <otherwise>
+                            AND (  BOARD_CD LIKE CONCAT('%',#{searchKeyWord},'%')
+                            OR BOARD_KOR_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                            )
+                        </otherwise>
+                    </choose>
+                 </if>
+                 ORDER BY REG_DATE ASC
+         ) a
+         JOIN (  SELECT COUNT(*) AS TOTAL_COUNT
+                   FROM STB_SM_BOARDTYPE_MNG
+                  WHERE 1 = 1
+                  <if test="searchKeyWord != null and searchKeyWord != ''">
+                        <choose>
+                            <when test="searchKeyCd == 'boardCd'">
+                                AND BOARD_CD LIKE CONCAT('%',#{searchKeyWord},'%')
+                            </when>
+                            <when test="searchKeyCd == 'boardNm'">
+                                AND BOARD_KOR_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                            </when>
+                            <otherwise>
+                                AND (  BOARD_CD LIKE CONCAT('%',#{searchKeyWord},'%')
+                                OR BOARD_KOR_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                                )
+                            </otherwise>
+                        </choose>
+                    </if>
+         ) b
+         ON 1 = 1
+    </sql>
+
+    <select id="inqBoardCdCount" parameterType="CommonMap" resultType="CommonMap">
+        /*  on.standard.system.boardtype.inqBoardCdCount  */
+         SELECT CASE WHEN COUNT(*) = 0 THEN 'notDupl' ELSE 'dupl' END AS isBoardTypeDupl
+           FROM STB_SM_BOARDTYPE_MNG
+          WHERE BOARD_CD = #{boardCd}
+    </select>
+
+    <select id="mergeInsBoardType" parameterType="CommonMap" resultType="CommonMap">
+        /*  on.standard.system.boardtype.mergeInsBoardType  */
+        INSERT INTO STB_SM_BOARDTYPE_MNG (
+                   BOARD_CD
+                 , USE_YN
+                 , BOARD_KOR_NM
+                 , BOARD_ENG_NM
+                 , BOARD_COMMENT
+                 , NTI_YN
+                 , RCMD_YN
+                 , TITLE_YN
+                 , CONTENT_YN
+                 , CONTENT_EDITOR_YN
+                 , ATTCH_FILE_YN
+                 , FILE_LIMIT_CNT
+                 , FILE_LIMIT_MB
+                 , SECRET_YN
+                 , REPLY_YN
+                 , TEMPCOL_1, TEMPCOL_2, TEMPCOL_3
+                 , TEMPCOL_4, TEMPCOL_5, TEMPCOL_6
+                 , REG_USER
+                 , REG_DATE
+        ) VALUES (
+                   #{boardCd}
+                 , #{useYn}
+                 , #{boardKorNm}
+                 , #{boardEngNm}
+                 , #{boardComment}
+                 , #{ntiYn}
+                 , #{rcmdYn}
+                 , #{titleYn}
+                 , #{contentYn}
+                 , #{contentEditorYn}
+                 , #{attchFileYn}
+                 , #{fileLimitCnt}
+                 , #{fileLimitMb}
+                 , #{secretYn}
+                 , #{replyYn}
+                 , #{tempCol1}, #{tempCol2}, #{tempCol3}
+                 , #{tempCol4}, #{tempCol5}, #{tempCol6}
+                 , #{loginUserId}
+                 , NOW() /* 최초 등록일 */
+         )
+         ON DUPLICATE KEY UPDATE
+               USE_YN            = #{useYn}
+             , BOARD_KOR_NM      = #{boardKorNm}
+             , BOARD_ENG_NM      = #{boardEngNm}
+             , BOARD_COMMENT     = #{boardComment}
+             , NTI_YN            = #{ntiYn}
+             , RCMD_YN           = #{rcmdYn}
+             , TITLE_YN          = #{titleYn}
+             , CONTENT_YN        = #{contentYn}
+             , CONTENT_EDITOR_YN = #{contentEditorYn}
+             , ATTCH_FILE_YN     = #{attchFileYn}
+             , FILE_LIMIT_CNT    = #{fileLimitCnt}
+             , FILE_LIMIT_MB     = #{fileLimitMb}
+             , SECRET_YN         = #{secretYn}
+             , REPLY_YN          = #{replyYn}
+             , TEMPCOL_1         = #{tempCol1}
+             , TEMPCOL_2         = #{tempCol2}
+             , TEMPCOL_3         = #{tempCol3}
+             , TEMPCOL_4         = #{tempCol4}
+             , TEMPCOL_5         = #{tempCol5}
+             , TEMPCOL_6         = #{tempCol6}
+             , UPD_USER          = #{loginUserId}
+             , UPD_DATE          = NOW()
+    </select>
+
+    <select id="inqBoardInfo"  parameterType="CommonMap" resultType="CommonMap">
+        /*  on.standard.system.boardtype.inqBoardInfo  */
+        SELECT BOARD_CD                                                      AS boardCd
+             , FN_S_COM_CD_INFO('COM_USE_YN',USE_YN,'FILTER_1')              AS useYn
+             , BOARD_KOR_NM                                                  AS boardKorNm
+             , BOARD_ENG_NM                                                  AS boardEngNm
+             , BOARD_COMMENT                                                 AS boardComment
+             , FN_S_COM_CD_INFO('COM_USE_YN',NTI_YN,'FILTER_1')              AS ntiYn
+             , FN_S_COM_CD_INFO('COM_USE_YN',RCMD_YN,'FILTER_1')             AS rcmdYn
+             , FN_S_COM_CD_INFO('COM_USE_YN',TITLE_YN,'FILTER_1')            AS titleYn
+             , FN_S_COM_CD_INFO('COM_USE_YN',CONTENT_YN,'FILTER_1')          AS contentYn
+             , FN_S_COM_CD_INFO('COM_USE_YN',CONTENT_EDITOR_YN ,'FILTER_1')  AS contentEditorYn
+             , FN_S_COM_CD_INFO('COM_USE_YN',ATTCH_FILE_YN ,'FILTER_1')      AS attchFileYn
+             , FILE_LIMIT_CNT                                                AS fileLimitCnt
+             , FILE_LIMIT_MB                                                 AS fileLimitMb
+             , FN_S_COM_CD_INFO('COM_USE_YN',SECRET_YN,'FILTER_1')           AS secretYn
+             , FN_S_COM_CD_INFO('COM_USE_YN',REPLY_YN,'FILTER_1')            AS replyYn
+             , TEMPCOL_1                                                     AS tempCol1
+             , TEMPCOL_2                                                     AS tempCol2
+             , TEMPCOL_3                                                     AS tempCol3
+             , TEMPCOL_4                                                     AS tempCol4
+             , TEMPCOL_5                                                     AS tempCol5
+             , TEMPCOL_6                                                     AS tempCol6
+             , REG_USER                                                      AS regUser
+             , DATE_FORMAT(REG_DATE, '%Y.%m.%d')                             AS regDate
+         FROM STB_SM_BOARDTYPE_MNG
+        WHERE BOARD_CD = #{boardCd}
+    </select>
+
+    <select id="inqBoardTypeDetail"  parameterType="CommonMap" resultType="CommonMap">
+        /*  on.standard.system.boardtype.inqBoardTypeDetail */
+        SELECT BOARD_CD           AS boardCd
+             , USE_YN             AS useYn
+             , BOARD_KOR_NM       AS boardKorNm
+             , BOARD_ENG_NM       AS boardEngNm
+             , BOARD_COMMENT      AS boardComment
+             , NTI_YN             AS ntiYn
+             , RCMD_YN            AS rcmdYn
+             , TITLE_YN           AS titleYn
+             , CONTENT_YN         AS contentYn
+             , CONTENT_EDITOR_YN  AS contentEditorYn
+             , ATTCH_FILE_YN      AS attchFileYn
+             , FILE_LIMIT_CNT     AS fileLimitCnt
+             , FILE_LIMIT_MB      AS fileLimitMb
+             , SECRET_YN          AS secretYn
+             , REPLY_YN           AS replyYn
+             , TEMPCOL_1          AS tempCol1
+             , TEMPCOL_2          AS tempCol2
+             , TEMPCOL_3          AS tempCol3
+             , TEMPCOL_4          AS tempCol4
+             , TEMPCOL_5          AS tempCol5
+             , TEMPCOL_6          AS tempCol6
+             , REG_USER           AS regUser
+             , DATE_FORMAT(REG_DATE, '%Y.%m.%d')  AS regDate
+          FROM STB_SM_BOARDTYPE_MNG
+         WHERE BOARD_CD = #{menuFuncCd}
+    </select>
+
+
+</mapper>

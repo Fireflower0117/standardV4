@@ -8,7 +8,7 @@ const messageFns = {
             alert(msgObj.message);
         }
         /*  메세지 표출형태 다양화...
-        else if(showType === ""){
+        else if(showType === "messageBox"){
 
         } */
 

@@ -10,7 +10,7 @@ const fncLogin = function () {
 	if(wrestSubmit(document.defaultFrm)){
 		<%-- 로그인 처리 --%>
 		$.ajax({
-			url: "/ft/login.do",
+			url: "/login.do",
 			type: "post",
 			data: $("#defaultFrm").serialize(),
 			dataType: "json",
@@ -58,7 +58,6 @@ $(document).ready(function(){
 </script>
 <div class="login_wrap">
     <div class="login_box">
-        <h1 class="logo"><img src="/ma/images/common/logo.png" alt="로고"></h1>
         <form:form modelAttribute="loginVO" id="defaultFrm" name="defaultFrm" method="post" onsubmit="return false;" onkeydown="enterkey();">
             <fieldset>
                 <div class="input_box">
@@ -80,9 +79,9 @@ $(document).ready(function(){
                     <button type="button" id="btn_login" class="btn blue btn_login">로그인</button>
                 </div>
                 <ul class="links">
-                    <li><a href="/ft/findInfoVrfct.do" class="btn_find btn_line">아이디 찾기</a></li>
-                    <li><a href="/ft/findInfoVrfct.do" class="btn_find btn_line">비밀번호 찾기</a></li>
-                    <li><a href="/ft/join/useAgrTerms.do" class="btn_line blue">회원가입</a></li>
+                    <li><a href="/findInfoVrfct.do" class="btn_find btn_line">아이디 찾기</a></li>
+                    <li><a href="/findInfoVrfct.do" class="btn_find btn_line">비밀번호 찾기</a></li>
+                    <li><a href="/join/useAgrTerms.do" class="btn_line blue">회원가입</a></li>
                 </ul>
                 <div class="member_sns">
                     <strong class="tit"><span>간편 로그인</span></strong>

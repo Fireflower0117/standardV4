@@ -58,7 +58,13 @@ const xhrFns = {
             /* Custom Success Function Init */
 
             if (!on.valid.isEmpty(callAjaxObj.successFn) && typeof callAjaxObj.successFn === 'function') {
-                ajaxPostOptions.success = function (rs) {
+                ajaxPostOptions.success = function (rs, status, xhr) {
+
+                    // [NEW] 서버가 헤더로 내려준 '새로운 OTP 토큰'이 있다면 meta 태그 갱신
+                    let newOtpToken = xhr.getResponseHeader("X-ON-OTP-NEW-TOKEN");
+                    if(newOtpToken) {
+                        $("meta[name='x-on-otp-token']").attr("content", newOtpToken);
+                    }
 
                     if (typeof callAjaxObj.sid == "string") {
                         isReturn = false;
@@ -92,9 +98,10 @@ const xhrFns = {
                     return false;
                 }
 
-                const isValid = on.valid.formValidationCheck({ formId: callAjaxObj.validation.formId
-                    , validateList : callAjaxObj.validation.validationList
-                    ,  callbackFn : ajaxPostOptions.success });
+                const isValid = on.valid.formValidationCheck({ formId       : callAjaxObj.validation.formId
+                                                                       , validateList : callAjaxObj.validation.validationList
+                                                                         });
+
                 if (!isValid) {
                     return false;
                 }
@@ -104,20 +111,48 @@ const xhrFns = {
             /* callAjaxObj.url */
             if(!on.valid.isEmpty(callAjaxObj.url)){
                 if(!on.valid.isEmpty(callAjaxObj.data)){  // form.serialize때 사용
-                    for(let dataAttr of callAjaxObj.data){
-                        ajaxPostOptions.data[dataAttr.name] = dataAttr.val;
+                    if (Array.isArray(callAjaxObj.data)) {
+                        for(let dataAttr of callAjaxObj.data){
+                            ajaxPostOptions.data[dataAttr.name] = dataAttr.value;
+                        }
+                    } else if (typeof callAjaxObj.data === "object") {
+                        $.extend(true, ajaxPostOptions.data, callAjaxObj.data);
                     }
                 }
                 for (const [key, value] of Object.entries(callAjaxObj)) { // form Attr외  외부속성 추가
-                    if (key !== "successFn" && key !== "failFn" && key !== "data" && key !== "url") {
+                    if (key !== "successFn" && key !== "failFn" && key !== "data" && key !== "url" && key !== "validation" && key !== "contentType") {
                         ajaxPostOptions.data[key] = value;
                     }
                 }
                 ajaxPostOptions.url = callAjaxObj.url; // Request Mapping URL
-                ajaxPostOptions.contentType = on.str.nvl( callAjaxObj.contentType  , "application/x-www-form-urlencoded;charset=UTF-8");
+                // 외부 파라미터로 받은 contentType을 우선 적용
+                ajaxPostOptions.contentType = on.str.nvl( callAjaxObj.contentType, "application/x-www-form-urlencoded;charset=UTF-8");
+
+                // application/json일 경우 반드시 JSON 문자열로 변환해야 Illegal invocation 에러가 발생하지 않음!
+                if (ajaxPostOptions.contentType.indexOf("application/json") !== -1) {
+                    ajaxPostOptions.data = JSON.stringify(ajaxPostOptions.data);
+                }
             }
             else {
+                // 입력 ajax Data 정리
+                if (!on.valid.isEmpty(callAjaxObj.data)) {
+                    if (Array.isArray(callAjaxObj.data)) {
+                        // serializeArray() 형태 [{name: "A", value: "1"}] 처리
+                        for (let dataObj of callAjaxObj.data) {
+                            ajaxPostOptions.data[dataObj.name] = dataObj.value;
+                        }
+                    } else {
+                        // 일반 Object 형태 { boardDivCd: "QnA" } 처리
+                        $.extend(ajaxPostOptions.data, callAjaxObj.data);
+                    }
+                }
 
+                const ignoreKeys = ["successFn", "failFn", "sql", "validation", "data", "url"];
+                for (const [key, value] of Object.entries(callAjaxObj)) {
+                    if (ignoreKeys.indexOf(key) === -1) {
+                        ajaxPostOptions.data[key] = value;
+                    }
+                }
 
                 /* Ajax 호출 기본값 SelectList */
                 let sqlCmd = on.str.nvl(callAjaxObj.cmd, "selectList");
@@ -134,39 +169,21 @@ const xhrFns = {
                     ajaxPostOptions.data.rn_top = (pageNo * pageSize);
                     ajaxPostOptions.data.rn_deorder = ajaxPostOptions.data.rn_bottom + ajaxPostOptions.data.rn_top;
 
-                    for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key !== "successFn" && key !== "failFn") {
-                            ajaxPostOptions.data[key] = value;
-                        }
-                    }
+
+
                 } else if (sqlCmd === "selectList") {
                     // sql Attribute 없으면 return
                     if (on.valid.isEmpty(callAjaxObj.sql)) return {};
-
                     ajaxPostOptions.url = '/com/query/selectList.ajx?qid=' + callAjaxObj.sql;
-                    for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key !== "successFn" && key !== "failFn" && key !== "sql" && key !== "cmd"  && key !== "validation") {
-                            ajaxPostOptions.data[key] = value;
-                        }
-                    }
                 } else if (sqlCmd === "selectOne") {
 
                     // sql Attribute 없으면 return
                     if (on.valid.isEmpty(callAjaxObj.sql)) return {};
-
                     ajaxPostOptions.url = '/com/query/selectOne.ajx?qid=' + callAjaxObj.sql;
-                    for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key !== "successFn" && key !== "failFn" && key !== "sql" && key !== "cmd"  && key !== "validation") {
-                            ajaxPostOptions.data[key] = value;
-                        }
-                    }
+
                 } else if (sqlCmd === "multiSelect") {
                     ajaxPostOptions.url = '/com/query/multiSelect.ajx';
-                    for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key !== "successFn" && key !== "failFn" && key !== "sql" && key !== "cmd"  && key !== "validation") {
-                            ajaxPostOptions.data[key] = value;  // selectTargets Only
-                        }
-                    }
+
                 } else if (sqlCmd === "insert") {
 
                     // sql Attribute 없으면 return
@@ -174,21 +191,8 @@ const xhrFns = {
                         on.msg.consoleLog("cmd(insert)를 입력하면 sql은 필수입력입니다.", )
                         return {};
                     }
-
-                    if(!on.valid.isEmpty(callAjaxObj.data)){
-                        if( Array.isArray(callAjaxObj.data) === true ){
-                            for(let dataObj of callAjaxObj.data){
-                                ajaxPostOptions.data[dataObj.name] = dataObj.value;
-                            }
-                        }
-                    }
-
                     ajaxPostOptions.url = '/com/query/insert.ajx?qid=' + callAjaxObj.sql;
-                    for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key !== "successFn" && key !== "failFn" && key !== "data" && key !== "sql" && key !== "cmd"  && key !== "validation" ) {
-                            ajaxPostOptions.data[key] = value;
-                        }
-                    }
+
                 } else if (sqlCmd === "update") {
 
                     // sql Attribute 없으면 return
@@ -196,23 +200,7 @@ const xhrFns = {
                         on.msg.consoleLog("cmd(update)를 입력하면 sql은 필수입력입니다.", )
                         return {};
                     }
-
-                    if(!on.valid.isEmpty(callAjaxObj.data)){
-                        if( Array.isArray(callAjaxObj.data) === true ){
-                            for(let dataObj of callAjaxObj.data){
-                                ajaxPostOptions.data[dataObj.name] = dataObj.value;
-                            }
-                        }
-                    }
-
                     ajaxPostOptions.url = '/com/query/update.ajx?qid=' + callAjaxObj.sql;
-                    for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key !== "successFn" && key !== "failFn" && key !== "data" && key !== "sql" && key !== "cmd"  && key !== "validation" ) {
-                            ajaxPostOptions.data[key] = value;
-                        }
-                    }
-
-
                 }
                 else if (sqlCmd === "delete") {
 
@@ -221,38 +209,11 @@ const xhrFns = {
                         on.msg.consoleLog("cmd(delete)를 입력하면 sql은 필수입력입니다.", )
                         return {};
                     }
-
-                    if(!on.valid.isEmpty(callAjaxObj.data)){
-                        if( Array.isArray(callAjaxObj.data) === true ){
-                            for(let dataObj of callAjaxObj.data){
-                                ajaxPostOptions.data[dataObj.name] = dataObj.value;
-                            }
-                        }
-                    }
-
                     ajaxPostOptions.url = '/com/query/delete.ajx?qid=' + callAjaxObj.sql;
-                    for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key !== "successFn" && key !== "failFn" && key !== "data" && key !== "sql" && key !== "cmd"  && key !== "validation" ) {
-                            ajaxPostOptions.data[key] = value;
-                        }
-                    }
+
                 }
                 else if(sqlCmd === "multiAction"){
-
-                    if(!on.valid.isEmpty(callAjaxObj.data)){
-                        if( Array.isArray(callAjaxObj.data) === true ){
-                            for(let dataObj of callAjaxObj.data){
-                                ajaxPostOptions.data[dataObj.name] = dataObj.value;
-                            }
-                        }
-                    }
-
                     ajaxPostOptions.url = '/com/query/multiAction.ajx';
-                    for (const [key, value] of Object.entries(callAjaxObj)) {
-                        if (key !== "successFn" && key !== "failFn" && key !== "data" && key !== "sql" && key !== "cmd"  && key !== "validation" ) {
-                            ajaxPostOptions.data[key] = value;
-                        }
-                    }
                 }
 
                 // 비동기 CRUD는 무조건 JSON으로 넘긴다.
@@ -275,22 +236,47 @@ const xhrFns = {
 
             let resultData = {};
             let baseAjaxObj = {
-                 type: "post"
+                  type: "post"
                 , async: false
                 , dataType: "json"
                 //, contentType : 'application/json;charset=UTF-8'
                 , beforeSend: function (xhr, settings) {
+
+                    // JSP 화면 head에 세팅된 CSRF meta 토큰 읽어오기
+                    let csrfToken = $("meta[name='_csrf']").attr("content");
+                    let csrfHeader = $("meta[name='_csrf_header']").attr("content") || "X-CSRF-TOKEN";
+                    let onOtpToken = $("meta[name='x-on-otp-token']").attr("content");
+                    // 헤더에 토큰 세팅 (CSRF 방어)
+                    if (csrfToken && csrfHeader) {
+                        xhr.setRequestHeader(csrfHeader, csrfToken);
+                    }
+
+                    // 비동기 통신 명시 (기본적인 툴 접근 방어)
+                    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+                    // F/W 전용 커스텀 헤더 추가 (콘솔 수동 입력 방어용 암호)
+                    xhr.setRequestHeader("X-ON-FRAMEWORK", "REQ_VALID");
+
+                    // F/W 전용 재입력 방지용 OneTimePassword Token
+                    xhr.setRequestHeader("X-ON-OTP-TOKEN", onOtpToken);
+
                     on.msg.showProgressBar();
                 }
                 , complete: function (xhr, sts) {
                     on.msg.hideProgressBar();
                 }
-                , success: function (rs) {
+                , success: function (rs, status, xhr) {
                     isReturn = true;
                     resultData = rs;
+
+                    let newOtpToken = xhr.getResponseHeader("X-ON-OTP-NEW-TOKEN");
+                    if (newOtpToken) {
+                        $("meta[name='x-on-otp-token']").attr("content", newOtpToken);
+                    }
                 }
                 , error: function (err) {
-                    on.msg.showMsg("처리중 에러발생.");
+                    on.msg.showMsg({message : "장애가 발생했습니다."});
+                    //on.msg.showMsg({message : "장애발생 사유 : "+ err.responseJSON.message});
                 }
             }
 
@@ -298,30 +284,21 @@ const xhrFns = {
             $.ajax(targetObj);
             if (isReturn) return resultData;
         }
+        /*  공통코드 조회 */
+      ,   ajaxComCd (conditions){
+             if( on.valid.isEmpty(conditions.sqlCondi)  ){
+                    on.msg.consoleLog("sqlCondi는 필수입력값입니다.");
+                    return {}
+             }
 
-      /* 검색조건 다시 세팅 */
-      , setSearchConditions : function(searchCondiObj) {
-            $.each(Object.keys(searchCondiObj), function (indx, key) {
-                let eleType = htmlFns.getEleType("#" + key);
-                let eleVal = searchCondiObj[key];
+             // SQL기본 공통코드 조회
+             conditions.sql = on.valid.isEmpty(conditions.sql) ? "on.standard.system.comcode.selectComCode" : conditions.sql;
 
-                if (!on.valid.isEmpty(eleType)) {
-                    if (eleType == "radio") {
-                        //$("#"+name+"[value='"+eleVal+"']").prop("checked", true).attr("checked", true);
-                        $("#" + key + "[value='" + eleVal + "']").prop("checked", true).attr("checked", true);
-                    } else if (eleType == "checkbox") {
-                        if (eleVal == "Y") {
-                            $("#" + key).prop("checked", true).attr("checked", true);
-                        }
-                    } else if (eleType == "select") {
-                        $("#" + key).val(eleVal).attr("selected", "selected");
-                    } else {
-                        $("#" + key).val(eleVal);
-                    }
-                }
-            });
-      }
-
+             // 공통코드조회 ( 그외 다른 데이터 조회시 sql 변경 필요)
+             let rtnComCdObj = on.xhr.ajax({cmd : "selectList", sql : conditions.sql , data : conditions.sqlCondi });
+             return rtnComCdObj;
+         }
+         /*   공통코드 일괄조회 */
       ,  ajaxComCdList (conditions){
 
 
@@ -355,11 +332,11 @@ const xhrFns = {
                // 공통코드 Data호출
                let rsltObj = new Object();
                on.xhr.ajax({sid : "comCdList" , async : false ,  cmd : "multiSelect", selectTargets : conditions.condiList
-                   , successFn : function(sid , rs){
-                       for(let sqlRslt of rs) {
-                           rsltObj[sqlRslt.rsId] = sqlRslt[sqlRslt.rsId];
-                       }
-                   }
+                        , successFn : function(sid , rs){
+                                       for(let sqlRslt of rs) {
+                                           rsltObj[sqlRslt.rsId] = sqlRslt[sqlRslt.rsId];
+                                       }
+                        }
                });
                return rsltObj
       }

@@ -1,11 +1,9 @@
 package kr.or.standard.basic.common.domain;
 
-
 import java.util.Arrays;
 import java.util.Objects;
-
-import kr.or.standard.basic.login.vo.LoginVO;
 import lombok.Data;
+import kr.or.standard.basic.usersupport.user.vo.UserVO;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -47,7 +45,7 @@ public class CmmnDefaultVO {
 	private String searchCondition = "";
 
 	/** 검색키워드 . */
-	private String searchKeyword = "";
+	private String searchKeyWord = "";
 	
 	/** 검색시작일시 . */
 	private String searchStartDate = "";
@@ -216,12 +214,12 @@ public class CmmnDefaultVO {
 		this.searchCondition = searchCondition;
 	}
 
-	public String getSearchKeyword() {
-		return searchKeyword;
+	public String getSearchKeyWord() {
+		return searchKeyWord;
 	}
 
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
+	public void setSearchKeyWord(String searchKeyWord) {
+		this.searchKeyWord = searchKeyWord;
 	}
 
 	public String getSearchStartDate() {
@@ -344,6 +342,7 @@ public class CmmnDefaultVO {
 		this.pSchEtc12 = pSchEtc12;
 	}
 
+
 	public String getProcType() {
 		return procType;
 	}
@@ -352,13 +351,13 @@ public class CmmnDefaultVO {
 		this.procType = procType;
 	}
 
-	public LoginVO getLoginVO() {
+	/*public LoginVO getLoginVO() {
 		return loginVO;
 	}
-
 	public void setLoginVO(LoginVO loginVO) {
 		this.loginVO = loginVO;
-	}
+	}*/
+
 
 	public final String[] getSchEtc11() {
 		String[] newSchEtc11 = null;
@@ -397,25 +396,25 @@ public class CmmnDefaultVO {
 			this.pSchEtc12 = Arrays.toString(schEtc12).replace("[", "").replace("]", "");
 		}
 	}
-     
+
+
+
 	/** 로그인 사용자 VO */
-	private LoginVO loginVO = (LoginVO) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()).getAttribute("ma_user_info", 1);
-    
-	// 사용자 ID - loginId
-	public String getLoginId() {
-		if(this.loginVO != null){
-			return this.loginVO.getUserId();
-		}else{
-			return "";
-		}
+	private UserVO userVO = (UserVO) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()).getAttribute("userDetails", 1);
+
+	// 로그인 사용자 ID - loginUserId
+	public String getLoginUserId() {
+		return (this.userVO != null ? this.userVO.getUserId() : null);
 	}
-	// 사용자 일련번호 - loginSerno
-	public String getLoginSerno() {
-		if(this.loginVO != null){
-			return this.loginVO.getUserSerno();
-		}else{
-			return "";
-		}
-	} 
+
+	// 로그인 사용자 전화번호 - mobileNo
+	public String getMobileNo() {
+		return (this.userVO != null ? this.userVO.getMobileNo() : null);
+	}
+	// 로그인 사용자 Email - emailAddr
+	public String getEmailAddr() {
+		return (this.userVO != null ? this.userVO.getEmailAddr() : null);
+	}
+
 }
 

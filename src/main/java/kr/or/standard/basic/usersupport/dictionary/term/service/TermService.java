@@ -262,7 +262,7 @@ public class TermService  extends EgovAbstractServiceImpl {
 			return ResponseEntity.ok(returnMap);
 		}
 
-		fileVO.setFileSeqo("0");
+		fileVO.setFileSn("0");
 		FileVO atchFile = fileService.getAtchFile(fileVO);		// 파일 정보
 		FileInputStream file = getFile(atchFile); // 파일 읽기
 

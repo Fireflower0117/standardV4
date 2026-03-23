@@ -15,7 +15,7 @@
 	<title>오픈노트 - 표준안 Ver.4</title>
 	<c:choose>
 		<c:when test="${not empty logoInfo.LGFC.atchFileId}">
-			<link rel="icon" href="/file/getByteImage.do?atchFileId=<c:out value='${logoInfo.LGFC.atchFileId}'/>&fileSeqo=<c:out value='${logoInfo.LGFC.fileSeqo}'/>&fileNmPhclFileNm=<c:out value='${logoInfo.LGFC.fileNmPhclFileNm}'/>" type="image/x-icon">
+			<link rel="icon" href="/file/getByteImage.do?atchFileId=<c:out value='${logoInfo.LGFC.atchFileId}'/>&fileSn=<c:out value='${logoInfo.LGFC.fileSn}'/>&fileNmPhclFileNm=<c:out value='${logoInfo.LGFC.fileNmPhclFileNm}'/>" type="image/x-icon">
 		</c:when>
 		<c:otherwise>
 			<link rel="icon" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/images/logo.png" type="image/x-icon">
@@ -99,8 +99,6 @@
 							   ,{name:"userPswd", val: on.html.getEleVal({ele : "#userPswd"}) }
 					]
 
-                // 입력데이터 자동 생성
-				// let targetDataArray = on.html.serializeDataArray({target : ".input_box"})
 
 				// Login수행
 				on.xhr.ajax({ sid  : "loginProc"
@@ -142,7 +140,7 @@
 					</c:when>
 					<c:otherwise>
 						<a style="cursor: ${logoInfo.LGLN.lnkYn eq 'Y' ? 'pointer' : 'default'}" href="${logoInfo.LGLN.lnkYn eq 'Y' ? logoInfo.LGLN.url : 'javascript:void(0)'}" target="${logoInfo.LGLN.lnkTgtCd eq 'blank' ? '_blank' : '' }">
-							<img src="/file/getByteImage.do?atchFileId=<c:out value='${logoInfo.LGLN.atchFileId}'/>&fileSeqo=<c:out value='${logoInfo.LGLN.fileSeqo}'/>&fileNmPhclFileNm=<c:out value='${logoInfo.LGFC.fileNmPhclFileNm}'/>" alt="로고">
+							<img src="/file/getByteImage.do?atchFileId=<c:out value='${logoInfo.LGLN.atchFileId}'/>&fileSn=<c:out value='${logoInfo.LGLN.fileSn}'/>&fileNmPhclFileNm=<c:out value='${logoInfo.LGFC.fileNmPhclFileNm}'/>" alt="로고">
 						</a>
 					</c:otherwise>
 				</c:choose>

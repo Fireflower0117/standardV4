@@ -40,6 +40,7 @@ public class ItsmDocVO extends ItsmCommonDefaultVO {
 
     private String fileNm;
     private String fileSeqo;
+    private String fileSn;
     private String fileExtnNm;
 
 
@@ -69,6 +70,14 @@ public class ItsmDocVO extends ItsmCommonDefaultVO {
 
     public void setFileSeqo(String fileSeqo) {
         this.fileSeqo = fileSeqo;
+    }
+
+    public String getFileSn() {
+        return fileSn;
+    }
+
+    public void setFileSn(String fileSn) {
+        this.fileSn = fileSn;
     }
 
     public String getFileNm() {

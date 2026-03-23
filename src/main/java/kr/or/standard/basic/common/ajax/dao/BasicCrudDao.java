@@ -73,18 +73,23 @@ public class BasicCrudDao {
  
     public int insert(String qid, List<CommonMap> hashMapList) {
         log.info("[DAO-INSERT-LIST] {}", qid );
-        int effRows = 0;
+        int totEffRows = 0;
         for (CommonMap item : hashMapList) {
-            effRows += insert(qid, item);
+            int effRows = sqlsession.insert(qid, item);
+            item.put("execResult", effRows >= 1 ? "success" : "fail" );
+            item.put("effCnt", effRows);
+            totEffRows = totEffRows + effRows;
         }
-        log.info("[DAO-INSERT-LIST] qid : {}, effRows : {}", qid, effRows );
-        return effRows;
+        log.info("[DAO-INSERT-LIST COMPLETE] qid : {}, totEffRows : {}", qid, totEffRows );
+        return totEffRows;
     }
 
     public int insert(String qid, CommonMap hashMap) {
         log.info("[DAO-INSERT] " + qid + ", " + hashMap);
         int effCnt = sqlsession.insert(qid, hashMap);
+        hashMap.put("execResult", effCnt >= 1 ? "success" : "fail" );
         hashMap.put("effCnt", effCnt);
+        log.info("[DAO-INSERT] qid : {}, effCnt : {}", qid, effCnt );
         return effCnt;
     } 
  
@@ -94,18 +99,23 @@ public class BasicCrudDao {
     /***************************************************************************************************************/
     public int update(String qid, List<CommonMap> listMap) {
         log.info("[DAO-UPDATE-LIST] qid : {}", qid );
-        int effRows = 0;
+        int totEffRows = 0;
         for (CommonMap item : listMap) {
-            effRows += update(qid, item);
+            int effRows = sqlsession.update(qid, item);
+            item.put("execResult", effRows >= 1 ? "success" : "fail" );
+            item.put("effCnt", effRows);
+            totEffRows = totEffRows + effRows;
         }
-        log.info("[DAO-UPDATE-LIST] qid : {} , effRows : {}", qid, effRows);
-        return effRows;
+        log.info("[DAO-UPDATE-LIST COMPLETE] qid : {} , totEffRows : {}", qid, totEffRows);
+        return totEffRows;
     }
 
     public int update(String qid, CommonMap hashMap) {
         log.info("[DAO-UPDATE] qid : {} , data : {}", qid, hashMap);
         int effCnt = sqlsession.update(qid, hashMap);
+        hashMap.put("execResult", effCnt >= 1 ? "success" : "fail" );
         hashMap.put("effCnt", effCnt);
+        log.info("[DAO-UPDATE] qid : {} , effRows : {}", qid, effCnt);
         return effCnt;
     }
 
@@ -114,23 +124,24 @@ public class BasicCrudDao {
     /***************************************************************************************************************/
     public int delete(String qid, List<CommonMap> listMap) {
         log.info("[DAO-DELETE-LIST] qid : {}", qid );
-        int effRows = 0;
+        int totEffRows = 0;
         for (CommonMap item : listMap) {
-            effRows += delete(qid, item);
+            int effRows = delete(qid, item);
+            item.put("execResult", effRows >= 1 ? "success" : "fail" );
+            item.put("effCnt", effRows);
+            totEffRows = totEffRows + effRows;
         }
-        log.info("[DAO-DELETE-LIST COMPlete] qid : {} , effRows : {}", qid, effRows);
-        return effRows;
+        log.info("[DAO-DELETE-LIST COMPLETE] qid : {} , totEffRows : {}", qid, totEffRows);
+        return totEffRows;
     }
 
     public int delete(String qid, CommonMap hashMap) {
         log.info("[DAO-DELETE] qid : {} , data : {}", qid, hashMap);
         int effCnt = sqlsession.delete(qid, hashMap);
+        hashMap.put("execResult", effCnt >= 1 ? "success" : "fail" );
         hashMap.put("effCnt", effCnt);
+        log.info("[DAO-DELETE] qid : {} , effRows : {}", qid, effCnt);
         return effCnt;
     }
-  
-
-    
-
 }
 

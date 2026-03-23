@@ -63,7 +63,7 @@ public class TermsService extends EgovAbstractServiceImpl  {
 		int result = 0;
 		
 		for(TermsVO.Terms tempTermsVO : vo.getTermsList()) {
-			tempTermsVO.setLoginSerno(vo.getLoginSerno());
+			//tempTermsVO.setLoginSerno(vo.getLoginSerno());
 			tempTermsVO.setTermsClCd(vo.getSchEtc00());
 			result += this.insertContents(tempTermsVO);
 		}
@@ -102,7 +102,7 @@ public class TermsService extends EgovAbstractServiceImpl  {
 		int result = 0;
 		
 		for(TermsVO.Terms tempTermsVO : vo.getTermsList()) {
-			tempTermsVO.setLoginSerno(vo.getLoginSerno());
+			//tempTermsVO.setLoginSerno(vo.getLoginSerno());
 			tempTermsVO.setTermsClCd(vo.getSchEtc00());
 			if(StringUtils.isEmpty(tempTermsVO.getTermsSerno())) {
 				result += this.insertContents(tempTermsVO);

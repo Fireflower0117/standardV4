@@ -2,17 +2,20 @@ package kr.or.standard.basic.common.modules;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.or.standard.basic.common.domain.CmmnDefaultVO;
 import kr.or.standard.basic.common.domain.CommonMap;
 
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class JacksonParsing {
     private static String CHARSET = "utf-8";
 
-    public static CommonMap toMap(String json) {
+    public static CommonMap json2Map(String json) {
         CommonMap result = null;
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -23,7 +26,24 @@ public class JacksonParsing {
 
         return result;
     }
-    public static List<CommonMap> toList(String json) {
+
+    public static CommonMap qryStr2Map(String qryStr) {
+       CommonMap result = new CommonMap();
+       Iterator qryStrIter =  Arrays.stream(qryStr.split("&")).iterator();
+       while(qryStrIter.hasNext()) {
+           String kvFair = (String)qryStrIter.next();
+           String[] kvArr = kvFair.split("=");
+           if(kvArr.length == 2) {
+               result.put(kvArr[0], kvArr[1]);
+           }
+       }
+       return result;
+    }
+
+   // public static CmmnDefaultVO map2DeaultVo(CommonMap dataMap , String boBeanName){
+   // }
+
+    public static List<CommonMap> json2List(String json) {
         List<CommonMap> result = null;
         try {
             ObjectMapper mapper = new ObjectMapper();

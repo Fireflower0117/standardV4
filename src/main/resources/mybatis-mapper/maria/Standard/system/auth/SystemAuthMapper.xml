@@ -20,16 +20,16 @@
         ]]>
 	</sql>
 
-    <select id="inqAuthList" parameterType="CommonMap" resultType="CommonMap">
+    <select id="admin_inqAuthList" parameterType="CommonMap" resultType="CommonMap">
         <choose>
             <when test="cmd == 'selectPage'">
-                /* on.standard.system.auth.inqAuthList selectPage */
+                /* on.standard.system.auth.admin_inqAuthList selectPage */
                 <include refid="pageHeader"/>
                 <include refid="systemAuthListSql"/>
                 <include refid="pageFooter"/>
             </when>
             <otherwise>
-                /* on.standard.system.auth.inqAuthList  selectList */
+                /* on.standard.system.auth.admin_inqAuthList  selectList */
                 <include refid="systemAuthListSql"/>
             </otherwise>
         </choose>
@@ -127,7 +127,8 @@
          WHERE AUTH_ID = #{authId}
     </select>
 
-    <update id="updAuthInfo" parameterType="CommonMap">
+    <update id="admin_updAuthInfo" parameterType="CommonMap">
+        /* on.standard.system.auth.admin_updAuthInfo */
          UPDATE STB_B_AUTH_MNG
             SET AUTH_ID = #{authId}
             <if test="authKorName != null and authKorName != ''">
@@ -179,6 +180,7 @@
         /* on.standard.system.auth.selectAuthList */
         SELECT AUTH_ID        authId
              , AUTH_KOR_NAME  authKorName
+             , CONCAT(AUTH_KOR_NAME,' (',AUTH_ID,')' )  AS authFullName
           FROM STB_B_AUTH_MNG
          WHERE USE_YN = 'Y'
          ORDER BY AUTH_ID
@@ -191,7 +193,7 @@
         WHERE AUTH_ID = #{authId}
     </select>
 
-    <insert id="insertAuthInfo"  parameterType="CommonMap">
+    <insert id="admin_insertAuthInfo"  parameterType="CommonMap">
         /*  on.standard.system.auth.insertAuthInfo
             on.xhr.ajax로 입력하는경우 ({cmd: "insert" : sql:"on.standard.system.auth.insertAuthInfo"})
          */

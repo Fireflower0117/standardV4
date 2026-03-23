@@ -77,6 +77,7 @@ public class ContTmplVO  extends CmmnDefaultVO {
 	private List<HashMap<String,String>> mapArr;
 	private List<MultipartFile> files;
 	private String fileSeqo;
+	private String fileSn;
 	private String rlFileNm;
 	private String fileExtnNm;
 	private String fileSzVal;

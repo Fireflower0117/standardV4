@@ -110,7 +110,7 @@ CKEDITOR.plugins.add('addImage', {
                                     if (data.fileList != null || data.fileList != '') {
                                         for (var i = 0; i < data.fileList.length; i++) {
                                             // 에디터에 이미지 추가
-                                            editor.insertHtml('<img src="/file/getImage.do?atchFileId=' + data.fileList[i].atchFileId + '&fileSeqo=' + i + '&fileNmPhclFileNm=' + data.fileList[i].fileNmPhclFileNm + '" alt="Image">');
+                                            editor.insertHtml('<img src="/file/getImage.do?atchFileId=' + data.fileList[i].atchFileId + '&fileSn=' + i + '&fileNmPhclFileNm=' + data.fileList[i].fileNmPhclFileNm + '" alt="Image">');
                                         }
                                         alert('등록되었습니다.');
                                     } else {

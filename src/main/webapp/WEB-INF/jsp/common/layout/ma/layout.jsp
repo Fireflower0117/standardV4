@@ -14,65 +14,40 @@
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="_csrf" content="${_csrf}" />
+    <meta name="_csrf_header" content="X-CSRF-TOKEN" />
 	<title>오픈노트 - 표준안 Ver.4</title>
-	<c:choose>
-		<c:when test="${not empty logoInfo.LGFC.atchFileId}">
-			<link rel="icon" href="/file/getByteImage.do?atchFileId=<c:out value='${logoInfo.LGFC.atchFileId}'/>&fileSeqo=<c:out value='${logoInfo.LGFC.fileSeqo}'/>&fileNmPhclFileNm=<c:out value='${logoInfo.LGFC.fileNmPhclFileNm}'/>" type="image/x-icon">
-		</c:when>
-		<c:otherwise>
-			<link rel="icon" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/images/logo.png" type="image/x-icon">
-		</c:otherwise>
-	</c:choose>
+	<link rel="icon" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/images/logo.png" type="image/x-icon">
 <%-- 	<link rel="icon" href="<c:out value='${pageContext.request.contextPath}'/>${logo.value.imgPath }" type="image/x-icon"> --%>
-	 
-	
 	<link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.css">
     <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/css/basic.css"> 
     <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/css/board.css">
     <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/css/common.css">
+    <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/css/reset.css">
     <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/simplebar/simplebar.min.css">
+    <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/jstree/3.3.12/themes/default/style.min.css">
 
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery/jquery.min.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.js"></script>
-
-    <!-- jquery-validate -->
-    <!-- link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/semantic-ui/2.1.4/semantic.min.css" -->
-    <!-- script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-validate/1_19_5/dist/jquery.validate.js" -->
-    <!-- script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-validate/1_19_5/lib/jquery-1.11.1.js" -->
-
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
-
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-filedown/fileDownload.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/simplebar/simplebar.min.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/ckeditor/ckeditor.js?ver=2"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/html2canvas/html2canvas.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/googleapi/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-ui/css/jquery-ui-1.12.1.custom.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-validate/1.17.0/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/common.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/basic.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/board.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/atchFile.js"></script>
 
 
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/js/common.js"></script>
-	<!-- script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/js/cm.validate.js" charset="utf-8"></script -->
-    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/ma/js/basic.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/board.js"></script>
-	<script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/internal/standard/common/js/atchFile.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jquery-filedown/fileDownload.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/simplebar/simplebar.min.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/ckeditor/ckeditor.js?ver=2"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/html2canvas/html2canvas.js"></script>
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/clipboard/clipboard.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+    <link rel="stylesheet" href="<c:out value='${pageContext.request.contextPath}'/>/external/chosen/chosen.css">
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/chosen/chosen.jquery.js"></script>
 
-
+    <script type="text/javascript" src="<c:out value='${pageContext.request.contextPath}'/>/external/jstree/3.3.12/js/jstree.min.js"></script>
 	<jsp:include  page="/WEB-INF/jsp/common/clientlib.jsp" />
-
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script>
-		<%-- 단위테스트용 함수 호출 --%>
-		/*$(function(){
-			$(document).on("click",".page_title",function(){
-				fncSetTestInput();
-			});
-		});*/
-
-		/*var depth1 = "${sessionScope.menuCdMap.depth1}";
-		var depth2 = "${sessionScope.menuCdMap.depth2}";
-		var depth3 = "${sessionScope.menuCdMap.depth3}";
-		var depth4 = "${sessionScope.menuCdMap.depth4}";*/
-	</script>
 </head>
 <body>
 	<!-- skip menu -->
@@ -107,7 +82,7 @@
 	</div>
 	<form name="fileDownFrm" id="fileDownFrm">
 		<input type="hidden" name="atchFileId" id="downAtchFileId"/>
-		<input type="hidden" name="fileSeqo" id="downAtchSeqo"/>
+		<input type="hidden" name="fileSn" id="downAtchSeqo"/>
 		<input type="hidden" name="fileRlNm" id="downAtchRlNm"/>
 		<input type="hidden" name="fileNmPhclFileNm" id="downAtchPhclNm" />
 	</form>

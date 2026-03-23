@@ -115,7 +115,7 @@
 		fncFirstAction('my');
 		
 		// 사용여부 세팅
-		$.opnt.html.setEleVal({ele : "input[name='useYn']", val :'${authVO.useYn}'}); 
+		on.html.setEleVal({ele : "input[name='useYn']", val :'${authVO.useYn}'});
 	});
 
 	<%-- 최대 레벨 --%>

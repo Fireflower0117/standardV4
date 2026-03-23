@@ -19,16 +19,16 @@
 
 
 		// 권한사용여부
-		on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#useYn" }
-                                       , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" }
-                                       , comboDataInfo :  inqCdRsltList.useYnList
-                                       });
+		on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#useYn" }
+                                     , optionValInfo : { optId : "comCd" , optTxt : "cdNm" }
+                                     , dataInfo      : inqCdRsltList.useYnList
+                                     });
 
         // 권한 삭제여부
-        on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#isDelAble" }
-                                       , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" }
-                                       , comboDataInfo :   inqCdRsltList.isDelAbleList
-                                       });
+        on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#isDelAble" }
+                                     , optionValInfo : { optId : "comCd" , optTxt : "cdNm" }
+                                     , dataInfo      :   inqCdRsltList.isDelAbleList
+                                     });
 
 
         /***************************************************************************
@@ -90,7 +90,7 @@
 
                  // 권한ID 저장
                  on.xhr.ajax({ sid : "systemAuthRegist" // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
-                              , cmd : "insert" , sql : "on.standard.system.auth.insertAuthInfo"
+                              , cmd : "insert" , sql : "on.standard.system.auth.admin_insertAuthInfo" // AllAdmin만 SQL수행가능
                               , validation : { formId : "#systemAuthfrm" , validationList : systemAuthRegValidateList  }  // 유효성검증 기능 포함
                               , data       : $("#systemAuthfrm").serializeArray()
                               , successFn  : function (sid, data){

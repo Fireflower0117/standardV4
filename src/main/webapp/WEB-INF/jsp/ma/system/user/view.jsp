@@ -28,25 +28,30 @@
         *****************************************************************************************************/
 
 
-        /***************************************************************************/
-        /*********************        저장/수정/삭제 수행          ********************/
-        /***************************************************************************/
+        /******************************************************************************************************
+        ********************************              저장/수정/삭제 수행                *************************
+        *****************************************************************************************************/
 
         <c:if test="${USER_AUTH.DELETE_YN== 'Y'}">
              // 삭제권한이 있으면 Event 수행
              $("#btnDelete").on("click", (evt) => {
-                   // 사용자 삭제
-                  on.xhr.ajax({ sid : "userDelete"  // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
-                              , cmd : "delete" , sql : "on.standard.system.user.deleteUserInfo"
-                              , userId   : "${param.userId}" // 전송Data 추가
-                              , successFn  : function (sid, data){
-                                       on.msg.showMsg({message : "사용자정보를 삭제했습니다."})
-                                       on.html.dynaGenHiddenForm({ formDefine : { fid:"userListForm" , action:"/ma/system/user/list.do" , method : "post" , isSubmit : true  }
-                                                                 , formAttrs  : [ { name : "searchCondition" , value : JSON.stringify(${param.searchCondition}) }
-                                                                                ]
-                                       }); // HiddenForm 생성및 전송
-                                }
-                  });
+
+                if(on.msg.confirm({message : "정말 삭제하시겠습니까.?"}) === true ){
+                     // 사용자 삭제
+                    on.xhr.ajax({ cmd : "multiAction"
+                                , userId   : "${param.userId}" // 전송Data 추가
+                                , multiAction : [ {cmd : "delete" , sql : "on.standard.system.user.deleteUserMng"    }
+                                                , {cmd : "delete" , sql : "on.standard.system.user.deleteAuthUserMng" }
+                                                ]
+                                , successFn  : function (data){
+                                         on.msg.showMsg({message : "사용자정보를 삭제했습니다."})
+                                         on.html.dynaGenHiddenForm({ formDefine : { fid:"userListForm" , action:"/ma/system/user/list.do" , method : "post" , isSubmit : true  }
+                                                                   , formAttrs  : [ { name : "searchCondition" , value : JSON.stringify(${param.searchCondition}) }
+                                                                                  ]
+                                         }); // HiddenForm 생성및 전송
+                                  }
+                    });
+                }
              });
         </c:if>
 

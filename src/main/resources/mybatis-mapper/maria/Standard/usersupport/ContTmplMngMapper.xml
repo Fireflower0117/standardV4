@@ -12,7 +12,7 @@
 		<if test="schEtc02 !=null and schEtc02 !=''">
 			AND TMPL_TP = #{schEtc02}
 		</if>
-		
+
 		<if test="schEtc03 !=null and schEtc03 !=''">
 			AND TMPL_CL = #{schEtc03}
 			<if test="schEtc04 !=null and schEtc04 !=''">

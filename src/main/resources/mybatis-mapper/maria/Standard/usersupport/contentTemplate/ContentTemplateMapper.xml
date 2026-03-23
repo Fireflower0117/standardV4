@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.standard.usersupport.ContentTemplate">
+
+    <sql id="pageHeader">
+		  <![CDATA[
+        SELECT (${rn_top} / (${rn_top} - ${rn_bottom})) AS pageNo
+             , (${rn_top} - ${rn_bottom})               AS pageSize
+             , totalCount - (rowindx - 1)               AS rrowindx
+             , ROW_.*
+        FROM (
+        ]]>
+	</sql>
+
+    <sql id="pageFooter">
+		  <![CDATA[
+        ) AS ROW_
+			    ORDER BY ROW_.rowindx  DESC
+			   LIMIT ${rn_limit} OFFSET ${rn_bottom}
+        ]]>
+	</sql>
+
+
+    <sql id="Where">
+        <if test="schEtc00 !=null and schEtc00 !=''">
+            AND TMPL_CL = #{schEtc00}
+        </if>
+        <if test="schEtc01 !=null and schEtc01 !=''">
+            AND TMPL_TP = #{schEtc01}
+        </if>
+        <if test="schEtc02 !=null and schEtc02 !=''">
+            AND TMPL_TP = #{schEtc02}
+        </if>
+
+        <if test="schEtc03 !=null and schEtc03 !=''">
+            AND TMPL_CL = #{schEtc03}
+            <if test="schEtc04 !=null and schEtc04 !=''">
+                AND TMPL_TP = #{schEtc04}
+            </if>
+        </if>
+        <if test="searchKeyWord !=null and searchKeyWord !=''">
+            <if test="searchKeyCd ==null or searchKeyCd == ''">
+                AND (   UPPER(TMPL_EXPL) LIKE CONCAT('%',UPPER(#{searchKeyWord}),'%')
+                     OR UPPER(EDITR_CONT) LIKE CONCAT('%',UPPER(#{searchKeyWord}),'%')
+                )
+            </if>
+            <if test="searchKeyCd == description">
+                AND UPPER(TMPL_EXPL) LIKE CONCAT('%',UPPER(#{searchKeyWord}),'%')
+            </if>
+            <if test="searchKeyCd == content">
+                AND UPPER(EDITR_CONT) LIKE CONCAT('%',UPPER(#{searchKeyWord}),'%')
+            </if>
+        </if>
+    </sql>
+
+    <select id="selContentTemplateList" parameterType="CommonMap" resultType="CommonMap">
+        <choose>
+            <when test="cmd == 'selectPage'">
+                /*  com.standard.usersupport.ContentTemplate.selContentTemplateList selectPage */
+                <include refid="pageHeader"/>
+                <include refid="sqlContentTemplateListSql"/>
+                <include refid="pageFooter"/>
+            </when>
+            <otherwise>
+                /*  com.standard.usersupport.ContentTemplate.selContentTemplateList  selectList */
+                <include refid="sqlContentTemplateListSql"/>
+            </otherwise>
+        </choose>
+    </select>
+
+    <sql id="sqlContentTemplateListSql">
+        SELECT A.rownum_         rowindx
+             , B.TOTAL_COUNT     totalCount
+             , A.TMPL_SERNO      tmplSerno
+             , A.TMPL_CL         tmplCl
+             , A.TMPL_CL_NM      tmplClNm
+             , A.TMPL_TP_NM      tmplTpNm
+             , A.TMPL_EXPL       tmplExpl
+             , A.PRVW_FILE_SERNO prvwFileSerno
+             , A.REG_DT          regDt
+          FROM ( SELECT ROW_NUMBER() OVER (ORDER BY  CTM.REG_DATE ASC) AS rownum_
+                     ,  CTM.TMPL_SERNO                         AS TMPL_SERNO
+                     , CTM.TMPL_CL                             AS TMPL_CL
+                     , FN_S_COM_CD_INFO('TMCL',TCTM.MPL_CL,'') AS TMPL_CL_NM
+                     , CTM.TMPL_TP                             AS TMPL_TP
+                     , FN_S_COM_CD_INFO('TMTP',CTM.TMPL_TP,'') AS TMPL_TP_NM
+                     , CTM.TMPL_EXPL                           AS TMPL_EXPL
+                     , CTM.PRVW_FILE_SERNO                     AS PRVW_FILE_SERNO
+                     , DATE_FORMAT(CTM.REG_DATE, '%Y.%m.%d')   AS REG_DT
+                  FROM STB_B_CONT_TMPL_MNG CTM
+                 WHERE USE_YN = 'Y'
+                 <include refid="Where"/>
+          )
+          JOIN ( SELECT COUNT(*) TOTAL_COUNT
+                   FROM STB_B_CONT_TMPL_MNG CTM
+                  WHERE USE_YN = 'Y'
+               <include refid="Where"/>
+        ) B ON 1 = 1
+    </sql>
+
+
+    <!-- 컨텐츠 목록 조회-->
+    <select id="selectList" parameterType="contTmplVO" resultType="contTmplVO">
+        /* com.standard.usersupport.ContentTemplate.selectList */
+       SELECT TMPL_SERNO								tmplSerno
+            , FNC_CODE_NM(TMPL_CL)						tmplCl
+            , FNC_CODE_NM(TMPL_TP)						tmplTp
+            , TMPL_EXPL								    tmplExpl
+            , PRVW_FILE_SERNO							prvwFileSerno
+            , DATE_FORMAT(REG_DT, '%Y.%m.%d')			regDt
+        FROM STB_B_CONT_TMPL_MNG
+        <where>
+            <include refid="Where"/>
+            AND USE_YN = 'Y'
+        </where>
+        ORDER BY TMPL_SERNO DESC
+        LIMIT #{firstRecordIndex} , #{recordCountPerPage}
+    </select>
+
+    <!-- 컨텐츠 파일 목록 조회 -->
+    <select id="selectContTmplFileList" parameterType="contTmplVO" resultType="contTmplVO">
+        /* com.standard.usersupport.ContentTemplate.selectContTmplFileList */
+        SELECT TMPL_FILE_SERNO										 tmplFileSerno
+             , FILE_SEQO													 fileSeqo
+             , RL_FILE_NM												 rlFileNm
+             , TRUNCATE(CEILING(FILE_SZ_VAL/(1024 * 1024 * 100))/100, 2)	 fileSzVal
+             , DATE_FORMAT(REG_DT, '%Y.%m.%d')							 regDt
+          FROM STB_B_CONT_TMPL_MNG
+         WHERE 1 = 1
+           AND DEL_YN = 'N'
+           AND TMPL_FILE_SERNO = #{tmplFileSerno}
+         ORDER BY FILE_SEQO ASC
+    </select>
+
+</mapper>

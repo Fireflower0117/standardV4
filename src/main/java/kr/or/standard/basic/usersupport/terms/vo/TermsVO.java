@@ -133,15 +133,6 @@ public class TermsVO extends CmmnDefaultVO {
 			this.expsrYn = expsrYn;
 		}
 
-		@Override
-		public String getLoginSerno() {
-			return loginSerno;
-		}
-
-		public void setLoginSerno(String loginSerno) {
-			this.loginSerno = loginSerno;
-		}
-
 		public String getSelTpNm() {
 			return selTpNm;
 		}

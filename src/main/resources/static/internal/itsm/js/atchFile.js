@@ -132,11 +132,11 @@ const setFileList = function () {
 								fileHTML += "</li>";
 							}
 							fileHTML += "<li>";
-							fileHTML += "	<div class='file_img'><img src='/itsm/file/getImage.do?atchFileId=" + atchFileList[i].atchFileId + "&fileSeqo=" + atchFileList[i].fileSeqo + "' width='100%' onerror='/itsm/images/sub/no_img.png' alt='이미지'></div>";
+							fileHTML += "	<div class='file_img'><img src='/itsm/file/getImage.do?atchFileId=" + atchFileList[i].atchFileId + "&fileSn=" + atchFileList[i].fileSn + "' width='100%' onerror='/itsm/images/sub/no_img.png' alt='이미지'></div>";
 							fileHTML += "	<div class='file_btns_box r'>";
 							fileHTML += "		<label style='display:none'>";
 							fileHTML += "			<input type='checkbox' class='check_fileDel' >";
-							fileHTML += "			<input type='hidden' name='fileSeqo' value='" + atchFileList[i].fileSeqo + "'>";
+							fileHTML += "			<input type='hidden' name='fileSn' value='" + atchFileList[i].fileSn + "'>";
 							fileHTML += "		</label>";
 							fileHTML += "		<span class='file_name'>"+atchFileList[i].fileRlNm+"</span>";
 							fileHTML += "		<span class='fake_file'>";
@@ -147,8 +147,8 @@ const setFileList = function () {
 							fileHTML += "</li>";
 						} else if(uploadType === "imageView") {
                             fileHTML += "<li>";
-                            fileHTML += "    <div class='file_img'><img src='/itsm/file/getImage.do?atchFileId="+ atchFileList[i].atchFileId +"&fileSeqo="+ atchFileList[i].fileSeqo + "' class='image' width='100%' /></div>";
-                            fileHTML += "    <div class='file_btns_box r cursor viewPop' data-seq='"+atchFileList[i].fileSeqo+"' onclick='atchFileImageView(this)' data-imageNm='"+atchFileList[i].fileRlNm+"'>이미지 크게 보기</div>";
+                            fileHTML += "    <div class='file_img'><img src='/itsm/file/getImage.do?atchFileId="+ atchFileList[i].atchFileId +"&fileSn="+ atchFileList[i].fileSn + "' class='image' width='100%' /></div>";
+                            fileHTML += "    <div class='file_btns_box r cursor viewPop' data-seq='"+atchFileList[i].fileSn+"' onclick='atchFileImageView(this)' data-imageNm='"+atchFileList[i].fileRlNm+"'>이미지 크게 보기</div>";
                             fileHTML += "</li>";	
 						} else if(uploadType === "byteImage") {
 							if(i == 0){
@@ -168,11 +168,11 @@ const setFileList = function () {
 								fileHTML += "</li>";
 							}
 							fileHTML += "<li>";
-							fileHTML += "	<div class='file_img'><img src='/itsm/file/getByteImage.do?atchFileId=" + atchFileList[i].atchFileId + "&fileSeqo=" + atchFileList[i].fileSeqo + "' width='100%' onerror='/itsm/images/sub/no_img.png' alt='이미지'></div>";
+							fileHTML += "	<div class='file_img'><img src='/itsm/file/getByteImage.do?atchFileId=" + atchFileList[i].atchFileId + "&fileSn=" + atchFileList[i].fileSn + "' width='100%' onerror='/itsm/images/sub/no_img.png' alt='이미지'></div>";
 							fileHTML += "	<div class='file_btns_box r'>";
 							fileHTML += "		<label style='display:none'>";
 							fileHTML += "			<input type='checkbox' class='check_fileDel' >";
-							fileHTML += "			<input type='hidden' name='fileSeqo' value='" + atchFileList[i].fileSeqo + "'>";
+							fileHTML += "			<input type='hidden' name='fileSn' value='" + atchFileList[i].fileSn + "'>";
 							fileHTML += "		</label>";
 							fileHTML += "		<span class='file_name'>"+atchFileList[i].fileRlNm+"</span>";
 							fileHTML += "		<span class='fake_file'>";
@@ -183,26 +183,26 @@ const setFileList = function () {
 							fileHTML += "</li>";
 						} else if (uploadType === "byteImageView") {
 							fileHTML += "<li>";
-                            fileHTML += "    <div class='file_img'><img src='/itsm/file/getByteImage.do?atchFileId="+ atchFileList[i].atchFileId +"&fileSeqo="+ atchFileList[i].fileSeqo + "' class='image' width='100%' /></div>";
-                            fileHTML += "    <div class='file_btns_box r cursor viewPop' data-seq='"+atchFileList[i].fileSeqo+"' onclick='atchFileImageView(this)' data-imageNm='"+atchFileList[i].fileRlNm+"'>이미지 크게 보기</div>";
+                            fileHTML += "    <div class='file_img'><img src='/itsm/file/getByteImage.do?atchFileId="+ atchFileList[i].atchFileId +"&fileSn="+ atchFileList[i].fileSn + "' class='image' width='100%' /></div>";
+                            fileHTML += "    <div class='file_btns_box r cursor viewPop' data-seq='"+atchFileList[i].fileSn+"' onclick='atchFileImageView(this)' data-imageNm='"+atchFileList[i].fileRlNm+"'>이미지 크게 보기</div>";
                             fileHTML += "</li>";	
 						} else if(uploadType === "view") {
 							let fileFextNm = atchFileList[i].fileFextNm.toLowerCase();
 							let fileNm = atchFileList[i].fileRlNm;
-							fileHTML += '<span style="cursor: pointer;" onclick="fileDown(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSeqo + '\',\'' + fileNm.replace(/'/g, "\\'") + '\')">' + fileImg(fileFextNm, fileNm) + '</span><br>';
+							fileHTML += '<span style="cursor: pointer;" onclick="fileDown(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSn + '\',\'' + fileNm.replace(/'/g, "\\'") + '\')">' + fileImg(fileFextNm, fileNm) + '</span><br>';
 						} else if (uploadType === "byteView") {
 							let fileFextNm = atchFileList[i].fileFextNm.toLowerCase();
 							let fileNm = atchFileList[i].fileRlNm
 							fileHTML += "<tr>";
-							fileHTML += '	<td class="pad_l10 no_bdl"><span style="cursor: pointer;" onclick="fileByteDown(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSeqo + '\',\'' + fileNm + '\')">' + fileImg(fileFextNm, fileNm) + '</span></td>';
+							fileHTML += '	<td class="pad_l10 no_bdl"><span style="cursor: pointer;" onclick="fileByteDown(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSn + '\',\'' + fileNm + '\')">' + fileImg(fileFextNm, fileNm) + '</span></td>';
 							fileHTML += "	<td class='pad_l10 c'>" + convertFileSize(atchFileList[i].fileSizeVal) + "</td>";
 							fileHTML += "</tr>";
 						} else if (uploadType === "cmntByteView") {
 							let fileFextNm = atchFileList[i].fileFextNm.toLowerCase();
 							let fileNm = atchFileList[i].fileRlNm
-							fileHTML += '<span style="cursor: pointer;" onclick="fileByteDown(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSeqo + '\',\'' + fileNm + '\')">' + fileImg(fileFextNm, fileNm) + '</span>';
+							fileHTML += '<span style="cursor: pointer;" onclick="fileByteDown(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSn + '\',\'' + fileNm + '\')">' + fileImg(fileFextNm, fileNm) + '</span>';
 							if(atchFileList[i].fileTpNm.indexOf('image') != -1){
-								fileHTML += '&nbsp;&nbsp;<span class="thum_img_info btn_sml" style="cursor: pointer;height: 23px;" onclick="fncPreviewShow(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSeqo + '\',\'' + fileNm + '\');return false;">';
+								fileHTML += '&nbsp;&nbsp;<span class="thum_img_info btn_sml" style="cursor: pointer;height: 23px;" onclick="fncPreviewShow(\'' + atchFileList[i].atchFileId + '\',\'' + atchFileList[i].fileSn + '\',\'' + fileNm + '\');return false;">';
 								fileHTML += '<i class="xi-zoom-in">미리보기</i></span><br>';
 							}else{
 								fileHTML += '<br>';
@@ -212,7 +212,7 @@ const setFileList = function () {
 							fileHTML += "	<td class='c no_bdl'>";
 							fileHTML += "		<label>";
 							fileHTML += "			<input type='checkbox' class='check_fileDel'>";
-							fileHTML += "			<input type='hidden' name='fileSeqo' value='" + atchFileList[i].fileSeqo + "'>";
+							fileHTML += "			<input type='hidden' name='fileSn' value='" + atchFileList[i].fileSn + "'>";
 							fileHTML += "		</label>";
 							fileHTML += "	</td>";
 							fileHTML += "	<td class='pad_l10'>" + atchFileList[i].fileRlNm + "</td>";
@@ -543,15 +543,15 @@ const delFile = function (obj) {
 		console.log($(this));
 		let delRow = $(this).parents("tr");
 		let delRowIdx = atchFileTbody.find(delRow).index();
-		const fileSeqo = $(this).siblings("[name='fileSeqo']").val();
-		if (typeof(fileSeqo) === "undefined" || fileSeqo == null || fileSeqo === "") {
+		const fileSn = $(this).siblings("[name='fileSn']").val();
+		if (typeof(fileSn) === "undefined" || fileSn == null || fileSn === "") {
 			// 새로 추가한 파일이면 atchFileArr에서 제거
 			atchFileArr.splice(delRowIdx - atchedFileCnt, 1);
 		} else {
 			// 기존 첨부파일이면 deleteFileArr에 담기
 			const param = {
 				"atchFileId" : atchFileIdTemp
-				, "fileSeqo" : fileSeqo
+				, "fileSn" : fileSn
 			};
 			deleteFileArr.push(param);
 			div.children(".atchedFileCnt").val(atchedFileCnt - 1); // 기존에 첨부된 파일 삭제시 첨부된 파일건수 - 1 처리 해줘야함
@@ -622,15 +622,15 @@ const delImageFile = function (obj) {
 	atchFileTbody.find(".check_fileDel:checked").each(function () {
 		let delRow = $(this).parents("li");
 		let delRowIdx = atchFileTbody.find(delRow).index();
-		const fileSeqo = $(this).siblings("[name='fileSeqo']").val();
-		if (typeof(fileSeqo) === "undefined" || fileSeqo == null || fileSeqo === "") {
+		const fileSn = $(this).siblings("[name='fileSn']").val();
+		if (typeof(fileSn) === "undefined" || fileSn == null || fileSn === "") {
 			// 새로 추가한 파일이면 atchFileArr에서 제거
 			atchFileArr.splice(delRowIdx-atchedFileCnt-1, 1);
 		} else {
 			// 기존 첨부파일이면 deleteFileArr에 담기
 			const param = {
 				"atchFileId" : atchFileIdTemp
-				, "fileSeqo" : fileSeqo
+				, "fileSn" : fileSn
 			};
 			deleteFileArr.push(param);
 		}
@@ -784,9 +784,9 @@ const convertFileSize = function (bytes) {
 	return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + "" + sizes[i];
 }
 
-function fileDown(fileId, fileSeqo, fileRlnm){
+function fileDown(fileId, fileSn, fileRlnm){
 	$("#downAtchFileId").val(fileId);
-	$("#downAtchSeqo").val(fileSeqo);
+	$("#downAtchSn").val(fileSn);
 	$("#downAtchRlNm").val(fileRlnm);
 	$("#fileDownFrm").attr({
 		action : "/itsm/file/down.do",
@@ -796,9 +796,9 @@ function fileDown(fileId, fileSeqo, fileRlnm){
 	}).submit();
 }
 
-function fileByteDown(fileId, fileSeqo, fileRlnm){
+function fileByteDown(fileId, fileSn, fileRlnm){
 	$("#downAtchFileId").val(fileId);
-	$("#downAtchSeqo").val(fileSeqo);
+	$("#downAtchSn").val(fileSn);
 	$("#downAtchRlNm").val(fileRlnm);
 	$("#fileDownFrm").attr({
 		action : "/itsm/file/downloadByte.do",
@@ -850,8 +850,8 @@ function atchFileImageView(obj){
 
 
 
-function fncPreviewShow(fileId, seqo, nm){
-	fncAjax('/itsm/file/previewImg.do', {"atchFileId" : fileId, "fileSeqo" : seqo, "fileRlNm" : nm}, 'html', true, '', function(data){
+function fncPreviewShow(fileId, sn, nm){
+	fncAjax('/itsm/file/previewImg.do', {"atchFileId" : fileId, "fileSn" : sn, "fileRlNm" : nm}, 'html', true, '', function(data){
 		modal_show('1000px','650px',data);
 	});
 }

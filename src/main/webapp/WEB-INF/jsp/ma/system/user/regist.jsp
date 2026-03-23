@@ -18,9 +18,9 @@
         *****************************************************************************************************/
 
       	// 가입경로
-		on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#userAuth" }
+		on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#userAuth" }
                                      , optionValInfo : { optId : "authId" , optTxt : "authKorName"  }
-                                     , comboDataInfo :  inqCdRsltList.userAuthList
+                                     , dataInfo      :  inqCdRsltList.userAuthList
                                      });
 
 
@@ -75,7 +75,7 @@
 
                   // 권한 수정 (ajax형태 )
                   on.xhr.ajax({ sid : "userRegistTran"  // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
-                              , cmd : "multiAction" , sql : "on.standard.system.user.insertUserInfo"
+                              , cmd : "multiAction"
                               , validation : { formId : "#systemUserfrm" , validationList : systemAuthValidateList  }  // 유효성검증기능 추가 관련
                               , data       : $("#systemUserfrm").serializeArray()   // Form Data
                               , userPswd   : on.enc.encrypt({encVal : on.html.getEleVal({ ele : "#userId"})  }) // 전송Data 추가

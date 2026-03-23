@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="on.standard.system.menual">
+
+    <sql id="pageHeader">
+		  <![CDATA[
+        SELECT (${rn_top} / (${rn_top} - ${rn_bottom})) AS pageNo
+             , (${rn_top} - ${rn_bottom})               AS pageSize
+             , totalCount - (rowindx - 1)               AS rrowindx
+             , ROW_.*
+        FROM (
+        ]]>
+	</sql>
+
+    <sql id="pageFooter">
+		  <![CDATA[
+        ) AS ROW_
+			    ORDER BY ROW_.rowindx  DESC
+			   LIMIT ${rn_limit} OFFSET ${rn_bottom}
+        ]]>
+	</sql>
+
+
+
+
+    <select id="selMenualList" parameterType="CommonMap" resultType="CommonMap">
+        <choose>
+            <when test="cmd == 'selectPage'">
+                /*  on.standard.system.menual.selMenualList selectPage */
+                <include refid="pageHeader"/>
+                <include refid="sqlMenualListSql"/>
+                <include refid="pageFooter"/>
+            </when>
+            <otherwise>
+                /*  on.standard.system.menual.selMenualList  selectList */
+                <include refid="sqlMenualListSql"/>
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <sql id="sqlMenualListSql">
+        SELECT A.rownum_        rowindx
+             , B.TOTAL_COUNT    totalCount
+             , A.MNL_SERNO      mnlSerno
+             , A.MENU_CL_NM     menuClNm
+             , A.TCHGR_NM       tchgrNm
+             , A.MENU_EXPL      menuExpl
+             , A.ATCH_FILE_ID   atchFileId
+             , A.USE_YN         useYn
+             , A.REG_USER       regUser
+             , A.REG_USER_NM    regUserNm
+             , DATE_FORMAT(A.REG_DATE, '%Y.%m.%d %H:%i') regDate
+        from (
+                 SELECT ROW_NUMBER() OVER (ORDER BY SMM.REG_DATE ASC) AS rownum_
+		              , SMM.MNL_SERNO
+                      , SMM.MENU_CL_NM
+                      , SMM.TCHGR_NM
+                      , SMM.MENU_EXPL
+                      , SMM.ATCH_FILE_ID
+                      , SMM.USE_YN
+                      , SMM.REG_USER
+                      , FN_S_USER_INFO(SMM.REG_USER,'') AS REG_USER_NM
+                      , SMM.REG_DATE
+                   FROM STB_SM_MNL_MNG SMM
+                  WHERE 1 = 1
+                <if test="searchKeyWord != null and searchKeyWord != ''">
+                    <choose>
+                        <when test="searchKeyCd == 'menualNm'">
+                            AND SMM.MENU_CL_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                        </when>
+                        <when test="searchKeyCd == 'userNm'">
+                            AND SMM.TCHGR_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                        </when>
+                        <otherwise>
+                            AND (  SMM.MENU_CL_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                                OR SMM.TCHGR_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                                )
+                        </otherwise>
+                    </choose>
+                </if>
+        ) A
+        JOIN ( SELECT COUNT(*) TOTAL_COUNT
+                 FROM STB_SM_MNL_MNG SMM
+                WHERE 1 = 1
+                <if test="searchKeyWord != null and searchKeyWord != ''">
+                    <choose>
+                        <when test="searchKeyCd == 'menualNm'">
+                            AND SMM.MENU_CL_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                        </when>
+                        <when test="searchKeyCd == 'userNm'">
+                            AND SMM.TCHGR_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                        </when>
+                        <otherwise>
+                            AND (  SMM.MENU_CL_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                            OR SMM.TCHGR_NM LIKE CONCAT('%',#{searchKeyWord},'%')
+                            )
+                        </otherwise>
+                    </choose>
+                </if>
+        ) B ON 1 = 1
+    </sql>
+
+</mapper>

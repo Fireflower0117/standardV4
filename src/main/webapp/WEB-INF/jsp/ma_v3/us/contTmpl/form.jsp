@@ -175,7 +175,7 @@ const fncDelTmplFile = function(){
 	}
 	
 	$targetChk.each(function(){
-		delFileList.push($(this).attr("data-fileseqo"));
+		delFileList.push($(this).attr("data-filesn"));
 	});
 	
 	$.ajax({
@@ -311,7 +311,7 @@ $(document).ready(function(){
 				<td>
 				<select name="tmplCl" id="tmplCl" title="템플릿 유형" class="w50p" required="required">
 				</select>
-				<select name="tmplTp" id="tmplTp" title="템플릿 타입" class="w48p" required="required"> 
+				<select name="tmplTp" id="tmplTp" title="템플릿 타입" class="w48p" required="required">
 				</select>
 				</td>
 				<th scope="row"><span class="asterisk">*</span>템플릿 설명</th>

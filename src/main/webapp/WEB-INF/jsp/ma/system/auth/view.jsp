@@ -12,27 +12,19 @@
 					                                            ]
 		                     });
 
-		// 권한 정보 조회 (한페이지내부 두번째 Transaction = 서버 2번호출)
-		//let authInfoObj  = on.xhr.ajax({sid:"authView", sql : "on.standard.system.auth.selAuthView" , cmd : "selectOne", findAuthId : "${param.authId}" });
-
 
       /******************************************************************************************************
         ***********************************              페이지 세팅                  *************************
         *****************************************************************************************************/
 
         // 비밀번호 갱신주기 사용여부
-        on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#useYn" }
-                                       , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" }
-                                       , comboDataInfo :   inqCdRsltList.useYnList
-                                       });
+        on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#useYn" }
+                                     , optionValInfo : { optId : "comCd" , optTxt : "cdNm" }
+                                     , dataInfo      : inqCdRsltList.useYnList
+                                     });
 
         // Page의 속성중 Element Id를 기준으로 자동 매핑
         on.html.docSetElementById( inqCdRsltList.authInfoMap ); // 객체의 속성Key명이 element의 Id와 일치하면 값을 자동으로 세팅한다.
-
-
-       /******************************************************************************************************
-        ********************************              콤퍼넌트  이벤트                 *************************
-        *****************************************************************************************************/
 
 
         /*****************************************************************************************************
@@ -48,7 +40,7 @@
 
                 if( on.msg.confirm({message : "정말 삭제하시겠습니까?"}) === true ){
                     on.xhr.ajax({ sid : "authDeleteTran"  // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
-                                , cmd : "delete" , sql : "on.standard.system.auth.delAuthInfo"  // on.standard.system.auth.updAuthInfo SQL을 수행, update 문을 수행한다.
+                                , cmd : "delete" , sql : "on.standard.system.auth.delAuthInfo"
                                 , authId     : "${param.authId}" // ajax data속성 + data 추가  ==>> (successFn, failFn, sql , cmd , validation 외 속성키는 전부 data로 추가입력 )
                                 , successFn  : function (sid, data){
                                        on.msg.showMsg({message : "삭제했습니다."});
@@ -68,6 +60,11 @@
         <c:if test="${USER_AUTH.UPDATE_YN== 'Y'}">
               // 수정권한이있으면 Event 수행
               $("#btnSubmit").on("click", (evt) => {
+
+                  if(!on.msg.confirm({message: "수정하시겠습니까?"}) ){
+                       return false;
+                  }
+
                   // 유효성 검증 대상
                   let systemAuthValidateList  = [ {name : "useYn"       , label : "권한 사용여부" ,  rule: {"required":true} }
                                                 , {name : "authKorName" , label : "권한 한글명"   ,  rule: {"required":true} }
@@ -75,7 +72,7 @@
 
                   // 권한 수정
                   on.xhr.ajax({ sid : "authUpdateTran"  // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
-                              , cmd : "update" , sql : "on.standard.system.auth.updAuthInfo"  // on.standard.system.auth.updAuthInfo SQL을 수행, update 문을 수행한다.
+                              , cmd : "update" , sql : "on.standard.system.auth.admin_updAuthInfo"  // on.standard.system.auth.admin_updAuthInfo SQL을 수행, update 문을 수행한다. (_admin SQL은 AllAdmin사용자만 수행가능)
                               , validation : { formId : "#systemAuthfrm" , validationList : systemAuthValidateList  }  // 유효성검증기능 추가 관련
                               , data       : $("#systemAuthfrm").serializeArray()  // Data입력관련 (validation과 별개의 Data작업진행
                               , authId     : "${param.authId}" // ajax data속성 + data 추가  ==>> (successFn, failFn, sql , cmd , validation 외 속성키는 전부 data로 추가입력 )
@@ -84,7 +81,7 @@
                                                                  , formAttrs  : [ { name : "searchCondition" , value : JSON.stringify(${param.searchCondition}) }
                                                                                 ]
                                        }); // HiddenForm 생성및 전송
-                                }
+                               }
                   });
               });
         </c:if>

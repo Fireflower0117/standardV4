@@ -122,7 +122,7 @@ public class BasicCrudService {
     
     public int insertlist(String qid, List<CommonMap> listMap) {
         CommonMap actionAttrs = listMap.get(0); 
-        List<CommonMap> insertData = JacksonParsing.toList(""+actionAttrs.get("insertData")); 
+        List<CommonMap> insertData = JacksonParsing.json2List(""+actionAttrs.get("insertData"));
         setSessionUserInfo(insertData);
         return basicCrudDao.insert(qid, insertData); 
     }
@@ -146,7 +146,7 @@ public class BasicCrudService {
     
     public int updateList(String qid, List<CommonMap> listMap) {
         CommonMap actionAttrs = listMap.get(0); 
-        List<CommonMap> upateData = JacksonParsing.toList(""+actionAttrs.get("updateData")); 
+        List<CommonMap> upateData = JacksonParsing.json2List(""+actionAttrs.get("updateData"));
         setSessionUserInfo(upateData);
         return basicCrudDao.update(qid, upateData);
     }
@@ -172,7 +172,7 @@ public class BasicCrudService {
     
     public int deleteList(String qid, List<CommonMap> listMap) {
          CommonMap actionAttrs = listMap.get(0); 
-        List<CommonMap> deleteData = JacksonParsing.toList(""+actionAttrs.get("deleteData")); 
+        List<CommonMap> deleteData = JacksonParsing.json2List(""+actionAttrs.get("deleteData"));
         setSessionUserInfo(deleteData);
         return basicCrudDao.delete(qid, deleteData); 
     }
@@ -223,7 +223,7 @@ public class BasicCrudService {
         String data = JacksonParsing.getBody(request);
 
         if(data != null && !data.isEmpty()) {
-            listMap = JacksonParsing.toList(data);
+            listMap = JacksonParsing.json2List(data);
         }
         switch(method) {
             case "insert":
@@ -263,16 +263,16 @@ public class BasicCrudService {
             UserVO userVO = (UserVO)session.getAttribute("userDetails");
             if(userVO != null){
                 String loginUserId = userVO.getUserId();
-                String loginAuthId = userVO.getAuthId();
+                String loginUsertAuth = userVO.getUserAuth();
                 for(CommonMap sqlCondiMap : sqlCondiMapList) {
                     sqlCondiMap.put("loginUserId", loginUserId);
-                    sqlCondiMap.put("loginAuthId", loginAuthId);
+                    sqlCondiMap.put("loginUserAuth", loginUsertAuth);
                 }
             }
             else {
                 for(CommonMap sqlCondiMap : sqlCondiMapList) {
                     sqlCondiMap.put("loginUserId", "AnonymousUser");
-                    sqlCondiMap.put("loginAuthId", "AnonymousAuth");
+                    sqlCondiMap.put("loginUserAuth", "AnonymousAuth");
                 }
             }
         }
@@ -286,11 +286,11 @@ public class BasicCrudService {
             UserVO userVO = (UserVO)session.getAttribute("userDetails");
             if(userVO != null){
                  sqlCondiMap.put("loginUserId", userVO.getUserId());
-                 sqlCondiMap.put("loginAuthId", userVO.getAuthId());
+                 sqlCondiMap.put("loginUsertAuth", userVO.getUserAuth());
             }
             else {
                 sqlCondiMap.put("loginUserId", "AnonymousUser");
-                sqlCondiMap.put("loginAuthId", "AnonymousAuth");
+                sqlCondiMap.put("loginUsertAuth", "AnonymousAuth");
             }
         }
     }  

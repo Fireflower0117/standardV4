@@ -6,7 +6,7 @@ $(document).ready(function(){
 	fnLinkYn(<c:out value="${logoVO.lnkYn eq 'Y'}"/>);
 
 	<%-- 로고 이미지 --%>
-	$("#atchFileDiv").html('<div class="file_img"><img src="/file/getByteImage.do?atchFileId=<c:out value='${logoVO.atchFileId}'/>&fileSeqo=<c:out value='${logoVO.fileSeqo}'/>&fileNmPhclFileNm=<c:out value='${logoVO.fileNmPhclFileNm}'/>" alt="로고"/></div>')
+	$("#atchFileDiv").html('<div class="file_img"><img src="/file/getByteImage.do?atchFileId=<c:out value='${logoVO.atchFileId}'/>&fileSn=<c:out value='${logoVO.fileSn}'/>&fileNmPhclFileNm=<c:out value='${logoVO.fileNmPhclFileNm}'/>" alt="로고"/></div>')
 
 });
 

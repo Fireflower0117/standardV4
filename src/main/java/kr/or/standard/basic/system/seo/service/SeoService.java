@@ -100,7 +100,7 @@ public class SeoService extends EgovAbstractServiceImpl  {
     public void addList(SeoVO searchVO, Model model){
         
 		//검증 URL
-		searchVO.setVcUrl(searchVO.getSearchKeyword());
+		searchVO.setVcUrl(searchVO.getSearchKeyWord());
 
 		//사용자가 url마지막에 /입력시 제거하는로직
 		if (searchVO.getVcUrl() != null && searchVO.getVcUrl().endsWith("/")) {

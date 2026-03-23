@@ -27,8 +27,8 @@ $(document).ready(function () {
 	<div class="pop_content" id="pop_content<c:out value="${popupVO.popupSerno}"/>" style="min-height: 380px;" data-simplebar data-simplebar-auto-hide="false">
 		<div class="pop_txt">
 			<c:out value="${popupVO.popupCtt}" escapeXml="false"/>
-			<c:if test="${popupVO.fileSeqo gt -1 }">
-				<img src="/file/getByteImage.do?atchFileId=<c:out value="${popupVO.repImgId}"/>&fileSeqo=<c:out value="${popupVO.fileSeqo}"/>&fileNmPhclFileNm=<c:out value="${popupVO.phclFileNm}"/>" alt="대표이미지"/>
+			<c:if test="${popupVO.fileSn gt -1 }">
+				<img src="/file/getByteImage.do?atchFileId=<c:out value="${popupVO.repImgId}"/>&fileSn=<c:out value="${popupVO.fileSn}"/>&fileNmPhclFileNm=<c:out value="${popupVO.phclFileNm}"/>" alt="대표이미지"/>
 			</c:if>
 		</div>
 	</div>

@@ -27,11 +27,11 @@ public class LoginVO extends CmmnDefaultVO {
 	
 	@NotBlank(message = "아이디 : 필수 입력입니다.", groups = {loginCheck.class, pswdUpdateCheck.class, lstPswdChgDtUpdateCheck.class, findPswdCheck.class, pswdReWriteCheck.class})
 	private String userId;
-	private String userSabun;
 	
 	@NotBlank(message = "비밀번호 : 필수 입력입니다.", groups = {loginCheck.class, pswdUpdateCheck.class, pswdReWriteCheck.class})
 	private String userPswd;
-	
+
+	private String userSabun;
 	@NotBlank(message = "이름 : 필수 입력입니다.", groups = {findIdCheck.class, findPswdCheck.class})
 	private String userNm;
 	private String grpAuthId;

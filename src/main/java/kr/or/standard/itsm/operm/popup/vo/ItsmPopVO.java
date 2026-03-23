@@ -47,6 +47,7 @@ public class ItsmPopVO extends ItsmCommonDefaultVO {
 	private String imgSrc;              /*    샘플 팝업 이미지 경로    */
 	
 	private String fileSeqo;			/*    첨부파일 순서    */   
+	private String fileSn;			/*    첨부파일 순서    */
 	private String num;                 /*    조회된 리스트 순서    */
 	
 	public String getBltnbCn() {
@@ -95,6 +96,14 @@ public class ItsmPopVO extends ItsmCommonDefaultVO {
 
 	public void setFileSeqo(String fileSeqo) {
 		this.fileSeqo = fileSeqo;
+	}
+
+	public String getFileSn() {
+		return fileSn;
+	}
+
+	public void setFileSn(String fileSn) {
+		this.fileSn = fileSn;
 	}
 
 	public String getSeVal() {

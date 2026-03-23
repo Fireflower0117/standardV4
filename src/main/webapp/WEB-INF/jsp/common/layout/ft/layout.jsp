@@ -62,7 +62,7 @@
 	</div>
 	<form name="fileDownFrm" id="fileDownFrm">
 		<input type="hidden" name="atchFileId" id="downAtchFileId"/>
-		<input type="hidden" name="fileSeqo" id="downAtchSeqo"/>
+		<input type="hidden" name="fileSn"    id="downAtchSeqo"/>
 		<input type="hidden" name="fileRlNm" id="downAtchRlNm"/>
 		<input type="hidden" name="fileNmPhclFileNm" id="downAtchPhclNm" />
 	</form>

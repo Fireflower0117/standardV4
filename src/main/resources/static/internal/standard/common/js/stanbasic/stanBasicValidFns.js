@@ -57,10 +57,7 @@
                 return false;
             }
 
-            if (on.valid.isEmpty(validateObj?.callbackFn) || typeof validateObj.callbackFn !== 'function') {
-                on.msg.consoleLog('callBack Function을 입력하세요.');
-                return false;
-            }
+            // [수정] callbackFn 필수 체크 로직 삭제 (옵션으로 변경됨)
 
             let eleForm = validateObj?.formId;
             if (on.valid.isEmpty(eleForm)) {
@@ -69,9 +66,9 @@
             }
 
             let validateOptions = {
-                rules: {}
+                  ignore: []
+                , rules: {}
                 , messages: {}
-                , submitHandler: validateObj.callbackFn
             };
 
             // 필요에따라 formValidationCheck 호출시 validateOption속성을 추가 해서 messageOption을 변경할수있다.
@@ -81,7 +78,17 @@
                 let addValidateOptions = {
                     errorPlacement: function (error, element) {
                         error.addClass("ui red pointing label transition");
-                        error.insertAfter(element.parent());
+                        let attrName = element.attr('name');
+                        let attrId = element.attr('id');
+                        let editorId = CKEDITOR.instances[attrId] ? attrId : (CKEDITOR.instances[attrName] ? attrName : null);
+
+                        if (typeof CKEDITOR !== "undefined" && editorId) {
+                            error.insertAfter($("#cke_" + editorId)); // 에디터 UI 컨테이너 뒤에 에러 라벨 삽입
+                        } else if (element.prop('type') === 'radio' || element.prop('type') === 'checkbox') {
+                            error.insertAfter($(`[name="${attrName}"]:last`).parent());
+                        } else {
+                            error.insertAfter(element.parent());
+                        }
                     }
                     , highlight: function (element, errorClass, validClass) {
                         $(element).parents(".row").addClass(errorClass);
@@ -97,7 +104,17 @@
                     errorPlacement: function (error, element) {
                         error.addClass("ui red pointing label transition");
                         // element.parent() 대신 element 자체의 뒤에 삽입 (td 내부 유지)
-                        error.insertAfter(element);
+                        let attrName = element.attr('name');
+                        let attrId = element.attr('id');
+                        let editorId = CKEDITOR.instances[attrId] ? attrId : (CKEDITOR.instances[attrName] ? attrName : null);
+
+                        if (typeof CKEDITOR !== "undefined" && editorId) {
+                            error.insertAfter($("#cke_" + editorId)); // 에디터 UI 컨테이너 뒤에 에러 라벨 삽입
+                        } else if (element.prop('type') === 'radio' || element.prop('type') === 'checkbox') {
+                            error.insertAfter($(`[name="${attrName}"]:last`).parent());
+                        }else {
+                            error.insertAfter(element);
+                        }
                     },
                     highlight: function (element, errorClass, validClass) {
                         $(element).closest(".row").addClass("error"); // Semantic UI 스타일
@@ -120,25 +137,99 @@
                     on.msg.consoleLog("name : " + attrName + ", attrLabel : " + attrLabel + " , attrRule : " + attrRule);
                     on.msg.consoleLog('validateList 내부에 name, label, rule 속성을 입력하지 않는 Object가 있습니다.');
                     validateStatus = 'fail';
+                    continue;
+                }
+
+                let $targetEle = $(`#${attrName}`).length ? $(`#${attrName}`) : $(`[name="${attrName}"]`);
+
+                // 💡 1. [신규] 파일 검증 룰(fileRequired)이 넘어왔는지 체크
+                let isFileRequired = attrRule.hasOwnProperty("fileRequired");
+                let fileIdNm = isFileRequired ? attrRule.fileRequired : "";
+
+                // 💡 2. [수정] 태그가 DIV이거나, fileRequired 룰이 선언된 경우 Proxy 로직 실행
+                if ($targetEle.length && ($targetEle.prop("tagName") === "DIV" || isFileRequired)) {
+                    let hasFile = false;
+
+                    // --- 기존 DOM 기반 파일 존재 여부 체크 ---
+                    let $tbody = $targetEle.find(".atchFileTbody");
+                    if ($tbody.length > 0) {
+                        let $fileItems = $tbody.children("tr, li").not(":has(.no_data)");
+                        if ($fileItems.length > 0) {
+                            hasFile = true;
+                        }
+                    }
+
+                    if (!hasFile) {
+                        $targetEle.find("input[type='file']").each(function() {
+                            if (this.files && this.files.length > 0) hasFile = true;
+                        });
+                    }
+
+                    if (!hasFile && $("#tmplFile").length > 0 && $("#tmplFile")[0].files.length > 0) {
+                        hasFile = true;
+                    }
+
+                    if (!hasFile && $("#div_tmplFiles").find("li").length > 0) {
+                        hasFile = true;
+                    }
+
+                    // --- 💡 3. [신규] 전역 window 배열 및 숨겨진 기존 파일 갯수 정밀 체크 ---
+                    if (!hasFile && isFileRequired) {
+                        // 신규로 첨부한 파일 배열 (on.file.setFileList 기준)
+                        let newFileArr = window["atchFileArr_" + fileIdNm] || [];
+                        if (newFileArr.length > 0) {
+                            hasFile = true;
+                        }
+
+                        // 기존에 업로드되어 있던 파일(oldId) 또는 카운트 체크
+                        let existCnt = Number($targetEle.find(".atchedFileCnt").val()) ||
+                            $targetEle.find("input[type='hidden'][name$='_oldId']").length || 0;
+                        if (existCnt > 0) {
+                            hasFile = true;
+                        }
+                    }
+
+                    let proxyInputName = attrName + "_proxy";
+                    if ($targetEle.find(`#${proxyInputName}`).length === 0) {
+                        $targetEle.append(`<input type='hidden' name='${proxyInputName}' id='${proxyInputName}' />`);
+                    }
+
+                    $(`#${proxyInputName}`).val(hasFile ? "Y" : "");
+                    attrName = proxyInputName; // jQuery Validate 검증 타겟을 프록시 input으로 변경!
+
+                    if (isFileRequired) {
+                        delete attrRule.fileRequired;
+                        attrRule.required = true;
+                    }
+                }
+
+                if (typeof CKEDITOR !== "undefined" && CKEDITOR.instances[attrName]) {
+                    let editorData = CKEDITOR.instances[attrName].getData();
+
+                    let pureText = editorData.replace(/<[^>]*>?/gi, '').replace(/&nbsp;/gi, '').trim();
+                    if (pureText === "") {
+                        editorData = "";
+                    }
+
+                    $targetEle = $(`#${attrName}`).length ? $(`#${attrName}`) : $(`[name="${attrName}"]`);
+                    $targetEle.val(editorData);
                 }
 
                 validateOptions.rules[attrName] = attrRule;
+
                 if (typeof attrRule === "object") {
                     validateOptions.messages[attrName] = {};
                     for (let ruleKey of Object.keys(attrRule)) {
                         let keyVal = attrRule[ruleKey];
-                        if (ruleKey === "required") validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 필수입력 항목입니다.";
-                        if (ruleKey === "maxlength") validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 최대 " + keyVal + " 자리 입니다.";
-                        if (ruleKey === "minlength") validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 최소 " + keyVal + " 자리 입니다.";
-                        if (ruleKey === "equalTo") validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는)  " + keyVal + "와 같아야 합니다.";
-                        if (ruleKey === "email") validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 이메일 형식이어야 합니다.";
+                        if (ruleKey === "required")   validateOptions.messages[attrName][ruleKey] = isFileRequired ? attrLabel + "은(는) 필수 첨부 항목입니다." : attrLabel + "은(는) 필수입력 항목입니다.";
+                        if (ruleKey === "maxlength")  validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 최대 " + keyVal + " 자리 입니다.";
+                        if (ruleKey === "minlength")  validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 최소 " + keyVal + " 자리 입니다.";
+                        if (ruleKey === "equalTo")    validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는)  " + keyVal + "와 같아야 합니다.";
+                        if (ruleKey === "email")      validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 이메일 형식이어야 합니다.";
                         if (ruleKey === "engNumOnly") validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 영문 또는 숫자만 입력 가능합니다.";
                         if (ruleKey === "numberOnly") validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 숫자만 입력 가능합니다.";
-                        if (ruleKey === "floatOnly") validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 숫자 또는 소수점만 입력 가능합니다.";
-                        if (ruleKey === "email") validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) E-Mail 형식이 아닙니다.";
-                        if (ruleKey === "korMobile") validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 휴대폰번호 형식이 아닙니다.";
-
-
+                        if (ruleKey === "floatOnly")  validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 숫자 또는 소수점만 입력 가능합니다.";
+                        if (ruleKey === "korMobile")  validateOptions.messages[attrName][ruleKey] = attrLabel + "은(는) 휴대폰번호 형식이 아닙니다.";
                     }
                 } else {
                     validateStatus = 'fail';
@@ -147,11 +238,26 @@
             }
 
             if (validateStatus === 'fail') {
+                // 내부 오류 등으로 실패한 경우 (validate() 실행 전)
+                if (typeof validateObj.callbackFn === 'function') {
+                    validateObj.callbackFn(false);
+                }
                 return false;
             }
 
+            // jQuery Validate 적용
             $(eleForm).validate(validateOptions);
-            return $(eleForm).valid();
+
+            // [수정] 유효성 검증 결과를 boolean으로 변수에 저장
+            let isValid = $(eleForm).valid();
+
+            // [수정] 콜백 함수가 있으면 결과값을 인자로 전달하여 실행
+            if (typeof validateObj.callbackFn === 'function') {
+                validateObj.callbackFn(isValid);
+            }
+
+            // [수정] 최종 결과 리턴
+            return isValid;
 
         }
     }

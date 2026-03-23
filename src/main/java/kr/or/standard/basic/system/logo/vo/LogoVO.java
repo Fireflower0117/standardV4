@@ -20,6 +20,7 @@ public class LogoVO extends CmmnDefaultVO {
     private String url;			    // URL
     private String lnkTgtCd;	    // 링크대상코드
     private String fileSeqo;	    // 첨부파일 순서
+    private String fileSn;	    // 첨부파일 순서
     private String atchFileId;      // 첨부파일아이디
     private String fileNmPhclFileNm;
 
@@ -113,6 +114,14 @@ public class LogoVO extends CmmnDefaultVO {
 
     public void setFileSeqo(String fileSeqo) {
         this.fileSeqo = fileSeqo;
+    }
+
+    public String getFileSn() {
+        return fileSn;
+    }
+
+    public void setFileSn(String fileSn) {
+        this.fileSn = fileSn;
     }
 
     public String getAtchFileId() {

@@ -10,10 +10,10 @@
 		<c:forEach var="item" items="${fileList }" varStatus="status">
 			<li>
 				<label class="chkList cursor">
-					<input type="checkbox" class="cursor mar_r10" data-fileseqo="<c:out value='${item.fileSeqo }'/>"> 
+					<input type="checkbox" class="cursor mar_r10" data-filesn="<c:out value='${item.fileSn }'/>">
 					<p><c:out value="${item.rlFileNm}"/>&nbsp;&nbsp;&nbsp;(<c:out value="${item.fileSzVal}"/>MB)&nbsp;&nbsp;&nbsp;[<c:out value="${item.regDt}"/>]</p> 
 				</label>
-				<span class="click_clipboard cursor" data-link="/tmplFile/getFileDown.do?tmplFileSerno=<c:out value="${item.tmplFileSerno}"/>&fileSeqo=<c:out value="${item.fileSeqo}"/>">
+				<span class="click_clipboard cursor" data-link="/tmplFile/getFileDown.do?tmplFileSerno=<c:out value="${item.tmplFileSerno}"/>&fileSn=<c:out value="${item.fileSn}"/>">
 					<i class="xi-link-insert"></i>
 				</span>
 			</li>

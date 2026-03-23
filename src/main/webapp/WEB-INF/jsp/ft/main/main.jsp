@@ -40,7 +40,7 @@
 			<c:forEach items="${popupList }" var="popup" varStatus="status">
 				if( $.cookie("n_popYn<c:out value="${popup.popupSerno}"/>") != 'N' ) {
 					let popData = {'popupSerno' : '<c:out value="${popup.popupSerno}"/>', 'popupTitlNm' : '<c:out value="${popup.popupTitlNm}"/>', 'popupCtt' : `<c:out value='${popup.popupCtt}' escapeXml='false'/>`
-							, 'repImgId' : '<c:out value="${popup.repImgId}"/>', 'fileSeqo' : '<c:out value="${popup.fileSeqo}"/>', 'phclFileNm' : '<c:out value="${popup.phclFileNm}"/>', 'popupTgtCd' : '<c:out value="${popup.popupTgtCd}"/>'
+							, 'repImgId' : '<c:out value="${popup.repImgId}"/>', 'fileSn' : '<c:out value="${popup.fileSn}"/>', 'phclFileNm' : '<c:out value="${popup.phclFileNm}"/>', 'popupTgtCd' : '<c:out value="${popup.popupTgtCd}"/>'
 							, 'popupWdthSizeVal' : '<c:out value="${popup.popupWdthSizeVal}"/>', 'popupHghtSizeVal' : '<c:out value="${popup.popupHghtSizeVal}"/>'
 							, 'popupLsdMargnVal' : '<c:out value="${popup.popupLsdMargnVal}"/>', 'popupUpndMargnVal' : '<c:out value="${popup.popupUpndMargnVal}"/>'};
 					
@@ -470,7 +470,7 @@
 	</div>
 	<form name="fileDownFrm" id="fileDownFrm">
 		<input type="hidden" name="atchFileId" id="downAtchFileId"/>
-		<input type="hidden" name="fileSeqo" id="downAtchSeqo"/>
+		<input type="hidden" name="fileSn" id="downAtchSeqo"/>
 		<input type="hidden" name="fileRlNm" id="downAtchRlNm"/>
 		<input type="hidden" name="fileNmPhclFileNm" id="downAtchPhclNm" />
 	</form>

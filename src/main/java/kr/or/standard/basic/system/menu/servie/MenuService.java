@@ -490,9 +490,7 @@ public class MenuService extends EgovAbstractServiceImpl {
 	/****************************   On FrameWork V4   **********************************/
 	/***********************************************************************************/
 
-	public CommonMap selectMenuByUrl(String pageUrl) {
-		CommonMap paramMap = new CommonMap();
-		paramMap.put("pageUrl", pageUrl);
-		return basicDao.selectOne(sqlNs+"selectMenuByUrl", paramMap);
+	public CommonMap selectMenuByUrl(CommonMap condiMap) {
+		return basicDao.selectOne(sqlNs+"selectMenuByUrl", condiMap);
 	}
 }

@@ -8,6 +8,7 @@
              , SMMH.MENU_SERNO
              , SMMH.MENU_CD
              , SMMH.UPR_MENU_CD
+             , SMMH.MENU_CL
              , SMMH.KOR_NM
              , SMMH.MENU_PARAM
              , SMMH.LAY_OUT
@@ -19,8 +20,15 @@
              , SMMH.SORT_PATH
              , SMMH.MENU_PATH
              , SMMH.MENU_CD_PATH
-        FROM SVI_MENU_MNG_HIERARCHY SMMH
-        WHERE SMMH.URL_ADDR = #{pageUrl}
+          FROM SVI_MENU_MNG_HIERARCHY SMMH
+         WHERE SMMH.URL_ADDR = #{pageUrl}
+        <if test="menuFUncDivCd !=null and menuFUncDivCd !=''">
+           AND SMMH.MENU_FUNC_DIV = #{menuFUncDivCd}
+        </if>
+        <if test="menuFuncCd !=null and menuFuncCd !=''">
+           AND SMMH.MENU_FUNC_CD = #{menuFuncCd}
+        </if>
+
     </select>
     
     <select id="selectMenuPermissionCheck" parameterType="CommonMap" resultType="CommonMap">
@@ -33,13 +41,14 @@
              , AUM.USER_ID
              , MM.MENU_PATH
              , MM.MENU_CD_PATH
-             , MAX(MAM.READ_YN) READ_YN
-             , MAX(MAM.WRITE_YN) WRITE_YN
-             , MAX(MAM.UPDATE_YN) UPDATE_YN
-             , MAX(MAM.DELETE_YN) DELETE_YN
-             , MAX(MAM.POPUP_OPEN_YN) POPUP_OPEN_YN
-             , MAX(MAM.POPUP_READ_YN) POPUP_READ_YN
-             , MAX(MAM.POPUP_WRITE_YN) POPUP_WRITE_YN
+             , MAX(MAM.USE_YN)          USE_YN
+             , MAX(MAM.READ_YN)         READ_YN
+             , MAX(MAM.WRITE_YN)        WRITE_YN
+             , MAX(MAM.UPDATE_YN)       UPDATE_YN
+             , MAX(MAM.DELETE_YN)       DELETE_YN
+             , MAX(MAM.POPUP_OPEN_YN)   POPUP_OPEN_YN
+             , MAX(MAM.POPUP_READ_YN)   POPUP_READ_YN
+             , MAX(MAM.POPUP_WRITE_YN)  POPUP_WRITE_YN
              , MAX(MAM.POPUP_UPDATE_YN) POPUP_UPDATE_YN
              , MAX(MAM.POPUP_DELETE_YN) POPUP_DELETE_YN
           FROM SVI_MENU_MNG_HIERARCHY MM
@@ -47,34 +56,48 @@
          INNER JOIN STB_M_AUTH_USER_MNG AUM on MAM.AUTH_ID = AUM.AUTH_ID
          WHERE MM.URL_ADDR = #{urlAddr}
            AND AUM.USER_ID = #{loginUserId}
+        <if test="menuFUncDivCd !=null and menuFUncDivCd !=''">
+            AND MM.MENU_FUNC_DIV = #{menuFUncDivCd}
+        </if>
+        <if test="menuFuncCd !=null and menuFuncCd !=''">
+            AND MM.MENU_FUNC_CD = #{menuFuncCd}
+        </if>
         GROUP BY MM.MENU_DIV_CD, MM.MENU_CD, MM.URL_ADDR, MM.MENU_PARAM, MM.KOR_NM, AUM.USER_ID, MM.MENU_PATH, MM.MENU_CD_PATH
     </select>
 
     <select id="selectLeftMenus"  parameterType="CommonMap" resultType="CommonMap">
         /* on.standard.system.menu.selectLeftMenus */
         SELECT DISTINCT
-               SMMH.LEVEL
-             , SMMH.MENU_CD
-             , SMMH.UPR_MENU_CD
-             , SMMH.KOR_NM
-             , SMMH.PAGE_CL
-             , SMMH.URL_ADDR
-             , SMMH.MENU_PARAM
-             , SMMH.MENU_CSS
-             , SMMH.MENU_TARGET
-             , SMMH.MENU_PATH
-             , SMMH.IS_LEAF
+               SMMH.LEVEL             AS level
+             , SMMH.MENU_CD           AS menuCd
+             , SMMH.UPR_MENU_CD       AS uprMenuCd
+             , SMMH.KOR_NM            AS korNm
+             , SMMH.MENU_CL           AS menuCl
+             , SMMH.MENU_FUNC_DIV     AS menuFuncDiv
+             , SMMH.MENU_FUNC_CD      AS menuFuncCd
+             , SMMH.URL_ADDR          AS urlAddr
+             , SMMH.MENU_PARAM        AS menuParam
+             , SMMH.MENU_CSS          AS menuCss
+             , SMMH.MENU_TARGET       AS menuTarget
+             , SMMH.MENU_PATH         AS menuPath
+             , SMMH.IS_LEAF           AS isLeaf
              , CASE WHEN EXISTS (
-                        SELECT 1
-                        FROM SVI_MENU_MNG_HIERARCHY X
-                        WHERE X.URL_ADDR = #{pageUrl}
-                          AND X.MENU_PATH LIKE CONCAT(SMMH.MENU_PATH, '%')
-                    )
-                    THEN 'on'
-                    ELSE ''
-               END AS MENU_FOCUS
+                    SELECT 1
+                    FROM SVI_MENU_MNG_HIERARCHY X
+                    WHERE X.URL_ADDR = #{pageUrl}
+                    <if test="menuFuncDivCd != null and menuFuncDivCd != ''">
+                        AND X.MENU_FUNC_DIV = #{menuFuncDivCd}
+                    </if>
+                    <if test="menuFuncCd != null and menuFuncCd != ''">
+                        AND X.MENU_FUNC_CD = #{menuFuncCd}
+                    </if>
+                    AND X.MENU_PATH LIKE CONCAT(SMMH.MENU_PATH, '%')
+            )
+            THEN 'on'
+            ELSE ''
+             END AS menuFocus
           FROM SVI_MENU_MNG_HIERARCHY SMMH
-         INNER JOIN  STB_M_MENU_AUTH_MNG MMAM ON SMMH.MENU_CD = MMAM.MENU_CD
+         INNER JOIN  STB_M_MENU_AUTH_MNG MMAM ON SMMH.MENU_CD = MMAM.MENU_CD AND MMAM.USE_YN = 'Y'
          WHERE MMAM.AUTH_ID  IN (
                SELECT AUTH_ID
                  FROM STB_M_AUTH_USER_MNG SMAUM
@@ -83,35 +106,112 @@
           )
           AND SMMH.USE_YN = 'Y'
           AND SMMH.MENU_DIV_CD = 'MA'
-          AND SMMH.PAGE_CL IN ('MAIN')
+          AND SMMH.MENU_CL IN ('MAIN')
         ORDER BY SMMH.LEVEL, SMMH.SORT_PATH
     </select>
 
     <select id="selectMenuList" parameterType="CommonMap" resultType="CommonMap">
         /* on.standard.system.menu.selectMenuList */
-        SELECT MENU_DIV_CD  menuDivCd
-             , MENU_SERNO   menuSerno
-             , MENU_CD      menuCd
-             , UPR_MENU_CD  uprMenuCd
-             , KOR_NM       korNm
-             , PAGE_CL      pageCl
-             , MENU_PARAM   menuParam
-             , MENU_CSS     menuCss
-             , LAY_OUT      layOut
-             , RTN_URL      rtnUrl
-             , MENU_TARGET  menuTarget
-             , URL_ADDR     urlAddr
-             , SORT_NO      sortNo
-             , USE_YN       useYn
-             , LEVEL        level
-             , SORT_PATH    sortPath
-             , MENU_PATH    menuPath
-             , MENU_CD_PATH menuCdPath
-             , IS_LEAF      isLeaf
-          FROM SVI_MENU_MNG_HIERARCHY
+        SELECT MENU_DIV_CD    menuDivCd
+             , MENU_SERNO     menuSerno
+             , MENU_CD        menuCd
+             , CASE WHEN UPR_MENU_CD = '00000000' THEN NULL ELSE UPR_MENU_CD END  uprMenuCd
+             , KOR_NM         korNm
+             , ENG_NM         engNm
+             , MENU_CL        menuCl
+             , MENU_PARAM     menuParam
+             , MENU_CSS       menuCss
+             , LAY_OUT        layOut
+             , URL_ADDR       urlAddr
+             , RTN_URL        rtnUrl
+             , MENU_TARGET    menuTarget
+             , SORT_NO        sortNo
+             , MENU_COMMENT   menuComment
+             , MENU_FUNC_DIV  menuFuncDiv
+             , MENU_FUNC_CD   menuFuncCd
+             , (SELECT BOARD_KOR_NM
+                  FROM STB_SM_BOARDTYPE_MNG
+                 WHERE BOARD_CD = SMMH.MENU_FUNC_CD )  boardFuncNM
+             , USE_YN         useYn
+             , LEVEL          level
+             , SORT_PATH      sortPath
+             , MENU_PATH      menuPath
+             , MENU_CD_PATH   menuCdPath
+             , IS_LEAF        isLeaf
+          FROM SVI_MENU_MNG_HIERARCHY SMMH
          WHERE MENU_DIV_CD = #{menuDivCd}
+           AND MENU_CL != 'ROOT'
          ORDER BY SORT_PATH
     </select>
+
+    <insert id="mergeInsMenuInfo" parameterType="CommonMap">
+        /* on.standard.system.menu.mergeInsMenuInfo */
+        INSERT INTO STB_B_MENU_MNG (
+                 MENU_DIV_CD
+               , MENU_CD
+               , UPR_MENU_CD
+               , KOR_NM
+               , ENG_NM
+               , MENU_CL
+               , MENU_PARAM
+               , MENU_TARGET
+               , LAY_OUT
+               , MENU_CSS
+               , URL_ADDR
+               , RTN_URL
+               , SORT_NO
+               , MENU_COMMENT
+               , MENU_FUNC_DIV
+               , MENU_FUNC_CD
+               , USE_YN
+               , REG_USER
+               , REG_DATE
+        ) VALUES (
+                   #{menuDivCd}
+                 , #{menuCd}
+                 , COALESCE(NULLIF(#{uprMenuCd}, ''), '00000000')
+                 , #{korNm}
+                 , #{engNm}
+                 , #{menuCl}
+                 , #{menuParam}
+                 , #{menuTarget}
+                 , #{menuLayout}   /* 기본 레이아웃 */
+                 , #{menuCss}
+                 , #{urlAddr}
+                 , #{rtnUrl}
+                 , #{sortNo}
+                 , #{menuComment}
+                 , #{menuFuncDiv}
+                 , #{menuFuncCd}
+                 , #{useYn}
+                 , #{loginUserId}
+                 , NOW()
+                 )
+            ON DUPLICATE KEY UPDATE
+               UPR_MENU_CD  = COALESCE(NULLIF(#{uprMenuCd}, ''), '00000000')
+             , KOR_NM       = #{korNm}
+             , ENG_NM       = #{engNm}
+             , MENU_CL      = #{menuCl}
+             , MENU_PARAM   = #{menuParam}
+             , MENU_TARGET  = #{menuTarget}
+             , LAY_OUT      = #{menuLayout}
+             , MENU_CSS     = #{menuCss}
+             , URL_ADDR     = #{urlAddr}
+             , RTN_URL      = #{rtnUrl}
+             , SORT_NO      = #{sortNo}
+             , MENU_COMMENT = #{menuComment}
+             , MENU_FUNC_DIV = #{menuFuncDiv}
+             , MENU_FUNC_CD  = #{menuFuncCd}
+             , USE_YN       = #{useYn}
+    </insert>
+
+    <delete id="delMenuInfo" parameterType="CommonMap">
+        /* on.standard.system.menu.delMenuInfo */
+        DELETE FROM STB_B_MENU_MNG
+          WHERE MENU_CD = #{menuCd}
+    </delete>
+
+
 
 
 </mapper>

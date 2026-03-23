@@ -8,18 +8,18 @@ $(document).ready(function(){
      ***************************************************************************/
 
     // 검색조건 구분
-     on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#searchKeyCd" }
+     on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#searchKeyCd" }
                                   , addOption     : [{ position : "top" , txt : "전체" , val : "" }]
                                   , optionValInfo : { optId : "code" , optTxt : "text" }
-                                  , comboDataInfo : [ { code : "userId"   , text:"사용자ID" }
+                                  , dataInfo      : [ { code : "userId"   , text:"사용자ID" }
                                                     , { code : "userNm"   , text:"사용자명" }
                                                     , { code : "mobileNo" , text:"휴대폰번호" }
                                                     ]
                                  });
      // Paging Per Row
-     on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#recordCountPerPage" }
+     on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#recordCountPerPage" }
                                   , optionValInfo : { optId : "code" , optTxt : "text", defaultVal : "10" }
-                                  , comboDataInfo : [ { code : "10" , text:"10건" }
+                                  , dataInfo      : [ { code : "10" , text:"10건" }
                                                     , { code : "20" , text:"20건" }
                                                     , { code : "30" , text:"30건" }
                                                     , { code : "50" , text:"50건" }
@@ -80,14 +80,14 @@ $(document).ready(function(){
               , paginginfo    : {targetId : "#pagenation" , btnFnName : fnPageBtnClick } // 페이징처리될영역과 , 페이징버튼 Event (자동처리)
               , displayColInfos : {
                     normal_tab_columns : [
-                            {id: "rowindx"     , colType: "rowNumber" , data_id1:"userId", classNm: "number"}
-                          , {id: "userId"      , colType: "normalTd"  , data_id1:"userId"}
-                          , {id: "userKorNm"   , colType: "normalTd"  , data_id1:"userId"}
-                          , {id: "userEngNm"   , colType: "normalTd"  , data_id1:"userId"}
-                          , {id: "blonNm"      , colType: "normalTd"  , data_id1:"userId"}
-                          , {id: "authNm"      , colType: "normalTd"  , data_id1:"userId"}
-                          , {id: "lstLoginDt"  , colType: "normalTd"  , data_id1:"userId", classNm: "date"}
-                          , {id: "regDate"     , colType: "normalTd"  , data_id1:"userId", classNm: "date"}
+                            {id: "rowindx"     , colType: "number" , data_id1:"userId", classNm: "number"}
+                          , {id: "userId"      , colType: "td"  , data_id1:"userId"}
+                          , {id: "userKorNm"   , colType: "td"  , data_id1:"userId"}
+                          , {id: "userEngNm"   , colType: "td"  , data_id1:"userId"}
+                          , {id: "blonNm"      , colType: "td"  , data_id1:"userId"}
+                          , {id: "authNm"      , colType: "td"  , data_id1:"userId"}
+                          , {id: "lstLoginDt"  , colType: "td"  , data_id1:"userId", classNm: "date"}
+                          , {id: "regDate"     , colType: "td"  , data_id1:"userId", classNm: "date"}
                     ]
               }
             }

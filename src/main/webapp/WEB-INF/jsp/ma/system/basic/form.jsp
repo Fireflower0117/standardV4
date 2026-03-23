@@ -17,7 +17,7 @@
 		                     });
 
 		// 시스템 정보 조회 (별도로 개별적으로 조회할경우)
-		let systemConfigObj  = on.xhr.ajax({sid:"systemConfig", sql : "on.standard.system.systempolicy.inqSystemPolicy" , cmd : "selectOne"  });
+		let systemConfigObj  = on.xhr.ajax({sid:"systemConfig", sql : "on.standard.system.systempolicy.admin_inqSystemPolicy" , cmd : "selectOne"  });
 
 
         /***************************************************************************/
@@ -25,45 +25,45 @@
         /***************************************************************************/
 
 		// 암호화 알고리즘
-		on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#pwdEncAlgorithm" }
-                                       , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" , defaultVal : systemConfigObj.pwdEncAlgorithm }
-                                       , comboDataInfo :  inqCdRsltList.algorithmList
-                                       });
+		on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#pwdEncAlgorithm" }
+                                     , optionValInfo : { optId : "comCd" , optTxt : "cdNm" , defaultVal : systemConfigObj.pwdEncAlgorithm }
+                                     , dataInfo      : inqCdRsltList.algorithmList
+                                     });
 
         // 비밀번호 갱신주기 사용여부
-        on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#pwdChgCycleUseYn" }
-                                       , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" , defaultVal : systemConfigObj.pwdChgCycleUseYn  }
-                                       , comboDataInfo :   inqCdRsltList.useYnList
-                                       });
+        on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#pwdChgCycleUseYn" }
+                                     , optionValInfo : { optId : "comCd" , optTxt : "cdNm" , defaultVal : systemConfigObj.pwdChgCycleUseYn  }
+                                     , dataInfo      : inqCdRsltList.useYnList
+                                     });
         // 비밀번호 갱신주기
         $("#pwdChgCyclDd").val(systemConfigObj.pwdChgCyclDd);
 
          // 비밀번호 실패시 계정 잠금기능 사용여부
-         on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#lginLmtUseYn" }
-                                       , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" , defaultVal : systemConfigObj.lginLmtUseYn }
-                                       , comboDataInfo :   inqCdRsltList.useYnList
-                                       });
+         on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#lginLmtUseYn" }
+                                      , optionValInfo : { optId : "comCd" , optTxt : "cdNm" , defaultVal : systemConfigObj.lginLmtUseYn }
+                                      , dataInfo      : inqCdRsltList.useYnList
+                                      });
          // 비밀번호 잠금기준횟수
         $("#lginFailLmtCnt").val(systemConfigObj.lginFailLmtCnt);
 
 
 		 // ITMS사용여부
-         on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#itsmUseYn" }
-                                       , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" , defaultVal : systemConfigObj.itsmUseYn}
-                                       , comboDataInfo :   inqCdRsltList.useYnList
-                                       });
+         on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#itsmUseYn" }
+                                      , optionValInfo : { optId : "comCd" , optTxt : "cdNm" , defaultVal : systemConfigObj.itsmUseYn}
+                                      , dataInfo      : inqCdRsltList.useYnList
+                                      });
 
 		 // 탈퇴 사용자 정보 보유기간
-		 on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#pwssPrdCd" }
-                                       , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" , defaultVal : systemConfigObj.pwssPrdCd }
-                                       , comboDataInfo :   inqCdRsltList.pssnPrdCdList
-                                       });
+		 on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#pwssPrdCd" }
+                                      , optionValInfo : { optId : "comCd" , optTxt : "cdNm" , defaultVal : systemConfigObj.pwssPrdCd }
+                                      , dataInfo      :   inqCdRsltList.pssnPrdCdList
+                                      });
 
 		 // 파일 저장방식 구조
-		 on.html.dynaGenSelectOptions({ comboInfo     : { targetId : "#atchFileSaveDiv" }
-                                       , optionValInfo : { optId : "COM_CD" , optTxt : "CD_NM" , defaultVal : systemConfigObj.AtchFileSaveDiv }
-                                       , comboDataInfo :   inqCdRsltList.fileSaveDivList
-                                       });
+		 on.html.dynaGenSelectOptions({ targetInfo    : { targetId : "#atchFileSaveDiv" }
+                                      , optionValInfo : { optId : "comCd" , optTxt : "cdNm" , defaultVal : systemConfigObj.AtchFileSaveDiv }
+                                      , dataInfo      :   inqCdRsltList.fileSaveDivList
+                                      });
 
          // 파일저장경로
          $("#atchFilePath").val(systemConfigObj.atchFilePath);
@@ -99,13 +99,12 @@
 													, {name : "pwssPrdCd"        , label : "탈퇴계정 보유기간 코드"     ,  rule: {"required":true} }
 													, {name : "atchFileSaveDiv"  , label : "파일저장 방식 구분"        ,  rule: {"required":true} }
 													, {name : "AtchFilePath"     , label : "파일저장경로"             ,  rule: {"required":true} }
-													, {name : "maDirectPage"     , label : "MA Login후 기본이동경로"   ,  rule: {"required":true} }
-													, {name : "ftDirectPage"     , label : "FT Login후 기본이동경로"   ,  rule: {"required":true} }
+													, {name : "directPage"       , label : "Login후 기본이동경로"     ,  rule: {"required":true} }
 													];
 
 
                     on.xhr.ajax({ sid : "systemConfigForm" // sid는 큰의미가 없음 , successFn시점에 sid로 전달하는 값일뿐이다.
-							    , cmd : "update" , sql : "on.standard.system.systempolicy.updSystemPolicy"
+							    , cmd : "update" , sql : "on.standard.system.systempolicy.admin_updSystemPolicy"
 							    , validation : { formId : "#systemConfigfrm" , validationList : systemConfigValidateList  }  // 유효성검증 기능 포함
 							    , data       : $("#systemConfigfrm").serializeArray()  // Data입력관련 (validation과 별개의 Data작업진행
 							    , successFn  : function (sid, data){
@@ -145,8 +144,8 @@
 				   <td class="c">
 						<select id="pwdEncAlgorithm" name="pwdEncAlgorithm" class="w30p" title="암호화 알고리즘" />
 				   </td>
-				   <th></th>
-				   <td></td>
+				   <th scope="col" class="c"></th>
+					<td class="c"></td>
 				</tr>
 				<tr>
 					<th scope="col" class="c"><span class="asterisk">*</span><strong>비밀번호변경주기 사용여부</strong></th>
@@ -168,7 +167,7 @@
 						<input type="text" id="lginFailLmtCnt" name="lginFailLmtCnt" class="w30p numOnly" title="비밀번호잠금기준횟수" maxlength="10"/><span>회</span>
 					</td>
 				</tr>
-				 <tr>
+				<tr>
 					<th scope="col" class="c"><span class="asterisk">*</span><strong>ITMS 사용여부</strong></th>
 					<td class="c">
 						<select id="itsmUseYn" name="itsmUseYn" class="w30p" title="ITMS여부" maxlength="10"/>
@@ -178,7 +177,7 @@
 						<select id="pwssPrdCd" name="pwssPrdCd" class="w30p" title="탈퇴계정 보유기간 코드" maxlength="10"/>
 					</td>
 				</tr>
-				 <tr>
+				<tr>
 					<th scope="col" class="c"><span class="asterisk">*</span><strong>파일저장 방식 구분</strong></th>
 					<td class="c">
 						<select id="atchFileSaveDiv" name="atchFileSaveDiv" class="w30p" title="파일저장 방식 구분" maxlength="10"/>
@@ -186,16 +185,6 @@
 					<th scope="col" class="c"><span class="asterisk">*</span><strong>파일저장경로</strong></th>
 					<td class="c">
 						<input type="text" id="atchFilePath" name="atchFilePath" class="w80p" title="파일저장경로" maxlength="100"/>
-					</td>
-				</tr>
-				<tr>
-					<th scope="col" class="c"><span class="asterisk">*</span><strong>MA Login후 기본이동경로</strong></th>
-					<td class="c">
-					   <input type="text" id="maDirectPage" name="maDirectPage" class="w80p" title="MA Login후 기본이동경로" maxlength="100"/>
-					</td>
-					<th scope="col" class="c"><span class="asterisk">*</span><strong>FT Login후 기본이동경로</strong></th>
-					<td class="c">
-						<input type="text" id="ftDirectPage" name="ftDirectPage" class="w80p" title="FT Login후 기본이동경로" maxlength="100"/>
 					</td>
 				</tr>
 			</tbody>

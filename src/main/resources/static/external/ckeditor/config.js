@@ -12,7 +12,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.allowedContent = true;
     
     // 글꼴추가
-    config.contentsCss = 'publish/mgr/js/ckeditor/contents.css';
+    config.contentsCss = '/external/ckeditor/contents.css';
     config.font_names = 'Pretendard-Regular/Pretendard-Regular, sans-serif;' + config.font_names;
     
     config.toolbar = [

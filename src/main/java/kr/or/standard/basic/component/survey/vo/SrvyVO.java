@@ -83,6 +83,7 @@ public class SrvyVO  extends CmmnDefaultVO {
     private String srvyYn;			// 설문조사 기간 해당여부
     
     private String fileSeqo;		// 파일순서 
+    private String fileSn;		// 파일순서
     private String fileNmPhclFileNm;// 물리파일명
     
     // 답변
